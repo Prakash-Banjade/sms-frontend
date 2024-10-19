@@ -1,0 +1,99 @@
+import { useAuth } from "@/contexts/auth-provider";
+import { queryKeys } from "@/react-query/queryKeys";
+import axios, { AxiosInstance } from "axios";
+
+export const useAxios = (): AxiosInstance => {
+    const { access_token, setAuth } = useAuth();
+
+    const axiosInstance = axios.create({
+        baseURL: import.meta.env.VITE_API_URL,
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+        withCredentials: true,
+        timeout: 5000, // Optional: 5 seconds timeout
+    });
+
+    const MAX_RETRIES = 3;
+
+    // Token Refresh Lock: Prevents parallel refresh token requests.
+    let isRefreshing = false;
+    let refreshSubscribers: Array<(token: string) => void> = [];
+
+    const subscribeTokenRefresh = (cb: (token: string) => void) => {
+        refreshSubscribers.push(cb);
+    };
+
+    const onRefreshed = (token: string) => {
+        refreshSubscribers.forEach((cb) => cb(token));
+        refreshSubscribers = [];
+    };
+
+    axiosInstance.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            const originalRequest = error.config;
+
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                if (isRefreshing) {
+                    return new Promise((resolve) => {
+                        subscribeTokenRefresh((newToken) => {
+                            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                            resolve(axiosInstance(originalRequest));
+                        });
+                    });
+                }
+
+                originalRequest._retry = true;
+                isRefreshing = true;
+
+                try {
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_API_URL}/${queryKeys.AUTH_REFRESH}`,
+                        {},
+                        { withCredentials: true }
+                    );
+
+                    if (response?.status === 200) {
+                        const newAccessToken = response.data.access_token;
+                        setAuth(newAccessToken);
+
+                        axiosInstance.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
+                        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+                        onRefreshed(newAccessToken);
+                        isRefreshing = false;
+
+                        return axiosInstance(originalRequest);
+                    }
+                } catch (err) {
+                    isRefreshing = false;
+                    setAuth(null); // Clear auth state if refresh fails
+                    window.location.href = "/login"; // Redirect to login
+                    return Promise.reject(err);
+                }
+            }
+
+            if (error.response?.status === 429 && !originalRequest._retryCount) {
+                originalRequest._retryCount = originalRequest._retryCount || 0;
+
+                if (originalRequest._retryCount < MAX_RETRIES) {
+                    originalRequest._retryCount += 1;
+
+                    const retryAfter = error.response.headers["retry-after"];
+                    const delay = retryAfter
+                        ? parseInt(retryAfter) * 1000
+                        : Math.min(1000 * 2 ** originalRequest._retryCount, 10000);
+
+                    await new Promise((resolve) => setTimeout(resolve, delay));
+
+                    return axiosInstance(originalRequest);
+                }
+            }
+
+            return Promise.reject(error);
+        }
+    );
+
+    return axiosInstance;
+};
