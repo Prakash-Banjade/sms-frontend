@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Separator } from "@radix-ui/react-separator";
 import { AppSidebar } from "./sidebar";
 import { TGroupMenuItem } from "@/apps/admin/layout/sidebar-items";
+import { ThemeToggleBtn } from "../theme-toggle";
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
     return (
@@ -25,6 +26,9 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb> */}
+                    <div className="ml-auto">
+                        <ThemeToggleBtn />
+                    </div>
                 </header>
                 <main className="">
                     <Outlet />

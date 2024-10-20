@@ -33,24 +33,10 @@ export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
                         <SidebarGroup key={item.groupLabel}>
                             <SidebarGroupLabel>{item.groupLabel}</SidebarGroupLabel>
                             <SidebarMenu>
-                                {item.menuItems.map((item) => {
-                                    if (item.items?.length) {
-                                        return (
-                                            <CollapsibleMenuItem key={item.title} item={item} />
-                                        )
-                                    } else {
-                                        return (
-                                            <SidebarMenuItem key={item.title}>
-                                                <SidebarMenuButton asChild>
-                                                    <Link to={item.url}>
-                                                        <item.icon />
-                                                        <span>{item.title}</span>
-                                                    </Link>
-                                                </SidebarMenuButton>
-                                            </SidebarMenuItem>
-                                        )
-                                    }
-                                })}
+                                {item.menuItems.map((item) => item.items?.length
+                                    ? <CollapsibleMenuItem key={item.title} item={item} />
+                                    : <NonCollapsibleMenuItem key={item.title} item={item} />
+                                )}
                             </SidebarMenu>
                         </SidebarGroup>
                     ))
@@ -58,6 +44,19 @@ export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
             </SidebarContent>
             <AppSidebarFooter />
         </Sidebar>
+    )
+}
+
+export function NonCollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
+    return (
+        <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton asChild>
+                <Link to={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                </Link>
+            </SidebarMenuButton>
+        </SidebarMenuItem>
     )
 }
 
