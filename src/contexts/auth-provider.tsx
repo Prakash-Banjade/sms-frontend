@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { ERole } from "@/types/global.type";
+import { Role } from "@/types/global.type";
 
 type TAuthContext = {
     access_token: string | null;
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: Props) => {
 export type TAuthPayload = {
     email: string;
     accountId: string;
-    role: ERole;
+    role: Role;
 };
 
 export const useAuth = () => {
