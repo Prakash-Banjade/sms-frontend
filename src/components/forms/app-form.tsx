@@ -5,7 +5,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { LoaderCircle } from 'lucide-react';
-import { formatDate, formatDateNumeric } from '@/utils/format-date';
+import { formatDateNumeric } from '@/utils/format-date';
 
 type SchemaContextType<T> = ZodType<T>;
 
