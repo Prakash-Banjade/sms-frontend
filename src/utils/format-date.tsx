@@ -35,3 +35,25 @@ export const formatDate = (
         year,
     });
 }
+
+
+export const formatDateNumeric = (
+    {
+        date,
+        format = "yyyy-mm-dd",
+    }: {
+        date: Date;
+        format?: "mm/dd/yyyy" | "mm-dd-yyyy" | "dd/mm/yyyy" | "dd-mm-yyyy" | "yyyy-mm-dd" | "yyyy/dd/mm" | "yyyy-dd-mm";
+    }
+): string => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear());
+
+    const formattedDate = format
+        .replace('dd', day)
+        .replace('mm', month)
+        .replace('yyyy', year);
+
+    return formattedDate;
+}

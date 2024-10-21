@@ -22,7 +22,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Add Academic Year",
-                        url: "#",
+                        url: "academic-years/new",
                     },
                     {
                         title: "Academic Year List",
