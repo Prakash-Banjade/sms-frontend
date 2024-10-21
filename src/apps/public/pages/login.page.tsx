@@ -1,22 +1,14 @@
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
 import { LoginForm } from "../components/login-page/login-form"
+import { ThemeToggleBtn } from "@/components/theme-toggle"
 
 type Props = {}
 
 export default function LoginPage({ }: Props) {
   return (
     <div className="relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 min-w-full">
-      <Link
-        to="/examples/authentication"
-        className={cn(
-          buttonVariants({ variant: "ghost" }),
-          "absolute right-4 top-4 md:right-8 md:top-8"
-        )}
-      >
-        Login
-      </Link>
+      <div className="absolute right-4 top-4 md:right-8 md:top-8">
+        <ThemeToggleBtn />
+      </div>
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
         <div className="absolute inset-0 bg-zinc-900" />
         <div className="relative z-20 flex items-center text-lg font-medium">
