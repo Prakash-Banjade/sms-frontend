@@ -1,9 +1,11 @@
 import { useAuth } from "@/contexts/auth-provider";
-import { queryKeys } from "@/react-query/queryKeys";
+import { QueryKey } from "@/react-query/queryKeys";
 import axios, { AxiosInstance } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const useAxios = (): AxiosInstance => {
     const { access_token, setAuth } = useAuth();
+    const navigate = useNavigate();
 
     const axiosInstance = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
@@ -49,7 +51,7 @@ export const useAxios = (): AxiosInstance => {
 
                 try {
                     const response = await axios.post(
-                        `${import.meta.env.VITE_API_URL}/${queryKeys.AUTH_REFRESH}`,
+                        `${import.meta.env.VITE_API_URL}/${QueryKey.AUTH_REFRESH}`,
                         {},
                         { withCredentials: true }
                     );
@@ -69,7 +71,7 @@ export const useAxios = (): AxiosInstance => {
                 } catch (err) {
                     isRefreshing = false;
                     setAuth(null); // Clear auth state if refresh fails
-                    window.location.href = "/login"; // Redirect to login
+                    navigate('/', { replace: true });
                     return Promise.reject(err);
                 }
             }

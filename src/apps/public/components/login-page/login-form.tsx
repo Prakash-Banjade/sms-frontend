@@ -8,6 +8,11 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import AppForm from "@/components/forms/app-form"
+import { Link, useNavigate } from "react-router-dom"
+import { useAppMutation } from "@/hooks/useAppMutation"
+import { QueryKey } from "@/react-query/queryKeys"
+import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
+import { jwtDecode } from "jwt-decode"
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const loginFormSchema = z.object({
@@ -18,6 +23,9 @@ const loginFormSchema = z.object({
 type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
+    const { setAuth } = useAuth();
+    const navigate = useNavigate();
+
     const form = useForm<z.infer<typeof loginFormSchema>>({
         resolver: zodResolver(loginFormSchema),
         defaultValues: {
@@ -26,8 +34,21 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         },
     })
 
-    function onSubmit(values: z.infer<typeof loginFormSchema>) {
-        console.log(values)
+    const { mutateAsync } = useAppMutation<loginFormSchemaType, { access_token: string }>();
+
+    async function onSubmit(values: loginFormSchemaType) {
+        const response = await mutateAsync({
+            method: "post",
+            key: QueryKey.AUTH_LOGIN,
+            data: values,
+        });
+
+        if (response?.data && response.data?.access_token) {
+            setAuth(response.data.access_token);
+            const payload: TAuthPayload = jwtDecode(response.data.access_token);
+
+            navigate(`/${payload.role}/dashboard`, { replace: true });
+        }
     }
 
     return (
@@ -40,11 +61,16 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                         name="email"
                         placeholder="name@example.com"
                     />
-                    <AppForm.Password<loginFormSchemaType>
-                        label="Password"
-                        name="password"
-                        placeholder="********"
-                    />
+                    <section>
+                        <AppForm.Password<loginFormSchemaType>
+                            label="Password"
+                            name="password"
+                            placeholder="********"
+                        />
+                        <p className="text-sm text-muted-foreground mt-2 text-right">
+                            <Link to="/forgot-password" className="hover:underline">Forgot password?</Link>
+                        </p>
+                    </section>
 
                     <AppForm.Submit className="w-full">
                         Sign in

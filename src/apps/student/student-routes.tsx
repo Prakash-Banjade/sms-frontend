@@ -1,14 +1,15 @@
+import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
+import RequireAuth from '@/components/auth/require-auth';
+import { Role } from '@/types/global.type';
 import { Route, Routes } from 'react-router-dom';
-// import StudentLayout from './layout/StudentLayout';
-// import StudentDashboard from './pages/StudentDashboard';
-// Add more student pages as needed
 
 const StudentRoutes = () => {
   return (
     <Routes>
-      <Route element={<div />}>
-        <Route path="dashboard" element={<div />} />
-        {/* Add more student-specific routes */}
+      <Route element={<RequireAuth authorizedRoles={[Role.STUDENT]} />}>
+        <Route element={<AppRootLayout menuItems={[]} />}>
+          <Route path="dashboard" element={<div>Dashboard</div>} />
+        </Route>
       </Route>
     </Routes>
   );

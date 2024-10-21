@@ -4,6 +4,7 @@ import { ZodType } from 'zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { LoaderCircle } from 'lucide-react';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -96,11 +97,19 @@ AppForm.Password = function Password<T extends FieldValues>({ name, label, place
 interface AppFormSubmitProps extends React.HTMLAttributes<HTMLButtonElement>, PropsWithChildren { }
 
 AppForm.Submit = function Submit({ children, ...props }: AppFormSubmitProps) {
+    const form = useFormContext();
+
+    const disabled = form.formState.isSubmitting || form.formState.isLoading;
+
     return (
         <FormItem>
             <FormControl>
-                <Button type="submit" {...props}>
-                    {children}
+                <Button type="submit" {...props} disabled={disabled}>
+                    {
+                        form.formState.isSubmitting
+                            ? <LoaderCircle className="h-4 w-4 animate-spin" />
+                            : children
+                    }
                 </Button>
             </FormControl>
         </FormItem>

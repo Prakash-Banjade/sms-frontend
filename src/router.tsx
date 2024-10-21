@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     },
     {
         path: `/${Role.ADMIN}/*`,
-        element: <AdminRoutes />,  // Admin routes will be handled inside AdminRoutes
+        element: <AdminRoutes />,
     },
     {
         path: `/${Role.STUDENT}/*`,

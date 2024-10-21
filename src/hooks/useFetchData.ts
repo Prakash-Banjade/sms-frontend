@@ -1,4 +1,4 @@
-import { queryKeys } from '@/react-query/queryKeys';
+import { QueryKey } from '@/react-query/queryKeys';
 import { useAxios } from '@/services/api';
 import { QueryOptions, useQuery } from '@tanstack/react-query';
 
@@ -8,7 +8,7 @@ import { QueryOptions, useQuery } from '@tanstack/react-query';
  * @param {Object} options - Additional options for the useQuery hook.
  * @returns {Object} - Contains data, error, loading status, etc.
  */
-export const useFetchData = (queryKey: keyof typeof queryKeys, options: QueryOptions = {}) => {
+export const useFetchData = (queryKey: QueryKey, options: QueryOptions = {}) => {
     const axios = useAxios();
 
     return useQuery({
