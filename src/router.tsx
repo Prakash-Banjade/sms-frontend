@@ -5,29 +5,34 @@ import TeacherRoutes from './apps/teacher/teacher-routes';
 import GuardianRoutes from './apps/guardian/guardian-routes';
 import { Role } from './types/global.type';
 import PublicRoutes from './apps/public/public-routes';
+import PersistLogin from './components/auth/persist-login';
 
-// Main router combining individual app routes
 const router = createBrowserRouter([
     {
-        path: '/*',
-        element: <PublicRoutes />,  // Public routes will be handled inside PublicRoutes
-    },
-    {
-        path: `/${Role.ADMIN}/*`,
-        element: <AdminRoutes />,
-    },
-    {
-        path: `/${Role.STUDENT}/*`,
-        element: <StudentRoutes />,  // Student routes will be handled inside StudentRoutes
-    },
-    {
-        path: `/${Role.TEACHER}/*`,
-        element: <TeacherRoutes />,  // Teacher routes will be handled inside TeacherRoutes
-    },
-    {
-        path: `/${Role.GUARDIAN}/*`,
-        element: <GuardianRoutes />,  // Guardian routes will be handled inside GuardianRoutes
-    },
+        element: <PersistLogin />,
+        children: [
+            {
+                path: '/*',
+                element: <PublicRoutes />,  // Public routes will be handled inside PublicRoutes
+            },
+            {
+                path: `/${Role.ADMIN}/*`,
+                element: <AdminRoutes />,
+            },
+            {
+                path: `/${Role.STUDENT}/*`,
+                element: <StudentRoutes />,  // Student routes will be handled inside StudentRoutes
+            },
+            {
+                path: `/${Role.TEACHER}/*`,
+                element: <TeacherRoutes />,  // Teacher routes will be handled inside TeacherRoutes
+            },
+            {
+                path: `/${Role.GUARDIAN}/*`,
+                element: <GuardianRoutes />,  // Guardian routes will be handled inside GuardianRoutes
+            },
+        ]
+    }
 ]);
 
 export default router;

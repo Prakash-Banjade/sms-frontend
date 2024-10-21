@@ -13,6 +13,7 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
+import RememberMe from "./remember-me"
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const loginFormSchema = z.object({
@@ -72,9 +73,13 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                         </p>
                     </section>
 
-                    <AppForm.Submit className="w-full">
-                        Sign in
-                    </AppForm.Submit>
+                    <section className="space-y-3">
+                        <RememberMe />
+                        <AppForm.Submit className="w-full">
+                            Sign in
+                        </AppForm.Submit>
+                    </section>
+
                 </form>
             </AppForm>
             <div className="relative">
