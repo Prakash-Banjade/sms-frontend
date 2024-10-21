@@ -40,7 +40,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     async function onSubmit(values: loginFormSchemaType) {
         const response = await mutateAsync({
             method: "post",
-            key: QueryKey.AUTH_LOGIN,
+            endpoint: QueryKey.AUTH_LOGIN,
             data: values,
         });
 

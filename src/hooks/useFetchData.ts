@@ -1,4 +1,3 @@
-import { QueryKey } from '@/react-query/queryKeys';
 import { useAxios } from '@/services/api';
 import { QueryOptions, useQuery } from '@tanstack/react-query';
 
@@ -8,13 +7,28 @@ import { QueryOptions, useQuery } from '@tanstack/react-query';
  * @param {Object} options - Additional options for the useQuery hook.
  * @returns {Object} - Contains data, error, loading status, etc.
  */
-export const useFetchData = (queryKey: QueryKey, options: QueryOptions = {}) => {
+
+export const useFetchData = <TData>({
+    queryKey,
+    options,
+    id = '',
+    queryString = '',
+    endpoint,
+}: {
+    queryKey: string[],
+    endpoint: string;
+    id?: string,
+    queryString?: string,
+    options?: QueryOptions<TData>,
+}) => {
     const axios = useAxios();
 
-    return useQuery({
-        queryKey: [queryKey],
+    const url = `/${endpoint}${id ? `/${id}` : ''}${queryString ? `?${queryString}` : ''}`;
+
+    return useQuery<TData>({
+        queryKey: queryKey,
         queryFn: async () => {
-            const response = await axios.get(`/${queryKey}`);
+            const response = await axios.get<TData>(url);
             return response.data;
         },
         ...options,

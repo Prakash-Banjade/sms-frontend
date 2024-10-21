@@ -20,7 +20,7 @@ const PersistLogin = () => {
             try {
                 const response = await mutateAsync({
                     method: "post",
-                    key: QueryKey.AUTH_REFRESH,
+                    endpoint: QueryKey.AUTH_REFRESH,
                     toastOnError: false,
                 })
 

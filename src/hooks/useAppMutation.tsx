@@ -5,7 +5,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import toast from 'react-hot-toast';
 
 interface MutationParams<TData> {
-    key: QueryKey;
+    endpoint: QueryKey;
     id?: string;
     method: 'post' | 'patch' | 'delete';
     data?: TData;
@@ -21,9 +21,9 @@ export const useAppMutation = <TData, TResponse>(): UseMutationResult<
     const axios = useAxios();
 
     return useMutation({
-        mutationFn: async ({ key, method, data, config, id = '' }) => {
+        mutationFn: async ({ endpoint, method, data, config, id = '' }) => {
             try {
-                const response = axios[method](`/${key}${id ? `/${id}` : ''}`, data, config);
+                const response = axios[method](`/${endpoint}${id ? `/${id}` : ''}`, data, config);
                 return response;
             } catch (error) {
                 throw error;

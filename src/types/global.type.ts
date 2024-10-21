@@ -10,3 +10,13 @@ export enum Role {
     LIBRARIAN = 'librarian',
     STAFF = 'staff',
 }
+
+export type TCurrentUser = {
+    id: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    role: Role,
+    createdAt: string,
+    updatedAt: string,
+}
