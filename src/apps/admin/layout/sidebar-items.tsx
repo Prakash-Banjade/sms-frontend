@@ -26,7 +26,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     },
                     {
                         title: "Academic Year List",
-                        url: "#",
+                        url: "academic-years",
                     },
                     {
                         title: "Academic Year Attendance",

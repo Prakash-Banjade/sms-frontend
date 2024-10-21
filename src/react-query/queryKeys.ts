@@ -5,4 +5,5 @@ export enum QueryKey {
     ME = "accounts/me",
     USERS = "users",
     TEACHERS = "teachers",
+    ACADEMIC_YEARS = "academic-years",
 };

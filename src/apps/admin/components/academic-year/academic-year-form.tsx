@@ -1,6 +1,9 @@
 import AppForm from "@/components/forms/app-form"
+import { useAppMutation } from "@/hooks/useAppMutation";
+import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod"
 
 type Props = {}
@@ -14,9 +17,11 @@ const academicYearFormSchema = z.object({
     path: ["endDate"],
 })
 
-type academicYearFormSchemaType = z.infer<typeof academicYearFormSchema>;
+export type academicYearFormSchemaType = z.infer<typeof academicYearFormSchema>;
 
 export default function AcademicYearForm({ }: Props) {
+    const params = useParams();
+    const navigate = useNavigate();
 
     const form = useForm<academicYearFormSchemaType>({
         resolver: zodResolver(academicYearFormSchema),
@@ -25,8 +30,20 @@ export default function AcademicYearForm({ }: Props) {
         },
     })
 
+    const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
+
     async function onSubmit(values: academicYearFormSchemaType) {
-        console.log(values)
+        const response = await mutateAsync({
+            method: params.id ? "patch" : "post",
+            endpoint: QueryKey.ACADEMIC_YEARS,
+            id: params.id,
+            data: values,
+        });
+
+        if (response?.status === 201) {
+            form.reset();
+            navigate(-1);
+        }
     }
 
     return (

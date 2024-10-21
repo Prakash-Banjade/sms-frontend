@@ -22,6 +22,7 @@ const PersistLogin = () => {
                     method: "post",
                     endpoint: QueryKey.AUTH_REFRESH,
                     toastOnError: false,
+                    toastOnSuccess: false,
                 })
 
                 if (response?.data?.access_token) {

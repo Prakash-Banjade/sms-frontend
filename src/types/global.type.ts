@@ -20,3 +20,12 @@ export type TCurrentUser = {
     createdAt: string,
     updatedAt: string,
 }
+
+export type TMeta = {
+    page: number;
+    take: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+  };

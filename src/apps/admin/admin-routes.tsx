@@ -5,6 +5,7 @@ import RequireAuth from '@/components/auth/require-auth';
 import { Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import AddAcademicYear from './pages/academic-year/add-academic-year.page';
+import AcademicYearsListPage from './pages/academic-year/academic-years-list.page';
 
 const AdminRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const AdminRoutes = () => {
                 <Route element={<AppRootLayout menuItems={adminSidebarMenuItems} />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="academic-years">
+                        <Route index element={<AcademicYearsListPage />} />
                         <Route path="new" element={<AddAcademicYear />} />
                     </Route>
                     {/* Add more admin-specific routes */}

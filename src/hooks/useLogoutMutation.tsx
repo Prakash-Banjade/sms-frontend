@@ -17,6 +17,7 @@ export function useLogoutMutation() {
         const response = await mutateAsync({
             method: "post",
             endpoint: QueryKey.AUTH_LOGOUT,
+            toastOnSuccess: false,
         })
 
         if (response.status === 204) {

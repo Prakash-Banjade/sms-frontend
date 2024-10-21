@@ -1,6 +1,6 @@
 import AsideLinksLayout from '@/components/aside-layout.tsx/aside-links-layout'
 import AcademicYearForm from '../../components/academic-year/academic-year-form'
-import { academicYearAsideQuickLinks, academicYearAsideRelatedActions } from '../../components/academic-year/academic-year-aside'
+import { academicYearAsideQuickLinks_addNew, academicYearAsideRelatedActions } from '../../components/academic-year/academic-year-aside'
 
 export default function AddAcademicYear() {
 
@@ -8,7 +8,7 @@ export default function AddAcademicYear() {
         <AsideLinksLayout
             title="Add Academic Year"
             description="Add a new academic year to your school management system."
-            quickLinks={academicYearAsideQuickLinks}
+            quickLinks={academicYearAsideQuickLinks_addNew}
             relatedActions={academicYearAsideRelatedActions}
         >
             <section className='max-w-screen-lg'>

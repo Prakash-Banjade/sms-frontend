@@ -42,6 +42,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             method: "post",
             endpoint: QueryKey.AUTH_LOGIN,
             data: values,
+            toastOnSuccess: false,
         });
 
         if (response?.data && response.data?.access_token) {

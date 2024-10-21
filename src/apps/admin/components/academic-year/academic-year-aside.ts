@@ -1,11 +1,30 @@
 import { AsideLinksLayoutProps } from "@/components/aside-layout.tsx/aside-links-layout";
 
-export const academicYearAsideQuickLinks: AsideLinksLayoutProps["quickLinks"] = {
+export const academicYearAsideQuickLinks_addNew: AsideLinksLayoutProps["quickLinks"] = {
     title: "Quick Links",
     items: [
         {
             title: "View All Academic Years",
             url: "/admin/academic-years",
+        },
+        {
+            title: "Academic Year Calendar",
+            // url: "/admin/academic-years/calendar",
+            url: "#",
+        },
+        {
+            title: "Academic Year Reports",
+            url: "#",
+        }
+    ]
+}
+
+export const academicYearAsideQuickLinks_viewAll: AsideLinksLayoutProps["quickLinks"] = {
+    title: "Quick Links",
+    items: [
+        {
+            title: "Add New Academic Year",
+            url: "/admin/academic-years/new",
         },
         {
             title: "Academic Year Calendar",
