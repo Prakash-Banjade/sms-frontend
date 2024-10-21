@@ -20,6 +20,7 @@ import { ChevronRight } from "lucide-react"
 import { AppSidebarHeader } from "./sidebar-header"
 import { AppSidebarFooter } from "./sidebar-footer"
 import { useAuth } from "@/contexts/auth-provider"
+import { useMemo } from "react"
 
 export type TSidebarMenuItem = {
     title: string,
@@ -77,11 +78,15 @@ export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
     const location = useLocation();
     const { payload } = useAuth();
 
+    const defaultOpen = useMemo<boolean>(() => {
+        return !!item.items?.some((subItem) => `/${payload?.role}/${subItem.url}` === location.pathname)
+    }, [location, payload])
+
     return (
         <Collapsible
             key={item.title}
             asChild
-            // defaultOpen={item.isActive}
+            defaultOpen={defaultOpen}
             className="group/collapsible"
         >
             <SidebarMenuItem>
@@ -96,7 +101,7 @@ export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
                     <SidebarMenuSub>
                         {item.items?.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild isActive={`/${payload?.role}/${item.url}` === location.pathname}>
+                                <SidebarMenuSubButton asChild isActive={`/${payload?.role}/${subItem.url}` === location.pathname}>
                                     <Link to={subItem.url}>
                                         <span>{subItem.title}</span>
                                     </Link>

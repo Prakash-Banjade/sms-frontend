@@ -1,11 +1,36 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Separator } from "@radix-ui/react-separator";
-import { AppSidebar } from "./sidebar";
-import { TGroupMenuItem } from "@/apps/admin/layout/sidebar-items";
+import { AppSidebar, TGroupMenuItem } from "./sidebar";
 import { ThemeToggleBtn } from "../theme-toggle";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { useAuth } from "@/contexts/auth-provider";
+import { useMemo } from "react";
+
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
+    const { payload } = useAuth();
+    const location = useLocation();
+
+    const active = useMemo(() => {
+        const menuItem = menuItems.find(group => group.menuItems
+            .some(item => location.pathname.includes(`/${payload?.role}/${item.url}`)))
+            ?.menuItems?.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
+
+        const item = menuItem?.items?.length
+            ? menuItem.items.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
+            : undefined;
+
+        return { menuItem, item };
+    }, [location, menuItems])
+
     return (
         <SidebarProvider>
             <AppSidebar menuItems={menuItems} />
@@ -13,19 +38,25 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                     <SidebarTrigger className="-ml-1" />
                     <Separator orientation="vertical" className="mr-2 h-4" />
-                    {/* <Breadcrumb>
+                    <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem className="hidden md:block">
-                                <BreadcrumbLink href="#">
-                                    Building Your Application
+                                <BreadcrumbLink asChild>
+                                    <Link to={`/${payload?.role}/${active.menuItem?.url}`}>
+                                        {active.menuItem?.title}
+                                    </Link>
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
-                            <BreadcrumbSeparator className="hidden md:block" />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                            </BreadcrumbItem>
+                            {
+                                active.item && <>
+                                    <BreadcrumbSeparator className="hidden md:block" />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>{active.item?.title}</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </>
+                            }
                         </BreadcrumbList>
-                    </Breadcrumb> */}
+                    </Breadcrumb>
                     <div className="ml-auto">
                         <ThemeToggleBtn />
                     </div>
