@@ -10,7 +10,6 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { TGroupMenuItem, TSidebarMenuItem } from "../../apps/admin/layout/sidebar-items"
 import { Link, useLocation } from "react-router-dom"
 import {
     Collapsible,
@@ -21,6 +20,18 @@ import { ChevronRight } from "lucide-react"
 import { AppSidebarHeader } from "./sidebar-header"
 import { AppSidebarFooter } from "./sidebar-footer"
 import { useAuth } from "@/contexts/auth-provider"
+
+export type TSidebarMenuItem = {
+    title: string,
+    url: string,
+    icon?: any,
+    items?: Omit<TSidebarMenuItem, "icon" | "items">[]
+}
+
+export type TGroupMenuItem = {
+    groupLabel: string,
+    menuItems: TSidebarMenuItem[]
+}
 
 export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
     return (
@@ -65,7 +76,7 @@ export function NonCollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
 export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
     const location = useLocation();
     const { payload } = useAuth();
-    
+
     return (
         <Collapsible
             key={item.title}

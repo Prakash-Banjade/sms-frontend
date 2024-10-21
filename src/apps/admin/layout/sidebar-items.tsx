@@ -1,16 +1,5 @@
+import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
 import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Shapes, Users, UsersRound } from "lucide-react"
-
-export type TSidebarMenuItem = {
-    title: string,
-    url: string,
-    icon?: any,
-    items?: Omit<TSidebarMenuItem, "icon" | "items">[]
-}
-
-export type TGroupMenuItem = {
-    groupLabel: string,
-    menuItems: TSidebarMenuItem[]
-}
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
