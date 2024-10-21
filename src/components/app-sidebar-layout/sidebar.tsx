@@ -11,7 +11,7 @@ import {
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { TGroupMenuItem, TSidebarMenuItem } from "../../apps/admin/layout/sidebar-items"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import {
     Collapsible,
     CollapsibleContent,
@@ -20,10 +20,9 @@ import {
 import { ChevronRight } from "lucide-react"
 import { AppSidebarHeader } from "./sidebar-header"
 import { AppSidebarFooter } from "./sidebar-footer"
+import { useAuth } from "@/contexts/auth-provider"
 
 export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
-    // const location = useLocation();
-
     return (
         <Sidebar variant="floating" collapsible="icon">
             <AppSidebarHeader />
@@ -48,9 +47,12 @@ export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
 }
 
 export function NonCollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
+    const location = useLocation();
+    const { payload } = useAuth();
+
     return (
         <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild isActive={`/${payload?.role}/${item.url}` === location.pathname}>
                 <Link to={item.url}>
                     <item.icon />
                     <span>{item.title}</span>
@@ -61,6 +63,9 @@ export function NonCollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
 }
 
 export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
+    const location = useLocation();
+    const { payload } = useAuth();
+    
     return (
         <Collapsible
             key={item.title}
@@ -80,7 +85,7 @@ export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
                     <SidebarMenuSub>
                         {item.items?.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild>
+                                <SidebarMenuSubButton asChild isActive={`/${payload?.role}/${item.url}` === location.pathname}>
                                     <Link to={subItem.url}>
                                         <span>{subItem.title}</span>
                                     </Link>

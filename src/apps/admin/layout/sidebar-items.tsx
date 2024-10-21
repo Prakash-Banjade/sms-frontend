@@ -1,4 +1,4 @@
-import { BookOpenText, Building, Bus, LayoutDashboard, UsersRound } from "lucide-react"
+import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Shapes, Users, UsersRound } from "lucide-react"
 
 export type TSidebarMenuItem = {
     title: string,
@@ -21,6 +21,75 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 url: "dashboard",
                 icon: LayoutDashboard,
             },
+        ]
+    },
+    {
+        groupLabel: "Academic Administration",
+        menuItems: [
+            {
+                title: "Academic Year",
+                url: "academic-years",
+                icon: Calendar,
+                items: [
+                    {
+                        title: "Add Academic Year",
+                        url: "#",
+                    },
+                    {
+                        title: "Academic Year List",
+                        url: "#",
+                    },
+                    {
+                        title: "Academic Year Attendance",
+                        url: "#",
+                    }
+                ]
+            },
+            {
+                title: "Classrooms",
+                url: "classes",
+                icon: Building,
+                items: [
+                    {
+                        title: "Add Classroom",
+                        url: "#",
+                    },
+                    {
+                        title: "Classroom List",
+                        url: "#",
+                    }
+                ]
+            },
+            {
+                title: "Subjects",
+                url: "subjects",
+                icon: BookOpenText,
+                items: [
+                    {
+                        title: "Add Subject",
+                        url: "#",
+                    },
+                    {
+                        title: "Subject List",
+                        url: "#",
+                    }
+                ]
+            },
+            {
+                title: "Class Routine",
+                url: "class-routine",
+                icon: Shapes,
+                items: [
+                    {
+                        title: "Add Class Routine",
+                        url: "#",
+                    },
+                    {
+                        title: "Class Routine List",
+                        url: "#",
+                    }
+                ]
+            }
         ]
     },
     {
@@ -98,6 +167,49 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     },
                     {
                         title: "Dormitory Rooms",
+                        url: "#",
+                    }
+                ]
+            },
+        ]
+    },
+    {
+        groupLabel: "Teachers & Staffs",
+        menuItems: [
+            {
+                title: "Teachers",
+                url: "#",
+                icon: UsersRound,
+                items: [
+                    {
+                        title: "Add Teacher",
+                        url: "#",
+                    },
+                    {
+                        title: "Teacher List",
+                        url: "#",
+                    },
+                    {
+                        title: "Teacher Attendance",
+                        url: "#",
+                    }
+                ]
+            },
+            {
+                title: "Non Teaching Staffs",
+                url: "#",
+                icon: Users,
+                items: [
+                    {
+                        title: "Add Non-Teaching Staff",
+                        url: "#",
+                    },
+                    {
+                        title: "Staff List",
+                        url: "#",
+                    },
+                    {
+                        title: "Staff Attendance",
                         url: "#",
                     }
                 ]
