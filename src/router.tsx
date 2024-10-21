@@ -4,9 +4,14 @@ import StudentRoutes from './apps/student/student-routes';
 import TeacherRoutes from './apps/teacher/teacher-routes';
 import GuardianRoutes from './apps/guardian/guardian-routes';
 import { Role } from './types/global.type';
+import PublicRoutes from './apps/public/public-routes';
 
 // Main router combining individual app routes
 const router = createBrowserRouter([
+    {
+        path: '/*',
+        element: <PublicRoutes />,  // Public routes will be handled inside PublicRoutes
+    },
     {
         path: `/${Role.ADMIN}/*`,
         element: <AdminRoutes />,  // Admin routes will be handled inside AdminRoutes
