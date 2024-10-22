@@ -1,5 +1,5 @@
 import { useAxios } from '@/services/api';
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 /**
  * Custom hook to fetch data using React Query.
@@ -31,6 +31,7 @@ export const useFetchData = <TData>({
             const response = await axios.get<TData>(url);
             return response.data;
         },
+        placeholderData: keepPreviousData,
         ...options,
     });
 };
