@@ -31,11 +31,20 @@ export type TMeta = {
 };
 
 export interface PaginatedResponse<T> {
-    data: T & { 
+    data: T & {
         id: string,
         [key: string]: any
-     }[];
+    }[];
     meta: TMeta;
+}
+
+export interface IFileUploadResponse {
+    message: string,
+    files: {
+        id: string,
+        url: string,
+    }[],
+    count: number,
 }
 
 export enum Gender {
