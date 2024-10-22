@@ -42,7 +42,7 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
         cell: ({ row }) => {
             return row.original.isActive
                 ? <Badge variant="success">Active</Badge>
-                : <Badge variant="default">Inactive</Badge>
+                : <Badge variant="outline">Inactive</Badge>
         },
     },
     {
