@@ -1,4 +1,5 @@
 import AppForm from "@/components/forms/app-form"
+import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,7 +7,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod"
 
-type Props = {}
+type Props = ({
+    setIsOpen?: undefined;
+} | {
+    academicYearId?: string;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) & {
+    defaultValues?: academicYearFormSchemaType;
+}
 
 const academicYearFormSchema = z.object({
     name: z.string().min(3, { message: "Name is required" }),
@@ -17,33 +25,48 @@ const academicYearFormSchema = z.object({
     path: ["endDate"],
 })
 
+const defaultValues: Partial<academicYearFormSchemaType> = {
+    name: "",
+}
+
 export type academicYearFormSchemaType = z.infer<typeof academicYearFormSchema>;
 
-export default function AcademicYearForm({ }: Props) {
+export default function AcademicYearForm(props: Props) {
     const params = useParams();
+    const id = (!!props.setIsOpen && props.academicYearId) ? props.academicYearId : params.id;
+
     const navigate = useNavigate();
+    const { payload } = useAuth();
 
     const form = useForm<academicYearFormSchemaType>({
         resolver: zodResolver(academicYearFormSchema),
-        defaultValues: {
-            name: "",
-        },
+        defaultValues: props?.defaultValues ?? defaultValues,
     })
 
     const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
 
     async function onSubmit(values: academicYearFormSchemaType) {
+        const method = ((!!props.setIsOpen && props.academicYearId) || params.id) ? "patch" : "post";
+
         const response = await mutateAsync({
-            method: params.id ? "patch" : "post",
+            method,
             endpoint: QueryKey.ACADEMIC_YEARS,
-            id: params.id,
+            id,
             data: values,
+            invalidateTags: [QueryKey.ACADEMIC_YEARS],
         });
 
-        if (response?.status === 201) {
-            form.reset();
-            navigate(-1);
+        console.log(response)
+        
+        if (response?.data?.message) {
+            onDialogClose();
+            navigate(`/${payload?.role}/academic-years`);
         }
+    }
+
+    const onDialogClose = () => {
+        form.reset();
+        props.setIsOpen && props.setIsOpen(false);
     }
 
     return (
@@ -71,11 +94,13 @@ export default function AcademicYearForm({ }: Props) {
                 </section>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel>Cancel</AppForm.Cancel>
-                    <AppForm.Submit>Add Academic Year</AppForm.Submit>
+                    <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
+                    <AppForm.Submit>
+                        {
+                            !!id ? "Save changes" : "Add Academic Year"
+                        }
+                    </AppForm.Submit>
                 </section>
-
-
             </form>
         </AppForm>
     )

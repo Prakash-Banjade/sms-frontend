@@ -179,6 +179,22 @@ const DropdownMenuShortcut = ({
 }
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
 
+interface DropdownMenuButtonItemProps extends React.ComponentPropsWithoutRef<'button'>, React.PropsWithChildren { }
+
+const DropdownMenuButtonItem = ({
+  children,
+  className,
+  type = 'button',
+  ...props
+}: DropdownMenuButtonItemProps
+) => {
+  return <DropdownMenuItem asChild>
+    <button type={type} {...props} className={cn("w-full cursor-pointer", className)}>
+      {children}
+    </button>
+  </DropdownMenuItem>
+}
+
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -195,4 +211,5 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
+  DropdownMenuButtonItem
 }

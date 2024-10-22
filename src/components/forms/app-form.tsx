@@ -107,9 +107,11 @@ AppForm.Password = function Password<T extends FieldValues>({ name, label, place
     );
 };
 
-interface AppFormActionProps extends React.HTMLAttributes<HTMLButtonElement>, PropsWithChildren { }
+interface AppFormActionProps extends React.HTMLAttributes<HTMLButtonElement>, PropsWithChildren {
+    action?: () => void;
+}
 
-AppForm.Submit = function Submit({ children, ...props }: AppFormActionProps) {
+AppForm.Submit = function Submit({ children, action, ...props }: AppFormActionProps) {
     const form = useFormContext();
 
     const disabled = form.formState.isSubmitting || form.formState.isLoading;
@@ -117,7 +119,7 @@ AppForm.Submit = function Submit({ children, ...props }: AppFormActionProps) {
     return (
         <FormItem>
             <FormControl>
-                <Button type="submit" {...props} disabled={disabled}>
+                <Button type="submit" {...props} disabled={disabled} onClick={() => action?.()}> 
                     {
                         form.formState.isSubmitting
                             ? <LoaderCircle className="h-4 w-4 animate-spin" />
@@ -129,7 +131,7 @@ AppForm.Submit = function Submit({ children, ...props }: AppFormActionProps) {
     );
 };
 
-AppForm.Cancel = function Cancel({ children, ...props }: AppFormActionProps) {
+AppForm.Cancel = function Cancel({ children, action, ...props }: AppFormActionProps) {
     const form = useFormContext();
 
     const disabled = form.formState.isSubmitting || form.formState.isLoading;
@@ -137,7 +139,10 @@ AppForm.Cancel = function Cancel({ children, ...props }: AppFormActionProps) {
     return (
         <FormItem>
             <FormControl>
-                <Button variant={'outline'} type="reset" {...props} disabled={disabled} onClick={() => form.reset()}>
+                <Button variant={'outline'} type="reset" {...props} disabled={disabled} onClick={() => {
+                    form.reset();
+                    action?.();
+                }}>
                     {children}
                 </Button>
             </FormControl>

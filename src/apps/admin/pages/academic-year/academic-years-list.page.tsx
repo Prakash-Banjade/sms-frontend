@@ -1,17 +1,12 @@
 import AsideLinksLayout from "@/components/aside-layout.tsx/aside-links-layout"
 import { DataTable } from "@/components/data-table/data-table"
-import { useFetchData } from "@/hooks/useFetchData"
-import { QueryKey } from "@/react-query/queryKeys"
-import { TAcademicYearsResponse } from "@/types/academic-year.type"
 import { academicYearColumns } from "../../components/academic-year/academic-years.columns"
 import { academicYearAsideQuickLinks_viewAll, academicYearAsideRelatedActions } from "../../components/academic-year/academic-year-aside"
+import { useGetAcademicYears } from "../../components/academic-year/actions"
 type Props = {}
 
 export default function AcademicYearsListPage({ }: Props) {
-    const { data, isLoading } = useFetchData<TAcademicYearsResponse>({
-        endpoint: QueryKey.ACADEMIC_YEARS,
-        queryKey: [QueryKey.ACADEMIC_YEARS],
-    })
+    const { data, isLoading } = useGetAcademicYears({});
 
     if (isLoading) return <div>Loading...</div>;
 

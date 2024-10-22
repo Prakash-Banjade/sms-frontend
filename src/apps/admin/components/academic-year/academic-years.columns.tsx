@@ -3,6 +3,7 @@ import { formatDate } from "@/utils/format-date"
 import { ColumnDef } from "@tanstack/react-table"
 import {
     DropdownMenu,
+    DropdownMenuButtonItem,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
@@ -11,8 +12,10 @@ import {
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useAppMutation } from "@/hooks/useAppMutation"
-import { academicYearFormSchemaType } from "./academic-year-form"
+import AcademicYearForm, { academicYearFormSchemaType } from "./academic-year-form"
 import { QueryKey } from "@/react-query/queryKeys"
+import { useState } from "react"
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 
 export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
     {
@@ -47,6 +50,8 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const academicYear = row.original;
+            const [isEditOpen, setIsEditOpen] = useState(false);
+            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
             const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
 
@@ -59,25 +64,37 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
             }
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {
-                            !academicYear.isActive && <DropdownMenuItem onClick={changeActive}>
-                                <span>Set Active</span>
-                            </DropdownMenuItem>
-                        }
-                        <DropdownMenuItem>
-                            <span>Edit</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <>
+                    <ResponsiveDialog
+                        isOpen={isEditOpen}
+                        setIsOpen={setIsEditOpen}
+                        title="Edit Academic Year"
+                    >
+                        <AcademicYearForm academicYearId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
+                    </ResponsiveDialog>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            {
+                                !academicYear.isActive && <DropdownMenuButtonItem onClick={changeActive}>
+                                    <span>Set Active</span>
+                                </DropdownMenuButtonItem>
+                            }
+                            <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
+                                <span>Edit</span>
+                            </DropdownMenuButtonItem>
+                            {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
+                                <span>Delete</span>
+                            </DropdownMenuButtonItem> */}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </>
             )
         },
     },
