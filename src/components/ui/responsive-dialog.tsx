@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -10,9 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import {
     Drawer,
-    DrawerClose,
     DrawerContent,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
 } from '@/components/ui/drawer';
