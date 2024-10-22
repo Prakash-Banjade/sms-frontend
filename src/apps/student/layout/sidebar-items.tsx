@@ -1,7 +1,7 @@
 
 
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, BellRing, ClipboardList } from "lucide-react";
+import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, BellRing, ClipboardList, Images, BookCheck } from "lucide-react";
 
 export const studentSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -31,6 +31,11 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Attendance",
                 url: "attendance",
                 icon: FileCheck2,
+            },
+            {
+                title: "Subject Plan",
+                url: "Subject-plan",
+                icon: BookCheck,
             },
             {
                 title: "Class Routine",
@@ -90,7 +95,7 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
             {
                 title: "Gallery",
                 url: "gallery",
-                icon: FileCheck2,
+                icon: Images,
             },
         ],
     },
