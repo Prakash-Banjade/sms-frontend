@@ -146,9 +146,7 @@ export default function SubjectForm(props: Props) {
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
-                    <AppForm.Submit disabled={
-                        !Object.keys(form.formState.dirtyFields).length && !!id // if id is present, then it's an edit
-                    }>
+                    <AppForm.Submit>
                         {
                             !!id ? "Save changes" : "Add subject"
                         }
