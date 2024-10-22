@@ -6,7 +6,6 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -14,7 +13,6 @@ import { MoreHorizontal } from "lucide-react"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { academicYearFormSchemaType } from "./academic-year-form"
 import { QueryKey } from "@/react-query/queryKeys"
-import { useAxios } from "@/services/api"
 
 export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
     {
