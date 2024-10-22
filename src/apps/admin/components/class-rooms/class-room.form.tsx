@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
+import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -28,7 +29,7 @@ export default function ClassRoomForm(props: Props) {
         defaultValues: props?.defaultValues ?? classRoomFormDefaultValues,
     })
 
-    const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
+    const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType>, any>();
 
     async function onSubmit(values: classRoomFormSchemaType) {
         const method = ((!!props.setIsOpen && props.classRoomId) || params.id) ? "patch" : "post";
@@ -37,7 +38,7 @@ export default function ClassRoomForm(props: Props) {
             method,
             endpoint: QueryKey.CLASSES,
             id,
-            data: values,
+            data: getDirtyValues(values, form),
             invalidateTags: [QueryKey.CLASSES],
         });
 

@@ -5,6 +5,7 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
 import { TClassesResponse } from "@/types/class.type";
 import { TeachersResponse } from "@/types/teacher.types";
+import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,7 +31,7 @@ export default function SubjectForm(props: Props) {
         defaultValues: props?.defaultValues ?? subjectFormDefaultValues,
     })
 
-    const { mutateAsync } = useAppMutation<subjectFormSchemaType, any>();
+    const { mutateAsync } = useAppMutation<Partial<subjectFormSchemaType>, any>();
 
     async function onSubmit(values: subjectFormSchemaType) {
         const method = ((!!props.setIsOpen && props.subjectId) || params.id) ? "patch" : "post";
@@ -39,7 +40,7 @@ export default function SubjectForm(props: Props) {
             method,
             endpoint: QueryKey.SUBJECTS,
             id,
-            data: values,
+            data: getDirtyValues(values, form),
             invalidateTags: [QueryKey.SUBJECTS],
         });
 
