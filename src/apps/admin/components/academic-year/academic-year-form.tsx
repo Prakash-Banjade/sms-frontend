@@ -58,7 +58,7 @@ export default function AcademicYearForm(props: Props) {
         });
 
         console.log(response)
-        
+
         if (response?.data?.message) {
             onDialogClose();
             navigate(`/${payload?.role}/academic-years`);
@@ -96,7 +96,9 @@ export default function AcademicYearForm(props: Props) {
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
-                    <AppForm.Submit>
+                    <AppForm.Submit disabled={
+                        !Object.keys(form.formState.dirtyFields).length && !!id // if id is present, then it's an edit
+                    }>
                         {
                             !!id ? "Save changes" : "Add Academic Year"
                         }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, createContext, InputHTMLAttributes, PropsWithChildren } from 'react';
+import React, { ButtonHTMLAttributes, ChangeEvent, createContext, InputHTMLAttributes, PropsWithChildren } from 'react';
 import { FieldValues, useFormContext, UseFormReturn } from 'react-hook-form';
 import { ZodType } from 'zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
@@ -120,19 +120,20 @@ AppForm.Password = function Password<T extends FieldValues>({ name, label, place
     );
 };
 
-interface AppFormActionProps extends React.HTMLAttributes<HTMLButtonElement>, PropsWithChildren {
+interface AppFormActionProps extends ButtonHTMLAttributes<HTMLButtonElement>, PropsWithChildren {
     action?: () => void;
 }
 
-AppForm.Submit = function Submit({ children, action, ...props }: AppFormActionProps) {
+AppForm.Submit = function Submit({ children, action, disabled, ...props }: AppFormActionProps) {
     const form = useFormContext();
 
-    const disabled = form.formState.isSubmitting || form.formState.isLoading;
+    // we can pass disabled prop from outside and it will also be disabled when form is submitting
+    const isDisabled = form.formState.isSubmitting || form.formState.isLoading || disabled;
 
     return (
         <FormItem>
             <FormControl>
-                <Button type="submit" {...props} disabled={disabled} onClick={() => action?.()}>
+                <Button type="submit" {...props} disabled={isDisabled} onClick={() => action?.()}>
                     {
                         form.formState.isSubmitting
                             ? <LoaderCircle className="h-4 w-4 animate-spin" />
