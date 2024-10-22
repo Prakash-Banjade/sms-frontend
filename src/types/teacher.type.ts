@@ -16,9 +16,7 @@ export type TTeacher = {
     dob: string,
     profileImage: null,
     account: {
-        isVerified: boolean,
         id: string,
-        user: null
     }
 }
 

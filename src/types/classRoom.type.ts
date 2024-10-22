@@ -17,7 +17,7 @@ export type TClassRoom = {
     classType: string,
     totalStudentsCount: number,
     totalFemalesStudentsCount: number,
-    totalMalesStudentsCount: TClassRoom
+    totalMalesStudentsCount: number
 
 }
 
