@@ -1,15 +1,15 @@
 import AsideLinksLayout from "@/components/aside-layout.tsx/aside-links-layout"
 import { DataTable } from "@/components/data-table/data-table"
-import { academicYearColumns } from "../../components/academic-year/academic-years.columns"
 import { academicYearAsideQuickLinks_viewAll, academicYearAsideRelatedActions } from "../../components/academic-year/academic-year-aside"
 import { useSearchParams } from "react-router-dom"
-import { useGetAcademicYears } from "../../components/academic-year/actions"
+import { useGetSubjects } from "../../components/subjects/actions"
+import { subjectsColumns } from "../../components/subjects/subjects.columns"
 type Props = {}
 
-export default function AcademicYearsListPage({ }: Props) {
+export default function SubjectsListPage({ }: Props) {
     const [searchParams] = useSearchParams();
-
-    const { data, isLoading } = useGetAcademicYears({
+    
+    const { data, isLoading } = useGetSubjects({
         queryString: searchParams.toString(),
     });
 
@@ -17,13 +17,13 @@ export default function AcademicYearsListPage({ }: Props) {
 
     return (
         <AsideLinksLayout
-            title="Academic Years"
-            description="View all academic years in your school management system."
+            title="All Subjects"
+            description="View all subjects in your school management system."
             quickLinks={academicYearAsideQuickLinks_viewAll}
             relatedActions={academicYearAsideRelatedActions}
         >
             <DataTable
-                columns={academicYearColumns}
+                columns={subjectsColumns}
                 data={data?.data ?? []}
                 meta={data?.meta}
             />

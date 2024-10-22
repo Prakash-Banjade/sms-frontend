@@ -6,6 +6,10 @@ import { Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import AddAcademicYear from './pages/academic-year/add-academic-year.page';
 import AcademicYearsListPage from './pages/academic-year/academic-years-list.page';
+import ClassesListPage from './pages/classes/classes-list.page';
+import AddClassPage from './pages/classes/add-class-page';
+import SubjectsListPage from './pages/subjects/subjects-list.page';
+import AddSubjectPage from './pages/subjects/add-subject.page';
 
 const AdminRoutes = () => {
     return (
@@ -16,6 +20,14 @@ const AdminRoutes = () => {
                     <Route path="academic-years">
                         <Route index element={<AcademicYearsListPage />} />
                         <Route path="new" element={<AddAcademicYear />} />
+                    </Route>
+                    <Route path="classes">
+                        <Route index element={<ClassesListPage />} />
+                        <Route path="new" element={<AddClassPage />} />
+                    </Route>
+                    <Route path="subjects">
+                        <Route index element={<SubjectsListPage />} />
+                        <Route path="new" element={<AddSubjectPage />} />
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

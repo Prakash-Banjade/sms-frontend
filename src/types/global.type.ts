@@ -30,6 +30,14 @@ export type TMeta = {
     hasNextPage: boolean;
 };
 
+export interface PaginatedResponse<T> {
+    data: T & { 
+        id: string,
+        [key: string]: any
+     }[];
+    meta: TMeta;
+}
+
 export enum Gender {
     MALE = 'male',
     FEMALE = 'female',
