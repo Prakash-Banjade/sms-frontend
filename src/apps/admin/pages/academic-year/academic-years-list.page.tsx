@@ -3,10 +3,15 @@ import { DataTable } from "@/components/data-table/data-table"
 import { academicYearColumns } from "../../components/academic-year/academic-years.columns"
 import { academicYearAsideQuickLinks_viewAll, academicYearAsideRelatedActions } from "../../components/academic-year/academic-year-aside"
 import { useGetAcademicYears } from "../../components/academic-year/actions"
+import { useSearchParams } from "react-router-dom"
 type Props = {}
 
 export default function AcademicYearsListPage({ }: Props) {
-    const { data, isLoading } = useGetAcademicYears({});
+    const [searchParams] = useSearchParams();
+    
+    const { data, isLoading } = useGetAcademicYears({
+        queryString: searchParams.toString(),
+    });
 
     if (isLoading) return <div>Loading...</div>;
 

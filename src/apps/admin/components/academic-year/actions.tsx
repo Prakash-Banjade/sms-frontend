@@ -32,7 +32,7 @@ export const useGetAcademicYears = ({
 }) => {
     const response = useFetchData<TAcademicYearsResponse>({
         endpoint: QueryKey.ACADEMIC_YEARS,
-        queryKey: [QueryKey.ACADEMIC_YEARS],
+        queryKey: queryString ? [QueryKey.ACADEMIC_YEARS, queryString] : [QueryKey.ACADEMIC_YEARS],
         queryString,
         options,
     })
