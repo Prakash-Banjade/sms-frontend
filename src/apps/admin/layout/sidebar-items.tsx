@@ -35,17 +35,17 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 ]
             },
             {
-                title: "Classrooms",
+                title: "Classes",
                 url: "classes",
                 icon: Building,
                 items: [
                     {
-                        title: "Add Classroom",
-                        url: "#",
+                        title: "Add Class",
+                        url: "classes/new",
                     },
                     {
-                        title: "Classroom List",
-                        url: "#",
+                        title: "Classes List",
+                        url: "classes",
                     }
                 ]
             },
@@ -56,11 +56,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Add Subject",
-                        url: "#",
+                        url: "subjects/new",
                     },
                     {
-                        title: "Subject List",
-                        url: "#",
+                        title: "Subjects List",
+                        url: "subjects",
                     }
                 ]
             },

@@ -15,6 +15,7 @@ import AcademicYearForm, { academicYearFormSchemaType } from "./academic-year-fo
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
+import { Badge } from "@/components/ui/badge"
 
 export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
     {
@@ -40,8 +41,8 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
         accessorKey: "isActive",
         cell: ({ row }) => {
             return row.original.isActive
-                ? <p className="text-14 font-medium text-green-500">Active</p>
-                : <p className="text-14 font-medium text-red-500">Inactive</p>
+                ? <Badge variant="success">Active</Badge>
+                : <Badge variant="outline">Inactive</Badge>
         },
     },
     {

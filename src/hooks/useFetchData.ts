@@ -1,6 +1,14 @@
 import { useAxios } from '@/services/api';
 import { keepPreviousData, useQuery, UseQueryOptions } from '@tanstack/react-query';
 
+export type UseFetchDataOptions<TData> = {
+    queryKey: string[],
+    endpoint: string;
+    id?: string,
+    queryString?: string,
+    options?: Omit<UseQueryOptions<TData>, 'queryKey' | 'queryFn'>
+}
+
 /**
  * Custom hook to fetch data using React Query.
  * @param {string} queryKey - Unique key for the query.
@@ -14,13 +22,7 @@ export const useFetchData = <TData>({
     id = '',
     queryString = '',
     endpoint,
-}: {
-    queryKey: string[],
-    endpoint: string;
-    id?: string,
-    queryString?: string,
-    options?: Omit<UseQueryOptions<TData>, 'queryKey' | 'queryFn'>
-}) => {
+}: UseFetchDataOptions<TData>) => {
     const axios = useAxios();
 
     const url = `/${endpoint}${id ? `/${id}` : ''}${queryString ? `?${queryString}` : ''}`;

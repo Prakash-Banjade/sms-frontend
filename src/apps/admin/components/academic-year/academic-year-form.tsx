@@ -2,6 +2,7 @@ import AppForm from "@/components/forms/app-form"
 import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
+import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -43,7 +44,7 @@ export default function AcademicYearForm(props: Props) {
         defaultValues: props?.defaultValues ?? defaultValues,
     })
 
-    const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
+    const { mutateAsync } = useAppMutation<Partial<academicYearFormSchemaType>, any>();
 
     async function onSubmit(values: academicYearFormSchemaType) {
         const method = ((!!props.setIsOpen && props.academicYearId) || params.id) ? "patch" : "post";
@@ -52,12 +53,12 @@ export default function AcademicYearForm(props: Props) {
             method,
             endpoint: QueryKey.ACADEMIC_YEARS,
             id,
-            data: values,
+            data: getDirtyValues(values, form),
             invalidateTags: [QueryKey.ACADEMIC_YEARS],
         });
 
         console.log(response)
-        
+
         if (response?.data?.message) {
             onDialogClose();
             navigate(`/${payload?.role}/academic-years`);
