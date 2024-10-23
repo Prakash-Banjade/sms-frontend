@@ -10,5 +10,6 @@ export enum QueryKey {
     CLASSES = "class-rooms",
     SUBJECTS = "subjects",
     IMAGES = "upload/images",
-    ATTENDANCES = 'attendances'
+    ATTENDANCES = 'attendances',
+    ATTENDANCESCOUNT = 'attendances/count'
 };

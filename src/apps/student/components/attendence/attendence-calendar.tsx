@@ -38,16 +38,26 @@ export default function StudentAttendance({ attendanceData }: { attendanceData: 
     const monthEnd = endOfMonth(date)
     const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd })
 
+
+
     const handlePreviousMonth = () => {
         const newDate = subMonths(date, 1);
         setDate(newDate);
-        setSearchParams({ month: format(newDate, "MM") }); // Set search params on month change
+        setSearchParams((prevParams) => {
+            prevParams.set('month', format(newDate, "MM"));
+            prevParams.set('year', format(newDate, "yyyy"));
+            return prevParams;
+        });
     };
 
     const handleNextMonth = () => {
         const newDate = addMonths(date, 1);
         setDate(newDate);
-        setSearchParams({ month: format(newDate, "MM") }); // Set search params on month change
+        setSearchParams((prevParams) => {
+            prevParams.set('month', format(newDate, "MM"));
+            prevParams.set('year', format(newDate, "yyyy"));
+            return prevParams;
+        });
     };
     // Disable next month if the selected date's month is after the current month
     const isNextMonthDisabled = isAfter(startOfMonth(addMonths(date, 1)), today)
@@ -77,13 +87,18 @@ export default function StudentAttendance({ attendanceData }: { attendanceData: 
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0">
+                                {/* todo:disble to choose the ufuture date through calendar */}
                                 <Calendar
                                     mode="single"
                                     selected={date}
                                     onSelect={(newDate) => {
                                         if (newDate) {
                                             setDate(newDate)
-                                            setSearchParams({ month: format(newDate, "MM") })
+                                            setSearchParams((prevParams) => {
+                                                prevParams.set('month', format(newDate, "MM"));
+                                                prevParams.set('year', format(newDate, "yyyy"));
+                                                return prevParams;
+                                            });
                                         }
                                     }}
                                     initialFocus
