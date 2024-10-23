@@ -7,6 +7,7 @@ export enum QueryKey {
     TEACHERS = "teachers",
     ACADEMIC_YEARS = "academic-years",
     CLASSES = "class-rooms",
-    SUBJECTS = "subjects",
     IMAGES = "upload/images",
+    SUBJECTS = 'subjects',
+    CLASSROUTINE = 'class-routines',
 };
