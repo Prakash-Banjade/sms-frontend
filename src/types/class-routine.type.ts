@@ -1,4 +1,4 @@
-import { EClassType, EDayOfWeek, TMeta } from "./global.type";
+import { EDayOfWeek, ERoutineType, TMeta } from "./global.type";
 
 export type TClassRoutine = {
     id: string,
@@ -7,7 +7,7 @@ export type TClassRoutine = {
     dayOfTheWeek: EDayOfWeek,
     startTime: string,
     endTime: string,
-    type: EClassType,
+    type: ERoutineType,
     classRoom: {
         id: string,
         name: string,

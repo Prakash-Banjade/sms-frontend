@@ -4,6 +4,21 @@ import { useSearchParams } from "react-router-dom";
 import { useGetClassRoutines } from "./actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { EDayOfWeek } from "@/types/global.type";
+import { EllipsisVertical } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
+import ClassRoutineForm from "./class-routine.form";
+import {
+    DropdownMenu,
+    DropdownMenuButtonItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useAppMutation } from "@/hooks/useAppMutation";
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
+import { QueryKey } from "@/react-query/queryKeys";
 
 type Props = {}
 
@@ -47,7 +62,10 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
         <Card className="flex flex-col">
             <CardContent className="p-4 flex flex-col justify-between flex-grow">
                 <div>
-                    <h3 className="font-semibold text-lg">{classRoutine.subject?.subjectName}</h3>
+                    <header className="flex items-center gap-5">
+                        <h3 className="font-semibold text-lg">{classRoutine.subject?.subjectName}</h3>
+                        <ClassRoutineCardActions classRoutine={classRoutine} />
+                    </header>
                     <p className="text-sm text-muted-foreground">{subjectTeacher}</p>
                 </div>
                 <div className="mt-2">
@@ -59,5 +77,69 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
                 </div>
             </CardContent>
         </Card>
+    )
+}
+
+function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine }) {
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    const { mutateAsync, isPending } = useAppMutation();
+
+    const handleDelete = async () => {
+        const response = await mutateAsync({
+            endpoint: QueryKey.CLASSROUTINE,
+            method: "delete",
+            id: classRoutine.id,
+            invalidateTags: [QueryKey.CLASSROUTINE],
+        });
+
+        console.log(response)
+    }
+
+    return (
+        <>
+            <ResponsiveDialog
+                isOpen={isEditOpen}
+                setIsOpen={setIsEditOpen}
+                title="Edit class routine"
+            >
+                <ClassRoutineForm
+                    classRoomId={classRoutine.id}
+                    setIsOpen={setIsEditOpen}
+                    defaultValues={{
+                        startTime: classRoutine.startTime,
+                        endTime: classRoutine.endTime,
+                        dayOfTheWeek: classRoutine.dayOfTheWeek,
+                        type: classRoutine.type,
+                    }}
+                />
+            </ResponsiveDialog>
+            <ResponsiveAlertDialog
+                isOpen={isDeleteOpen}
+                setIsOpen={setIsDeleteOpen}
+                title="Delete Class Routine"
+                description="Are you sure you want to delete this class routine?"
+                action={() => handleDelete()}
+                actionLabel="Yes, Delete"
+                isLoading={isPending}
+            />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <EllipsisVertical className="h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                    <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
+                        <span>Edit Routine</span>
+                    </DropdownMenuButtonItem>
+                    <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
+                        <span>Delete</span>
+                    </DropdownMenuButtonItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </>
     )
 }
