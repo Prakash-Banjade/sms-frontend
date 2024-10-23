@@ -315,6 +315,7 @@ AppForm.Select = function AppFormSelect<T extends FieldValues>({
 interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
     // labelKey: keyof PaginatedResponse<F>['data'][0]
+    disableOnNoOption?: boolean;
     labelKey: string;
 }
 
@@ -327,6 +328,7 @@ AppForm.DynamicSelect = function DynamicSelect<T extends FieldValues, F>({
     containerClassName = '',
     fetchOptions,
     labelKey,
+    disableOnNoOption = false,
     ...props
 }: AppFormDynamicSelectProps<T, F>) {
     const { control } = useFormContext();
@@ -343,7 +345,7 @@ AppForm.DynamicSelect = function DynamicSelect<T extends FieldValues, F>({
                         {label}
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} {...props}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disableOnNoOption && !data?.data?.length} {...props}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder={placeholder} />

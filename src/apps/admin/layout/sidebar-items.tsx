@@ -66,16 +66,16 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Class Routine",
-                url: "class-routine",
+                url: "class-routines",
                 icon: Shapes,
                 items: [
                     {
                         title: "Add Class Routine",
-                        url: "#",
+                        url: "class-routines/new",
                     },
                     {
                         title: "Class Routine List",
-                        url: "#",
+                        url: "class-routines",
                     }
                 ]
             }
