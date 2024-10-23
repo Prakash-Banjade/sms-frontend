@@ -14,7 +14,7 @@ const ClassRoutinePage = () => {
 
     // Filter class routines based on the selected day
     const filteredClassRoutines = selectedDay
-        ? data?.data.filter((classRoutine) => classRoutine.dayOfTheWeek === selectedDay)
+        ? data?.data.filter((classRoutine) => true)
         : data?.data;
 
     return (
