@@ -1,5 +1,5 @@
 
-import { TMeta } from "./global.type";
+import { EAttendanceStatus, TMeta } from "./global.type";
 
 export enum NepaliMonths {
     Baishakh = "Baishakh",
@@ -17,20 +17,18 @@ export enum NepaliMonths {
 }
 
 
-export type TAcademicYear = {
+export type TAttendence = {
     id: string;
     name: string;
-    status: string;
+    status: EAttendanceStatus;
     date: string;
-    inTime: string;
-    outTime: string;
+    inTime: string | null;
+    outTime: string | null;
     createdAt: string;
     updatedAt: string;
-    deletedAt: string | null;
-
 }
 
-export type TAcademicYearsResponse = {
-    data: TAcademicYear[];
+export type TAttendencesResponse = {
+    data: TAttendence[];
     meta: TMeta;
 }

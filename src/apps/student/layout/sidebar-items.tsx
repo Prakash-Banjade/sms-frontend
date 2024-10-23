@@ -33,11 +33,6 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 icon: FileCheck2,
             },
             {
-                title: "Subject Plan",
-                url: "Subject-plan",
-                icon: BookCheck,
-            },
-            {
                 title: "Class Routine",
                 url: "class-routine",
                 icon: Shapes,
