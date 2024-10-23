@@ -2,11 +2,10 @@ import AppForm from "@/components/forms/app-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { QueryKey } from "@/react-query/queryKeys"
 import { EClassType } from "@/types/global.type"
-import { createSearchParams } from "@/utils/create-search-params"
+import { createQueryString } from "@/utils/create-query-string"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useSearchParams } from "react-router-dom"
 import { z } from "zod"
 
 type Props = {}
@@ -38,6 +37,9 @@ export default function ClassRoutineSearchFilters({ }: Props) {
             setSearchParams("classRoomId", classId)
         }
 
+        // reset sectionId
+        form.setValue("sectionId", undefined)
+
     }, [form.watch("classId")])
 
     useEffect(() => {
@@ -47,10 +49,6 @@ export default function ClassRoutineSearchFilters({ }: Props) {
             setSearchParams("classRoomId", sectionId)
         }
     }, [form.watch('sectionId')])
-
-    // useEffect(() => { // TODO: make this workable
-    //     form.setValue("sectionId", '')
-    // }, [selectedClassId])
 
     const onSubmit = (value: TClassRoutineSearchFilter) => { }
 
@@ -74,7 +72,7 @@ export default function ClassRoutineSearchFilters({ }: Props) {
                     fetchOptions={{
                         endpoint: QueryKey.CLASSES,
                         queryKey: [QueryKey.CLASSES, selectedClassId],
-                        queryString: createSearchParams({
+                        queryString: createQueryString({
                             parentClassId: selectedClassId,
                             classType: EClassType.SECTION,
                         }),

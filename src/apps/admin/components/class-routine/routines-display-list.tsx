@@ -1,18 +1,20 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { useFetchData } from "@/hooks/useFetchData"
-import { QueryKey } from "@/react-query/queryKeys";
-import { TClassRoutine, TClassRoutineResponse } from "@/types/class-routine.type";
+import { TClassRoutine } from "@/types/class-routine.type";
 import { useSearchParams } from "react-router-dom";
+import { useGetClassRoutines } from "./actions";
+import { createQueryString } from "@/utils/create-query-string";
+import { EDayOfWeek } from "@/types/global.type";
 
 type Props = {}
 
 export function ClassRoutinesDisplayList({ }: Props) {
     const [searchParams] = useSearchParams();
 
-    const { data, isLoading } = useFetchData<TClassRoutineResponse>({
-        endpoint: QueryKey.CLASSROUTINE,
-        queryKey: [QueryKey.CLASSROUTINE, searchParams.toString()],
-        queryString: searchParams.toString(),
+    const { data, isLoading } = useGetClassRoutines({
+        queryString: createQueryString({
+            ...Object.fromEntries(searchParams.entries()),
+            dayOfTheWeek: searchParams.get("dayOfTheWeek") ?? EDayOfWeek.MONDAY,
+        }),
     })
 
     if (isLoading) return <div>Loading...</div>;
