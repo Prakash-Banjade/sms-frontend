@@ -4,7 +4,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
 import { TClassesResponse } from "@/types/class.type";
-import { TeachersResponse } from "@/types/teacher.types";
+import { TeachersResponse } from "@/types/teacher.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

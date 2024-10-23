@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { Teacher, TeachersResponse } from "@/types/teacher.types";
+import { Teacher, TeachersResponse } from "@/types/teacher.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetTeacher = ({
