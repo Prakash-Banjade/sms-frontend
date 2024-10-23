@@ -78,6 +78,7 @@ export default function AcademicYearForm(props: Props) {
                     label="Name"
                     placeholder={`e.g. ${new Date().getFullYear()}-${new Date().getFullYear() + 1}`}
                     description="Enter the name of the academic year."
+                    required
                 />
                 <section className="flex flex-wrap gap-8">
                     <AppForm.DatePicker<academicYearFormSchemaType>
@@ -85,12 +86,14 @@ export default function AcademicYearForm(props: Props) {
                         name="startDate"
                         label="Start Date"
                         description="Enter the start date of the academic year."
+                        required
                     />
                     <AppForm.DatePicker<academicYearFormSchemaType>
                         containerClassName="grow"
                         name="endDate"
                         label="End Date"
                         description="Enter the end date of the academic year."
+                        required
                     />
                 </section>
 
