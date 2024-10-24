@@ -9,6 +9,7 @@ import HomeWorkPage from './pages/academics/homework.page';
 import StudentAttendenceListPage from './pages/academics/attendence.page';
 import ClassRoutineListPage from '../admin/pages/class-routine/class-routine-list.page';
 import LeaveRequestPage from './pages/academics/leave-request.page';
+import NoticePage from './pages/notice.page';
 
 
 
@@ -23,6 +24,7 @@ const StudentRoutes = () => {
           <Route path="attendance" element={<StudentAttendenceListPage />} />
           <Route path="class-routine" element={<ClassRoutineListPage />} />
           <Route path='leave-request' element={<LeaveRequestPage />} />
+          <Route path='notices' element={<NoticePage />} />
         </Route>
       </Route>
     </Routes>

@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
 import { Separator } from "@radix-ui/react-separator";
 import { AppSidebar, TGroupMenuItem } from "./sidebar";
 import { ThemeToggleBtn } from "../theme-toggle";
@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useAuth } from "@/contexts/auth-provider";
 import { useMemo } from "react";
+import { Bell } from "lucide-react";
+import { Button } from "../ui/button";
 
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
@@ -57,7 +59,13 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                             }
                         </BreadcrumbList>
                     </Breadcrumb>
-                    <div className="ml-auto">
+                    <div className="ml-auto flex gap-4 items-center">
+                        <Button variant="outline" size="icon" asChild >
+                            <Link to='notices'>
+                                <Bell className="h-[1.2rem] w-[1.2rem] text-red-600 dark:text-white" />
+                            </Link>
+                        </Button>
+
                         <ThemeToggleBtn />
                     </div>
                 </header>
