@@ -52,6 +52,11 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 url: "teachers",
                 icon: Users,
             },
+            {
+                title: "Leave Request",
+                url: "leave-request",
+                icon: GitPullRequest,
+            },
         ],
     },
     {
@@ -80,7 +85,7 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
         ],
     },
     {
-        groupLabel: "Campus Resources",
+        groupLabel: "School Resources",
         menuItems: [
             {
                 title: "Library",
@@ -94,19 +99,5 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
             },
         ],
     },
-    {
-        groupLabel: "Request And Notification",
-        menuItems: [
-            {
-                title: "Notice",
-                url: "notice",
-                icon: BellRing,
-            },
-            {
-                title: "Leave Request",
-                url: "leave-request",
-                icon: GitPullRequest,
-            },
-        ],
-    },
+
 ];

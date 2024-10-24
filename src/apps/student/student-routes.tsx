@@ -8,7 +8,7 @@ import AssignmentPage from './pages/academics/assigment.page';
 import HomeWorkPage from './pages/academics/homework.page';
 import StudentAttendenceListPage from './pages/academics/attendence.page';
 import ClassRoutineListPage from '../admin/pages/class-routine/class-routine-list.page';
-import LeaveRequestPage from './pages/request-and-notification/leave-request.page';
+import LeaveRequestPage from './pages/academics/leave-request.page';
 
 
 
