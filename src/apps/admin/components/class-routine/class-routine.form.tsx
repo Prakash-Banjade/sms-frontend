@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType } from "../../schemas/class-routine.schema";
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
-import { EClassType } from "@/types/global.type";
+import { EClassType, ERoutineType } from "@/types/global.type";
 import { useEffect } from "react";
 
 type Props = ({
@@ -123,7 +123,7 @@ export default function ClassRoutineForm(props: Props) {
                                     }),
                                 }}
                                 labelKey={'subjectName'}
-                                required
+                                required={form.watch('type') === ERoutineType.CLASS}
                                 disabled={!form.watch('classRoomId')}
                             />
                         </>

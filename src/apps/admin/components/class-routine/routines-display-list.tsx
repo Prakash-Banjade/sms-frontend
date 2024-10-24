@@ -3,7 +3,7 @@ import { TClassRoutine } from "@/types/class-routine.type";
 import { useSearchParams } from "react-router-dom";
 import { useGetClassRoutines } from "./actions";
 import { createQueryString } from "@/utils/create-query-string";
-import { EDayOfWeek, Role } from "@/types/global.type";
+import { EDayOfWeek, ERoutineType, Role } from "@/types/global.type";
 import { EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -19,6 +19,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useAuth } from "@/contexts/auth-provider";
+import { cn } from "@/lib/utils";
 
 type Props = {}
 
@@ -61,16 +62,27 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
         : undefined;
 
     return (
-        <Card className="flex flex-col">
+        <Card className={cn(
+            "flex flex-col",
+            classRoutine.type === ERoutineType.BREAK && "bg-secondary"
+        )}>
             <CardContent className="p-4 flex flex-col justify-between flex-grow">
                 <div>
                     <header className="flex items-center gap-5">
-                        <h3 className="font-semibold text-lg">{classRoutine.subject?.subjectName}</h3>
+                        <h3 className="font-semibold text-lg">
+                            {
+                                classRoutine.type === ERoutineType.CLASS
+                                    ? classRoutine.subject?.subjectName
+                                    : "Break Time"
+                            }
+                        </h3>
                         {
                             payload?.role === Role.ADMIN && <ClassRoutineCardActions classRoutine={classRoutine} />
                         }
                     </header>
-                    <p className="text-sm text-muted-foreground">{subjectTeacher}</p>
+                    {
+                        classRoutine.type === ERoutineType.CLASS && <p className="text-sm text-muted-foreground">{subjectTeacher}</p>
+                    }
                 </div>
                 <div className="mt-2">
                     <p className="font-medium">{classRoutine.startTime} - {classRoutine.endTime}</p>
