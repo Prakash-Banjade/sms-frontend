@@ -6,8 +6,8 @@ import { Route, Routes } from 'react-router-dom';
 import { studentSidebarMenuItems } from './layout/sidebar-items';
 import AssignmentPage from './pages/academics/assigment.page';
 import HomeWorkPage from './pages/academics/homework.page';
-import ClassRoutinePage from './pages/academics/class-routine.page';
 import StudentAttendenceListPage from './pages/academics/attendence.page';
+import ClassRoutineListPage from '../admin/pages/class-routine/class-routine-list.page';
 
 
 
@@ -20,7 +20,7 @@ const StudentRoutes = () => {
           <Route path="assignments" element={<AssignmentPage />} />
           <Route path="homework" element={<HomeWorkPage />} />
           <Route path="attendance" element={<StudentAttendenceListPage />} />
-          <Route path="class-routine" element={<ClassRoutinePage />} />
+          <Route path="class-routine" element={<ClassRoutineListPage />} />
         </Route>
       </Route>
     </Routes>

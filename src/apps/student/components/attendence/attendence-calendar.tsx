@@ -87,12 +87,11 @@ export default function StudentAttendance({ attendanceData }: { attendanceData: 
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0">
-                                {/* todo:disble to choose the ufuture date through calendar */}
                                 <Calendar
                                     mode="single"
                                     selected={date}
                                     onSelect={(newDate) => {
-                                        if (newDate) {
+                                        if (newDate && !isAfter(newDate, today)) {
                                             setDate(newDate)
                                             setSearchParams((prevParams) => {
                                                 prevParams.set('month', format(newDate, "MM"));
@@ -101,6 +100,7 @@ export default function StudentAttendance({ attendanceData }: { attendanceData: 
                                             });
                                         }
                                     }}
+                                    disabled={(date) => isAfter(date, today)}  // Disable future dates
                                     initialFocus
                                 />
                             </PopoverContent>
