@@ -82,20 +82,24 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         ]
     },
     {
-        groupLabel: "Student",
+        groupLabel: "Student Administration",
         menuItems: [
             {
-                title: "Student Info",
-                url: "#",
+                title: "Student Management",
+                url: "students",
                 icon: UsersRound,
                 items: [
                     {
-                        title: "Add Student",
-                        url: "#",
+                        title: "Enrollments",
+                        url: "enrollments",
                     },
                     {
-                        title: "Student List",
-                        url: "#",
+                        title: "New Registration",
+                        url: "students/new-registration",
+                    },
+                    {
+                        title: "Student Details",
+                        url: "students",
                     },
                     {
                         title: "Student Attendance",
