@@ -6,114 +6,114 @@ import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { teacherFormDefaultValues, teacherSchema, teacherSchemaType } from "../../schemas/teacher.schema";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
+import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../schemas/staff.schema";
 
 type Props = {
-    defaultValues?: Partial<teacherSchemaType>;
+    defaultValues?: Partial<staffSchemaType>;
 }
 
-export default function TeacherForm(props: Props) {
+export default function StaffForm(props: Props) {
     const params = useParams();
 
     const navigate = useNavigate();
     const { payload } = useAuth();
 
-    const form = useForm<teacherSchemaType>({
-        resolver: zodResolver(teacherSchema),
-        defaultValues: props?.defaultValues ?? teacherFormDefaultValues,
+    const form = useForm<staffSchemaType>({
+        resolver: zodResolver(staffSchema),
+        defaultValues: props?.defaultValues ?? staffFormDefaultValues,
     });
 
-    const { mutateAsync } = useAppMutation<Partial<teacherSchemaType>, any>();
+    const { mutateAsync } = useAppMutation<Partial<staffSchemaType>, any>();
 
-    async function onSubmit(values: teacherSchemaType) {
+    async function onSubmit(values: staffSchemaType) {
         const method = !!params.id ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
-            endpoint: QueryKey.TEACHERS,
+            endpoint: QueryKey.STAFFS,
             id: params.id,
             data: getDirtyValues(values, form),
-            invalidateTags: [QueryKey.TEACHERS],
+            invalidateTags: [QueryKey.STAFFS],
         });
 
         if (response?.data?.message) {
-            navigate(`/${payload?.role}/teachers`);
+            navigate(`/${payload?.role}/staffs`);
         }
     }
 
     return (
-        <AppForm schema={teacherSchema} form={form}>
+        <AppForm schema={staffSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
 
                 <fieldset className="border border-border rounded-lg p-8">
                     <legend className="px-2 text-sm">Personal Info</legend>
                     <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Text<teacherSchemaType>
+                        <AppForm.Text<staffSchemaType>
                             name="firstName"
                             label="First name"
                             placeholder="eg. John"
-                            description="First name of the teacher"
+                            description="First name of the staff"
                             required
                         />
 
-                        <AppForm.Text<teacherSchemaType>
+                        <AppForm.Text<staffSchemaType>
                             name="lastName"
                             label="Last name"
                             placeholder="eg. Doe"
-                            description="Last name of the teacher"
+                            description="Last name of the staff"
                             required
                         />
 
-                        <AppForm.Select<teacherSchemaType>
+                        <AppForm.Select<staffSchemaType>
                             name="gender"
                             label="Gender"
                             placeholder="Select gender"
-                            description="Select gender of the teacher"
+                            description="Select gender of the staff"
                             options={Object.entries(GenderMappings).map(([key, value]) => ({ label: key, value }))}
                             required
                         />
 
-                        <AppForm.Select<teacherSchemaType>
+                        <AppForm.Select<staffSchemaType>
                             name="maritalStatus"
                             label="Marital Status"
                             placeholder="Select marital status"
-                            description="Select martial status of the teacher"
+                            description="Select martial status of the staff"
                             options={Object.entries(MaritalStatusMappings).map(([key, value]) => ({ label: key, value }))}
                             required
                         />
 
-                        <AppForm.DatePicker<teacherSchemaType>
+                        <AppForm.DatePicker<staffSchemaType>
                             name="dob"
                             label="DOB"
                             placeholder="Select date of birth"
-                            description="Date of birth of the teacher"
+                            description="Date of birth of the staff"
                             required
                         />
 
-                        <AppForm.Select<teacherSchemaType>
+                        <AppForm.Select<staffSchemaType>
                             name="bloodGroup"
                             label="Blood Group"
                             placeholder="Select blood group"
-                            description="Select blood group of the teacher"
+                            description="Select blood group of the staff"
                             options={Object.entries(BloodGroupMappings).map(([key, value]) => ({ label: key, value }))}
                             required
                         />
 
-                        <AppForm.Number<teacherSchemaType>
+                        <AppForm.Number<staffSchemaType>
                             name="phone"
                             label="Phone No."
-                            placeholder="eg. +9xx xxxxxxxxxx"
-                            description="Phone number of the teacher"
+                            placeholder="eg. 9xxxxxxxxxx"
+                            description="Phone number of the staff"
                             min={1}
                             required
                         />
 
-                        <AppForm.Email<teacherSchemaType>
+                        <AppForm.Email<staffSchemaType>
                             name="email"
                             label="Email"
                             placeholder="eg. johndoe@gmail.com"
-                            description="Email address of the teacher"
+                            description="Email address of the staff"
                             required
                         />
                     </section>
@@ -122,32 +122,32 @@ export default function TeacherForm(props: Props) {
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Professional Info</legend>
                     <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Number<teacherSchemaType>
-                            name="teacherId"
-                            label="Teacher ID"
+                        <AppForm.Number<staffSchemaType>
+                            name="staffId"
+                            label="Staff ID"
                             placeholder="eg. 123456"
-                            description="Assign a unique ID to the teacher. It will be auto generated if left blank."
+                            description="Assign a unique ID to the staff. It will be auto generated if left blank."
                             min={1}
                         />
 
-                        <AppForm.Text<teacherSchemaType>
+                        <AppForm.Text<staffSchemaType>
                             name="qualification"
                             label="Qualification"
                             placeholder="eg. B.Tech"
-                            description="Qualification of the teacher"
+                            description="Qualification of the staff"
                             required
                         />
 
-                        <AppForm.Number<teacherSchemaType>
+                        <AppForm.Number<staffSchemaType>
                             name="wage"
                             label="Wage"
                             placeholder="eg. 55000"
-                            description="Wage for the teacher"
+                            description="Wage for the staff"
                             min={1}
                             required
                         />
 
-                        <AppForm.DatePicker<teacherSchemaType>
+                        <AppForm.DatePicker<staffSchemaType>
                             name="joinedDate"
                             label="Joined Date"
                             placeholder="Select date of joining"
@@ -156,11 +156,11 @@ export default function TeacherForm(props: Props) {
                         />
 
                         <div>
-                            <AppForm.Textarea<teacherSchemaType>
+                            <AppForm.Textarea<staffSchemaType>
                                 name="shortDescription"
                                 label="Short Description"
-                                placeholder="eg. An efficient, experienced teacher"
-                                description="Describe something about the teacher or leave blank."
+                                placeholder="eg. An efficient, experienced staff"
+                                description="Describe something about the staff or leave blank."
                             />
                         </div>
                     </section>
@@ -169,7 +169,7 @@ export default function TeacherForm(props: Props) {
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Bank Info</legend>
                     <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Text<teacherSchemaType>
+                        <AppForm.Text<staffSchemaType>
                             name="bankName"
                             label="Bank Name"
                             placeholder="eg. ICICI Bank"
@@ -177,7 +177,7 @@ export default function TeacherForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Text<teacherSchemaType>
+                        <AppForm.Text<staffSchemaType>
                             name="accountName"
                             label="Account Name"
                             placeholder="eg. John Doe"
@@ -185,7 +185,7 @@ export default function TeacherForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Text<teacherSchemaType>
+                        <AppForm.Text<staffSchemaType>
                             name="accountNumber"
                             label="Account Number"
                             placeholder="eg. 1234567890"
@@ -199,7 +199,7 @@ export default function TeacherForm(props: Props) {
                     <AppForm.Cancel>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
-                            !!params.id ? "Save changes" : "Add Teacher"
+                            !!params.id ? "Save changes" : "Add Staff"
                         }
                     </AppForm.Submit>
                 </section>

@@ -5,8 +5,9 @@ export type Teacher = {
     createdAt: string,
     firstName: string,
     lastName: string,
+    teacherId: number,
     teacherFullName: string,
-    gender: string,
+    gender: Gender,
     email: string,
     phone: string,
     dob: string,
@@ -24,17 +25,7 @@ export type TeachersResponse = {
     meta: TMeta;
 }
 
-export type TSingleTeacher = {
-    id: string,
-    createdAt: string,
-    updatedAt: string,
-    teacherId: number,
-    firstName: string,
-    lastName: string,
-    gender: Gender,
-    email: string,
-    phone: string,
-    dob: string,
+export type TSingleTeacher = Omit<Teacher, 'teacherFullName'> & {
     wage: number,
     shortDescription: string | null,
     maritalStatus: EMaritalStatus,
@@ -44,11 +35,4 @@ export type TSingleTeacher = {
     bankName: string,
     accountName: string,
     accountNumber: string,
-    profileImage: {
-        id: string,
-        url: string
-    } | null,
-    account: {
-        id: string,
-    }
 }

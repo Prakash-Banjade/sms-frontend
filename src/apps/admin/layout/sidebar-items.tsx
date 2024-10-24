@@ -186,20 +186,20 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Non Teaching Staffs",
-                url: "#",
+                url: "staffs",
                 icon: Users,
                 items: [
                     {
-                        title: "Add Non-Teaching Staff",
-                        url: "#",
+                        title: "Add Staff",
+                        url: "staffs/new",
                     },
                     {
-                        title: "Staff List",
-                        url: "#",
+                        title: "Staffs List",
+                        url: "staffs",
                     },
                     {
                         title: "Staff Attendance",
-                        url: "#",
+                        url: "staffs/attendance",
                     }
                 ]
             },

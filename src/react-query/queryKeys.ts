@@ -5,6 +5,7 @@ export enum QueryKey {
     ME = "accounts/me",
     USERS = "users",
     TEACHERS = "teachers",
+    STAFFS = "staffs",
     ACADEMIC_YEARS = "academic-years",
     CLASSES = "class-rooms",
     IMAGES = "upload/images",

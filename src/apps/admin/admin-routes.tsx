@@ -18,6 +18,9 @@ import RoomTypePage from './pages/dormitory/room-type.page';
 import TeacherListPage from './pages/teachers/teacher-list.page';
 import AddTeacherPage from './pages/teachers/add-teacher.page';
 import EditTeacherPage from './pages/teachers/edit-teacher.page';
+import StaffListPage from './pages/staffs/staff-list.page';
+import AddStaffPage from './pages/staffs/add-staff.page';
+import EditStaffPage from './pages/staffs/edit-staff.page';
 
 const AdminRoutes = () => {
     return (
@@ -52,6 +55,14 @@ const AdminRoutes = () => {
                         <Route path=":id">
                             <Route index element={<div>Teacher single view page</div>} />
                             <Route path="edit" element={<EditTeacherPage />} />
+                        </Route>
+                    </Route>
+                    <Route path="staffs">
+                        <Route index element={<StaffListPage />} />
+                        <Route path="new" element={<AddStaffPage />} />
+                        <Route path=":id">
+                            <Route index element={<div>Staff single view page</div>} />
+                            <Route path="edit" element={<EditStaffPage />} />
                         </Route>
                     </Route>
                     {/* Add more admin-specific routes */}
