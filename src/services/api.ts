@@ -1,6 +1,8 @@
+import { INVALID_AUTH_CREDENTIALS_MSG } from "@/CONSTANTS";
 import { useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import axios, { AxiosInstance } from "axios";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export const useAxios = (): AxiosInstance => {
@@ -34,6 +36,10 @@ export const useAxios = (): AxiosInstance => {
     axiosInstance.interceptors.response.use(
         (response) => response,
         async (error) => {
+            if (error?.response?.data?.message?.message === INVALID_AUTH_CREDENTIALS_MSG) {
+                return toast.error(INVALID_AUTH_CREDENTIALS_MSG);
+            }
+
             const originalRequest = error.config;
 
             if (error.response?.status === 401 && !originalRequest._retry) {
