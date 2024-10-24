@@ -17,6 +17,9 @@ export const LeaveRequestSchema = z.object({
         .string()
         .uuid({ message: 'Invalid UUID format' })
         .optional(),
+}).refine((data) => new Date(data.leaveFrom) < new Date(data.leaveTo), {
+    message: "Leave from date cannot be greater than leave to date",
+    path: ["leaveFrom"],
 });
 
 

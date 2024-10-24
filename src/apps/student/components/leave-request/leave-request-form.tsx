@@ -53,14 +53,14 @@ export default function LeaveRequestForm() {
                         containerClassName="grow"
                         name="leaveFrom"
                         label="Leave From"
-                        description="Start date of the leave"
+                        description="From which date you  want leave"
                         required
                     />
                     <AppForm.DatePicker<leaveRequestSchemaType>
                         containerClassName="grow"
                         name="leaveTo"
                         label="Leave To"
-                        description="End date of the leave"
+                        description="Till which date you want leave"
                         required
                     />
                 </section>
@@ -68,7 +68,7 @@ export default function LeaveRequestForm() {
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={() => form.reset()}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
-                        Submit Leave Request
+                        Apply Leave Request
                     </AppForm.Submit>
                 </section>
             </form>
