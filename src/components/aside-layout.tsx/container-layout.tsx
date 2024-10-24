@@ -7,9 +7,10 @@ export interface ContainerLayoutProps extends PropsWithChildren {
     description?: string;
     actionLabel?: string;
     actionUrl?: string;
+    actionTrigger?: React.ReactNode;
 }
 
-export default function ContainerLayout({ title, description, children, actionLabel, actionUrl }: ContainerLayoutProps) {
+export default function ContainerLayout({ title, description, children, actionLabel, actionUrl, actionTrigger }: ContainerLayoutProps) {
     return (
         <div className="flex flex-col gap-6 flex-1 container mx-auto">
             <header className='mb-6 justify-between flex'>
@@ -27,6 +28,8 @@ export default function ContainerLayout({ title, description, children, actionLa
                         </Link>
                     </Button>
                 )}
+
+                {actionTrigger}
             </header>
             {children}
         </div>

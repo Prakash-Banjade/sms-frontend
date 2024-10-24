@@ -33,7 +33,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
 }: AppFormDynamicSelectProps<T, F>) {
     const { control } = useFormContext();
 
-    const { data } = useFetchData<PaginatedResponse<F>>(fetchOptions);
+    const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
 
     return (
         <FormField
@@ -45,7 +45,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                         {label}
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={disableOnNoOption && !data?.data?.length} {...props}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={(disableOnNoOption && !data?.data?.length) || isLoading} {...props}>
                         <FormControl>
                             <SelectTrigger>
                                 {
