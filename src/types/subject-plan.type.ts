@@ -1,7 +1,7 @@
 
 import { TClassRoom } from "./classRoom.type";
 import { TMeta } from "./global.type";
-import { TTeacher } from "./teacher.type";
+import { Teacher } from "./teacher.type";
 
 export enum EDaysOfWeek {
     Sunday = "sunday",
@@ -26,7 +26,7 @@ export type TSubjectPlan = {
     practicalPM: number,
     practicalFM: number,
     classRoom: TClassRoom,
-    teacher: TTeacher
+    teacher: Teacher
 
 }
 

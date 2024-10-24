@@ -1,26 +1,25 @@
-
-
 import { TMeta } from "./global.type";
 
-
-export type TTeacher = {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
+export type Teacher = {
+    id: string,
+    createdAt: string,
     firstName: string,
     lastName: string,
+    teacherFullName: string,
     gender: string,
     email: string,
     phone: string,
     dob: string,
-    profileImage: null,
+    profileImage: {
+        id: string,
+        url: string
+    } | null,
     account: {
         id: string,
     }
 }
 
-export type TTeacherResponse = {
-    data: TTeacher[];
+export type TeachersResponse = {
+    data: Teacher[];
     meta: TMeta;
 }

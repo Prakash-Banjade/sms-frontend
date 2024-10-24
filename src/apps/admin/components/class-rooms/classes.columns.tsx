@@ -14,6 +14,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/types/class.type"
 import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import ClassRoomForm from "./class-room.form"
+import ClassSectionForm from "./class-room-section.form"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -79,8 +80,8 @@ export const classesColumns: ColumnDef<TClass>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const classroom = row.original;
             const [isEditOpen, setIsEditOpen] = useState(false);
+            const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
             // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
             const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
@@ -94,6 +95,16 @@ export const classesColumns: ColumnDef<TClass>[] = [
                     >
                         <ClassRoomForm classRoomId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
                     </ResponsiveDialog>
+                    <ResponsiveDialog
+                        isOpen={isSectionFormOpen}
+                        setIsOpen={setIsSectionFormOpen}
+                        title="Add Section"
+                    >
+                        <ClassSectionForm
+                            parentClassId={row.original.id}
+                            setIsOpen={setIsSectionFormOpen}
+                        />
+                    </ResponsiveDialog>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -104,7 +115,10 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                <span>Edit</span>
+                                <span>Edit Class</span>
+                            </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={() => setIsSectionFormOpen(true)}>
+                                <span>Add section</span>
                             </DropdownMenuButtonItem>
                             {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>

@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, ChangeEvent, createContext, InputHTMLAttributes, PropsWithChildren } from 'react';
+import React, { ButtonHTMLAttributes, createContext, InputHTMLAttributes, PropsWithChildren } from 'react';
 import { FieldValues, useFormContext, UseFormReturn } from 'react-hook-form';
 import { ZodType } from 'zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
@@ -15,10 +15,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { SelectProps } from '@radix-ui/react-select';
-import { useFetchData, UseFetchDataOptions } from '@/hooks/useFetchData';
-import { IFileUploadResponse, PaginatedResponse } from '@/types/global.type';
-import { useAppMutation } from '@/hooks/useAppMutation';
-import { QueryKey } from '@/react-query/queryKeys';
+import { ImageUpload } from './image-upload';
+import { DynamicSelect } from './dynamic-select';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -48,7 +46,18 @@ function AppForm<T extends FieldValues>({ schema, children, form }: FormProps<T>
     );
 }
 
-AppForm.Text = function Text<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '' }: TFormFieldProps<T>) {
+export interface AppFormInputProps<T> extends TFormFieldProps<T>, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> { }
+
+AppForm.Text = function Text<T extends FieldValues>({
+    name,
+    label,
+    placeholder = '',
+    description = '',
+    required = false,
+    inputClassName = '',
+    containerClassName = '',
+    ...props
+}: AppFormInputProps<T>) {
     const { control } = useFormContext();
 
     return (
@@ -62,7 +71,7 @@ AppForm.Text = function Text<T extends FieldValues>({ name, label, placeholder =
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Input type="text" className={inputClassName} placeholder={placeholder} {...field} required={required} />
+                        <Input type="text" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
@@ -72,7 +81,16 @@ AppForm.Text = function Text<T extends FieldValues>({ name, label, placeholder =
     );
 };
 
-AppForm.Email = function Email<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '' }: TFormFieldProps<T>) {
+AppForm.Email = function Email<T extends FieldValues>({
+    name,
+    label,
+    placeholder = '',
+    description = '',
+    required = false,
+    inputClassName = '',
+    containerClassName = '',
+    ...props
+}: AppFormInputProps<T>) {
     const { control } = useFormContext();
 
     return (
@@ -86,7 +104,7 @@ AppForm.Email = function Email<T extends FieldValues>({ name, label, placeholder
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Input type="email" className={inputClassName} placeholder={placeholder} {...field} required={required} />
+                        <Input type="email" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
@@ -96,7 +114,16 @@ AppForm.Email = function Email<T extends FieldValues>({ name, label, placeholder
     );
 };
 
-AppForm.Password = function Password<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '' }: TFormFieldProps<T>) {
+AppForm.Password = function Password<T extends FieldValues>({
+    name,
+    label,
+    placeholder = '',
+    description = '',
+    required = false,
+    inputClassName = '',
+    containerClassName = '',
+    ...props
+}: AppFormInputProps<T>) {
     const { control } = useFormContext();
 
     return (
@@ -110,7 +137,7 @@ AppForm.Password = function Password<T extends FieldValues>({ name, label, place
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Input type="password" className={inputClassName} placeholder={placeholder} {...field} required={required} />
+                        <Input type="password" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
@@ -164,8 +191,6 @@ AppForm.Cancel = function Cancel({ children, action, ...props }: AppFormActionPr
     );
 };
 
-
-
 AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '' }: TFormFieldProps<T>) {
     const { control } = useFormContext();
 
@@ -197,6 +222,39 @@ AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, p
     );
 }
 
+AppForm.TimePicker = function TimePicker<T extends FieldValues>({
+    name,
+    label,
+    placeholder = '',
+    description = '',
+    required = false,
+    inputClassName = '',
+    containerClassName = '',
+    ...props
+}: AppFormInputProps<T>) {
+    const { control } = useFormContext();
+
+    return (
+        <FormField
+            control={control}
+            name={name as string}
+            render={({ field }) => (
+                <FormItem className={containerClassName}>
+                    <FormLabel>
+                        {label}
+                        {required && <span className="text-red-500">*</span>}
+                    </FormLabel>
+                    <FormControl>
+                        <Input type="time" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
+                    </FormControl>
+                    {description && <FormDescription>{description}</FormDescription>}
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
+};
+
 AppForm.Textarea = function AppFormTextarea<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '', rows = 2 }: TFormFieldProps<T> & { rows?: number }) {
     const { control } = useFormContext();
 
@@ -221,8 +279,6 @@ AppForm.Textarea = function AppFormTextarea<T extends FieldValues>({ name, label
     );
 };
 
-interface AppformNumberProps<T> extends TFormFieldProps<T>, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> { }
-
 AppForm.Number = function Number<T extends FieldValues>({
     name,
     label,
@@ -232,7 +288,7 @@ AppForm.Number = function Number<T extends FieldValues>({
     inputClassName = '',
     containerClassName = '',
     ...props
-}: AppformNumberProps<T>) {
+}: AppFormInputProps<T>) {
     const { control } = useFormContext();
 
     return (
@@ -309,129 +365,8 @@ AppForm.Select = function AppFormSelect<T extends FieldValues>({
     );
 };
 
+AppForm.DynamicSelect = DynamicSelect;
 
-// DYNAMIC SELECT FIELD --------------------------->
-
-interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
-    fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
-    // labelKey: keyof PaginatedResponse<F>['data'][0]
-    labelKey: string;
-}
-
-AppForm.DynamicSelect = function DynamicSelect<T extends FieldValues, F>({
-    name,
-    label,
-    placeholder = '',
-    description = '',
-    required = false,
-    containerClassName = '',
-    fetchOptions,
-    labelKey,
-    ...props
-}: AppFormDynamicSelectProps<T, F>) {
-    const { control } = useFormContext();
-
-    const { data } = useFetchData<PaginatedResponse<F>>(fetchOptions);
-
-    return (
-        <FormField
-            control={control}
-            name={name as string}
-            render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} {...props}>
-                        <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder={placeholder} />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {
-                                data?.data?.map((option) => (
-                                    <SelectItem key={option.id} value={option.id}>
-                                        {option[labelKey]}
-                                    </SelectItem>
-                                ))
-                            }
-                        </SelectContent>
-                    </Select>
-                    {description && <FormDescription>{description}</FormDescription>}
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    );
-};
-
-// Image Upload --------------------------->
-
-interface AppFormImageUploadProps<T> extends TFormFieldProps<T>, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> { }
-
-AppForm.ImageUpload = function ImageUpload<T extends FieldValues>({
-    name,
-    label,
-    placeholder = '',
-    description = '',
-    required = false,
-    inputClassName = '',
-    containerClassName = '',
-    ...props
-}: AppFormImageUploadProps<T>) {
-    const { control, setValue } = useFormContext();
-
-    const { mutateAsync, isPending } = useAppMutation<FormData, IFileUploadResponse>();
-
-    const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const formData = new FormData();
-            formData.append('images', file);
-
-            const { data } = await mutateAsync({
-                data: formData,
-                endpoint: QueryKey.IMAGES,
-                method: 'post',
-                toastOnSuccess: false,
-            });
-
-            if (data && data?.files && !!data?.files.length) {
-                setValue(name as string, data.files[0].url);
-            }
-        }
-    }
-
-    return (
-        <FormField
-            control={control}
-            name={name as string}
-            render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
-                    <FormControl>
-                        <Input
-                            {...field}
-                            type="file"
-                            disabled={isPending}
-                            className={inputClassName}
-                            placeholder={placeholder}
-                            required={required}
-                            onChange={handleChange}
-                            {...props}
-                        />
-                    </FormControl>
-                    {description && <FormDescription>{description}</FormDescription>}
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    );
-};
+AppForm.ImageUpload = ImageUpload;
 
 export default AppForm;

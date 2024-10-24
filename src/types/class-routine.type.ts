@@ -1,22 +1,31 @@
-import { TClassRoom } from "./classRoom.type";
-import { TMeta } from "./global.type";
-import { TSubjectPlan } from "./subject-plan.type";
-
+import { EDayOfWeek, ERoutineType, TMeta } from "./global.type";
 
 export type TClassRoutine = {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-
-    dayOfTheWeek: string,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    dayOfTheWeek: EDayOfWeek,
     startTime: string,
     endTime: string,
-    type: string,
-    classRoom: TClassRoom,
-    subject: TSubjectPlan,
-
-
+    type: ERoutineType,
+    classRoom: {
+        id: string,
+        name: string,
+        parent: {
+            id: string,
+            name: string
+        } | null,
+    },
+    subject: {
+        id: string,
+        subjectName: string,
+        subjectCode: string,
+        teacher: {
+            id: string,
+            firstName: string,
+            lastName: string
+        }
+    }
 }
 
 export type TClassRoutineResponse = {
