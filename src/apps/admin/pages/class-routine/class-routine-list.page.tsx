@@ -41,8 +41,13 @@ export default function ClassRoutineListPage({ }: Props) {
                 </TabsList>
             </Tabs>
 
+            {/* if role is student or teacher, no classRoomId is needed, but for admin classRoomId is required */}
             {
-                searchParams.get("classRoomId") ?
+                (
+                    (payload?.role === Role.ADMIN && searchParams.get("classRoomId"))
+                    || payload?.role === Role.STUDENT
+                    || payload?.role === Role.TEACHER
+                ) ?
                     <ClassRoutinesDisplayList />
                     : <div className="mt-16 text-muted-foreground text-center">**Select a class room to view class routines**</div>
             }
