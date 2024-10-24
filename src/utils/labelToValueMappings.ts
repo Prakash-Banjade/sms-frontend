@@ -32,3 +32,21 @@ export const DormitoryTypeMappings = {
     Girls: "girls",
     Both: "both",
 }
+
+export const MaritalStatusMappings = {
+    Single: "single",
+    Married: "married",
+    Widowed: "widowed",
+    Divorced: "divorced",
+}
+
+export const BloodGroupMappings = {
+    "A+": "A+",
+    "A-": "A-",
+    "B+": "B+",
+    "B-": "B-",
+    "O+": "O+",
+    "O-": "O-",
+    "AB+": "AB+",
+    "AB-": "AB-",
+}

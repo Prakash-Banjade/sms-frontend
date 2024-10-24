@@ -167,20 +167,20 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Teachers",
-                url: "#",
+                url: "teachers",
                 icon: UsersRound,
                 items: [
                     {
                         title: "Add Teacher",
-                        url: "#",
+                        url: "teachers/new",
                     },
                     {
                         title: "Teacher List",
-                        url: "#",
+                        url: "teachers",
                     },
                     {
                         title: "Teacher Attendance",
-                        url: "#",
+                        url: "teachers/attendance",
                     }
                 ]
             },

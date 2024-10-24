@@ -15,6 +15,9 @@ import AddClassRoutinePage from './pages/class-routine/add-class-routine.page';
 import DormitoryPage from './pages/dormitory/dormitory.page';
 import DormitoryRoomPage from './pages/dormitory/dormitory-room.page';
 import RoomTypePage from './pages/dormitory/room-type.page';
+import TeacherListPage from './pages/teachers/teacher-list.page';
+import AddTeacherPage from './pages/teachers/add-teacher.page';
+import EditTeacherPage from './pages/teachers/edit-teacher.page';
 
 const AdminRoutes = () => {
     return (
@@ -38,11 +41,18 @@ const AdminRoutes = () => {
                         <Route index element={<ClassRoutineListPage />} />
                         <Route path="new" element={<AddClassRoutinePage />} />
                     </Route>
-
                     <Route path="dormitory">
                         <Route index element={<DormitoryPage />} />
                         <Route path="room-types" element={<RoomTypePage />} />
                         <Route path="dormitory-rooms" element={<DormitoryRoomPage />} />
+                    </Route>
+                    <Route path="teachers">
+                        <Route index element={<TeacherListPage />} />
+                        <Route path="new" element={<AddTeacherPage />} />
+                        <Route path=":id">
+                            <Route index element={<div>Teacher single view page</div>} />
+                            <Route path="edit" element={<EditTeacherPage />} />
+                        </Route>
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

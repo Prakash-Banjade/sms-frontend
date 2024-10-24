@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { Teacher, TeachersResponse } from "@/types/teacher.type";
+import { TeachersResponse, TSingleTeacher } from "@/types/teacher.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetTeacher = ({
@@ -10,9 +10,9 @@ export const useGetTeacher = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<Teacher>
+    options?: UseQueryOptions<TSingleTeacher>
 }) => {
-    const response = useFetchData<Teacher>({
+    const response = useFetchData<TSingleTeacher>({
         queryKey: [QueryKey.TEACHERS, id],
         endpoint: QueryKey.TEACHERS,
         id,

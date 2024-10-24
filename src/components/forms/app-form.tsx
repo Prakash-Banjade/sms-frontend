@@ -269,7 +269,7 @@ AppForm.Textarea = function AppFormTextarea<T extends FieldValues>({ name, label
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Textarea rows={rows} className={inputClassName} placeholder={placeholder} {...field} required={required} />
+                        <Textarea rows={rows} className={inputClassName} placeholder={placeholder} {...field} required={required} value={field.value ?? ''} onChange={field.onChange} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
