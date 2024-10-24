@@ -312,6 +312,47 @@ AppForm.Number = function Number<T extends FieldValues>({
     );
 };
 
+AppForm.Phone = function Phone<T extends FieldValues>({
+    name,
+    label,
+    placeholder = '',
+    description = '',
+    required = false,
+    inputClassName = '',
+    containerClassName = '',
+    ...props
+}: AppFormInputProps<T>) {
+    const { control } = useFormContext();
+
+    return (
+        <FormField
+            control={control}
+            name={name as string}
+            render={({ field }) => (
+                <FormItem className={containerClassName}>
+                    <FormLabel>
+                        {label}
+                        {required && <span className="text-red-500">*</span>}
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            type="number"
+                            className={inputClassName}
+                            placeholder={placeholder}
+                            {...field}
+                            required={required}
+                            {...props}
+                            min={1}
+                        />
+                    </FormControl>
+                    {description && <FormDescription>{description}</FormDescription>}
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
+    );
+};
+
 interface AppFormSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     options: {
         label: React.ReactNode;

@@ -100,12 +100,11 @@ export default function TeacherForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Number<teacherSchemaType>
+                        <AppForm.Phone<teacherSchemaType>
                             name="phone"
                             label="Phone No."
                             placeholder="eg. +9xx xxxxxxxxxx"
                             description="Phone number of the teacher"
-                            min={1}
                             required
                         />
 

@@ -1,3 +1,4 @@
+import { PHONE_NUMBER_REGEX } from "@/CONSTANTS";
 import { EBloodGroup, EMaritalStatus, Gender } from "@/types/global.type";
 import { z } from "zod";
 
@@ -19,8 +20,7 @@ export const teacherSchema = z.object({
 
     email: z.string().email({ message: 'Invalid email format' }),
 
-    phone: z.string().min(10, { message: 'Seems an invalid phone number. Must be at least 10 digits' })
-        .max(14, { message: "Seems an invalid phone number. Must not exceed 14 digits" }),
+    phone: z.string().regex(PHONE_NUMBER_REGEX, { message: "Invalid phone number" }),
 
     dob: z.string().refine(val => !isNaN(Date.parse(val)), { message: 'Invalid date of birth' }),
 

@@ -100,12 +100,11 @@ export default function StaffForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Number<staffSchemaType>
+                        <AppForm.Phone<staffSchemaType>
                             name="phone"
                             label="Phone No."
                             placeholder="eg. 9xxxxxxxxxx"
                             description="Phone number of the staff"
-                            min={1}
                             required
                         />
 
