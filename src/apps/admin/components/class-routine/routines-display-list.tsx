@@ -3,7 +3,7 @@ import { TClassRoutine } from "@/types/class-routine.type";
 import { useSearchParams } from "react-router-dom";
 import { useGetClassRoutines } from "./actions";
 import { createQueryString } from "@/utils/create-query-string";
-import { EDayOfWeek } from "@/types/global.type";
+import { EDayOfWeek, Role } from "@/types/global.type";
 import { EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -19,6 +19,7 @@ import {
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { QueryKey } from "@/react-query/queryKeys";
+import { useAuth } from "@/contexts/auth-provider";
 
 type Props = {}
 
@@ -46,6 +47,8 @@ export function ClassRoutinesDisplayList({ }: Props) {
 }
 
 function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
+    const { payload } = useAuth();
+
     const subjectTeacher = classRoutine.subject?.teacher
         ? classRoutine.subject?.teacher?.firstName + " " + classRoutine.subject?.teacher?.lastName
         : "**Not Assigned**";
@@ -64,7 +67,9 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
                 <div>
                     <header className="flex items-center gap-5">
                         <h3 className="font-semibold text-lg">{classRoutine.subject?.subjectName}</h3>
-                        <ClassRoutineCardActions classRoutine={classRoutine} />
+                        {
+                            payload?.role === Role.ADMIN && <ClassRoutineCardActions classRoutine={classRoutine} />
+                        }
                     </header>
                     <p className="text-sm text-muted-foreground">{subjectTeacher}</p>
                 </div>
