@@ -1,7 +1,7 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
 import { TClass, } from "@/types/class.type";
-import { TSubjectsResponse } from "@/types/subject.types";
+import { TSubjectsResponse } from "@/types/subject.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSubject = ({

@@ -61,7 +61,7 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                         <ThemeToggleBtn />
                     </div>
                 </header>
-                <main className="">
+                <main className="p-6">
                     <Outlet />
                 </main>
             </SidebarInset>

@@ -12,7 +12,7 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
-import { TSubject } from "@/types/subject.types"
+import { TSubject } from "@/types/subject.type"
 import SubjectForm from "./subject-form"
 
 export const subjectsColumns: ColumnDef<TSubject>[] = [

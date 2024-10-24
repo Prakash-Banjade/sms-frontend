@@ -33,9 +33,18 @@ export const useAppMutation = <TData, TResponse>(): UseMutationResult<
             }
         },
         onError(error, variables) {
-            if (error instanceof Error) {
-                (variables.toastOnError ?? true) && toast.error(error.message);
-            } else if (error instanceof AxiosError) {
+            if (error instanceof AxiosError) {
+                if (variables.toastOnError ?? true) {
+                    const message = error.response?.data?.message;
+                    if ('message' in message) {
+                        toast.error(message.message);
+                    } else if (typeof message === 'string') {
+                        toast.error(message);
+                    } else {
+                        toast.error(error.message);
+                    }
+                }
+            } else if (error instanceof Error) {
                 (variables.toastOnError ?? true) && toast.error(`${error.message}`);
             }
             console.log(error)

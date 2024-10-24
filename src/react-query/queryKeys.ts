@@ -7,6 +7,10 @@ export enum QueryKey {
     TEACHERS = "teachers",
     ACADEMIC_YEARS = "academic-years",
     CLASSES = "class-rooms",
-    SUBJECTS = "subjects",
     IMAGES = "upload/images",
+    SUBJECTS = 'subjects',
+    CLASSROUTINE = 'class-routines',
+    ROOM_TYPES = "dormitory-system/room-types",
+    DORMITORY = "dormitory-system/dormitories",
+    DORMITORY_ROOMS = "dormitory-system/dormitory-rooms",
 };

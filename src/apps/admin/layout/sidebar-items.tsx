@@ -59,23 +59,23 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "subjects/new",
                     },
                     {
-                        title: "Subject List",
+                        title: "Subjects List",
                         url: "subjects",
                     }
                 ]
             },
             {
                 title: "Class Routine",
-                url: "class-routine",
+                url: "class-routines",
                 icon: Shapes,
                 items: [
                     {
                         title: "Add Class Routine",
-                        url: "#",
+                        url: "class-routines/new",
                     },
                     {
                         title: "Class Routine List",
-                        url: "#",
+                        url: "class-routines",
                     }
                 ]
             }
@@ -143,20 +143,20 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Dormitory",
-                url: "#",
+                url: "dormitory",
                 icon: Building,
                 items: [
                     {
                         title: "Room Type",
-                        url: "#",
+                        url: "dormitory/room-types",
                     },
                     {
                         title: "Dormitory",
-                        url: "#",
+                        url: "dormitory",
                     },
                     {
                         title: "Dormitory Rooms",
-                        url: "#",
+                        url: "dormitory/dormitory-rooms",
                     }
                 ]
             },
