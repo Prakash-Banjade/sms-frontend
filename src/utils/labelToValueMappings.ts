@@ -26,3 +26,9 @@ export const RoutineTypeMappings = {
     Class: "class",
     Break: "break",
 }
+
+export const DormitoryTypeMappings = {
+    Boys: "boys",
+    Girls: "girls",
+    Both: "both",
+}

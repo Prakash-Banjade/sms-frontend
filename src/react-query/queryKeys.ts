@@ -10,4 +10,7 @@ export enum QueryKey {
     IMAGES = "upload/images",
     SUBJECTS = 'subjects',
     CLASSROUTINE = 'class-routines',
+    ROOM_TYPES = "dormitory-system/room-types",
+    DORMITORY = "dormitory-system/dormitories",
+    DORMITORY_ROOMS = "dormitory-system/dormitory-rooms",
 };

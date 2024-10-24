@@ -143,20 +143,20 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Dormitory",
-                url: "#",
+                url: "dormitory",
                 icon: Building,
                 items: [
                     {
                         title: "Room Type",
-                        url: "#",
+                        url: "dormitory/room-types",
                     },
                     {
                         title: "Dormitory",
-                        url: "#",
+                        url: "dormitory",
                     },
                     {
                         title: "Dormitory Rooms",
-                        url: "#",
+                        url: "dormitory/dormitory-rooms",
                     }
                 ]
             },

@@ -12,6 +12,9 @@ import SubjectsListPage from './pages/subjects/subjects-list.page';
 import AddSubjectPage from './pages/subjects/add-subject.page';
 import ClassRoutineListPage from './pages/class-routine/class-routine-list.page';
 import AddClassRoutinePage from './pages/class-routine/add-class-routine.page';
+import DormitoryPage from './pages/dormitory/dormitory.page';
+import DormitoryRoomPage from './pages/dormitory/dormitory-room.page';
+import RoomTypePage from './pages/dormitory/room-type.page';
 
 const AdminRoutes = () => {
     return (
@@ -34,6 +37,12 @@ const AdminRoutes = () => {
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />
                         <Route path="new" element={<AddClassRoutinePage />} />
+                    </Route>
+
+                    <Route path="dormitory">
+                        <Route index element={<DormitoryPage />} />
+                        <Route path="room-types" element={<RoomTypePage />} />
+                        <Route path="dormitory-rooms" element={<DormitoryRoomPage />} />
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>
