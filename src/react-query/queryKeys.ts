@@ -14,5 +14,6 @@ export enum QueryKey {
     DORMITORY = "dormitory-system/dormitories",
     DORMITORY_ROOMS = "dormitory-system/dormitory-rooms",
     ATTENDANCES = 'attendances',
-    ATTENDANCESCOUNT = 'attendances/count'
+    ATTENDANCESCOUNT = 'attendances/count',
+    LEAVEREQUEST = 'leave-requests'
 };

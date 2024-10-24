@@ -13,7 +13,6 @@ const StudentAttendenceListPage = () => {
     const { data, isLoading } = useAttendences({
         queryString: `take=32${!!monthInd?.current ? `&month=${monthInd.current}` : ''}`
     });
-    console.log("🚀 ~ StudentAttendenceListPage ~ data:", data)
     const { data: monthAttendenceCount, isLoading: countMonthLoading } = useAttendenceCounts({
         queryString: searchParams.toString(),
     });
