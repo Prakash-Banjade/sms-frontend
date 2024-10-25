@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TClass, TClassesResponse } from "@/types/class.type";
+import { TClass, TClassesResponse, TClassRoomOptions } from "@/types/class.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetClass = ({
@@ -32,6 +32,23 @@ export const useGetClasses = ({
 }) => {
     const response = useFetchData<TClassesResponse>({
         endpoint: QueryKey.CLASSES,
+        queryKey: queryString ? [QueryKey.CLASSES, queryString] : [QueryKey.CLASSES],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetClassRoomsOptions = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: UseQueryOptions<TClassRoomOptions>
+}) => {
+    const response = useFetchData<TClassRoomOptions>({
+        endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
         queryKey: queryString ? [QueryKey.CLASSES, queryString] : [QueryKey.CLASSES],
         queryString,
         options,

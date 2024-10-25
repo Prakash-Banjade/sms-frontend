@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 export function useCustomSearchParams() {
     const [params, setParams] = useSearchParams();
 
-    const setSearchParams = (key: string, value: string) => {
+    const setSearchParams = (key: string, value: string | undefined) => {
         if (value) {
             params.set(key, value);
             setParams(params);
@@ -15,6 +15,6 @@ export function useCustomSearchParams() {
 
     return {
         searchParams: params,
-        setSearchParams
+        setSearchParams,
     }
 }

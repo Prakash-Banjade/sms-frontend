@@ -3,6 +3,7 @@ import { TFormFieldProps } from "./app-form";
 import { SelectProps } from "@radix-ui/react-select";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { cn } from "@/lib/utils";
 
 interface AppFormSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     options: {
@@ -28,14 +29,14 @@ export function AppFormSelect<T extends FieldValues>({
             control={control}
             name={name as string}
             render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <div>
+                <FormItem className={cn("relative", containerClassName)}>
+                    <div className="">
                         <FormLabel className="">
                             {label}
                             {required && <span className="text-red-500">*</span>}
                         </FormLabel>
                         {
-                            !required && <span role="button" onClick={() => field.onChange(undefined)} className="text-sidebar-primary-foreground text-sm">
+                            !required && <span role="button" onClick={() => field.onChange(undefined)} className="text-muted-foreground text-sm absolute right-0 mt-[2px]">
                                 Clear
                             </span>
                         }

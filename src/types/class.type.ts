@@ -19,3 +19,18 @@ export type TClassesResponse = {
     data: TClass[],
     meta: TMeta,
 }
+
+export type TClassRoomOption = {
+    id: string,
+    name: string
+    createdAt: string,
+    children: {
+        id: string,
+        name: string
+    }[]
+}
+
+export type TClassRoomOptions = {
+    data: TClassRoomOption[],
+    meta: TMeta,
+}

@@ -124,7 +124,7 @@ export default function ClassRoutineForm(props: Props) {
                                 }}
                                 labelKey={'subjectName'}
                                 required={form.watch('type') === ERoutineType.CLASS}
-                                disabled={!form.watch('classRoomId')}
+                                disabled={!form.watch('classRoomId') || form.watch('type') === ERoutineType.BREAK}
                             />
                         </>
                     }

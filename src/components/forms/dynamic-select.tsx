@@ -12,12 +12,14 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 
 interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
     // labelKey: keyof PaginatedResponse<F>['data'][0]
     disableOnNoOption?: boolean;
     labelKey: string;
+    clearQueryFilter?: boolean;
 }
 
 export function DynamicSelect<T extends FieldValues, F = any>({
@@ -30,11 +32,20 @@ export function DynamicSelect<T extends FieldValues, F = any>({
     fetchOptions,
     labelKey,
     disableOnNoOption = false,
+    clearQueryFilter = false, // this is used in filter components to clear the query params, when clicked on clear button
     ...props
 }: AppFormDynamicSelectProps<T, F>) {
-    const { control } = useFormContext();
+    const { control, setValue } = useFormContext();
+    const { setSearchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
+
+    const isDisabled = disableOnNoOption && !data?.data?.length;
+
+    const handleOnClear = () => {
+        setValue(name as string, undefined)
+        if (clearQueryFilter) setSearchParams(name as string, undefined)
+    }
 
     return (
         <FormField
@@ -45,15 +56,15 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                     <div>
                         <FormLabel>
                             {label}
-                            {required && <span className="text-red-500">*</span>}
+                            {(required && !isDisabled) && <span className="text-red-500">*</span>}
                         </FormLabel>
                         {
-                            !required && <span role="button" onClick={() => field.onChange(undefined)} className="text-sidebar-primary-foreground text-sm absolute right-0 mt-[2px]">
+                            !required && !isDisabled && <span role="button" onClick={() => handleOnClear()} className="text-muted-foreground text-sm absolute right-0 mt-[2px]">
                                 Clear
                             </span>
                         }
                     </div>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={(disableOnNoOption && !data?.data?.length) || isLoading} {...props}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={isDisabled || isLoading} {...props} required={(required && !isDisabled)}>
                         <FormControl>
                             <SelectTrigger>
                                 {

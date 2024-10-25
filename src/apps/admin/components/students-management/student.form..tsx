@@ -144,37 +144,42 @@ export default function StudentForm(props: Props) {
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Academic Info</legend>
                     <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.DynamicSelect<studentSchemaType>
-                            name="classRoomId"
-                            label="Class room"
-                            placeholder="Select class room"
-                            description="Select the class room"
-                            fetchOptions={{
-                                endpoint: QueryKey.CLASSES,
-                                queryKey: [QueryKey.CLASSES],
-                                queryString: 'page=1&take=50',
-                            }}
-                            labelKey={'name'}
-                            required
-                        />
+                        {
+                            !params.id && <>
+                                <AppForm.DynamicSelect<studentSchemaType>
+                                    name="classRoomId"
+                                    label="Class room"
+                                    placeholder="Select class room"
+                                    description="Select the class room"
+                                    fetchOptions={{
+                                        endpoint: QueryKey.CLASSES,
+                                        queryKey: [QueryKey.CLASSES],
+                                        queryString: 'page=1&take=50',
+                                    }}
+                                    labelKey={'name'}
+                                    required
+                                />
 
-                        <AppForm.DynamicSelect<studentSchemaType>
-                            name="sectionId"
-                            fetchOptions={{
-                                endpoint: QueryKey.CLASSES,
-                                queryKey: [QueryKey.CLASSES, form.watch('classRoomId')],
-                                queryString: createQueryString({
-                                    parentClassId: form.watch('classRoomId'),
-                                    classType: EClassType.SECTION,
-                                    take: 20,
-                                }),
-                            }}
-                            labelKey="name"
-                            label="Section"
-                            description="Select the section"
-                            placeholder="Select section"
-                            disableOnNoOption
-                        />
+                                <AppForm.DynamicSelect<studentSchemaType>
+                                    name="sectionId"
+                                    fetchOptions={{
+                                        endpoint: QueryKey.CLASSES,
+                                        queryKey: [QueryKey.CLASSES, form.watch('classRoomId')],
+                                        queryString: createQueryString({
+                                            parentClassId: form.watch('classRoomId'),
+                                            classType: EClassType.SECTION,
+                                            take: 20,
+                                        }),
+                                    }}
+                                    labelKey="name"
+                                    label="Section"
+                                    description="Select the section"
+                                    placeholder="Select section"
+                                    disableOnNoOption
+                                    required
+                                />
+                            </>
+                        }
 
                         <AppForm.Number<studentSchemaType>
                             name="rollNo"

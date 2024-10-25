@@ -7,12 +7,24 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStudent } from "@/types/student.type"
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
+import SortbyHeaderBtn from "@/components/search-components/sort-by-header-btn"
+
+
+export enum StudentSortBy {
+    NAME = "name",
+    ROLL_NO = "rollNo",
+    CLASS_ROOM = "classRoomName",
+    SUB_CLASS = "subClassName",
+    GENDER = "gender",
+    DOB = "dob",
+}
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
     {
@@ -24,7 +36,10 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         accessorKey: "studentId",
     },
     {
-        header: "Name",
+        accessorKey: "name",
+        header: () => {
+            return <SortbyHeaderBtn label="Name" value={StudentSortBy.NAME} />
+        },
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
                 <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline">
@@ -48,12 +63,16 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         }
     },
     {
-        header: "Roll No",
         accessorKey: "rollNo",
+        header: () => {
+            return <SortbyHeaderBtn label="Roll no." value={StudentSortBy.ROLL_NO} />
+        },
     },
     {
-        header: "Gender",
         accessorKey: "gender",
+        header: () => {
+            return <SortbyHeaderBtn label="Gender" value={StudentSortBy.GENDER} />
+        },
         cell: ({ row }) => {
             return <span className="capitalize">{row.original.gender}</span>
         },
@@ -77,7 +96,10 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         }
     },
     {
-        header: "Date of Birth",
+        accessorKey: "dob",
+        header: () => {
+            return <SortbyHeaderBtn label="DOB" value={StudentSortBy.DOB} />
+        },
         cell: ({ row }) => {
             return <span>
                 {formatDate({ date: new Date(row.original.dob) })}&nbsp;
