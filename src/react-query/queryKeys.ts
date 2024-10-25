@@ -14,4 +14,5 @@ export enum QueryKey {
     ROOM_TYPES = "dormitory-system/room-types",
     DORMITORY = "dormitory-system/dormitories",
     DORMITORY_ROOMS = "dormitory-system/dormitory-rooms",
+    ENROLLMENTS = "enrollments",
 };
