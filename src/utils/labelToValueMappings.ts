@@ -50,3 +50,22 @@ export const BloodGroupMappings = {
     "AB+": "AB+",
     "AB-": "AB-",
 }
+
+export const ReligionMappings = {
+    Islam: "islam",
+    Hindu: "hinduism",
+    Sik: "sikhism",
+    Buddhism: "buddhism",
+    Christianity: "christianity",
+    Protestantism: "protestantism",
+    Other: "other",
+}
+
+export const GuardianRelationMappings = {
+    Father: "father",
+    Mother: "mother",
+    Sister: "sister",
+    Brother: "brother",
+    Guardian: "guardian",
+    Other: "other",
+}

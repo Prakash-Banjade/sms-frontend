@@ -1,39 +1,27 @@
 import { FieldValues, useFormContext } from "react-hook-form";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { useFetchData, UseFetchDataOptions } from "@/hooks/useFetchData";
-import { PaginatedResponse } from "@/types/global.type";
 import { TFormFieldProps } from "./app-form";
 import { SelectProps } from "@radix-ui/react-select";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
-interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
-    fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
-    // labelKey: keyof PaginatedResponse<F>['data'][0]
-    disableOnNoOption?: boolean;
-    labelKey: string;
+interface AppFormSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
+    options: {
+        label: React.ReactNode;
+        value: string;
+    }[]
 }
 
-export function DynamicSelect<T extends FieldValues, F = any>({
+export function AppFormSelect<T extends FieldValues>({
     name,
     label,
     placeholder = '',
     description = '',
     required = false,
+    options = [],
     containerClassName = '',
-    fetchOptions,
-    labelKey,
-    disableOnNoOption = false,
     ...props
-}: AppFormDynamicSelectProps<T, F>) {
+}: AppFormSelectProps<T>) {
     const { control } = useFormContext();
-
-    const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
 
     return (
         <FormField
@@ -52,19 +40,17 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                             </span>
                         }
                     </div>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={(disableOnNoOption && !data?.data?.length) || isLoading} {...props}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} {...props}>
                         <FormControl>
                             <SelectTrigger>
-                                {
-                                    field.value ? <SelectValue placeholder={placeholder} /> : placeholder
-                                }
+                                <SelectValue placeholder={placeholder} />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                             {
-                                data?.data?.map((option) => (
-                                    <SelectItem key={option.id} value={option.id}>
-                                        {option[labelKey]}
+                                options.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
                                     </SelectItem>
                                 ))
                             }

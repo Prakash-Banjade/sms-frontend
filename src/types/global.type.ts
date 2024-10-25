@@ -96,6 +96,8 @@ export enum EBloodGroup {
 export enum EGuardianRelation {
     FATHER = 'father',
     MOTHER = 'mother',
+    SISTER = 'sister',
+    BROTHER = 'brother',
     GUARDIAN = 'guardian',
     OTHER = 'other',
 }

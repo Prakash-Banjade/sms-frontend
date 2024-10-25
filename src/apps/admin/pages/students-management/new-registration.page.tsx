@@ -1,6 +1,7 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
+import StudentForm from "../../components/students-management/student.form."
 
 type Props = {}
 
@@ -16,7 +17,7 @@ export default function NewRegistrationPage({ }: Props) {
                 </Button>
             }
         >
-            <div>New Registration Page</div>
+            <StudentForm />
         </ContainerLayout>
     )
 }
