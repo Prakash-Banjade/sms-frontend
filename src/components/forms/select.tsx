@@ -29,8 +29,8 @@ export function AppFormSelect<T extends FieldValues>({
             name={name as string}
             render={({ field }) => (
                 <FormItem className={containerClassName}>
-                    <div className="flex items-center justify-between gap-4">
-                        <FormLabel>
+                    <div>
+                        <FormLabel className="">
                             {label}
                             {required && <span className="text-red-500">*</span>}
                         </FormLabel>

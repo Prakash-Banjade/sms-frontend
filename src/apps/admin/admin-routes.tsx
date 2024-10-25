@@ -22,8 +22,9 @@ import StaffListPage from './pages/staffs/staff-list.page';
 import AddStaffPage from './pages/staffs/add-staff.page';
 import EditStaffPage from './pages/staffs/edit-staff.page';
 import NewRegistrationPage from './pages/students-management/new-registration.page';
-import StudentsDetailsPage from './pages/students-management/students-details.page';
+import StudentsListPage from './pages/students-management/students-list.page';
 import EnrollmentsPage from './pages/students-management/enrollments.page';
+import EditStudentPage from './pages/students-management/student-edit.page';
 
 const AdminRoutes = () => {
     return (
@@ -70,10 +71,10 @@ const AdminRoutes = () => {
                     </Route>
                     <Route path="students">
                         <Route path='new-registration' element={<NewRegistrationPage />} />
-                        <Route index element={<StudentsDetailsPage />} />
+                        <Route index element={<StudentsListPage />} />
                         <Route path=":id">
                             <Route index element={<div>Student single view page</div>} />
-                            <Route path="edit" element={<div>Edit Student</div>} />
+                            <Route path="edit" element={<EditStudentPage />} />
                         </Route>
                     </Route>
                     <Route path="enrollments" element={<EnrollmentsPage />} />

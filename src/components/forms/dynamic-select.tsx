@@ -11,6 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils";
 
 interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
@@ -40,14 +41,14 @@ export function DynamicSelect<T extends FieldValues, F = any>({
             control={control}
             name={name as string}
             render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <div className="flex items-center justify-between gap-4">
+                <FormItem className={cn("relative", containerClassName)}>
+                    <div>
                         <FormLabel>
                             {label}
                             {required && <span className="text-red-500">*</span>}
                         </FormLabel>
                         {
-                            !required && <span role="button" onClick={() => field.onChange(undefined)} className="text-sidebar-primary-foreground text-sm">
+                            !required && <span role="button" onClick={() => field.onChange(undefined)} className="text-sidebar-primary-foreground text-sm absolute right-0 mt-[2px]">
                                 Clear
                             </span>
                         }

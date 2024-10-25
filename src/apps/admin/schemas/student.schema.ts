@@ -18,11 +18,11 @@ export const studentSchema = z.object({
     classRoomId: z.string().uuid({ message: 'Invalid class room' }),
     sectionId: z.string()
         .uuid({ message: 'Invalid class section. Must be a valid UUID' })
-        .optional(),
+        .nullish(),
     rollNo: z.coerce.number({ required_error: 'Roll number is required' }),
     admissionDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid admission date',
-    }),
+    }).optional(),
     dormitoryRoomId: z.string().uuid({ message: 'Invalid dormitory room ID' }).nullish(),
 
     // PERSONAL INFORMATION
@@ -32,7 +32,7 @@ export const studentSchema = z.object({
     dob: z.string().refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid date of birth',
     }),
-    religion: z.nativeEnum(EReligion).nullish(),
+    religion: z.nativeEnum(EReligion),
     caste: z.string().nullish(),
     profileImageId: z.string().nullish(),
     isPhysicallyChallenged: z.boolean().default(false).optional(),
@@ -74,7 +74,6 @@ export const studentSchema = z.object({
         });
     }
 });
-
 export type studentSchemaType = z.infer<typeof studentSchema>;
 
 export const studentFormDefaultValues: Partial<studentSchemaType> = {

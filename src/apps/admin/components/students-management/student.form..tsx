@@ -37,7 +37,10 @@ export default function StudentForm(props: Props) {
             method,
             endpoint: QueryKey.STUDENTS,
             id: params.id,
-            data: getDirtyValues(values, form),
+            data: {
+                ...getDirtyValues(values, form),
+                classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId
+            },
             invalidateTags: [QueryKey.STUDENTS],
         });
 
@@ -45,8 +48,6 @@ export default function StudentForm(props: Props) {
             navigate(`/${payload?.role}/students`);
         }
     }
-
-    console.log(form.formState.errors)
 
     useEffect(() => {
         form.setValue("sectionId", undefined)
@@ -184,13 +185,15 @@ export default function StudentForm(props: Props) {
                             required
                         />
 
-                        <AppForm.DatePicker<studentSchemaType>
-                            name="admissionDate"
-                            label="Admission Date"
-                            placeholder="Select admission date"
-                            description="Select the admission date"
-                            required
-                        />
+                        {
+                            !params?.id && <AppForm.DatePicker<studentSchemaType> // don't allow to edit the admission date
+                                name="admissionDate"
+                                label="Admission Date"
+                                placeholder="Select admission date"
+                                description="Select the admission date"
+                                required
+                            />
+                        }
 
                         <AppForm.DynamicSelect<studentSchemaType>
                             name="dormitoryRoomId"
