@@ -20,7 +20,7 @@ export function AppCheckbox<T extends FieldValues>({
     return (
         <FormField
             control={control}
-            name="mobile"
+            name={name as string}
             render={({ field }) => (
                 <FormItem className={cn("flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 h-fit", containerClassName)}>
                     <FormControl>

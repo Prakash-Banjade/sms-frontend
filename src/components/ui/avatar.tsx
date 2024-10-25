@@ -48,16 +48,21 @@ AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 const ProfileAvatar = ({
   imageUrl,
   name,
+  className
 }: {
   imageUrl: string | undefined
   name: string
+  className?: string;
 }) => {
-  const abbreviation = name.trim().replace(/\s+/g, ' ').split(" ").slice(0, 2).join("");
+  const words = name.split(' ');
 
-  return <Avatar>
+  const firstInitial = words[0] ? words[0][0].toUpperCase() : '';
+  const secondInitial = words[1] ? words[1][0].toUpperCase() : '';
+
+  return <Avatar className={className}>
     <AvatarImage src={imageUrl} alt={name} />
     <AvatarFallback>
-      {abbreviation}
+      {(firstInitial + secondInitial).slice(0, 2)}
     </AvatarFallback>
   </Avatar>
 }

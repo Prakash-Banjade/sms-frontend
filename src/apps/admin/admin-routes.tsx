@@ -25,6 +25,7 @@ import NewRegistrationPage from './pages/students-management/new-registration.pa
 import StudentsListPage from './pages/students-management/students-list.page';
 import EnrollmentsPage from './pages/students-management/enrollments.page';
 import EditStudentPage from './pages/students-management/student-edit.page';
+import { SingleStudentPage } from './pages/subjects/single-student.page';
 
 const AdminRoutes = () => {
     return (
@@ -73,7 +74,7 @@ const AdminRoutes = () => {
                         <Route path='new-registration' element={<NewRegistrationPage />} />
                         <Route index element={<StudentsListPage />} />
                         <Route path=":id">
-                            <Route index element={<div>Student single view page</div>} />
+                            <Route index element={<SingleStudentPage />} />
                             <Route path="edit" element={<EditStudentPage />} />
                         </Route>
                     </Route>

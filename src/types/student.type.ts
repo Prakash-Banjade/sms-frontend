@@ -68,7 +68,7 @@ export type TSingleStudent = TStudent & {
             url: string
         },
         relation: EGuardianRelation,
-    },
+    }[],
     dormitoryRoom: {
         id: true,
     } | null;

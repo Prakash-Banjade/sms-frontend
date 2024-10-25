@@ -9,7 +9,7 @@ import { formatDateNumeric } from '@/utils/format-date';
 import { Textarea } from "@/components/ui/textarea"
 import { ImageUpload } from './image-upload';
 import { DynamicSelect } from './dynamic-select';
-import { AppCheckbox } from './form-checkbox';
+import { AppCheckbox } from './app-form-checkbox';
 import { AppFormSelect } from './select';
 import { AppFormPhone } from './app-form-phone';
 import { AppFormText } from './app-form-text';

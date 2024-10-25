@@ -27,7 +27,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         header: "Name",
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/students/${row.original.studentId}`} className="hover:text-blue-500 hover:underline">
+                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline">
                     {row.original.firstName} {row.original.lastName}
                 </Link>
             </TooltipWrapper>
@@ -36,19 +36,14 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     {
         header: "Class",
         cell: ({ row }) => {
-            const parentClass = row.original.classRoom?.parent
-                ? row.original.classRoom?.parent?.name
-                : row.original.classRoom?.name;
-            const sectionClass = row.original.classRoom?.parent
-                ? row.original.classRoom?.name
-                : null;
+            const student = row.original;
 
             return <span>
-                {parentClass}
-                {sectionClass && <span>
-                    &nbsp;-
-                    ({sectionClass})
-                </span>}
+                {
+                    student.classRoom.parent?.name
+                        ? `${student.classRoom.parent.name} - ${student.classRoom.name}`
+                        : `${student.classRoom.name}`
+                }
             </span>
         }
     },
