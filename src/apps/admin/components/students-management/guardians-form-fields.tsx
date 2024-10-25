@@ -1,7 +1,5 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Button } from "@/components/ui/button"
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import { CardContent, CardTitle } from "@/components/ui/card"
 import { Plus, Trash2 } from 'lucide-react'
 import { studentSchemaType } from '../../schemas/student.schema'
