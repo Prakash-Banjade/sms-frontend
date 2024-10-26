@@ -1,7 +1,7 @@
-import { useSearchParams } from "react-router-dom";
 import { AppFormText } from "../forms/app-form-text"
 import { useCallback } from "react";
 import { debounce } from "@/utils/debounce";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 
 type Props = {
     label?: string;
@@ -10,19 +10,13 @@ type Props = {
 }
 
 export default function SearchInput({ label, placeholder, containerClassName }: Props) {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const { searchParams, setSearchParams } = useCustomSearchParams();
 
     const handleInputChange = useCallback(
         debounce((event: React.ChangeEvent<HTMLInputElement>) => {
             const { value, name } = event.target;
 
-            if (!!value) {
-                searchParams.set(name, value);
-                setSearchParams(searchParams);
-            } else {
-                searchParams.delete(name);
-                setSearchParams(searchParams);
-            }
+            setSearchParams(name, value);
         }, 500),
         [searchParams, setSearchParams]
     );
