@@ -7,13 +7,12 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStudent } from "@/types/student.type"
-import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import SortbyHeaderBtn from "@/components/search-components/sort-by-header-btn"
 
 
