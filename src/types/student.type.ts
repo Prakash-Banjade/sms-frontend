@@ -71,5 +71,6 @@ export type TSingleStudent = TStudent & {
     }[],
     dormitoryRoom: {
         id: true,
+        roomNumber: number,
     } | null;
 }

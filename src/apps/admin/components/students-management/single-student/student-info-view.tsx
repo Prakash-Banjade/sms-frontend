@@ -66,7 +66,11 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                                 : `${student.classRoom.name}`
                         } />
                         <InfoItem label="Roll No" value={student.rollNo.toString()} />
-                        <InfoItem label="Previous School" value={student.previousSchoolName || 'N/A'} />
+                        {
+                            student?.dormitoryRoom && (
+                                <InfoItem label="Dormitory Room" value={student.dormitoryRoom?.roomNumber.toString()} />
+                            )
+                        }
                     </div>
                 </section>
 
@@ -102,6 +106,22 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                         <InfoItem label="IFSC Code" value={student.ifscCode || 'N/A'} />
                     </div>
                 </section>
+
+                {
+                    student?.previousSchoolName && (
+                        <>
+                            <Separator />
+
+                            <section>
+                                <h3 className="font-semibold text-lg mb-2">Previous School</h3>
+                                <div className="grid gap-4">
+                                    <InfoItem label="Name" value={student.previousSchoolName} />
+                                    <InfoItem label="School Details" value={student.previousSchoolDetails || 'N/A'} /> 
+                                </div>
+                            </section>
+                        </>
+                    )
+                }
             </CardContent>
         </Card>
     )

@@ -33,12 +33,11 @@ export type TAttendencesResponse = {
     meta: TMeta;
 }
 
-export type TAttendenceCount = {
-    absent: number,
-    present: number,
-    leave: number
-    late: number
-}
+export type TAttendenceCount = Record<EAttendanceStatus, number> & {
+    total: number;
+    [key: string]: number;
+};
+
 export type TAttendenceCounts = {
     monthly: TAttendenceCount,
     yearly: TAttendenceCount

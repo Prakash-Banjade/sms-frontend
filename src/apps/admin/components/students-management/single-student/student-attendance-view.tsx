@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Calendar } from "@/components/ui/calendar"
@@ -11,6 +11,11 @@ import {
 } from "@/components/ui/select"
 import { useGetAttendances } from '../../attendances/action'
 import { EAttendanceStatus } from '@/types/global.type'
+import AttendanceStatusIndicators from './attendance-status-indicators'
+import MonthlyAttendanceCount from './monthly-attendance-count'
+import { useCustomSearchParams } from '@/hooks/useCustomSearchParams'
+import { createQueryString } from '@/utils/create-query-string'
+import YearlyAttendanceCount from './yearly-attendance-count'
 
 // Mock data for demonstration
 const mockAttendanceData = {
@@ -31,21 +36,39 @@ const mockAttendanceData = {
 }
 
 export default function StudentAttendanceView() {
+    const currentDate = new Date();
+    const { searchParams, setSearchParams } = useCustomSearchParams()
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth().toString())
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString())
 
+    // fetch attendance data
     const { data: attendances, isLoading } = useGetAttendances({
-        queryString: `?month=${selectedMonth}&year=${selectedYear}`,
+        queryString: createQueryString({
+            month: searchParams.get('month'),
+            year: searchParams.get('year'),
+            take: 32,
+        }),
     })
 
     const getAttendanceStatus = (date: Date) => {
-        const attendance = attendances?.data?.find(
-            a => {
-                return new Date(a.date).toDateString() === date.toDateString()
-            }
+        const attendance = attendances?.data?.find(a => {
+            return new Date(a.date).toDateString() === date.toDateString()
+        }
         )
         return attendance ? attendance.status : undefined
+    }
+
+    const handleMonthChange = (val: Date) => { // setting the search params and refetching the data for the new month
+        const month = val.getMonth() + 1
+        setSelectedYear(val.getFullYear().toString())
+        setSearchParams("month", month.toString())
+        setSearchParams("year", val.getFullYear().toString())
+    }
+
+    const handleTabChange = () => { // reset month and year when switching tabs
+        setSelectedDate(new Date())
+        setSearchParams("month", undefined)
+        setSearchParams("year", undefined)
     }
 
     if (isLoading) return <div>Loading...</div>
@@ -56,7 +79,7 @@ export default function StudentAttendanceView() {
                 <CardTitle>Attendance</CardTitle>
             </CardHeader>
             <CardContent>
-                <Tabs defaultValue="daily" className="w-full">
+                <Tabs defaultValue="daily" className="w-full" onValueChange={handleTabChange}>
                     <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger value="daily">Daily</TabsTrigger>
                         <TabsTrigger value="monthly">Monthly</TabsTrigger>
@@ -68,6 +91,7 @@ export default function StudentAttendanceView() {
                                 mode="single"
                                 selected={selectedDate}
                                 onSelect={setSelectedDate}
+                                onMonthChange={handleMonthChange}
                                 className="rounded-md border"
                                 modifiers={{
                                     [EAttendanceStatus.PRESENT]: (date) => getAttendanceStatus(date) === EAttendanceStatus.PRESENT,
@@ -81,65 +105,26 @@ export default function StudentAttendanceView() {
                                     [EAttendanceStatus.LATE]: { backgroundColor: 'hsl(var(--info))', color: 'hsl(var(--destructive-foreground))' },
                                     [EAttendanceStatus.LEAVE]: { backgroundColor: 'hsl(var(--warn))', color: 'hsl(var(--destructive-foreground))' },
                                 }}
+                                disabled={(date) => date > currentDate || date < new Date(currentDate.getFullYear(), 0, 1)}
+                                fromDate={new Date(currentDate.getFullYear(), 0, 1)}
+                                toDate={currentDate}
                             />
                             <div className="mt-4 text-center">
-                                <p>Green: Present | Red: Absent</p>
+                                <AttendanceStatusIndicators />
                                 {selectedDate && (
                                     <p className="font-semibold mt-2">
                                         Status on {selectedDate.toDateString()}: {' '}
-                                        {getAttendanceStatus(selectedDate) || 'No data'}
+                                        <span className='capitalize'>{getAttendanceStatus(selectedDate) || 'No data'}</span>
                                     </p>
                                 )}
                             </div>
                         </div>
                     </TabsContent>
                     <TabsContent value="monthly" className="mt-4">
-                        <div className="space-y-4">
-                            <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                                <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Select month" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {mockAttendanceData.monthly.map((data, index) => (
-                                        <SelectItem key={index} value={index.toString()}>{data.month}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {selectedMonth && (
-                                <div>
-                                    <h4 className="font-semibold mb-2">{mockAttendanceData.monthly[parseInt(selectedMonth)].month} Attendance</h4>
-                                    <p>Present Days: {mockAttendanceData.monthly[parseInt(selectedMonth)].presentDays}</p>
-                                    <p>Total Days: {mockAttendanceData.monthly[parseInt(selectedMonth)].totalDays}</p>
-                                    <p>Attendance Rate: {((mockAttendanceData.monthly[parseInt(selectedMonth)].presentDays / mockAttendanceData.monthly[parseInt(selectedMonth)].totalDays) * 100).toFixed(2)}%</p>
-                                </div>
-                            )}
-                        </div>
+                        <MonthlyAttendanceCount />
                     </TabsContent>
                     <TabsContent value="yearly" className="mt-4">
-                        <div className="space-y-4">
-                            <Select value={selectedYear} onValueChange={setSelectedYear}>
-                                <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Select year" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {mockAttendanceData.yearly.map((data) => (
-                                        <SelectItem key={data.year} value={data.year.toString()}>{data.year}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {selectedYear && (
-                                <div>
-                                    <h4 className="font-semibold mb-2">{selectedYear} Attendance</h4>
-                                    {mockAttendanceData.yearly.find(d => d.year.toString() === selectedYear) && (
-                                        <>
-                                            <p>Present Days: {mockAttendanceData.yearly.find(d => d.year.toString() === selectedYear)!.presentDays}</p>
-                                            <p>Total Days: {mockAttendanceData.yearly.find(d => d.year.toString() === selectedYear)!.totalDays}</p>
-                                            <p>Attendance Rate: {((mockAttendanceData.yearly.find(d => d.year.toString() === selectedYear)!.presentDays / mockAttendanceData.yearly.find(d => d.year.toString() === selectedYear)!.totalDays) * 100).toFixed(2)}%</p>
-                                        </>
-                                    )}
-                                </div>
-                            )}
-                        </div>
+                        <YearlyAttendanceCount />
                     </TabsContent>
                 </Tabs>
             </CardContent>
