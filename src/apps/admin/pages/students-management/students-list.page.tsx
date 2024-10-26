@@ -3,7 +3,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { useSearchParams } from "react-router-dom"
 import { useGetStudents } from "../../components/students-management/student-actions"
 import { studentsColumns } from "../../components/students-management/student.columns"
-import StudentsListFilters from "./student-list-filter"
+import StudentsListFilters from "../../components/students-management/student-list-filter"
 
 type Props = {}
 
@@ -13,7 +13,6 @@ export default function StudentsListPage({ }: Props) {
             title="All Students"
             description="All the students in the entire school."
         >
-            <StudentsListFilters />
             <StudentsList />
         </ContainerLayout>
     )
@@ -33,6 +32,7 @@ export const StudentsList = () => {
             columns={studentsColumns}
             data={data?.data ?? []}
             meta={data?.meta}
+            filters={<StudentsListFilters />}
         />
     )
 }

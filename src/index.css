@@ -39,7 +39,10 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --table-header: 0 0% 7%;
+    --table-header: 0 0% 98%;
+    --success: 109 100% 37%;
+    --info: 190 62% 50%;
+    --warn: 45 93% 47%;
   }
 
   .dark {
@@ -74,7 +77,11 @@
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --table-header: 240 3% 10%;
+    --success: 109 100% 23%;
+    --info: 193 82% 31%; 
+    --warn: 45 93% 47%;
   }
 }
 

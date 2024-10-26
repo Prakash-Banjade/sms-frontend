@@ -1,4 +1,4 @@
-import { NAME_REGEX, NAME_WITH_SPACE_REGEX, PHONE_NUMBER_REGEX } from '@/CONSTANTS';
+import { EMAIL_REGEX, NAME_REGEX, NAME_WITH_SPACE_REGEX, PHONE_NUMBER_REGEX } from '@/CONSTANTS';
 import { EBloodGroup, EGuardianRelation, EReligion, Gender } from '@/types/global.type';
 import { z } from 'zod';
 
@@ -8,7 +8,7 @@ const guardianSchema = z.object({
     lastName: z.string().min(1, { message: 'Last name is required' }).regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' }),
     phone: z.string().regex(PHONE_NUMBER_REGEX, { message: 'Enter a valid phone number' }),
     relation: z.nativeEnum(EGuardianRelation, { message: 'Relation is required' }),
-    email: z.string().email({ message: 'Invalid email' }).nullish(),
+    email: z.string().refine(val => (!!val && EMAIL_REGEX.test(val)) || !val, { message: 'Invalid email' }).nullish(), // optional email field should be treated like this
     address: z.string().min(1, { message: 'Address is required' }).max(80, { message: 'Address seems too long. Max 80 characters.' }).optional(),
     occupation: z.string().min(1, { message: 'Occupation is required' }),
     profileImageId: z.string().uuid({ message: 'Invalid image ID or URL' }).nullish(),
@@ -85,7 +85,7 @@ export const guardianFormFieldsDefaultValues: studentSchemaType["guardians"][0] 
     lastName: "",
     phone: "",
     relation: EGuardianRelation.GUARDIAN,
-    email: "",
+    email: undefined,
     address: "",
     occupation: "",
     profileImageId: undefined,

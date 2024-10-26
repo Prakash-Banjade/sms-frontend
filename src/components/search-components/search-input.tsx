@@ -1,35 +1,39 @@
-import { AppFormText } from "../forms/app-form-text"
-import { useCallback } from "react";
-import { debounce } from "@/utils/debounce";
+import { useEffect, useState } from "react";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 type Props = {
     label?: string;
     placeholder?: string;
-    containerClassName?: string;
 }
 
-export default function SearchInput({ label, placeholder, containerClassName }: Props) {
+export default function SearchInput({ label, placeholder }: Props) {
     const { searchParams, setSearchParams } = useCustomSearchParams();
+    const [searchTerm, setSearchTerm] = useState<string>(searchParams.get('search') || '');
 
-    const handleInputChange = useCallback(
-        debounce((event: React.ChangeEvent<HTMLInputElement>) => {
-            const { value, name } = event.target;
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setSearchParams('search', searchTerm);
+        }, 500);
 
-            setSearchParams(name, value);
-        }, 500),
-        [searchParams, setSearchParams]
-    );
+        return () => clearTimeout(handler);
+    }, [searchTerm, setSearchParams, searchParams]);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
 
     return (
-        <AppFormText
-            name="search"
-            label={label ?? "Search"}
-            placeholder={placeholder ?? "Search..."}
-            containerClassName={containerClassName}
-            defaultValue={searchParams.get("search") ?? ''}
-            onChange={handleInputChange}
-            type="search"
-        />
+        <div className="space-y-2">
+            <Label htmlFor="search">{label ?? "Search"}</Label>
+            <Input
+                type="search"
+                placeholder={placeholder ?? "Search..."}
+                value={searchTerm}
+                onChange={handleInputChange}
+                className="min-w-[300px]"
+            />
+        </div>
     )
 }

@@ -15,17 +15,20 @@ import {
 } from "@/components/ui/table"
 import { TMeta } from "@/types/global.type";
 import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "@/apps/admin/components/students-management/data-table-toolbat";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[],
     meta?: TMeta;
+    filters?: React.ReactNode
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
     meta,
+    filters
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
@@ -35,6 +38,9 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
+            <DataTableToolbar table={table}>
+                {filters}
+            </DataTableToolbar>
             <div className="rounded-md border overflow-hidden">
                 <Table>
                     <TableHeader className="bg-tableheader">

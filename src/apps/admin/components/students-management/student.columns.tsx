@@ -13,18 +13,8 @@ import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStudent } from "@/types/student.type"
-import SortbyHeaderBtn from "@/components/search-components/sort-by-header-btn"
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 
-
-export enum StudentSortBy {
-    NAME = "name",
-    ROLL_NO = "rollNo",
-    CLASS_ROOM = "classRoomName",
-    SUB_CLASS = "subClassName",
-    GENDER = "gender",
-    DOB = "dob",
-    STUDENT_ID = "studentId"
-}
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
     {
@@ -33,14 +23,14 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     },
     {
         accessorKey: "studentId",
-        header: () => {
-            return <SortbyHeaderBtn label="Student ID" value={StudentSortBy.STUDENT_ID} />
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Student ID" />
         },
     },
     {
         accessorKey: "name",
-        header: () => {
-            return <SortbyHeaderBtn label="Name" value={StudentSortBy.NAME} />
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Name" />
         },
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
@@ -66,14 +56,14 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     },
     {
         accessorKey: "rollNo",
-        header: () => {
-            return <SortbyHeaderBtn label="Roll no." value={StudentSortBy.ROLL_NO} />
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Roll no." />
         },
     },
     {
         accessorKey: "gender",
-        header: () => {
-            return <SortbyHeaderBtn label="Gender" value={StudentSortBy.GENDER} />
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Gender" />
         },
         cell: ({ row }) => {
             return <span className="capitalize">{row.original.gender}</span>
@@ -99,8 +89,8 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     },
     {
         accessorKey: "dob",
-        header: () => {
-            return <SortbyHeaderBtn label="DOB" value={StudentSortBy.DOB} />
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Date of birth" />
         },
         cell: ({ row }) => {
             return <span>
