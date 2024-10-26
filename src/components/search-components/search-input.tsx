@@ -29,6 +29,7 @@ export default function SearchInput({ label, placeholder, containerClassName }: 
             containerClassName={containerClassName}
             defaultValue={searchParams.get("search") ?? ''}
             onChange={handleInputChange}
+            type="search"
         />
     )
 }
