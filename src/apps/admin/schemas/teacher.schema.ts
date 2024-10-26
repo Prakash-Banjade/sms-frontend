@@ -1,4 +1,4 @@
-import { PHONE_NUMBER_REGEX } from "@/CONSTANTS";
+import { NAME_REGEX, NAME_WITH_SPACE_REGEX, PHONE_NUMBER_REGEX } from "@/CONSTANTS";
 import { EBloodGroup, EMaritalStatus, Gender } from "@/types/global.type";
 import { z } from "zod";
 
@@ -7,11 +7,11 @@ export const teacherSchema = z.object({
 
     firstName: z.string()
         .min(1, { message: 'First name is required' })
-        .regex(/^[A-Za-z]+$/, { message: 'First name can only contain alphabets' }),
+        .regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),
 
     lastName: z.string()
         .min(1, { message: 'Last name is required' })
-        .regex(/^[A-Za-z]+$/, { message: 'Last name can only contain alphabets' })
+        .regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' })
         .optional(),
 
     gender: z.nativeEnum(Gender, {

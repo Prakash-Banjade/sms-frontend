@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, ReligionMappings } from "@/utils/labelToValueMappings";
-import { studentFormDefaultValues, studentSchema, studentSchemaType } from "../../schemas/student.schema";
+import { createStudentSchema, studentFormDefaultValues, studentSchemaType } from "../../schemas/student.schema";
 import { createQueryString } from "@/utils/create-query-string";
 import { EClassType } from "@/types/global.type";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ export default function StudentForm(props: Props) {
     const { payload } = useAuth();
 
     const form = useForm<studentSchemaType>({
-        resolver: zodResolver(studentSchema),
+        resolver: zodResolver(createStudentSchema),
         defaultValues: props?.defaultValues ?? studentFormDefaultValues,
     });
 
@@ -54,7 +54,7 @@ export default function StudentForm(props: Props) {
     }, [form.watch("classRoomId")])
 
     return (
-        <AppForm schema={studentSchema} form={form}>
+        <AppForm schema={createStudentSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
 
                 <fieldset className="border border-border rounded-lg p-8">
@@ -99,6 +99,7 @@ export default function StudentForm(props: Props) {
                             placeholder="Select religion"
                             description="Select religion of the student"
                             options={Object.entries(ReligionMappings).map(([key, value]) => ({ label: key, value }))}
+                            required
                         />
 
                         <AppForm.Text<studentSchemaType>

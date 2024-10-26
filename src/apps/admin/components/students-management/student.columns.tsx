@@ -23,6 +23,7 @@ export enum StudentSortBy {
     SUB_CLASS = "subClassName",
     GENDER = "gender",
     DOB = "dob",
+    STUDENT_ID = "studentId"
 }
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
@@ -31,8 +32,10 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
     },
     {
-        header: "Student ID",
         accessorKey: "studentId",
+        header: () => {
+            return <SortbyHeaderBtn label="Student ID" value={StudentSortBy.STUDENT_ID} />
+        },
     },
     {
         accessorKey: "name",

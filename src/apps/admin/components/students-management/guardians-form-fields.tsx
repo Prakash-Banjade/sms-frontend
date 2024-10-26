@@ -2,7 +2,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Button } from "@/components/ui/button"
 import { CardContent, CardTitle } from "@/components/ui/card"
 import { Plus, Trash2 } from 'lucide-react'
-import { studentSchemaType } from '../../schemas/student.schema'
+import { guardianFormFieldsDefaultValues, studentSchemaType } from '../../schemas/student.schema'
 import { EGuardianRelation } from '@/types/global.type'
 import { AppFormSelect } from '@/components/forms/select'
 import { GuardianRelationMappings } from '@/utils/labelToValueMappings'
@@ -59,7 +59,6 @@ export default function GuardiansFields() {
                                     name={`guardians.${index}.email`}
                                     label="Email"
                                     placeholder="eg. johndoe@gmail.com"
-                                    required
                                     description="Email of the guardian"
                                 />
                                 <AppFormText
@@ -102,7 +101,7 @@ export default function GuardiansFields() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        onClick={() => append({ firstName: '', lastName: '', phone: '', occupation: '', relation: EGuardianRelation.GUARDIAN })}
+                        onClick={() => append(guardianFormFieldsDefaultValues)}
                     >
                         <Plus /> Add Another Guardian
                     </Button>

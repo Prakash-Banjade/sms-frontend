@@ -21,7 +21,7 @@ export default function StudentSearchFilters({ }: Props) {
         <AppForm<TStudentSearchFilter> form={form} schema={studentSearchFilterSchema}>
             <form onSubmit={form.handleSubmit(() => { })} className="flex gap-8 w-full">
                 <SearchInput
-                    placeholder="Name | email | phone | roll no"
+                    placeholder="Name | ID | email | phone | roll no"
                     containerClassName="min-w-[300px]"
                 />
 
