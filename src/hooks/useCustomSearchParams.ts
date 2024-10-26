@@ -6,10 +6,10 @@ export function useCustomSearchParams() {
     const setSearchParams = (key: string, value: string | undefined) => {
         if (value) {
             params.set(key, value);
-            setParams(params);
+            setParams(params, { replace: true });
         } else {
             params.delete(key);
-            setParams(params);
+            setParams(params, { replace: true });
         }
     }
 

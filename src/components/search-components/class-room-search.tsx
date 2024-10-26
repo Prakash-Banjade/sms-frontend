@@ -24,6 +24,25 @@ export default function ClassRoomSearchFilterInputs({ }: Props) {
         setSearchParams("sectionId", undefined)
     }, [searchParams.get("classRoomId")])
 
+    // remove invalid searchParams, like classRoomId=xyz and sectionId=xyz
+    useEffect(() => {
+        if (!data?.data) return;
+
+        const classRoomId = searchParams.get("classRoomId");
+        const isCorrectClassRoomId = data?.data?.find((classRoom) => classRoom.id === classRoomId);
+
+        if (classRoomId && !isCorrectClassRoomId) {
+            setSearchParams("classRoomId", undefined)
+        }
+
+        const sectionId = searchParams.get("sectionId");
+        const isCorrectSectionId = isCorrectClassRoomId?.children?.find((section) => section.id === sectionId);
+
+        if (sectionId && !isCorrectSectionId) {
+            setSearchParams("sectionId", undefined)
+        }
+    }, [data])
+
     return (
         <>
             <section className='relative space-y-2'>
