@@ -8,6 +8,7 @@ import {
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useGetAttendanceCounts } from "../../attendances/action";
 import { createQueryString } from "@/utils/create-query-string";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
     selectedMonth: string,
@@ -34,7 +35,7 @@ const years = Array.from({ length: 5 }, (_, i) => (new Date().getFullYear() - i)
 export default function MonthlyAttendanceCount() {
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
-    const { data } = useGetAttendanceCounts({
+    const { data, isLoading } = useGetAttendanceCounts({
         queryString: createQueryString({
             month: searchParams.get('month'),
             year: searchParams.get('year'),
@@ -80,7 +81,8 @@ export default function MonthlyAttendanceCount() {
                     </SelectContent>
                 </Select>
             </div>
-            {data && (
+            {isLoading && <CountsLoadingSkeleton />}
+            {data && !isLoading && (
                 <div>
                     <h4 className="font-semibold mb-3">{months[data.monthly.month]} Attendance</h4>
                     <section className="grid grid-cols-2 gap-2">
@@ -112,5 +114,23 @@ export default function MonthlyAttendanceCount() {
                 </div>
             )}
         </div >
+    )
+}
+
+export function CountsLoadingSkeleton() {
+    return (
+        <div>
+            <h4 className="font-semibold mb-3">
+                <Skeleton className="h-6 w-32" />
+            </h4>
+            <section className="grid grid-cols-2 gap-2">
+                {['Present', 'Absent', 'Late', 'Leave'].map((status) => (
+                    <div key={status} className="flex flex-col">
+                        <Skeleton className="h-5 w-full mb-1" />
+                        <Skeleton className="h-4 w-16" />
+                    </div>
+                ))}
+            </section>
+        </div>
     )
 }

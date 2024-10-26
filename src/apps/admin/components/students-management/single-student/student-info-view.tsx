@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Navigate } from "react-router-dom";
 import { useGetStudent } from "../student-actions";
+import { formatDate } from "@/utils/format-date";
 
 export const StudentInfoView = ({ id }: { id: string }) => {
     const { data: student, isLoading } = useGetStudent({
@@ -35,7 +36,7 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                     <h3 className="font-semibold text-lg mb-2">Personal Information</h3>
                     <div className="grid lg:grid-cols-2 gap-4">
                         <InfoItem label="Gender" value={student.gender} className="capitalize" />
-                        <InfoItem label="Date of Birth" value={new Date(student.dob).toLocaleDateString()} />
+                        <InfoItem label="Date of Birth" value={formatDate({ date: new Date(student.dob) })} />
                         <InfoItem label="Email" value={student.email} />
                         <InfoItem label="Phone" value={student.phone} />
                         <InfoItem label="Religion" value={student.religion} className="capitalize" />
@@ -116,7 +117,7 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                                 <h3 className="font-semibold text-lg mb-2">Previous School</h3>
                                 <div className="grid gap-4">
                                     <InfoItem label="Name" value={student.previousSchoolName} />
-                                    <InfoItem label="School Details" value={student.previousSchoolDetails || 'N/A'} /> 
+                                    <InfoItem label="School Details" value={student.previousSchoolDetails || 'N/A'} />
                                 </div>
                             </section>
                         </>

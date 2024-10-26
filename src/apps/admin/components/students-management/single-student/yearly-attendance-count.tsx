@@ -8,13 +8,14 @@ import {
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useGetAttendanceCounts } from "../../attendances/action";
 import { createQueryString } from "@/utils/create-query-string";
+import { CountsLoadingSkeleton } from "./monthly-attendance-count";
 
 const years = Array.from({ length: 5 }, (_, i) => (new Date().getFullYear() - i)).reverse();
 
 export default function YearlyAttendanceCount() {
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
-    const { data } = useGetAttendanceCounts({
+    const { data, isLoading } = useGetAttendanceCounts({
         queryString: createQueryString({
             year: searchParams.get('year'),
         }),
@@ -41,7 +42,8 @@ export default function YearlyAttendanceCount() {
                     ))}
                 </SelectContent>
             </Select>
-            {data && (
+            {isLoading && <CountsLoadingSkeleton />}
+            {data && !isLoading && (
                 <div>
                     <h4 className="font-semibold mb-3">{data.yearly.year} Attendance</h4>
                     <section className="grid grid-cols-2 gap-2">
