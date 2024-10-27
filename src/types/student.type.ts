@@ -1,4 +1,4 @@
-import { EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./global.type";
+import { EAttendanceStatus, EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./global.type";
 
 export type TStudent = {
     id: string,
@@ -74,3 +74,15 @@ export type TSingleStudent = TStudent & {
         roomNumber: number,
     } | null;
 }
+
+export type TStudentsWithAttendenceResponse = {
+    id: string
+    rollNo: number,
+    firstName: string,
+    lastName: string,
+    attendance?: {
+        id: string
+        status: EAttendanceStatus,
+        date: string,
+    }
+}[]

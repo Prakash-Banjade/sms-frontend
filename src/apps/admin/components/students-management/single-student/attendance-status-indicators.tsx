@@ -11,7 +11,7 @@ export default function AttendanceStatusIndicators() {
                 <span className='size-3 rounded-full bg-info'></span> Late
             </span>
             <span className='flex items-center gap-1'>
-                <span className='size-3 rounded-full bg-warn'></span> Leave
+                <span className='size-3 rounded-full bg-warning'></span> Leave
             </span>
         </p>
     )

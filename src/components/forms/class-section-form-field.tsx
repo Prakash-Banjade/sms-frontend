@@ -2,7 +2,6 @@ import AppForm from "./app-form";
 import { useFormContext } from "react-hook-form";
 import { useGetClassRoomsOptions } from "@/apps/admin/components/class-rooms/actions";
 import { useEffect, useState } from "react";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import {
     Select,
     SelectContent,
@@ -13,8 +12,14 @@ import {
 } from "@/components/ui/select"
 import { TClassRoomOption } from "@/types/class.type";
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { cn } from "@/lib/utils";
 
-export function ClassSectionFormField() {
+type Props = {
+    noDescription?: boolean;
+    containerClassName?: string;
+}
+
+export function ClassSectionFormField({ noDescription = false, containerClassName = '' }: Props) {
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOption | undefined>();
     const form = useFormContext();
 
@@ -34,10 +39,11 @@ export function ClassSectionFormField() {
                 name="classRoomId"
                 label="Class room"
                 placeholder="Select class room"
-                description="Select the class room"
+                description={noDescription ? undefined : "Select class room"}
                 options={data?.data?.map((classRoom) => ({ label: classRoom.name, value: classRoom.id })) ?? []}
                 disabled={isLoading}
                 required
+                containerClassName={containerClassName}
                 value={form.getValues("classRoomId") ?? ''}
                 onValueChange={val => {
                     setSelectedClassRoom(data?.data?.find((classRoom) => classRoom.id === val))
@@ -51,7 +57,7 @@ export function ClassSectionFormField() {
                 control={form.control}
                 name={"sectionId"}
                 render={({ field }) => (
-                    <FormItem className={"relative"}>
+                    <FormItem className={cn("relative", containerClassName)}>
                         <div className="">
                             <FormLabel className="">
                                 Section
@@ -86,7 +92,7 @@ export function ClassSectionFormField() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <FormDescription>Select the section</FormDescription>
+                        {!noDescription && <FormDescription>Select the section</FormDescription>}
                         <FormMessage />
                     </FormItem>
                 )}

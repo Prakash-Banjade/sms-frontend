@@ -1,14 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Calendar } from "@/components/ui/calendar"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { useGetAttendances } from '../../attendances/actions'
 import { EAttendanceStatus } from '@/types/global.type'
 import AttendanceStatusIndicators from './attendance-status-indicators'
@@ -83,10 +76,10 @@ export default function StudentAttendanceView() {
                                     [EAttendanceStatus.LEAVE]: (date) => getAttendanceStatus(date) === EAttendanceStatus.LEAVE,
                                 }}
                                 modifiersStyles={{
-                                    [EAttendanceStatus.PRESENT]: { backgroundColor: 'hsl(var(--success))', color: 'hsl(var(--destructive-foreground))' },
+                                    [EAttendanceStatus.PRESENT]: { backgroundColor: 'hsl(var(--success))', color: 'hsl(var(--success-foreground))' },
                                     [EAttendanceStatus.ABSENT]: { backgroundColor: 'hsl(var(--destructive))', color: 'hsl(var(--destructive-foreground))' },
-                                    [EAttendanceStatus.LATE]: { backgroundColor: 'hsl(var(--info))', color: 'hsl(var(--destructive-foreground))' },
-                                    [EAttendanceStatus.LEAVE]: { backgroundColor: 'hsl(var(--warn))', color: 'hsl(var(--destructive-foreground))' },
+                                    [EAttendanceStatus.LATE]: { backgroundColor: 'hsl(var(--info))', color: 'hsl(var(--info-foreground))' },
+                                    [EAttendanceStatus.LEAVE]: { backgroundColor: 'hsl(var(--warning))', color: 'hsl(var(--warning-foreground))' },
                                 }}
                                 disabled={(date) => date > currentDate || date < new Date(currentDate.getFullYear(), 0, 1)}
                                 fromDate={new Date(currentDate.getFullYear(), 0, 1)}
