@@ -27,6 +27,8 @@ import EnrollmentsPage from './pages/students-management/enrollments.page';
 import EditStudentPage from './pages/students-management/student-edit.page';
 import { SingleStudentPage } from './pages/subjects/single-student.page';
 import SectionsListPage from './pages/classes/sections-list.page';
+import StudentAttendancePage from './pages/students-management/attendance/student-attendance.page';
+import LeaveRequestsPage from './pages/students-management/attendance/leave-request.page';
 
 const AdminRoutes = () => {
     return (
@@ -74,13 +76,17 @@ const AdminRoutes = () => {
                     </Route>
                     <Route path="students">
                         <Route path='new-registration' element={<NewRegistrationPage />} />
+                        <Route path="enrollments" element={<EnrollmentsPage />} />
                         <Route index element={<StudentsListPage />} />
                         <Route path=":id">
                             <Route index element={<SingleStudentPage />} />
                             <Route path="edit" element={<EditStudentPage />} />
                         </Route>
+                        <Route path='attendance'>
+                            <Route index element={<StudentAttendancePage />} />
+                            <Route path='leave-requests' element={<LeaveRequestsPage />} />
+                        </Route>
                     </Route>
-                    <Route path="enrollments" element={<EnrollmentsPage />} />
                     {/* Add more admin-specific routes */}
                 </Route>
             </Route>

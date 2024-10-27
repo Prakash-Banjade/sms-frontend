@@ -9,37 +9,20 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useGetAttendances } from '../../attendances/action'
+import { useGetAttendances } from '../../attendances/actions'
 import { EAttendanceStatus } from '@/types/global.type'
 import AttendanceStatusIndicators from './attendance-status-indicators'
 import MonthlyAttendanceCount from './monthly-attendance-count'
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams'
 import { createQueryString } from '@/utils/create-query-string'
 import YearlyAttendanceCount from './yearly-attendance-count'
-
-// Mock data for demonstration
-const mockAttendanceData = {
-    daily: Array.from({ length: 30 }, (_, i) => ({
-        date: new Date(2024, 9, i + 1),
-        status: Math.random() > 0.1 ? EAttendanceStatus.PRESENT : EAttendanceStatus.ABSENT
-    })),
-    monthly: Array.from({ length: 12 }, (_, i) => ({
-        month: new Date(2024, i, 1).toLocaleString('default', { month: 'long' }),
-        presentDays: Math.floor(Math.random() * 5) + 20,
-        totalDays: Math.floor(Math.random() * 3) + 28
-    })),
-    yearly: Array.from({ length: 5 }, (_, i) => ({
-        year: 2020 + i,
-        presentDays: Math.floor(Math.random() * 20) + 180,
-        totalDays: 200
-    }))
-}
+import { useParams } from 'react-router-dom'
 
 export default function StudentAttendanceView() {
     const currentDate = new Date();
+    const params = useParams();
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString())
 
     // fetch attendance data
     const { data: attendances, isLoading } = useGetAttendances({
@@ -47,6 +30,7 @@ export default function StudentAttendanceView() {
             month: searchParams.get('month'),
             year: searchParams.get('year'),
             take: 32,
+            studentId: params.id,
         }),
     })
 
@@ -60,7 +44,6 @@ export default function StudentAttendanceView() {
 
     const handleMonthChange = (val: Date) => { // setting the search params and refetching the data for the new month
         const month = val.getMonth() + 1
-        setSelectedYear(val.getFullYear().toString())
         setSearchParams("month", month.toString())
         setSearchParams("year", val.getFullYear().toString())
     }

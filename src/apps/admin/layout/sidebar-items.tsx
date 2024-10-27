@@ -105,9 +105,20 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         title: "Student Details",
                         url: "students",
                     },
+                ]
+            },
+            {
+                title: "Attendance",
+                url: "students/attendance",
+                icon: Calendar,
+                items: [
                     {
-                        title: "Student Attendance",
-                        url: "#",
+                        title: "View Attendance",
+                        url: "students/attendance",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "students/attendance/leave-requests",
                     }
                 ]
             },

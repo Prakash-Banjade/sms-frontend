@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import { useGetRoomTypes } from './action';
+import { useGetRoomTypes } from './actions';
 import { DataTable } from '@/components/data-table/data-table';
 import { roomTypesColumns } from './room-type.columns';
 

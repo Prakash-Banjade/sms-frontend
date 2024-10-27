@@ -6,7 +6,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
-import { useGetAttendanceCounts } from "../../attendances/action";
+import { useGetAttendanceCounts } from "../../attendances/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { Skeleton } from "@/components/ui/skeleton";
 

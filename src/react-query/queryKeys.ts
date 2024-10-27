@@ -19,4 +19,5 @@ export enum QueryKey {
     ENROLLMENTS = "enrollments",
     OPTIONS = "options",
     ATTENDANCES = "attendances",
+    LEAVE_REQUESTS = "leave-requests",
 };
