@@ -1,14 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {
     DropdownMenu,
-    DropdownMenuButtonItem,
     DropdownMenuContent,
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Check, CircleDashed, LoaderCircle, MoreHorizontal, X } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDateNumeric } from "@/utils/format-date"
 import { TStudentLeaveRequest } from "@/types/leave-request.type"
@@ -93,6 +92,9 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
+            const currentStatus = row.original.status;
+            const [isOpen, setIsOpen] = useState(false);
+
             const { mutateAsync, isPending } = useAppMutation();
             const [statusLoading, setStatusLoading] = useState({
                 [ELeaveRequestStatus.APPROVED]: false,
@@ -108,14 +110,17 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
                     endpoint: QueryKey.LEAVE_REQUESTS + `/${row.original.id}/updateStatus`,
                     data: { status },
                     invalidateTags: [QueryKey.LEAVE_REQUESTS],
+                    toastOnSuccess: false,
+                    toastOnError: false,
                 });
 
                 setStatusLoading({ ...statusLoading, [status]: false });
+                setIsOpen(false);
             };
 
             return (
                 <>
-                    <DropdownMenu>
+                    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
                                 <span className="sr-only">Open menu</span>
@@ -124,24 +129,32 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => handleUpdateStatus(ELeaveRequestStatus.PENDING)} disabled={isPending}>
+                            <section className="flex flex-col">
                                 {
-                                    statusLoading[ELeaveRequestStatus.PENDING] ? <LoaderCircle className="animate-spin" /> : <CircleDashed />
+                                    currentStatus !== ELeaveRequestStatus.PENDING && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.PENDING)} disabled={isPending}>
+                                        {
+                                            statusLoading[ELeaveRequestStatus.PENDING] ? <LoaderCircle className="animate-spin" /> : <CircleDashed />
+                                        }
+                                        Mark as Pending
+                                    </Button>
                                 }
-                                Mark as Pending
-                            </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => handleUpdateStatus(ELeaveRequestStatus.APPROVED)} disabled={isPending}>
                                 {
-                                    statusLoading[ELeaveRequestStatus.APPROVED] ? <LoaderCircle className="animate-spin" /> : <Check />
+                                    currentStatus !== ELeaveRequestStatus.APPROVED && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.APPROVED)} disabled={isPending}>
+                                        {
+                                            statusLoading[ELeaveRequestStatus.APPROVED] ? <LoaderCircle className="animate-spin" /> : <Check />
+                                        }
+                                        Mark as Approved
+                                    </Button>
                                 }
-                                Mark as Approved
-                            </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => handleUpdateStatus(ELeaveRequestStatus.REJECTED)} disabled={isPending}>
                                 {
-                                    statusLoading[ELeaveRequestStatus.REJECTED] ? <LoaderCircle className="animate-spin" /> : <X />
+                                    currentStatus !== ELeaveRequestStatus.REJECTED && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.REJECTED)} disabled={isPending}>
+                                        {
+                                            statusLoading[ELeaveRequestStatus.REJECTED] ? <LoaderCircle className="animate-spin" /> : <X />
+                                        }
+                                        Mark as Rejected
+                                    </Button>
                                 }
-                                Mark as Rejected
-                            </DropdownMenuButtonItem>
+                            </section>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>
