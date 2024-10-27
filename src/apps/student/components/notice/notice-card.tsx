@@ -17,7 +17,7 @@ const NoticeCard = ({ notices }: { notices: TNotice[] }) => {
     };
 
     return (
-        <div className="mt-4">
+        <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {notices.map((notice) => (
                 <Card key={notice.id} className="mb-4">
                     <CardHeader>
@@ -32,7 +32,7 @@ const NoticeCard = ({ notices }: { notices: TNotice[] }) => {
                     <CardDescription className="text-md p-4">
                         <p className="line-clamp-2">{notice.description}</p>
                     </CardDescription>
-                    <Button size={'sm'} className="m-4" onClick={() => openNoticeModal(notice)}>Read More</Button>
+                    <Button size={'sm'} variant={'secondary'} className="m-4" onClick={() => openNoticeModal(notice)}>Read More</Button>
                 </Card>
             ))}
 

@@ -16,3 +16,9 @@ export type TNoticeResponse = {
     data: TNotice[];
     meta: TMeta;
 }
+export type TNoticePage = {
+    pages: TNoticeResponse[]
+    pageParams: unknown[]
+
+
+}
