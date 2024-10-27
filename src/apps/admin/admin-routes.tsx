@@ -26,6 +26,7 @@ import StudentsListPage from './pages/students-management/students-list.page';
 import EnrollmentsPage from './pages/students-management/enrollments.page';
 import EditStudentPage from './pages/students-management/student-edit.page';
 import { SingleStudentPage } from './pages/subjects/single-student.page';
+import SectionsListPage from './pages/classes/sections-list.page';
 
 const AdminRoutes = () => {
     return (
@@ -40,6 +41,7 @@ const AdminRoutes = () => {
                     <Route path="classes">
                         <Route index element={<ClassesListPage />} />
                         <Route path="new" element={<AddClassPage />} />
+                        <Route path="sections" element={<SectionsListPage />} />
                     </Route>
                     <Route path="subjects">
                         <Route index element={<SubjectsListPage />} />

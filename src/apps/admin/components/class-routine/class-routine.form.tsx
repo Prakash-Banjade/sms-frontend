@@ -8,8 +8,8 @@ import { useParams } from "react-router-dom";
 import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType } from "../../schemas/class-routine.schema";
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
-import { EClassType, ERoutineType } from "@/types/global.type";
-import { useEffect } from "react";
+import { ERoutineType } from "@/types/global.type";
+import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 
 type Props = ({
     setIsOpen?: undefined;
@@ -38,24 +38,19 @@ export default function ClassRoutineForm(props: Props) {
             method,
             endpoint: QueryKey.CLASSROUTINE,
             id,
-            data: getDirtyValues({
-                ...values,
+            data: {
+                ...getDirtyValues({
+                    ...values,
+                }, form),
                 classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId to add the class routine for that section
-            }, form),
+            },
             invalidateTags: [QueryKey.CLASSROUTINE],
         });
 
         if (response?.data?.message) {
             onDialogClose();
-            // navigate(`/${payload?.role}/class-routines`);
         }
     }
-
-    // Reset form values when classRoomId changes
-    useEffect(() => {
-        form.setValue("subjectId", undefined)
-        form.setValue("sectionId", undefined)
-    }, [form.watch("classRoomId")])
 
     const onDialogClose = () => {
         form.reset();
@@ -77,37 +72,7 @@ export default function ClassRoutineForm(props: Props) {
 
                     { // while on edit, no need to update class room & subject
                         !id && <>
-                            <AppForm.DynamicSelect<classRoutineSchemaType>
-                                name="classRoomId"
-                                label="Class room"
-                                placeholder="Select class room"
-                                description="Select the class room"
-                                fetchOptions={{
-                                    endpoint: QueryKey.CLASSES,
-                                    queryKey: [QueryKey.CLASSES],
-                                    queryString: 'page=1&take=50',
-                                }}
-                                labelKey={'name'}
-                                required
-                            />
-
-                            <AppForm.DynamicSelect<classRoutineSchemaType>
-                                fetchOptions={{
-                                    endpoint: QueryKey.CLASSES,
-                                    queryKey: [QueryKey.CLASSES, form.watch('classRoomId')],
-                                    queryString: createQueryString({
-                                        parentClassId: form.watch('classRoomId'),
-                                        classType: EClassType.SECTION,
-                                    }),
-                                }}
-                                labelKey="name"
-                                name="sectionId"
-                                label="Section"
-                                description="Select the section"
-                                placeholder="Select section"
-                                containerClassName="min-w-[200px]"
-                                disableOnNoOption
-                            />
+                            <ClassSectionFormField />
 
                             <AppForm.DynamicSelect<classRoutineSchemaType>
                                 name="subjectId"

@@ -11,9 +11,12 @@ import {
 } from "@/components/ui/select"
 import { Label } from '../ui/label';
 
-type Props = {}
+type Props = {
+    onlyClassRoom?: boolean;
+    classRoomKey?: string;
+}
 
-export default function ClassRoomSearchFilterInputs({ }: Props) {
+export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, classRoomKey = "classRoomId" }: Props) {
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetClassRoomsOptions({
@@ -22,17 +25,17 @@ export default function ClassRoomSearchFilterInputs({ }: Props) {
 
     useEffect(() => {
         setSearchParams("sectionId", undefined)
-    }, [searchParams.get("classRoomId")])
+    }, [searchParams.get(classRoomKey)])
 
     // remove invalid searchParams, like classRoomId=xyz and sectionId=xyz
     useEffect(() => {
         if (!data?.data) return;
 
-        const classRoomId = searchParams.get("classRoomId");
+        const classRoomId = searchParams.get(classRoomKey);
         const isCorrectClassRoomId = data?.data?.find((classRoom) => classRoom.id === classRoomId);
 
         if (classRoomId && !isCorrectClassRoomId) {
-            setSearchParams("classRoomId", undefined)
+            setSearchParams(classRoomKey, undefined)
         }
 
         const sectionId = searchParams.get("sectionId");
@@ -50,9 +53,9 @@ export default function ClassRoomSearchFilterInputs({ }: Props) {
                     <Label className="">
                         Class
                     </Label>
-                    <ResetBtn onClick={() => setSearchParams("classRoomId", undefined)} />
+                    <ResetBtn onClick={() => setSearchParams(classRoomKey, undefined)} />
                 </div>
-                <Select value={searchParams.get("classRoomId") ?? ''} onValueChange={val => setSearchParams("classRoomId", val)} disabled={isLoading}>
+                <Select value={searchParams.get(classRoomKey) ?? ''} onValueChange={val => setSearchParams(classRoomKey, val)} disabled={isLoading}>
                     <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Select a class" />
                     </SelectTrigger>
@@ -68,36 +71,38 @@ export default function ClassRoomSearchFilterInputs({ }: Props) {
                 </Select>
             </section>
 
-            <section className='relative space-y-2'>
-                <div className="">
-                    <Label className="">
-                        Section
-                    </Label>
-                    <ResetBtn onClick={() => setSearchParams("sectionId", undefined)} />
-                </div>
-                <Select
-                    value={searchParams.get("sectionId") ?? ''}
-                    onValueChange={val => setSearchParams("sectionId", val)}
-                    disabled={
-                        !searchParams.get('classRoomId')
-                        || !data?.data?.find((classRoom) => classRoom.id === searchParams.get('classRoomId'))?.children?.length
-                        || isLoading
-                    }
-                >
-                    <SelectTrigger className="w-[200px]">
-                        <SelectValue placeholder="Select a section" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            {
-                                data?.data?.find((classRoom) => classRoom.id === searchParams.get('classRoomId'))?.children?.map((section) => (
-                                    <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
-                                ))
-                            }
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            </section>
+            {
+                !onlyClassRoom && <section className='relative space-y-2'>
+                    <div className="">
+                        <Label className="">
+                            Section
+                        </Label>
+                        <ResetBtn onClick={() => setSearchParams("sectionId", undefined)} />
+                    </div>
+                    <Select
+                        value={searchParams.get("sectionId") ?? ''}
+                        onValueChange={val => setSearchParams("sectionId", val)}
+                        disabled={
+                            !searchParams.get(classRoomKey)
+                            || !data?.data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.length
+                            || isLoading
+                        }
+                    >
+                        <SelectTrigger className="w-[200px]">
+                            <SelectValue placeholder="Select a section" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {
+                                    data?.data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
+                                        <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </section>
+            }
         </>
     )
 }
