@@ -9,6 +9,7 @@ export enum QueryKey {
     STUDENTS = "students",
     ACADEMIC_YEARS = "academic-years",
     CLASSES = "class-rooms",
+    SECTIONS = "sections",
     IMAGES = "upload/images",
     SUBJECTS = 'subjects',
     CLASSROUTINE = 'class-routines',

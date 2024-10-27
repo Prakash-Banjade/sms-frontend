@@ -12,6 +12,7 @@ import { createQueryString } from "@/utils/create-query-string";
 import { EClassType } from "@/types/global.type";
 import { useEffect } from "react";
 import GuardiansFields from "./guardians-form-fields";
+import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 
 type Props = {
     defaultValues?: Partial<studentSchemaType>;
@@ -49,9 +50,9 @@ export default function StudentForm(props: Props) {
         }
     }
 
-    useEffect(() => {
-        form.setValue("sectionId", undefined)
-    }, [form.watch("classRoomId")])
+    // useEffect(() => {
+    //     form.setValue("sectionId", undefined)
+    // }, [form.watch("classRoomId")])
 
     return (
         <AppForm schema={createStudentSchema} form={form}>
@@ -146,40 +147,7 @@ export default function StudentForm(props: Props) {
                     <legend className="px-2 text-sm">Academic Info</legend>
                     <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
                         {
-                            !params.id && <>
-                                <AppForm.DynamicSelect<studentSchemaType>
-                                    name="classRoomId"
-                                    label="Class room"
-                                    placeholder="Select class room"
-                                    description="Select the class room"
-                                    fetchOptions={{
-                                        endpoint: QueryKey.CLASSES,
-                                        queryKey: [QueryKey.CLASSES],
-                                        queryString: 'page=1&take=50',
-                                    }}
-                                    labelKey={'name'}
-                                    required
-                                />
-
-                                <AppForm.DynamicSelect<studentSchemaType>
-                                    name="sectionId"
-                                    fetchOptions={{
-                                        endpoint: QueryKey.CLASSES,
-                                        queryKey: [QueryKey.CLASSES, form.watch('classRoomId')],
-                                        queryString: createQueryString({
-                                            parentClassId: form.watch('classRoomId'),
-                                            classType: EClassType.SECTION,
-                                            take: 20,
-                                        }),
-                                    }}
-                                    labelKey="name"
-                                    label="Section"
-                                    description="Select the section"
-                                    placeholder="Select section"
-                                    disableOnNoOption
-                                    required
-                                />
-                            </>
+                            !params.id && <ClassSectionFormField />
                         }
 
                         <AppForm.Number<studentSchemaType>
