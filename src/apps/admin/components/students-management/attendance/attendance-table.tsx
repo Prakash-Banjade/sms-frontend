@@ -9,13 +9,13 @@ import {
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { EAttendanceStatus } from "@/types/global.type"
-import { TStudentsWithAttendenceResponse } from "@/types/student.type"
+import { TStudentsWithAttendenceUpdate } from "@/types/student.type"
 import { CalendarX, CheckCircle2, Clock, XCircle } from "lucide-react"
 
 type Props = {
-    attendanceData: TStudentsWithAttendenceResponse
+    attendances: TStudentsWithAttendenceUpdate
+    setAttendances: React.Dispatch<React.SetStateAction<TStudentsWithAttendenceUpdate>>
 }
-
 
 const statusConfig: Record<EAttendanceStatus, { icon: any; variant: "success" | "destructive" | "info" | "warning" }> = {
     [EAttendanceStatus.PRESENT]: { icon: CheckCircle2, variant: "success" },
@@ -24,7 +24,34 @@ const statusConfig: Record<EAttendanceStatus, { icon: any; variant: "success" | 
     [EAttendanceStatus.LEAVE]: { icon: CalendarX, variant: "warning" },
 }
 
-export default function AttendanceTable({ attendanceData }: Props) {
+export default function AttendanceTable({ attendances, setAttendances }: Props) {
+
+    const handleStatusChange = (accountId: string, status: EAttendanceStatus) => {
+        const updatedAttendances: TStudentsWithAttendenceUpdate = attendances.map(student => {
+            if (student.account?.id === accountId && student.attendance) {
+                return {
+                    ...student,
+                    attendance: {
+                        ...student.attendance,
+                        status,
+                    }
+                }
+            } else if (student.account?.id === accountId && !student.attendance) {
+                return {
+                    ...student,
+                    attendance: {
+                        status,
+                        date: new Date().toISOString(),
+                    }
+                }
+            }
+            else {
+                return student;
+            }
+        })
+
+        setAttendances(updatedAttendances);
+    }
 
     return (
         <div className="rounded-md border">
@@ -37,7 +64,7 @@ export default function AttendanceTable({ attendanceData }: Props) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {attendanceData.map((student) => (
+                    {attendances.map((student) => (
                         <TableRow key={student.id}>
                             <TableCell>{student.rollNo}</TableCell>
                             <TableCell>{student.firstName} {student.lastName}</TableCell>
@@ -54,6 +81,7 @@ export default function AttendanceTable({ attendanceData }: Props) {
                                                         : "outline"
                                                 }
                                                 size="sm"
+                                                onClick={() => handleStatusChange(student.account?.id, status)}
                                                 aria-pressed={student.attendance?.status === status}
                                             >
                                                 <Icon className={cn("w-4 h-4")} />

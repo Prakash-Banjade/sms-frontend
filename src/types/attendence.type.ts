@@ -42,3 +42,12 @@ export type TAttendenceCounts = {
     monthly: TAttendenceCount,
     yearly: TAttendenceCount
 }
+
+export type TUpdateAttendances = {
+    id?: string;
+    accountId: string;
+    inTime?: string;
+    outTime?: string;
+    status: EAttendanceStatus;
+    date: string;
+}[]

@@ -76,13 +76,31 @@ export type TSingleStudent = TStudent & {
 }
 
 export type TStudentsWithAttendenceResponse = {
+    id: string,
+    firstName: string,
+    lastName: string,
+    rollNo: number,
+    account: {
+        id: string
+    },
+    attendance: {
+        id: string,
+        status: EAttendanceStatus,
+        date: string
+    } | null;
+}[]
+
+export type TStudentsWithAttendenceUpdate = {
     id: string
     rollNo: number,
     firstName: string,
     lastName: string,
-    attendance?: {
+    account: {
         id: string
+    }
+    attendance: {
+        id?: string
         status: EAttendanceStatus,
         date: string,
-    }
+    } | null;
 }[]
