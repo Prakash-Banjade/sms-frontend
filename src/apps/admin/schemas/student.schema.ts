@@ -97,7 +97,7 @@ export const studentFormDefaultValues: Partial<studentSchemaType> = {
     sectionId: undefined,
     rollNo: 0,
     admissionDate: new Date().toISOString(),
-    dormitoryRoomId: "",
+    dormitoryRoomId: undefined,
 
     // PERSONAL INFORMATION
     firstName: "",
