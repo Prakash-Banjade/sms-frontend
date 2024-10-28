@@ -3,12 +3,14 @@ import ClassRoutineSearchFilters from "../../components/class-routine/search-fil
 import { useMemo } from "react"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { ClassRoutinesDisplayList } from "../../components/class-routine/routines-display-list"
-import { EDayOfWeek } from "@/types/global.type"
+import { EDayOfWeek, Role } from "@/types/global.type"
+import { useAuth } from "@/contexts/auth-provider"
 
 type Props = {}
 
 export default function ClassRoutineListPage({ }: Props) {
     const { searchParams, setSearchParams } = useCustomSearchParams();
+    const { payload } = useAuth()
 
     const defaultTab = useMemo(() => {
         const day = searchParams.get("dayOfTheWeek");
@@ -24,7 +26,9 @@ export default function ClassRoutineListPage({ }: Props) {
 
     return (
         <div className="container mx-auto">
-            <ClassRoutineSearchFilters />
+            {
+                payload?.role === Role.ADMIN && <ClassRoutineSearchFilters />
+            }
             <Tabs defaultValue={defaultTab} className="w-full mt-6" onValueChange={setCurrentTab}>
                 <TabsList className="w-full py-6">
                     {
@@ -37,8 +41,13 @@ export default function ClassRoutineListPage({ }: Props) {
                 </TabsList>
             </Tabs>
 
+            {/* if role is student or teacher, no classRoomId is needed, but for admin classRoomId is required */}
             {
-                searchParams.get("classRoomId") ?
+                (
+                    (payload?.role === Role.ADMIN && searchParams.get("classRoomId"))
+                    || payload?.role === Role.STUDENT
+                    || payload?.role === Role.TEACHER
+                ) ?
                     <ClassRoutinesDisplayList />
                     : <div className="mt-16 text-muted-foreground text-center">**Select a class room to view class routines**</div>
             }

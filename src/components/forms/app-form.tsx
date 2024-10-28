@@ -7,16 +7,13 @@ import { Button } from '../ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { formatDateNumeric } from '@/utils/format-date';
 import { Textarea } from "@/components/ui/textarea"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { SelectProps } from '@radix-ui/react-select';
 import { ImageUpload } from './image-upload';
 import { DynamicSelect } from './dynamic-select';
+import { AppCheckbox } from './app-form-checkbox';
+import { AppFormSelect } from './select';
+import { AppFormPhone } from './app-form-phone';
+import { AppFormText } from './app-form-text';
+import { AppFormEmail } from './app-form-email';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -48,71 +45,9 @@ function AppForm<T extends FieldValues>({ schema, children, form }: FormProps<T>
 
 export interface AppFormInputProps<T> extends TFormFieldProps<T>, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> { }
 
-AppForm.Text = function Text<T extends FieldValues>({
-    name,
-    label,
-    placeholder = '',
-    description = '',
-    required = false,
-    inputClassName = '',
-    containerClassName = '',
-    ...props
-}: AppFormInputProps<T>) {
-    const { control } = useFormContext();
+AppForm.Text = AppFormText;
 
-    return (
-        <FormField
-            control={control}
-            name={name as string}
-            render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
-                    <FormControl>
-                        <Input type="text" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
-                    </FormControl>
-                    {description && <FormDescription>{description}</FormDescription>}
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    );
-};
-
-AppForm.Email = function Email<T extends FieldValues>({
-    name,
-    label,
-    placeholder = '',
-    description = '',
-    required = false,
-    inputClassName = '',
-    containerClassName = '',
-    ...props
-}: AppFormInputProps<T>) {
-    const { control } = useFormContext();
-
-    return (
-        <FormField
-            control={control}
-            name={name as string}
-            render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
-                    <FormControl>
-                        <Input type="email" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
-                    </FormControl>
-                    {description && <FormDescription>{description}</FormDescription>}
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    );
-};
+AppForm.Email = AppFormEmail;
 
 AppForm.Password = function Password<T extends FieldValues>({
     name,
@@ -269,7 +204,7 @@ AppForm.Textarea = function AppFormTextarea<T extends FieldValues>({ name, label
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Textarea rows={rows} className={inputClassName} placeholder={placeholder} {...field} required={required} />
+                        <Textarea rows={rows} className={inputClassName} placeholder={placeholder} {...field} required={required} value={field.value ?? ''} onChange={field.onChange} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
@@ -312,58 +247,11 @@ AppForm.Number = function Number<T extends FieldValues>({
     );
 };
 
-interface AppFormSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
-    options: {
-        label: React.ReactNode;
-        value: string;
-    }[]
-}
+AppForm.Phone = AppFormPhone;
 
-AppForm.Select = function AppFormSelect<T extends FieldValues>({
-    name,
-    label,
-    placeholder = '',
-    description = '',
-    required = false,
-    options = [],
-    containerClassName = '',
-    ...props
-}: AppFormSelectProps<T>) {
-    const { control } = useFormContext();
+AppForm.Checkbox = AppCheckbox;
 
-    return (
-        <FormField
-            control={control}
-            name={name as string}
-            render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} {...props}>
-                        <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder={placeholder} />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {
-                                options.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </SelectItem>
-                                ))
-                            }
-                        </SelectContent>
-                    </Select>
-                    {description && <FormDescription>{description}</FormDescription>}
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
-    );
-};
+AppForm.Select = AppFormSelect;
 
 AppForm.DynamicSelect = DynamicSelect;
 

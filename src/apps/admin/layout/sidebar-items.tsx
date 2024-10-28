@@ -46,6 +46,10 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Classes List",
                         url: "classes",
+                    },
+                    {
+                        title: "Sections List",
+                        url: "classes/sections",
                     }
                 ]
             },
@@ -82,24 +86,39 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         ]
     },
     {
-        groupLabel: "Student",
+        groupLabel: "Student Administration",
         menuItems: [
             {
-                title: "Student Info",
-                url: "#",
+                title: "Student Management",
+                url: "students",
                 icon: UsersRound,
                 items: [
                     {
-                        title: "Add Student",
-                        url: "#",
+                        title: "Enrollments",
+                        url: "students/enrollments",
                     },
                     {
-                        title: "Student List",
-                        url: "#",
+                        title: "New Registration",
+                        url: "students/new-registration",
                     },
                     {
-                        title: "Student Attendance",
-                        url: "#",
+                        title: "Student Details",
+                        url: "students",
+                    },
+                ]
+            },
+            {
+                title: "Attendance",
+                url: "students/attendance",
+                icon: Calendar,
+                items: [
+                    {
+                        title: "View Attendance",
+                        url: "students/attendance",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "students/attendance/leave-requests",
                     }
                 ]
             },
@@ -167,39 +186,39 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Teachers",
-                url: "#",
+                url: "teachers",
                 icon: UsersRound,
                 items: [
                     {
                         title: "Add Teacher",
-                        url: "#",
+                        url: "teachers/new",
                     },
                     {
                         title: "Teacher List",
-                        url: "#",
+                        url: "teachers",
                     },
                     {
                         title: "Teacher Attendance",
-                        url: "#",
+                        url: "teachers/attendance",
                     }
                 ]
             },
             {
                 title: "Non Teaching Staffs",
-                url: "#",
+                url: "staffs",
                 icon: Users,
                 items: [
                     {
-                        title: "Add Non-Teaching Staff",
-                        url: "#",
+                        title: "Add Staff",
+                        url: "staffs/new",
                     },
                     {
-                        title: "Staff List",
-                        url: "#",
+                        title: "Staffs List",
+                        url: "staffs",
                     },
                     {
                         title: "Staff Attendance",
-                        url: "#",
+                        url: "staffs/attendance",
                     }
                 ]
             },

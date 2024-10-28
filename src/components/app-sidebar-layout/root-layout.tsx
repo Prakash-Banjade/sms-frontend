@@ -25,7 +25,7 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
             ?.menuItems?.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
 
         const item = menuItem?.items?.length
-            ? menuItem.items.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
+            ? menuItem.items.find(item => location.pathname === `/${payload?.role}/${item.url}`)
             : undefined;
 
         return { menuItem, item };
@@ -61,7 +61,7 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                         <ThemeToggleBtn />
                     </div>
                 </header>
-                <main className="p-6">
+                <main className="@container/main p-6">
                     <Outlet />
                 </main>
             </SidebarInset>

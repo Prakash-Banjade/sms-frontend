@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const classRoutineSchema = z.object({
     dayOfTheWeek: z.nativeEnum(EDayOfWeek, {
-        errorMap: () => ({ message: 'Invalid day of the week' }),
+        errorMap: () => ({ message: 'Select a valid day' }),
     }),
     startTime: z.string()
         .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, { message: 'Invalid start time. Required format: HH:MM' }),
@@ -20,6 +20,9 @@ export const classRoutineSchema = z.object({
     subjectId: z.string()
         .uuid({ message: 'Invalid subject ID. Must be a valid UUID' })
         .optional()
+}).refine(data => data.type !== ERoutineType.CLASS || !!data.subjectId, {
+    message: 'Please select a subject for class routine',
+    path: ['subjectId'],
 });
 
 export type classRoutineSchemaType = z.infer<typeof classRoutineSchema>;

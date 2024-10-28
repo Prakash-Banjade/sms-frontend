@@ -15,6 +15,20 @@ import AddClassRoutinePage from './pages/class-routine/add-class-routine.page';
 import DormitoryPage from './pages/dormitory/dormitory.page';
 import DormitoryRoomPage from './pages/dormitory/dormitory-room.page';
 import RoomTypePage from './pages/dormitory/room-type.page';
+import TeacherListPage from './pages/teachers/teacher-list.page';
+import AddTeacherPage from './pages/teachers/add-teacher.page';
+import EditTeacherPage from './pages/teachers/edit-teacher.page';
+import StaffListPage from './pages/staffs/staff-list.page';
+import AddStaffPage from './pages/staffs/add-staff.page';
+import EditStaffPage from './pages/staffs/edit-staff.page';
+import NewRegistrationPage from './pages/students-management/new-registration.page';
+import StudentsListPage from './pages/students-management/students-list.page';
+import EnrollmentsPage from './pages/students-management/enrollments.page';
+import EditStudentPage from './pages/students-management/student-edit.page';
+import { SingleStudentPage } from './pages/subjects/single-student.page';
+import SectionsListPage from './pages/classes/sections-list.page';
+import StudentAttendancePage from './pages/students-management/attendance/student-attendance.page';
+import LeaveRequestsPage from './pages/students-management/attendance/leave-request.page';
 
 const AdminRoutes = () => {
     return (
@@ -29,6 +43,7 @@ const AdminRoutes = () => {
                     <Route path="classes">
                         <Route index element={<ClassesListPage />} />
                         <Route path="new" element={<AddClassPage />} />
+                        <Route path="sections" element={<SectionsListPage />} />
                     </Route>
                     <Route path="subjects">
                         <Route index element={<SubjectsListPage />} />
@@ -38,11 +53,39 @@ const AdminRoutes = () => {
                         <Route index element={<ClassRoutineListPage />} />
                         <Route path="new" element={<AddClassRoutinePage />} />
                     </Route>
-
                     <Route path="dormitory">
                         <Route index element={<DormitoryPage />} />
                         <Route path="room-types" element={<RoomTypePage />} />
                         <Route path="dormitory-rooms" element={<DormitoryRoomPage />} />
+                    </Route>
+                    <Route path="teachers">
+                        <Route index element={<TeacherListPage />} />
+                        <Route path="new" element={<AddTeacherPage />} />
+                        <Route path=":id">
+                            <Route index element={<div>Teacher single view page</div>} />
+                            <Route path="edit" element={<EditTeacherPage />} />
+                        </Route>
+                    </Route>
+                    <Route path="staffs">
+                        <Route index element={<StaffListPage />} />
+                        <Route path="new" element={<AddStaffPage />} />
+                        <Route path=":id">
+                            <Route index element={<div>Staff single view page</div>} />
+                            <Route path="edit" element={<EditStaffPage />} />
+                        </Route>
+                    </Route>
+                    <Route path="students">
+                        <Route path='new-registration' element={<NewRegistrationPage />} />
+                        <Route path="enrollments" element={<EnrollmentsPage />} />
+                        <Route index element={<StudentsListPage />} />
+                        <Route path=":id">
+                            <Route index element={<SingleStudentPage />} />
+                            <Route path="edit" element={<EditStudentPage />} />
+                        </Route>
+                        <Route path='attendance'>
+                            <Route index element={<StudentAttendancePage />} />
+                            <Route path='leave-requests' element={<LeaveRequestsPage />} />
+                        </Route>
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

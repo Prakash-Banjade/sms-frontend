@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TDormitoryResponse, TRoomTypeResponse } from "@/types/dormitory.type";
+import { TDormitoryResponse, TDormitoryRoom, TDormitoryRoomResponse, TRoomTypeResponse } from "@/types/dormitory.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetRoomTypes = ({
@@ -30,6 +30,23 @@ export const useGetDormitories = ({
     const response = useFetchData<TDormitoryResponse>({
         endpoint: QueryKey.DORMITORY,
         queryKey: queryString ? [QueryKey.DORMITORY, queryString] : [QueryKey.DORMITORY],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetDormitoryRooms = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: UseQueryOptions<TDormitoryRoomResponse>
+}) => {
+    const response = useFetchData<TDormitoryRoomResponse>({
+        endpoint: QueryKey.DORMITORY_ROOMS,
+        queryKey: queryString ? [QueryKey.DORMITORY_ROOMS, queryString] : [QueryKey.DORMITORY_ROOMS],
         queryString,
         options,
     })
