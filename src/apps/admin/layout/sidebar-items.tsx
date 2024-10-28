@@ -95,7 +95,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Enrollments",
-                        url: "enrollments",
+                        url: "students/enrollments",
                     },
                     {
                         title: "New Registration",
