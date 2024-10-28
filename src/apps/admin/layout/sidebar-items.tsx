@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Shapes, Users, UsersRound } from "lucide-react"
+import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -228,6 +228,40 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "employees/leave-requests",
                     },
                 ]
+            },
+        ]
+    },
+    {
+        groupLabel: "Library Management",
+        menuItems: [
+            {
+                title: "Overview",
+                url: "library",
+                icon: Library,
+            },
+            {
+                title: "Manage",
+                url: "library/books",
+                icon: BookOpenText,
+                items: [
+                    {
+                        title: "Add New Book",
+                        url: "library/books/new",
+                    },
+                    {
+                        title: "Books Catalog",
+                        url: "library/books",
+                    },
+                    {
+                        title: "Book Categories",
+                        url: "library/books/categories",
+                    }
+                ]
+            },
+            {
+                title: "Issues & Returns",
+                url: "library/issues-and-returns",
+                icon: Calendar,
             },
         ]
     }

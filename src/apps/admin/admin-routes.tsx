@@ -31,6 +31,12 @@ import StudentAttendancePage from './pages/students-management/attendance/studen
 import { StudentsLeaveRequestsPage } from './pages/students-management/attendance/leave-request.page';
 import { EmployeesLeaveRequestsPage } from './pages/attendances/employee-leave-request.page';
 import EmployeeAttendancePage from './pages/attendances/employee-attendance.page';
+import LibraryBookListPage from './pages/library/library-book-list.page';
+import AddLibraryBookPage from './pages/library/add-library-book.page';
+import IssuesAndReturnsPage from './pages/library/issuesAndReturns.page';
+import LibraryMembersPage from './pages/library/library-members.page';
+import LibraryOverviewPage from './pages/library/library-overview.page';
+import BookCategoriesPage from './pages/library/book-categories.page';
 
 const AdminRoutes = () => {
     return (
@@ -93,6 +99,16 @@ const AdminRoutes = () => {
                             <Route index element={<SingleStudentPage />} />
                             <Route path="edit" element={<EditStudentPage />} />
                         </Route>
+                    </Route>
+                    <Route path="library">
+                        <Route index element={<LibraryOverviewPage />} />
+                        <Route path="books">
+                            <Route index element={<LibraryBookListPage />} />
+                            <Route path="categories" element={<BookCategoriesPage />} />
+                            <Route path="new" element={<AddLibraryBookPage />} />
+                        </Route>
+                        <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
+                        <Route path="members" element={<LibraryMembersPage />} />
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

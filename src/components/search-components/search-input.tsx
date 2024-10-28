@@ -27,7 +27,7 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
         setSearchTerm(event.target.value);
     };
 
-    return (
+    return !!label ? (
         <div className="space-y-2">
             <Label htmlFor="search">{label ?? "Search"}</Label>
             <Input
@@ -38,5 +38,13 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
                 className={cn("min-w-[300px]", className)}
             />
         </div>
+    ) : (
+        <Input
+            type="search"
+            placeholder={placeholder ?? "Search..."}
+            value={searchTerm}
+            onChange={handleInputChange}
+            className={cn("min-w-[300px]", className)}
+        />
     )
 }
