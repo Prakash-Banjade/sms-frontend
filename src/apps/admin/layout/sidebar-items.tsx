@@ -196,10 +196,6 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Teacher List",
                         url: "teachers",
-                    },
-                    {
-                        title: "Teacher Attendance",
-                        url: "teachers/attendance",
                     }
                 ]
             },
@@ -215,10 +211,6 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Staffs List",
                         url: "staffs",
-                    },
-                    {
-                        title: "Staff Attendance",
-                        url: "staffs/attendance",
                     }
                 ]
             },

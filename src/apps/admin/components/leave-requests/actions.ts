@@ -28,8 +28,8 @@ export const useGetEmployeesLeaveRequests = ({
     options?: UseQueryOptions<TEmployeeLeaveRequestsResponse>
 }) => {
     const response = useFetchData<TEmployeeLeaveRequestsResponse>({
-        endpoint: QueryKey.LEAVE_REQUESTS + '/employees',
-        queryKey: queryString ? [QueryKey.LEAVE_REQUESTS, queryString] : [QueryKey.LEAVE_REQUESTS],
+        endpoint: QueryKey.LEAVE_REQUESTS + '/' + QueryKey.EMPLOYEES,
+        queryKey: queryString ? [QueryKey.LEAVE_REQUESTS, QueryKey.EMPLOYEES, queryString] : [QueryKey.LEAVE_REQUESTS, QueryKey.EMPLOYEES],
         queryString,
         options,
     })
