@@ -6,7 +6,6 @@ import { TStudentsWithAttendenceUpdate } from "@/types/student.type"
 import { useEffect, useState } from "react"
 import _ from 'lodash';
 import { Button } from "@/components/ui/button"
-import { useMutation } from "@tanstack/react-query"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { LoaderCircle } from "lucide-react"

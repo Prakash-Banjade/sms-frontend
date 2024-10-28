@@ -51,3 +51,33 @@ export type TUpdateAttendances = {
     status: EAttendanceStatus;
     date: string;
 }[]
+
+export type TEntityWithAttendance = {
+    id: string,
+    firstName: string,
+    lastName: string,
+    account: {
+        id: string
+    }
+    attendance: {
+        id: string
+        status: EAttendanceStatus,
+        date: string,
+    } | null;
+}
+
+export type TEntityWithAttendanceUpdate = {
+    id: string
+    firstName: string,
+    staffId?: number;
+    teacherId?: number;
+    lastName: string,
+    account: {
+        id: string
+    }
+    attendance: {
+        id?: string
+        status: EAttendanceStatus,
+        date: string,
+    } | null;
+}

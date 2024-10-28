@@ -1,4 +1,5 @@
-import { EAttendanceStatus, EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./global.type";
+import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
+import { EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./global.type";
 
 export type TStudent = {
     id: string,
@@ -23,13 +24,6 @@ export type TStudent = {
         id: string,
         url: string
     } | null,
-    // guardians: {
-    //     id: string,
-    //     firstName: string,
-    //     lastName: string,
-    //     email: string,
-    //     phone: string,
-    // }[],
     account: {
         id: string
     }
@@ -75,32 +69,10 @@ export type TSingleStudent = TStudent & {
     } | null;
 }
 
-export type TStudentsWithAttendenceResponse = {
-    id: string,
-    firstName: string,
-    lastName: string,
-    rollNo: number,
-    account: {
-        id: string
-    },
-    attendance: {
-        id: string,
-        status: EAttendanceStatus,
-        date: string
-    } | null;
-}[]
+export type TStudentsWithAttendenceResponse = (TEntityWithAttendance & {
+    rollNo: number
+})[]
 
-export type TStudentsWithAttendenceUpdate = {
-    id: string
-    rollNo: number,
-    firstName: string,
-    lastName: string,
-    account: {
-        id: string
-    }
-    attendance: {
-        id?: string
-        status: EAttendanceStatus,
-        date: string,
-    } | null;
-}[]
+export type TStudentsWithAttendenceUpdate = (TEntityWithAttendanceUpdate & {
+    rollNo: number
+})[]

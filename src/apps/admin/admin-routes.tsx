@@ -30,6 +30,7 @@ import SectionsListPage from './pages/classes/sections-list.page';
 import StudentAttendancePage from './pages/students-management/attendance/student-attendance.page';
 import { StudentsLeaveRequestsPage } from './pages/students-management/attendance/leave-request.page';
 import { EmployeesLeaveRequestsPage } from './pages/attendances/employee-leave-request.page';
+import EmployeeAttendancePage from './pages/attendances/employee-attendance.page';
 
 const AdminRoutes = () => {
     return (
@@ -76,8 +77,9 @@ const AdminRoutes = () => {
                         </Route>
                     </Route>
                     <Route path="employees">
+                        <Route index element={<EmployeeAttendancePage />} />
                         <Route path="leave-requests" element={<EmployeesLeaveRequestsPage />} />
-                        <Route path="attendance" element={<StudentAttendancePage />} />
+                        <Route path="attendance" element={<EmployeeAttendancePage />} />
                     </Route>
                     <Route path="students">
                         <Route path='new-registration' element={<NewRegistrationPage />} />
