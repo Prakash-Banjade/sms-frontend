@@ -126,7 +126,8 @@ AppForm.Cancel = function Cancel({ children, action, ...props }: AppFormActionPr
     );
 };
 
-AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '' }: TFormFieldProps<T>) {
+
+AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, placeholder = '', description = '', required = false, inputClassName = '', containerClassName = '', ...props }: AppFormInputProps<T>) {
     const { control } = useFormContext();
 
     return (
@@ -147,6 +148,7 @@ AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, p
                             {...field}
                             value={!!field.value ? formatDateNumeric({ date: new Date(field.value) }) : ''}
                             required={required}
+                            {...props}
                         />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}

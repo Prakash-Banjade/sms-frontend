@@ -4,7 +4,6 @@ import { Teacher, TSingleTeacher } from "./teacher.type";
 export type TStaff = Omit<Teacher, 'teacherId' | 'teacherFullName'> & {
     staffId: number,
     type: EStaff,
-    // staffFullName: string,
 }
 
 export type TStaffsResponse = {

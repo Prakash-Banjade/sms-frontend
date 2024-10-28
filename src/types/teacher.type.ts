@@ -10,6 +10,7 @@ export type Teacher = {
     gender: Gender,
     email: string,
     phone: string,
+    joinedDate: string,
     dob: string,
     profileImage: {
         id: string,

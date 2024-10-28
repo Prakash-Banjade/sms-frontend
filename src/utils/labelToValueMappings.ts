@@ -69,3 +69,15 @@ export const GuardianRelationMappings = {
     Guardian: "guardian",
     Other: "other",
 }
+
+export const StaffTypeMappings = {
+    Driver: "driver",
+    Labor: "labor",
+    Helper: "helper",
+    Peon: "peon",
+    Guard: "guard",
+    Librarian: "librarian",
+    Receptionist: "receptionist",
+    Accountant: "accountant",
+    Other: "other",
+}
