@@ -28,7 +28,8 @@ import EditStudentPage from './pages/students-management/student-edit.page';
 import { SingleStudentPage } from './pages/subjects/single-student.page';
 import SectionsListPage from './pages/classes/sections-list.page';
 import StudentAttendancePage from './pages/students-management/attendance/student-attendance.page';
-import LeaveRequestsPage from './pages/students-management/attendance/leave-request.page';
+import { StudentsLeaveRequestsPage } from './pages/students-management/attendance/leave-request.page';
+import { EmployeesLeaveRequestsPage } from './pages/attendances/employee-leave-request.page';
 
 const AdminRoutes = () => {
     return (
@@ -74,17 +75,21 @@ const AdminRoutes = () => {
                             <Route path="edit" element={<EditStaffPage />} />
                         </Route>
                     </Route>
+                    <Route path="employees">
+                        <Route path="leave-requests" element={<EmployeesLeaveRequestsPage />} />
+                        <Route path="attendance" element={<StudentAttendancePage />} />
+                    </Route>
                     <Route path="students">
                         <Route path='new-registration' element={<NewRegistrationPage />} />
                         <Route path="enrollments" element={<EnrollmentsPage />} />
                         <Route index element={<StudentsListPage />} />
+                        <Route path='attendance'>
+                            <Route index element={<StudentAttendancePage />} />
+                            <Route path='leave-requests' element={<StudentsLeaveRequestsPage />} />
+                        </Route>
                         <Route path=":id">
                             <Route index element={<SingleStudentPage />} />
                             <Route path="edit" element={<EditStudentPage />} />
-                        </Route>
-                        <Route path='attendance'>
-                            <Route index element={<StudentAttendancePage />} />
-                            <Route path='leave-requests' element={<LeaveRequestsPage />} />
                         </Route>
                     </Route>
                     {/* Add more admin-specific routes */}

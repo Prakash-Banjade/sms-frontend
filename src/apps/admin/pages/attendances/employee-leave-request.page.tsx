@@ -1,17 +1,17 @@
-import { useGetStudentsLeaveRequests } from "@/apps/admin/components/leave-requests/actions"
-import StudentLeaveRequestSearchFilters from "@/apps/admin/components/students-management/leave-requests/leave-request-search-filters"
-import { leaveRequestsColumns } from "@/apps/admin/components/students-management/leave-requests/leave-request.columns"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import { DataTable } from "@/components/data-table/data-table"
 import { createQueryString } from "@/utils/create-query-string"
 import { useSearchParams } from "react-router-dom"
+import { employeeLeaveRequestsColumns } from "../../components/attendances/employee-leave-request.columns"
+import EmployeeLeaveRequestSearchFilters from "../../components/attendances/leave-request-search-filters"
+import { useGetEmployeesLeaveRequests } from "../../components/leave-requests/actions"
 
 type Props = {}
 
-export function StudentsLeaveRequestsPage({ }: Props) {
+export function EmployeesLeaveRequestsPage({ }: Props) {
     return (
         <ContainerLayout
-            title="Leave Requests"
+            title="Employees Leave Requests"
             description="View all leave requests."
         >
             <LeaveRequestList />
@@ -22,11 +22,11 @@ export function StudentsLeaveRequestsPage({ }: Props) {
 function LeaveRequestList() {
     const [searchParams] = useSearchParams();
 
-    const { data, isLoading } = useGetStudentsLeaveRequests({
+    const { data, isLoading } = useGetEmployeesLeaveRequests({
         queryString: createQueryString({
-            classRoomId: searchParams.get('classRoomId'),
-            sectionId: searchParams.get('sectionId'),
             status: searchParams.get('status'),
+            employeeTypes: searchParams.get('type'),
+            search: searchParams.get('search'),
         })
     });
 
@@ -34,12 +34,10 @@ function LeaveRequestList() {
 
     return (
         <DataTable
-            columns={leaveRequestsColumns}
+            columns={employeeLeaveRequestsColumns}
             data={data?.data ?? []}
             meta={data?.meta}
-            filters={
-                <StudentLeaveRequestSearchFilters />
-            }
+            filters={<EmployeeLeaveRequestSearchFilters />}
         />
     )
 }

@@ -222,6 +222,21 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     }
                 ]
             },
+            {
+                title: "Attendance",
+                url: "employees/attendance",
+                icon: Users,
+                items: [
+                    {
+                        title: "View Attendance",
+                        url: "employees/attendance",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "employees/leave-requests",
+                    },
+                ]
+            },
         ]
     }
 ]

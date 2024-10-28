@@ -9,6 +9,10 @@ export enum Role {
     STUDENT = 'student',
     LIBRARIAN = 'librarian',
     STAFF = 'staff',
+    DRIVER = 'driver',
+    LABOR = 'labor',
+    HELPER = 'helper',
+    PEON = 'peon',
 }
 
 export type TCurrentUser = {
