@@ -225,7 +225,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
             {
                 title: "Attendance",
                 url: "employees/attendance",
-                icon: Users,
+                icon: Calendar,
                 items: [
                     {
                         title: "View Attendance",
