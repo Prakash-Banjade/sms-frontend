@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TSingleStudent, TStudentsResponse, TStudentsWithAttendenceResponse } from "@/types/student.type";
+import { TLibraryStudent, TSingleStudent, TStudentsResponse, TStudentsWithAttendenceResponse } from "@/types/student.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetStudent = ({
@@ -56,3 +56,27 @@ export const useGetStudentsWithAttendances = ({
 
     return response;
 }
+
+export const useGetLibraryStudent = ({
+    id,
+    queryString,
+    options,
+}: {
+    id: string;
+    queryString?: string;
+    options?: Partial<UseQueryOptions<TLibraryStudent>>
+}) => {
+    const response = useFetchData<TLibraryStudent>({
+        queryKey: [QueryKey.STUDENTS, QueryKey.LIBRARY, id],
+        endpoint: QueryKey.STUDENTS + '/' + QueryKey.LIBRARY,
+        id,
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+
+
+

@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { staffsColumns } from "../../components/staffs/staff.columns"
 import { useSearchParams } from "react-router-dom"
 import { useGetStaffs } from "../../components/staffs/actions"
+import StaffSearchFilters from "./staff-search-filters"
 
 type Props = {}
 
@@ -31,6 +32,7 @@ export const StaffsList = () => {
             columns={staffsColumns}
             data={data?.data ?? []}
             meta={data?.meta}
+            filters={<StaffSearchFilters />}
         />
     )
 }

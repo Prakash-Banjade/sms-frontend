@@ -6,9 +6,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Check, CircleDashed, LoaderCircle, MoreHorizontal, X } from "lucide-react"
-import { Link } from "react-router-dom"
-import { TooltipWrapper } from "@/components/ui/tooltip"
+import { Check, CircleDashed, LoaderCircle, MoreHorizontal, Trash, X } from "lucide-react"
 import { formatDateNumeric } from "@/utils/format-date"
 import { TStudentLeaveRequest } from "@/types/leave-request.type"
 import { Badge } from "@/components/ui/badge"
@@ -33,11 +31,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
         cell: ({ row }) => {
             const studentName = row.original?.account?.student?.firstName + ' ' + row.original?.account?.student?.lastName
 
-            return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/students/${row.original?.account?.student?.id}`} className="hover:text-blue-500 hover:underline">
-                    {studentName}
-                </Link>
-            </TooltipWrapper>
+            return <span>{studentName}</span>
         }
     },
     {
@@ -96,6 +90,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
             const [isOpen, setIsOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation();
+
             const [statusLoading, setStatusLoading] = useState({
                 [ELeaveRequestStatus.APPROVED]: false,
                 [ELeaveRequestStatus.REJECTED]: false,
@@ -110,11 +105,19 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
                     endpoint: QueryKey.LEAVE_REQUESTS + `/${row.original.id}/updateStatus`,
                     data: { status },
                     invalidateTags: [QueryKey.LEAVE_REQUESTS],
-                    toastOnSuccess: false,
-                    toastOnError: false,
                 });
 
                 setStatusLoading({ ...statusLoading, [status]: false });
+                setIsOpen(false);
+            };
+
+            const handleDelete = async () => {
+                await mutateAsync({
+                    method: "delete",
+                    endpoint: QueryKey.LEAVE_REQUESTS + `/${row.original.id}`,
+                    invalidateTags: [QueryKey.LEAVE_REQUESTS],
+                });
+
                 setIsOpen(false);
             };
 
@@ -154,6 +157,18 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
                                         Mark as Rejected
                                     </Button>
                                 }
+                                <Button
+                                    variant={'ghost'}
+                                    size={'sm'}
+                                    className="px-2 py-1.5 justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    disabled={isPending}
+                                    onClick={handleDelete}
+                                >
+                                    {
+                                        isPending ? <LoaderCircle className="animate-spin" /> : <Trash />
+                                    }
+                                    Delete
+                                </Button>
                             </section>
                         </DropdownMenuContent>
                     </DropdownMenu>

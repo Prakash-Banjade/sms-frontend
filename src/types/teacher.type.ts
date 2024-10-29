@@ -1,4 +1,6 @@
+import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
 import { EBloodGroup, EMaritalStatus, Gender, TMeta } from "./global.type";
+import { TStudentsWithAttendenceResponse } from "./student.type";
 
 export type Teacher = {
     id: string,
@@ -10,6 +12,7 @@ export type Teacher = {
     gender: Gender,
     email: string,
     phone: string,
+    joinedDate: string,
     dob: string,
     profileImage: {
         id: string,
@@ -36,3 +39,7 @@ export type TSingleTeacher = Omit<Teacher, 'teacherFullName'> & {
     accountName: string,
     accountNumber: string,
 }
+
+export type TeacherWithAttendanceResponse = (TEntityWithAttendance & {})[]
+
+export type TeacherWithAttendanceUpdate = (TEntityWithAttendanceUpdate & {})[]

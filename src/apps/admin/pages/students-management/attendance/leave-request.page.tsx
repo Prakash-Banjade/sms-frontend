@@ -1,4 +1,4 @@
-import { useGetLeaveRequests } from "@/apps/admin/components/leave-requests/actions"
+import { useGetStudentsLeaveRequests } from "@/apps/admin/components/leave-requests/actions"
 import StudentLeaveRequestSearchFilters from "@/apps/admin/components/students-management/leave-requests/leave-request-search-filters"
 import { leaveRequestsColumns } from "@/apps/admin/components/students-management/leave-requests/leave-request.columns"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom"
 
 type Props = {}
 
-export default function LeaveRequestsPage({ }: Props) {
+export function StudentsLeaveRequestsPage({ }: Props) {
     return (
         <ContainerLayout
             title="Leave Requests"
@@ -22,7 +22,7 @@ export default function LeaveRequestsPage({ }: Props) {
 function LeaveRequestList() {
     const [searchParams] = useSearchParams();
 
-    const { data, isLoading } = useGetLeaveRequests({
+    const { data, isLoading } = useGetStudentsLeaveRequests({
         queryString: createQueryString({
             classRoomId: searchParams.get('classRoomId'),
             sectionId: searchParams.get('sectionId'),

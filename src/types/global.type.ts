@@ -9,6 +9,10 @@ export enum Role {
     STUDENT = 'student',
     LIBRARIAN = 'librarian',
     STAFF = 'staff',
+    DRIVER = 'driver',
+    LABOR = 'labor',
+    HELPER = 'helper',
+    PEON = 'peon',
 }
 
 export type TCurrentUser = {
@@ -143,11 +147,6 @@ export enum ELeaveRequestStatus {
     REJECTED = 'rejected',
 }
 
-export enum ELibarryBookStatus {
-    RETURNED = 'returned',
-    PENDING = 'pending',
-}
-
 export enum EPaymentMethod {
     CASH = 'cash',
     CREDIT = 'credit',
@@ -185,4 +184,10 @@ export enum EDayOfWeek {
 export enum ERoutineType {
     CLASS = 'class',
     BREAK = 'break',
+}
+
+export enum EBookTransactionStatus {
+    Issued = 'issued',
+    Returned = 'returned',
+    Overdue = 'overdue',
 }

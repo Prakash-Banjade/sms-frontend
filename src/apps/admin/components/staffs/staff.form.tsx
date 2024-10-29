@@ -6,7 +6,7 @@ import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
+import { BloodGroupMappings, GenderMappings, MaritalStatusMappings, StaffTypeMappings } from "@/utils/labelToValueMappings";
 import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../schemas/staff.schema";
 
 type Props = {
@@ -89,6 +89,7 @@ export default function StaffForm(props: Props) {
                             placeholder="Select date of birth"
                             description="Date of birth of the staff"
                             required
+                            max={new Date().toISOString().split('T')[0]}
                         />
 
                         <AppForm.Select<staffSchemaType>
@@ -129,6 +130,15 @@ export default function StaffForm(props: Props) {
                             min={1}
                         />
 
+                        <AppForm.Select<staffSchemaType>
+                            name="type"
+                            label="Staff Type"
+                            placeholder="Select staff type"
+                            description="Type of the staff"
+                            options={Object.entries(StaffTypeMappings).map(([key, value]) => ({ label: key, value }))}
+                            required
+                        />
+
                         <AppForm.Text<staffSchemaType>
                             name="qualification"
                             label="Qualification"
@@ -152,6 +162,7 @@ export default function StaffForm(props: Props) {
                             placeholder="Select date of joining"
                             description="Date of joining"
                             required
+                            max={new Date().toISOString().split('T')[0]}
                         />
 
                         <div>

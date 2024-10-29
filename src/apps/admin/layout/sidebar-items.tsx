@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Shapes, Users, UsersRound } from "lucide-react"
+import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -196,10 +196,6 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Teacher List",
                         url: "teachers",
-                    },
-                    {
-                        title: "Teacher Attendance",
-                        url: "teachers/attendance",
                     }
                 ]
             },
@@ -215,12 +211,57 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Staffs List",
                         url: "staffs",
-                    },
-                    {
-                        title: "Staff Attendance",
-                        url: "staffs/attendance",
                     }
                 ]
+            },
+            {
+                title: "Attendance",
+                url: "employees/attendance",
+                icon: Calendar,
+                items: [
+                    {
+                        title: "View Attendance",
+                        url: "employees/attendance",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "employees/leave-requests",
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        groupLabel: "Library Management",
+        menuItems: [
+            {
+                title: "Overview",
+                url: "library",
+                icon: Library,
+            },
+            {
+                title: "Manage",
+                url: "library/books",
+                icon: BookOpenText,
+                items: [
+                    {
+                        title: "Add New Book",
+                        url: "library/books/new",
+                    },
+                    {
+                        title: "Books Catalog",
+                        url: "library/books",
+                    },
+                    {
+                        title: "Book Categories",
+                        url: "library/books/categories",
+                    }
+                ]
+            },
+            {
+                title: "Issues & Returns",
+                url: "library/issues-and-returns",
+                icon: Calendar,
             },
         ]
     }

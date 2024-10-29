@@ -46,11 +46,11 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
 const ProfileAvatar = ({
-  imageUrl,
+  src,
   name,
   className
 }: {
-  imageUrl: string | undefined
+  src: string | undefined
   name: string
   className?: string;
 }) => {
@@ -60,7 +60,7 @@ const ProfileAvatar = ({
   const secondInitial = words[1] ? words[1][0].toUpperCase() : '';
 
   return <Avatar className={className}>
-    <AvatarImage src={imageUrl} alt={name} />
+    <AvatarImage src={src} alt={name} />
     <AvatarFallback>
       {(firstInitial + secondInitial).slice(0, 2)}
     </AvatarFallback>

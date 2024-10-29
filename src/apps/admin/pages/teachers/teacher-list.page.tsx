@@ -3,6 +3,8 @@ import { DataTable } from "@/components/data-table/data-table"
 import { teachersColumns } from "../../components/teachers/teacher.columns"
 import { useSearchParams } from "react-router-dom"
 import { useGetTeachers } from "../../components/teachers/actions"
+import TeacherSearchFilters from "./teacher-search-filters"
+import { createQueryString } from "@/utils/create-query-string"
 
 type Props = {}
 
@@ -21,7 +23,10 @@ export const TeachersList = () => {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetTeachers({
-        queryString: searchParams.toString(),
+        queryString: createQueryString({
+            search: searchParams.get('search'),
+            teacherId: searchParams.get('teacherId'),
+        }),
     });
 
     if (isLoading) return <div>Loading...</div>;
@@ -31,6 +36,7 @@ export const TeachersList = () => {
             columns={teachersColumns}
             data={data?.data ?? []}
             meta={data?.meta}
+            filters={<TeacherSearchFilters />}
         />
     )
 }

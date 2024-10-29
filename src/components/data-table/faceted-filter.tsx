@@ -23,7 +23,8 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 
 interface Option {
     label: string
-    value: string
+    value: string;
+    count?: number;
 }
 
 interface FacetedFilterProps {
@@ -104,7 +105,7 @@ export function FacetedFilter({
                                 return (
                                     <CommandItem
                                         key={option.value}
-                                        onSelect={handleSelectStatus}
+                                        onSelect={() => handleSelectStatus(option.value)}
                                     >
                                         <div
                                             className={cn(
@@ -117,6 +118,11 @@ export function FacetedFilter({
                                             <CheckIcon className="size-4" aria-hidden="true" />
                                         </div>
                                         <span className="capitalize">{option.label}</span>
+                                        {option.count && (
+                                            <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
+                                                {option.count}
+                                            </span>
+                                        )}
                                     </CommandItem>
                                 )
                             })}

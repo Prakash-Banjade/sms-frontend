@@ -92,6 +92,7 @@ export default function StudentForm(props: Props) {
                             placeholder="Select date of birth"
                             description="Date of birth of the student"
                             required
+                            max={new Date().toISOString().split('T')[0]}
                         />
 
                         <AppForm.Select<studentSchemaType>

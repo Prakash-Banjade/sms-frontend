@@ -67,6 +67,22 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
         }
     },
     {
+        header: "Staff Type",
+        cell: ({ row }) => {
+            return <span className="capitalize">
+                {row.original.type}
+            </span>
+        }
+    },
+    {
+        header: "Joined Date",
+        cell: ({ row }) => {
+            return <span>
+                {formatDate({ date: new Date(row.original.joinedDate) })}
+            </span>
+        }
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {

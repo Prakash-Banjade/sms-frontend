@@ -28,7 +28,16 @@ import EditStudentPage from './pages/students-management/student-edit.page';
 import { SingleStudentPage } from './pages/subjects/single-student.page';
 import SectionsListPage from './pages/classes/sections-list.page';
 import StudentAttendancePage from './pages/students-management/attendance/student-attendance.page';
-import LeaveRequestsPage from './pages/students-management/attendance/leave-request.page';
+import { StudentsLeaveRequestsPage } from './pages/students-management/attendance/leave-request.page';
+import { EmployeesLeaveRequestsPage } from './pages/attendances/employee-leave-request.page';
+import EmployeeAttendancePage from './pages/attendances/employee-attendance.page';
+import LibraryBookListPage from './pages/library/library-book-list.page';
+import AddLibraryBookPage from './pages/library/add-library-book.page';
+import IssuesAndReturnsPage from './pages/library/issuesAndReturns.page';
+import LibraryMembersPage from './pages/library/library-members.page';
+import LibraryOverviewPage from './pages/library/library-overview.page';
+import BookCategoriesPage from './pages/library/book-categories.page';
+import SingleSubjectPage from './pages/subjects/single-subject.page';
 
 const AdminRoutes = () => {
     return (
@@ -48,6 +57,7 @@ const AdminRoutes = () => {
                     <Route path="subjects">
                         <Route index element={<SubjectsListPage />} />
                         <Route path="new" element={<AddSubjectPage />} />
+                        <Route path=":id" element={<SingleSubjectPage />} />
                     </Route>
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />
@@ -74,18 +84,33 @@ const AdminRoutes = () => {
                             <Route path="edit" element={<EditStaffPage />} />
                         </Route>
                     </Route>
+                    <Route path="employees">
+                        <Route index element={<EmployeeAttendancePage />} />
+                        <Route path="leave-requests" element={<EmployeesLeaveRequestsPage />} />
+                        <Route path="attendance" element={<EmployeeAttendancePage />} />
+                    </Route>
                     <Route path="students">
                         <Route path='new-registration' element={<NewRegistrationPage />} />
                         <Route path="enrollments" element={<EnrollmentsPage />} />
                         <Route index element={<StudentsListPage />} />
+                        <Route path='attendance'>
+                            <Route index element={<StudentAttendancePage />} />
+                            <Route path='leave-requests' element={<StudentsLeaveRequestsPage />} />
+                        </Route>
                         <Route path=":id">
                             <Route index element={<SingleStudentPage />} />
                             <Route path="edit" element={<EditStudentPage />} />
                         </Route>
-                        <Route path='attendance'>
-                            <Route index element={<StudentAttendancePage />} />
-                            <Route path='leave-requests' element={<LeaveRequestsPage />} />
+                    </Route>
+                    <Route path="library">
+                        <Route index element={<LibraryOverviewPage />} />
+                        <Route path="books">
+                            <Route index element={<LibraryBookListPage />} />
+                            <Route path="categories" element={<BookCategoriesPage />} />
+                            <Route path="new" element={<AddLibraryBookPage />} />
                         </Route>
+                        <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
+                        <Route path="members" element={<LibraryMembersPage />} />
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

@@ -89,6 +89,7 @@ export default function TeacherForm(props: Props) {
                             placeholder="Select date of birth"
                             description="Date of birth of the teacher"
                             required
+                            max={new Date().toISOString().split('T')[0]}
                         />
 
                         <AppForm.Select<teacherSchemaType>
@@ -152,6 +153,7 @@ export default function TeacherForm(props: Props) {
                             placeholder="Select date of joining"
                             description="Date of joining"
                             required
+                            max={new Date().toISOString().split('T')[0]}
                         />
 
                         <div>

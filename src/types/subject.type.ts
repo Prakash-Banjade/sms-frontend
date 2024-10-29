@@ -1,4 +1,4 @@
-import { TMeta } from "./global.type";
+import { ESubjectChapterPriority, TMeta } from "./global.type";
 
 export type TSubject = {
     id: string,
@@ -24,5 +24,20 @@ export type TSubject = {
 
 export type TSubjectsResponse = {
     data: TSubject[],
+    meta: TMeta;
+}
+
+export type TSubjectChapter = {
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    chapterNo: number,
+    title: string,
+    content: string,
+    priority: ESubjectChapterPriority;
+}
+
+export type TSubjectChaptersResponse = {
+    data: TSubjectChapter[],
     meta: TMeta;
 }
