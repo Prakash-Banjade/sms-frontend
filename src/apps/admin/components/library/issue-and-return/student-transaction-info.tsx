@@ -24,7 +24,7 @@ export default function Library_StudentTransactionInfo({ }: Props) {
     if (!!searchParams.get('studentID') && !isLoading && !data) return <div className="h-[400px] grid place-items-center text-muted-foreground">No data found.</div>
 
     return (
-        <div className="grid grid-cols-1 @6xl:grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-1 @7xl:grid-cols-3 @7xl:gap-x-6 gap-y-6 mt-6"> 
             <Library_StudentBasicInfo resetSelectedTransactions={() => setSelectedTransactions([])} student={data} selectedTransactions={selectedTransactions} />
             <div className="col-span-2">
                 <Library_StudentTransactionTable selectedTransactions={selectedTransactions} setSelectedTransactions={setSelectedTransactions} />

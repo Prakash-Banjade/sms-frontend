@@ -7,34 +7,32 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-type Props = ({
-    setIsOpen?: undefined;
-} | {
-    subjectChapterId?: string;
+type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) & {
-    defaultValues?: Partial<subjectChapterSchemaType>;
+    subjectChapterId?: string;
+    defaultValues?: subjectChapterSchemaType;
 }
 
 export default function SubjectChapterForm(props: Props) {
     const params = useParams();
-    const id = params.id;
+    const subjectId = params.id!; // this component is only used in the subject page
 
     const form = useForm<subjectChapterSchemaType>({
         resolver: zodResolver(subjectChapterSchema),
         defaultValues: props?.defaultValues ?? {
             ...subjectChapterFormDefaultValues,
-            subjectId: params.id,
+            subjectId,
         },
     })
 
     const { mutateAsync } = useAppMutation<Partial<subjectChapterSchemaType>, any>();
 
     async function onSubmit(values: subjectChapterSchemaType) {
-        const method = ((!!props.setIsOpen && props.subjectChapterId) || params.id) ? "patch" : "post";
+        const method = !!props.subjectChapterId ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
+            id: props.subjectChapterId,
             endpoint: QueryKey.SUBJECT_CHAPTERS,
             data: values,
             invalidateTags: [QueryKey.SUBJECT_CHAPTERS],
@@ -47,7 +45,7 @@ export default function SubjectChapterForm(props: Props) {
 
     const onDialogClose = () => {
         form.reset();
-        props.setIsOpen && props.setIsOpen(false);
+        props.setIsOpen(false);
     }
 
     return (
@@ -88,7 +86,7 @@ export default function SubjectChapterForm(props: Props) {
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
-                            !!id ? "Save changes" : "Add Chapter"
+                            !!props.subjectChapterId ? "Save changes" : "Add Chapter"
                         }
                     </AppForm.Submit>
                 </section>

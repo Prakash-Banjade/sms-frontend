@@ -70,8 +70,8 @@ export default function DormitoryForm(props: Props) {
 
     return (
         <AppForm schema={dormitoryForm} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <section className="grid 2xl:grid-cols-2 gap-8 grid-cols-1">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 @container">
+                <section className="grid @xl:grid-cols-2 gap-8 grid-cols-1">
                     <AppForm.Text<dormitoryFormType>
                         name="name"
                         label="Name"

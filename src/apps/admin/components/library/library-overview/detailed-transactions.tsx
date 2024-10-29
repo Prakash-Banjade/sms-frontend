@@ -13,6 +13,7 @@ import TableHeadings from "@/components/data-table/table-headings"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useState } from "react"
 import SearchInput from "@/components/search-components/search-input"
+import { differenceInDays } from "date-fns"
 
 const nonResetFilters = ['take', 'page', 'search']
 
@@ -102,24 +103,28 @@ export default function DetailedLibraryBookTransactions() {
                         <TableHeadings headings={['S.N', 'Book Code', 'Book Name', 'Student Name', 'Student ID', 'Class', 'Issue Date', 'Due Date', 'Return Date', 'Status']} />
                     </TableHeader>
                     <TableBody>
-                        {data?.data?.map((transaction, index) => (
-                            <TableRow key={transaction.id}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{transaction.bookCode}</TableCell>
-                                <TableCell>{transaction.bookName}</TableCell>
-                                <TableCell>{transaction.studentName}</TableCell>
-                                <TableCell>{transaction.studentId}</TableCell>
-                                <TableCell>{transaction.parentClassName ?? transaction.classRoomName}</TableCell>
-                                <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
-                                <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
-                                <TableCell>{transaction.returnedAt || '-'}</TableCell>
-                                <TableCell>
-                                    <Badge variant={transaction.returnedAt ? 'success' : 'warning'} className="text-sm">
-                                        {transaction.returnedAt ? 'Returned' : 'Issued'}
-                                    </Badge>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {data?.data?.map((transaction, index) => {
+                            const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0 && !transaction.returnedAt;
+
+                            return (
+                                <TableRow key={transaction.id}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{transaction.bookCode}</TableCell>
+                                    <TableCell>{transaction.bookName}</TableCell>
+                                    <TableCell>{transaction.studentName}</TableCell>
+                                    <TableCell>{transaction.studentId}</TableCell>
+                                    <TableCell>{transaction.parentClassName ?? transaction.classRoomName}</TableCell>
+                                    <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
+                                    <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
+                                    <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>
+                                    <TableCell>
+                                        <Badge variant={isOverDue ? 'destructiveOutline' : transaction.returnedAt ? 'success' : 'info'} className="text-sm">
+                                            {isOverDue ? 'Overdue' : transaction.returnedAt ? 'Returned' : 'Issued'}
+                                        </Badge>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
                         {
                             data?.data?.length === 0 && <TableRow>
                                 <TableCell colSpan={10} className="h-24 text-center">

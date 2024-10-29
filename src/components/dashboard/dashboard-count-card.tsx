@@ -3,15 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { LucideProps } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '../ui/skeleton';
 
 type Props = {
     title: string;
     count: number;
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
     navigateTo?: string;
+    isLoading?: boolean;
 }
 
-export default function DashboardCountCard({ count, title, icon: Icon, navigateTo }: Props) {
+export default function DashboardCountCard({ count, title, icon: Icon, navigateTo, isLoading = false }: Props) {
     const navigate = useNavigate();
 
     return (
@@ -21,7 +23,13 @@ export default function DashboardCountCard({ count, title, icon: Icon, navigateT
                 {Icon && <Icon className="h-6 w-6 text-muted-foreground" />}
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">{count.toLocaleString()}</div>
+                {
+                    isLoading ? (
+                        <Skeleton className='h-10 w-20' />
+                    ) : (
+                        <div className="text-2xl font-bold">{count}</div>
+                    )
+                }
             </CardContent>
         </Card>
     )

@@ -80,6 +80,7 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
                         title="Edit Library Book"
+                        className="w-[97%] max-w-[600px]"
                     >
                         <LibraryBookForm libraryBookId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={{
                             ...row.original,

@@ -96,7 +96,7 @@ export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
                                     </HoverCardTrigger>
                                     <HoverCardContent className="w-80">
                                         <div className="flex justify-between space-x-4">
-                                            <ProfileAvatar imageUrl={student.profileImage?.url} name={studentName} />
+                                            <ProfileAvatar src={student.profileImage?.url} name={studentName} />
                                             <div className="space-y-1">
                                                 <h4 className="text-sm font-semibold">{studentName}</h4>
                                                 <p className="text-sm">

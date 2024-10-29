@@ -15,6 +15,7 @@ import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import { TSubject } from "@/types/subject.type"
 import SubjectForm from "./subject-form"
 import { Link } from "react-router-dom"
+import { TooltipWrapper } from "@/components/ui/tooltip"
 
 export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
@@ -30,9 +31,11 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         accessorKey: "subjectName",
         cell: ({ row }) => {
             return (
-                <Link to={`${row.original.id}`} className="hover:underline hover:text-blue-500">
-                    <span>{row.original.subjectName}</span>
-                </Link>
+                <TooltipWrapper label="Click to view">
+                    <Link to={`${row.original.id}`} className="hover:underline hover:text-blue-500">
+                        <span>{row.original.subjectName}</span>
+                    </Link>
+                </TooltipWrapper>
             )
         }
     },
