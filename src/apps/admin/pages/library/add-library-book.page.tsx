@@ -60,7 +60,7 @@ export const RecentlyAddedBooks = () => {
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{book.bookCode}</TableCell>
                                 <TableCell>{book.bookName}</TableCell>
-                                <TableCell>{book.category?.name}</TableCell>
+                                <TableCell>{book.category?.name || 'N/A'}</TableCell>
                                 <TableCell>{book.publisherName || 'N/A'}</TableCell>
                                 <TableCell>{book.publicationYear}</TableCell>
                             </TableRow>

@@ -81,7 +81,10 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
                         setIsOpen={setIsEditOpen}
                         title="Edit Library Book"
                     >
-                        <LibraryBookForm libraryBookId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
+                        <LibraryBookForm libraryBookId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={{
+                            ...row.original,
+                            categoryId: row.original.category?.id,
+                        }} />
                     </ResponsiveDialog>
 
                     <ResponsiveAlertDialog
