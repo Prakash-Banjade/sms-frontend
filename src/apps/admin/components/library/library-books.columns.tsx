@@ -53,7 +53,7 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
         accessorKey: "copiesCount",
         cell: ({ row }) => {
             return <span>
-                {row.original.copiesCount} / {row.original.copiesCount}
+                {row.original.copiesCount - row.original.issuedCount} / {row.original.copiesCount}
             </span>
         }
     },
