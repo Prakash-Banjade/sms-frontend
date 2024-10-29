@@ -2,6 +2,7 @@ import DashboardCountCard from "@/components/dashboard/dashboard-count-card"
 import { BookOpen, Calendar, RotateCcw, UserCheck } from "lucide-react"
 import RecentLibraryBookTransactions from "../../components/library/library-overview/recent-transactions"
 import DetailedLibraryBookTransactions from "../../components/library/library-overview/detailed-transactions"
+import Library_StudentsOverview from "../../components/library/library-overview/students-overview"
 
 export default function LibraryOverviewPage() {
     return (
@@ -13,7 +14,12 @@ export default function LibraryOverviewPage() {
                 <DashboardCountCard title="Overdue Books" count={15} icon={Calendar} />
             </div>
 
-            <RecentLibraryBookTransactions />
+            <section className="mb-6 grid grid-cols-1 @4xl:grid-cols-3 @4xl:gap-x-6 gap-y-6">
+                <div className="col-span-2">
+                    <RecentLibraryBookTransactions />
+                </div>
+                <Library_StudentsOverview />
+            </section>
 
             <DetailedLibraryBookTransactions />
         </div>

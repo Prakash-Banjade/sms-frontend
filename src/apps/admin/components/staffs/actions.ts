@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TSingleStaff, TStaffsResponse } from "@/types/staff.type";
+import { StaffWithAttendanceResponse, TSingleStaff, TStaffsResponse } from "@/types/staff.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetStaff = ({
@@ -32,6 +32,23 @@ export const useGetStaffs = ({
 }) => {
     const response = useFetchData<TStaffsResponse>({
         endpoint: QueryKey.STAFFS,
+        queryKey: queryString ? [QueryKey.STAFFS, queryString] : [QueryKey.STAFFS],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetStaffsWithAttendances = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<StaffWithAttendanceResponse>>
+}) => {
+    const response = useFetchData<StaffWithAttendanceResponse>({
+        endpoint: QueryKey.STAFFS + '/' + QueryKey.ATTENDANCES,
         queryKey: queryString ? [QueryKey.STAFFS, queryString] : [QueryKey.STAFFS],
         queryString,
         options,

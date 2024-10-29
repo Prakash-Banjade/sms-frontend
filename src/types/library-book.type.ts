@@ -49,3 +49,18 @@ export type TLibraryBookTransactionsResponse = {
     data: TLibraryBookTransaction[],
     meta: TMeta;
 }
+
+export type TStudentTransaction = {
+    id: string,
+    dueDate: string,
+    returnedAt: string | null,
+    renewals: number,
+    createdAt: string,
+    bookName: string,
+    bookCode: string
+}
+
+export type TStudentTransactionsResponse = {
+    data: TStudentTransaction[],
+    meta: TMeta;
+}

@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { useGetBookTransactions } from "../actions";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ export default function RecentLibraryBookTransactions() {
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <Card className="mb-6">
+        <Card className="h-full">
             <CardHeader>
                 <CardTitle>Recent Transactions</CardTitle>
                 <CardDescription>Overview of the latest book transactions</CardDescription>

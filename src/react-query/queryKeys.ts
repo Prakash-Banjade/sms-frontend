@@ -22,6 +22,7 @@ export enum QueryKey {
     LEAVE_REQUESTS = "leave-requests",
     EMPLOYEES = "employees",
     LIBRARY_BOOKS = "library-books",
+    LIBRARY = "library",
     BOOK_TRANSACTIONS = "book-transactions",
     BOOK_CATEGORIES = "book-categories",
 };

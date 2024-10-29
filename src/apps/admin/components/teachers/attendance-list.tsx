@@ -7,7 +7,7 @@ import { LoaderCircle } from "lucide-react"
 import { TeacherWithAttendanceResponse } from "@/types/teacher.type"
 import EmployeeAttendanceTable from "../attendances/employee-attendance-table";
 import GetEmployeesAttendancesForm from "../attendances/get-employee-attendances-form";
-import { useGetTeachersWithAttendances } from "../students-management/student-actions";
+import { useGetTeachersWithAttendances } from "./actions";
 
 interface IAttendanceListProps {
     searchQuery: string | undefined

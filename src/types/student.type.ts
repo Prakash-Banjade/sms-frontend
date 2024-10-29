@@ -76,3 +76,15 @@ export type TStudentsWithAttendenceResponse = (TEntityWithAttendance & {
 export type TStudentsWithAttendenceUpdate = (TEntityWithAttendanceUpdate & {
     rollNo: number
 })[]
+
+export type TLibraryStudent = {
+    id: string,
+    name: string,
+    rollNo: number,
+    phone: string,
+    email: string,
+    profileImageUrl: string | null,
+    classRoom: string,
+    parentClass: string | null,
+    transactionCount: string;
+}

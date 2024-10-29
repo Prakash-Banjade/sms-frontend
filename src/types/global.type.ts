@@ -147,11 +147,6 @@ export enum ELeaveRequestStatus {
     REJECTED = 'rejected',
 }
 
-export enum ELibarryBookStatus {
-    RETURNED = 'returned',
-    PENDING = 'pending',
-}
-
 export enum EPaymentMethod {
     CASH = 'cash',
     CREDIT = 'credit',
