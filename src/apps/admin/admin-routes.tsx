@@ -37,6 +37,7 @@ import IssuesAndReturnsPage from './pages/library/issuesAndReturns.page';
 import LibraryMembersPage from './pages/library/library-members.page';
 import LibraryOverviewPage from './pages/library/library-overview.page';
 import BookCategoriesPage from './pages/library/book-categories.page';
+import SingleSubjectPage from './pages/subjects/single-subject.page';
 
 const AdminRoutes = () => {
     return (
@@ -56,6 +57,7 @@ const AdminRoutes = () => {
                     <Route path="subjects">
                         <Route index element={<SubjectsListPage />} />
                         <Route path="new" element={<AddSubjectPage />} />
+                        <Route path=":id" element={<SingleSubjectPage />} />
                     </Route>
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />

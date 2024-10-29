@@ -14,6 +14,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import { TSubject } from "@/types/subject.type"
 import SubjectForm from "./subject-form"
+import { Link } from "react-router-dom"
 
 export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
@@ -27,6 +28,13 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
         header: "Subject name",
         accessorKey: "subjectName",
+        cell: ({ row }) => {
+            return (
+                <Link to={`${row.original.id}`} className="hover:underline hover:text-blue-500">
+                    <span>{row.original.subjectName}</span>
+                </Link>
+            )
+        }
     },
     {
         header: "Class",

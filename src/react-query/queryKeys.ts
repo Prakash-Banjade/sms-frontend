@@ -12,6 +12,7 @@ export enum QueryKey {
     SECTIONS = "sections",
     IMAGES = "upload/images",
     SUBJECTS = 'subjects',
+    SUBJECT_CHAPTERS = 'subject-chapters',
     CLASSROUTINE = 'class-routines',
     ROOM_TYPES = "dormitory-system/room-types",
     DORMITORY = "dormitory-system/dormitories",
