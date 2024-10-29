@@ -64,3 +64,17 @@ export type TStudentTransactionsResponse = {
     data: TStudentTransaction[],
     meta: TMeta;
 }
+
+export type TLibraryOverviewCount = {
+    booksCount: number,
+    transactionCount: number,
+    issuedCount: number,
+    overdueCount: number,
+    studentsCount: number,
+    issuedStudentCount: number,
+    topBooks: {
+        bookId: string,
+        bookName: string,
+        transactionCount: string
+    }[]
+}

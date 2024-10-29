@@ -36,7 +36,7 @@ export default function RecentLibraryBookTransactions() {
                                     <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                                     <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>
                                     <TableCell>
-                                        <Badge variant={isOverDue ? 'destructiveOutline' : transaction.returnedAt ? 'success' : 'warning'} className="text-sm">
+                                        <Badge variant={isOverDue ? 'destructiveOutline' : transaction.returnedAt ? 'success' : 'info'} className="text-sm">
                                             {isOverDue ? 'Overdue' : transaction.returnedAt ? 'Returned' : 'Issued'}
                                         </Badge>
                                     </TableCell>

@@ -18,7 +18,7 @@ const badgeVariants = cva(
         outline: "text-foreground",
         success: "font-base text-green-700 bg-green-50 ring-green-600/20 dark:text-green-50 dark:bg-green-700 dark:ring-green-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap",
         info: "font-base text-cyan-700 bg-cyan-50 ring-cyan-600/20 dark:text-cyan-50 dark:bg-cyan-700 dark:ring-cyan-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap",
-        warning: "bg-warning text-warning-foreground hover:bg-warning/80",
+        warning: "bg-warning text-warning-foreground px-2 py-0.5 text-xs font-semibold ring-1 ring-inset ring-warning-foreground/20 whitespace-nowrap", 
       },
     },
     defaultVariants: {

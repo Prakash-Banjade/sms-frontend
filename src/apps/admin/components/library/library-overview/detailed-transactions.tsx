@@ -118,7 +118,7 @@ export default function DetailedLibraryBookTransactions() {
                                     <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
                                     <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>
                                     <TableCell>
-                                        <Badge variant={isOverDue ? 'destructive' : transaction.returnedAt ? 'success' : 'warning'} className="text-sm">
+                                        <Badge variant={isOverDue ? 'destructiveOutline' : transaction.returnedAt ? 'success' : 'info'} className="text-sm">
                                             {isOverDue ? 'Overdue' : transaction.returnedAt ? 'Returned' : 'Issued'}
                                         </Badge>
                                     </TableCell>

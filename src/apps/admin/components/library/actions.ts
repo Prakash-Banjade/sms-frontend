@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TLibraryBook, TLibraryBookesResponse, TLibraryBookTransactionsResponse, TStudentTransactionsResponse } from "@/types/library-book.type";
+import { TLibraryBook, TLibraryBookesResponse, TLibraryBookTransactionsResponse, TLibraryOverviewCount, TStudentTransactionsResponse } from "@/types/library-book.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetLibraryBook = ({
@@ -69,6 +69,15 @@ export const useGetStudentTransactions = ({
         queryKey: queryString ? [QueryKey.BOOK_TRANSACTIONS, queryString] : [QueryKey.BOOK_TRANSACTIONS],
         queryString,
         options,
+    })
+
+    return response;
+}
+
+export const useGetLibraryOverviewCount = () => {
+    const response = useFetchData<TLibraryOverviewCount>({
+        endpoint: QueryKey.LIBRARY_BOOKS + '/count',
+        queryKey: [QueryKey.LIBRARY_BOOKS, 'count'],
     })
 
     return response;
