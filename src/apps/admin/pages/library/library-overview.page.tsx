@@ -17,7 +17,7 @@ export default function LibraryOverviewPage() {
                 <DashboardCountCard title="Overdue Books" count={count?.overdueCount || 0} icon={Calendar} isLoading={isLoading} />
             </div>
 
-            <section className="mb-6 grid grid-cols-1 @4xl:grid-cols-3 @4xl:gap-x-6 gap-y-6">
+            <section className="mb-6 grid grid-cols-1 @7xl:grid-cols-3 @7xl:gap-x-6 gap-y-6">
                 <div className="col-span-2">
                     <RecentLibraryBookTransactions />
                 </div>

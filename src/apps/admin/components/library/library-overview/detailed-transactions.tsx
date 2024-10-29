@@ -104,7 +104,7 @@ export default function DetailedLibraryBookTransactions() {
                     </TableHeader>
                     <TableBody>
                         {data?.data?.map((transaction, index) => {
-                            const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0;
+                            const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0 && !transaction.returnedAt;
 
                             return (
                                 <TableRow key={transaction.id}>
