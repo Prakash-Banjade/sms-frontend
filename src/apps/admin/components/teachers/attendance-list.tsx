@@ -90,7 +90,7 @@ function AttendanceList({ searchQuery, attendances, setAttendances }: IAttendanc
     return (
         <>
             <EmployeeAttendanceTable attendances={attendances} setAttendances={setAttendances} />
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-5">
                 {
                     !!_.differenceWith(attendances, data, _.isEqual)?.length && <Button className="w-fit" onClick={handleSaveAttendances} disabled={isPending}>
                         {

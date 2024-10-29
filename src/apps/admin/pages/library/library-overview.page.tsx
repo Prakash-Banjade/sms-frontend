@@ -9,7 +9,7 @@ export default function LibraryOverviewPage() {
     const { data: count, isLoading } = useGetLibraryOverviewCount();
 
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto @container">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
                 <DashboardCountCard title="Total Books" count={count?.booksCount || 0} icon={BookOpen} navigateTo="books" isLoading={isLoading} />
                 <DashboardCountCard title="Total Transactions" count={count?.transactionCount || 0} icon={ArrowLeftRight} isLoading={isLoading} />

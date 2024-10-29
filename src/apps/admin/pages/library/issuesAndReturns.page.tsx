@@ -19,7 +19,7 @@ export default function BookIssuesAndReturnPage({ }: Props) {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto @container">
 
       <Card>
         <CardContent className="p-6">

@@ -8,12 +8,14 @@ export const SingleStudentPage = () => {
   if (!params.id) return <Navigate to="/" />; // TODO: provide a meaningful route
 
   return (
-    <div className="container mx-auto flex gap-6 @4xl/main:flex-row flex-col items-start">
-      <div className="max-w-4xl w-full">
-        <StudentInfoView id={params.id} />
-      </div>
-      <div className="grow">
-        <StudentAttendanceView />
+    <div className="@container">
+      <div className="container mx-auto flex gap-6 @4xl:flex-row flex-col items-start">
+        <div className="max-w-4xl w-full">
+          <StudentInfoView id={params.id} />
+        </div>
+        <div className="grow">
+          <StudentAttendanceView />
+        </div>
       </div>
     </div>
   );
