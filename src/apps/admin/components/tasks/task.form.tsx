@@ -98,7 +98,27 @@ export default function TaskForm(props: Props) {
 
                     <ClassSectionFormField />
 
-                    <AppForm.DynamicSelect<taskSchemaType>
+                    <AppForm.DynamicMultiSelect<taskSchemaType>
+                        name="subjectId"
+                        label="Subject"
+                        placeholder="Select subject"
+                        description="Select the subject"
+                        fetchOptions={{
+                            endpoint: QueryKey.SUBJECTS + '/options',
+                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                            queryString: createQueryString({
+                                classRoomId: form.watch('classRoomId'),
+                            }),
+                            options: {
+                                enabled: !!form.watch('classRoomId'),
+                            }
+                        }}
+                        labelKey={'subjectName'}
+                        disableOnNoOption
+                        required
+                    />
+                    
+                    {/* <AppForm.DynamicSelect<taskSchemaType>
                         name="subjectId"
                         label="Subject"
                         placeholder="Select subject"
@@ -115,7 +135,7 @@ export default function TaskForm(props: Props) {
                         }}
                         labelKey={'subjectName'}
                         required
-                    />
+                    /> */}
 
                     <AppForm.Number<taskSchemaType>
                         name="marks"
