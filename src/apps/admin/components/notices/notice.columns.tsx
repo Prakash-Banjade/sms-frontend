@@ -12,9 +12,10 @@ import { useState } from "react"
 import { TNotice } from "@/types/notice.type"
 import { formatDate } from "@/utils/format-date"
 import { useAppMutation } from "@/hooks/useAppMutation"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { QueryKey } from "@/react-query/queryKeys"
+import { TooltipWrapper } from "@/components/ui/tooltip"
 
 export const noticesColumns: ColumnDef<TNotice>[] = [
     {
@@ -24,6 +25,15 @@ export const noticesColumns: ColumnDef<TNotice>[] = [
     {
         header: "Title",
         accessorKey: "title",
+        cell: ({ row }) => {
+            return (
+                <TooltipWrapper label="Click to view">
+                    <Link to={`/admin/notices/${row.original.id}`} className="hover:text-blue-500 hover:underline">
+                        {row.original.title}
+                    </Link>
+                </TooltipWrapper>
+            )
+        }
     },
     {
         header: "Created at",

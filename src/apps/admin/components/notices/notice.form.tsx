@@ -1,4 +1,7 @@
 import AppForm from "@/components/forms/app-form"
+import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
@@ -43,12 +46,14 @@ export default function NoticeForm(props: Props) {
             method,
             endpoint: QueryKey.NOTICES,
             id: props.noticeId,
-            data: getDirtyValues(values, form),
+            data: values,
             invalidateTags: [QueryKey.NOTICES],
         });
 
-        if (response?.data?.message) {
-            props.noticeId && navigate(`/admin/notices`);
+        const id = response?.data?.id;
+
+        if (!!id) {
+            navigate(`/admin/notices/${id}`);
         }
     }
 
@@ -61,6 +66,32 @@ export default function NoticeForm(props: Props) {
                     placeholder={`e.g. Dashain Leave`}
                     description="Enter the name of the notice."
                     required
+                />
+
+                <FormField
+                    control={form.control}
+                    name={'description'}
+                    render={() => (
+                        <FormItem>
+                            <FormLabel>
+                                Description
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
+                            <FormControl>
+                                <MinimalTiptapEditor
+                                    value={form.getValues("description")}
+                                    onChange={(value) => form.setValue("description", value as string)}
+                                    className="w-full"
+                                    editorContentClassName="p-5"
+                                    output="html"
+                                    placeholder="Type notice description here..."
+                                    editable={true}
+                                    editorClassName="focus:outline-none"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
                 />
 
                 <section className="flex gap-4 justify-end">
