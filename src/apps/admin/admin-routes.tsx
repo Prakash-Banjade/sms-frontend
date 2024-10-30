@@ -38,6 +38,9 @@ import LibraryMembersPage from './pages/library/library-members.page';
 import LibraryOverviewPage from './pages/library/library-overview.page';
 import BookCategoriesPage from './pages/library/book-categories.page';
 import SingleSubjectPage from './pages/subjects/single-subject.page';
+import EditNoticePage from './pages/notices/edit-notice.page';
+import AddNoticePage from './pages/notices/add-notice.page';
+import NoticesListPage from './pages/notices/notices-list.page';
 
 const AdminRoutes = () => {
     return (
@@ -62,6 +65,11 @@ const AdminRoutes = () => {
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />
                         <Route path="new" element={<AddClassRoutinePage />} />
+                    </Route>
+                    <Route path="notices">
+                        <Route index element={<NoticesListPage />} />
+                        <Route path="new" element={<AddNoticePage />} />
+                        <Route path=":id" element={<EditNoticePage />} />
                     </Route>
                     <Route path="dormitory">
                         <Route index element={<DormitoryPage />} />
