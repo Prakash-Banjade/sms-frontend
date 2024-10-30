@@ -51,7 +51,7 @@ function NoticesList() {
 
 function NoticesListFilters() {
     return (
-        <section className="flex flex-wrap @4xl:gap-8 @2xl:gap-4 gap-2 w-full">
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full">
             <SearchInput placeholder="Search..." label="Search by title" />
         </section>
     )

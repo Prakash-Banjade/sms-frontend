@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AdminDashboard } from './pages/dashboard';
 import { adminSidebarMenuItems } from './layout/sidebar-items';
 import RequireAuth from '@/components/auth/require-auth';
-import { Role } from '@/types/global.type';
+import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import AddAcademicYear from './pages/academic-year/add-academic-year.page';
 import AcademicYearsListPage from './pages/academic-year/academic-years-list.page';
@@ -41,6 +41,8 @@ import SingleSubjectPage from './pages/subjects/single-subject.page';
 import AddNoticePage from './pages/notices/add-notice.page';
 import NoticesListPage from './pages/notices/notices-list.page';
 import NoticeViewPage from './pages/notices/notice-view.page';
+import TasksPage from './pages/tasks/task-list.page';
+import AddTaskPage from './pages/tasks/add-task.page';
 
 const AdminRoutes = () => {
     return (
@@ -70,6 +72,17 @@ const AdminRoutes = () => {
                         <Route index element={<NoticesListPage />} />
                         <Route path="new" element={<AddNoticePage />} />
                         <Route path=":id" element={<NoticeViewPage />} />
+                    </Route>
+                    <Route path="tasks">
+                        <Route index element={<TasksPage type={ETask.HOMEWORK} />} />
+                        <Route path='homeworks'>
+                            <Route index element={<TasksPage type={ETask.HOMEWORK} />} />
+                            <Route path='new' element={<AddTaskPage type={ETask.HOMEWORK} />} />
+                        </Route>
+                        <Route path='assignments'>
+                            <Route index element={<TasksPage type={ETask.ASSIGNMENT} />} />
+                            <Route path='new' element={<AddTaskPage type={ETask.ASSIGNMENT} />} />
+                        </Route>
                     </Route>
                     <Route path="dormitory">
                         <Route index element={<DormitoryPage />} />

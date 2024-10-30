@@ -128,21 +128,17 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 ]
             },
             {
-                title: "HomeWork",
-                url: "#",
+                title: "Tasks",
+                url: "tasks",
                 icon: BookOpenText,
                 items: [
                     {
-                        title: "Add HomeWork",
-                        url: "#",
+                        title: "Homeworks",
+                        url: "tasks/homeworks",
                     },
                     {
-                        title: "HomeWork List",
-                        url: "#",
-                    },
-                    {
-                        title: "HomeWork Report",
-                        url: "#",
+                        title: "Assignments",
+                        url: "tasks/assignments",
                     }
                 ]
             },

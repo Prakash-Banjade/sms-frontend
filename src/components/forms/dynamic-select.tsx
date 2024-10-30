@@ -16,7 +16,6 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 
 interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
-    // labelKey: keyof PaginatedResponse<F>['data'][0]
     disableOnNoOption?: boolean;
     labelKey: string;
     clearQueryFilter?: boolean;
@@ -74,11 +73,19 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                         </FormControl>
                         <SelectContent>
                             {
-                                data?.data?.map((option) => (
-                                    <SelectItem key={option.id} value={option.id}>
-                                        {option[labelKey]}
-                                    </SelectItem>
-                                ))
+                                Array.isArray(data) ? ( // data can be array or object based on if pagination is applied from backend
+                                    data?.map((option) => (
+                                        <SelectItem key={option.id} value={option.id}>
+                                            {option[labelKey]}
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    data?.data?.map((option) => (
+                                        <SelectItem key={option.id} value={option.id}>
+                                            {option[labelKey]}
+                                        </SelectItem>
+                                    ))
+                                )
                             }
                         </SelectContent>
                     </Select>

@@ -32,7 +32,13 @@ export default function RecentLibraryBookTransactions() {
                                 <TableRow key={transaction.id}>
                                     <TableCell>{transaction.bookName}</TableCell>
                                     <TableCell>{transaction.studentName}</TableCell>
-                                    <TableCell>{transaction.parentClassName ?? transaction.classRoomName}</TableCell>
+                                    <TableCell>
+                                        {
+                                            transaction.parentClassName
+                                                ? transaction.parentClassName + ' - ' + transaction.classRoomName
+                                                : transaction.classRoomName
+                                        }
+                                    </TableCell>
                                     <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                                     <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>
                                     <TableCell>
