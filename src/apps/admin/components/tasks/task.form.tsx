@@ -5,11 +5,11 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { ETask } from "@/types/global.type";
 import { createQueryString } from "@/utils/create-query-string";
-import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod"
+import { useGetClassRoomsOptions } from "../class-rooms/actions";
 
 type Props = ({
     taskId?: undefined;
@@ -27,9 +27,10 @@ const taskSchema = z.object({
     submissionDate: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }).transform((value) => new Date(value).toISOString()),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Invalid class room ID. Must be a valid UUID' }),
-    sectionIds: z.string({ required_error: "Section is required" })
-        .uuid({ message: 'Invalid class section ID. Must be a valid UUID' })
-        .optional(),
+    sectionIds: z.array(
+        z.string({ required_error: "Section is required" })
+            .uuid({ message: 'Invalid class section ID. Must be a valid UUID' })
+    ).optional(),
     subjectId: z.string({ required_error: "Subject is required" })
         .uuid({ message: 'Invalid subject ID. Must be a valid UUID' }),
     marks: z.coerce.number().min(0, { message: "Marks is required" }),
@@ -42,6 +43,7 @@ const defaultValues: Partial<taskSchemaType> = {
     description: "",
     subjectId: undefined,
     classRoomId: undefined,
+    sectionIds: [],
     marks: 0,
 }
 
@@ -51,6 +53,9 @@ export default function TaskForm(props: Props) {
     const navigate = useNavigate();
     const { payload } = useAuth();
 
+    // fetching options outside to validate class room and sections
+    const { data, isLoading } = useGetClassRoomsOptions({ queryString: 'page=1&take=50' });
+
     const form = useForm<taskSchemaType>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
@@ -59,21 +64,30 @@ export default function TaskForm(props: Props) {
         },
     })
 
-    const { mutateAsync } = useAppMutation<Partial<taskSchemaType>, any>();
+    const { mutateAsync } = useAppMutation<Partial<Omit<taskSchemaType, 'sectionIds'> & { classRoomIds: string[] }>, any>();
 
     async function onSubmit(values: taskSchemaType) {
+        // check if section is selected or not
+        if (data?.data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionIds?.length) {
+            form.setError("sectionIds", { type: "required", message: "Section is required" });
+            return;
+        }
+
         const method = !!props.taskId ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
             endpoint: QueryKey.TASKS,
             id: props.taskId,
-            data: values,
+            data: {
+                ...values,
+                classRoomIds: Array.isArray(values.sectionIds) ? values.sectionIds : [values.classRoomId], // need to send as classRoomIds not section Ids
+            },
             invalidateTags: [QueryKey.TASKS],
         });
 
         if (response?.data?.message) {
-            navigate(`/${payload?.role}/academic-years`);
+            navigate(`/${payload?.role}/tasks`);
         }
     }
 
@@ -96,46 +110,31 @@ export default function TaskForm(props: Props) {
                         min={new Date().toISOString().split('T')[0]}
                     />
 
-                    <ClassSectionFormField />
+                    {/* disable on edit */}
+                    {
+                        true && <> 
+                            <ClassSectionFormField multipleSections options={data?.data ?? []} isLoading={isLoading} />
 
-                    <AppForm.DynamicMultiSelect<taskSchemaType>
-                        name="subjectId"
-                        label="Subject"
-                        placeholder="Select subject"
-                        description="Select the subject"
-                        fetchOptions={{
-                            endpoint: QueryKey.SUBJECTS + '/options',
-                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                            queryString: createQueryString({
-                                classRoomId: form.watch('classRoomId'),
-                            }),
-                            options: {
-                                enabled: !!form.watch('classRoomId'),
-                            }
-                        }}
-                        labelKey={'subjectName'}
-                        disableOnNoOption
-                        required
-                    />
-                    
-                    {/* <AppForm.DynamicSelect<taskSchemaType>
-                        name="subjectId"
-                        label="Subject"
-                        placeholder="Select subject"
-                        description="Select the subject"
-                        fetchOptions={{
-                            endpoint: QueryKey.SUBJECTS + '/options',
-                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                            queryString: createQueryString({
-                                classRoomId: form.watch('classRoomId'),
-                            }),
-                            options: {
-                                enabled: !!form.watch('classRoomId'),
-                            }
-                        }}
-                        labelKey={'subjectName'}
-                        required
-                    /> */}
+                            <AppForm.DynamicSelect<taskSchemaType>
+                                name="subjectId"
+                                label="Subject"
+                                placeholder="Select subject"
+                                description="Select the subject"
+                                fetchOptions={{
+                                    endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+                                    queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                                    queryString: createQueryString({
+                                        classRoomId: form.watch('classRoomId'),
+                                    }),
+                                    options: {
+                                        enabled: !!form.watch('classRoomId'),
+                                    }
+                                }}
+                                labelKey={'subjectName'}
+                                required
+                            />
+                        </>
+                    }
 
                     <AppForm.Number<taskSchemaType>
                         name="marks"

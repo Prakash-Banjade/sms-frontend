@@ -57,8 +57,8 @@ export default function SubjectForm(props: Props) {
 
     return (
         <AppForm schema={subjectFormSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <section className="grid lg:grid-cols-2 gap-8 grid-cols-1">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="@container space-y-8">
+                <section className="grid @2xl:grid-cols-2 @4xl:grid-cols-3 gap-8 grid-cols-1">
                     <AppForm.Text<subjectFormSchemaType>
                         name="subjectName"
                         label="Subject name"

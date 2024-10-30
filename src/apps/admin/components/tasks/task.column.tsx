@@ -15,6 +15,7 @@ import { useState } from "react"
 import { Task } from "@/types/task.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useNavigate } from "react-router-dom"
+import { Badge } from "@/components/ui/badge"
 
 export const taskColumns: ColumnDef<Task>[] = [
     {
@@ -35,8 +36,25 @@ export const taskColumns: ColumnDef<Task>[] = [
                 <span>
                     {
                         task.parentClassName
-                            ? task.parentClassName + ' - ' + task.classRoomName
-                            : task.classRoomName
+                            ? task.parentClassName
+                            : task.classRooms?.[0]?.name
+                    }
+                </span>
+            )
+        }
+    },
+    {
+        header: "Sections",
+        accessorKey: "sections",
+        cell: ({ row }) => {
+            const task = row.original;
+
+            return (
+                <span className="flex gap-2 max-w-[300px] flex-wrap">
+                    {
+                        (!!task.classRooms?.length && task.parentClassId) ? task.classRooms?.map(classRoom => (
+                            <Badge variant={'secondary'} key={classRoom.id}>{classRoom.name}</Badge>
+                        )) : '-'
                     }
                 </span>
             )

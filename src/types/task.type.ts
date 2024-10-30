@@ -9,8 +9,10 @@ export type Task = {
     taskType: ETask,
     marks: number | null;
     subjectName: string,
-    classRoomId: string,
-    classRoomName: string,
+    classRooms: {
+        id: string,
+        name: string
+    }[],
     parentClassId: string | null,
     parentClassName: string | null
 }
@@ -18,4 +20,33 @@ export type Task = {
 export type TasksResponse = {
     data: Task[],
     meta: TMeta;
+}
+
+export type TSingleTask = {
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    title: string,
+    description: string,
+    submissionDate: string,
+    taskType: ETask,
+    marks: number | null,
+    subject: {
+        id: string,
+        subjectName: string
+    },
+    attatchments: {
+        id: string,
+        url: string
+    }[],
+    classRooms: [
+        {
+            id: string,
+            name: string,
+            parent: {
+                id: string,
+                name: string,
+            } | null
+        }
+    ]
 }

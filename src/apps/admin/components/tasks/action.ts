@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { Task, TasksResponse } from "@/types/task.type";
+import { TasksResponse, TSingleTask } from "@/types/task.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetTask = ({
@@ -10,9 +10,9 @@ export const useGetTask = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<Task>
+    options?: UseQueryOptions<TSingleTask>
 }) => {
-    const response = useFetchData<Task>({
+    const response = useFetchData<TSingleTask>({
         queryKey: [QueryKey.TASKS, id],
         endpoint: QueryKey.TASKS,
         id,

@@ -1,7 +1,5 @@
 import { FieldValues, useFormContext } from "react-hook-form";
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { useFetchData, UseFetchDataOptions } from "@/hooks/useFetchData";
-import { PaginatedResponse } from "@/types/global.type";
 import { TFormFieldProps } from "./app-form";
 import { SelectProps } from "@radix-ui/react-select";
 import { cn } from "@/lib/utils";
@@ -23,47 +21,30 @@ import {
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 
-interface Option {
-    label: string;
-    value: string;
-}
-
-interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
-    fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
+interface AppFormSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
+    options: {
+        label: React.ReactNode;
+        value: string;
+    }[],
     disableOnNoOption?: boolean;
-    labelKey: string;
-    clearQueryFilter?: boolean;
 }
 
-export function DynamicMultiSelect<T extends FieldValues, F = any>({
+export function MultiSelect<T extends FieldValues>({
     name,
     label,
-    placeholder = 'Select Option...',
+    placeholder = '',
     description = '',
     required = false,
+    options = [],
     containerClassName = '',
-    fetchOptions,
-    labelKey,
     disableOnNoOption = false,
-    // clearQueryFilter = false, // this is used in filter components to clear the query params, when clicked on clear button
-}: AppFormDynamicSelectProps<T, F>) {
+}: AppFormSelectProps<T>) {
     const { control, setValue: setFormValue, getValues } = useFormContext();
-    const [options, setOptions] = useState<Option[]>([]); // this is use to render the options
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState<string[]>(getValues(name as string) ?? []);
 
-    const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
-
-    useEffect(() => {
-        if (data) {
-            Array.isArray(data) // data can be array or object based on if pagination is applied from backend
-                ? setOptions(data.map((option) => ({ label: option[labelKey], value: option.id })))
-                : setOptions(data?.data?.map((option) => ({ label: option[labelKey], value: option.id })) ?? [])
-        }
-    }, [data])
-
-    const isDisabled = disableOnNoOption && (Array.isArray(data) ? !data?.length : !data?.data?.length);
+    const isDisabled = disableOnNoOption && !options?.length;
 
     const handleSetValue = (val: string) => {
         if (value.includes(val)) {
@@ -99,7 +80,7 @@ export function DynamicMultiSelect<T extends FieldValues, F = any>({
                                 role="combobox"
                                 aria-expanded={open}
                                 className="w-full justify-between h-max min-h-10"
-                                disabled={isDisabled || isLoading}
+                                disabled={isDisabled}
                             >
                                 <div className="flex gap-2 justify-start flex-wrap">
                                     {value?.length ?
@@ -136,7 +117,7 @@ export function DynamicMultiSelect<T extends FieldValues, F = any>({
                                         ))}
                                     </CommandList>
                                 </CommandGroup>
-                                {value.length > 0 && ( 
+                                {value.length > 0 && (
                                     <>
                                         <CommandSeparator />
                                         <CommandGroup>

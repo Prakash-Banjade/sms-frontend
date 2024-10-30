@@ -80,7 +80,7 @@ export default function ClassRoutineForm(props: Props) {
                                 placeholder="Select subject"
                                 description="Select the subject"
                                 fetchOptions={{
-                                    endpoint: QueryKey.SUBJECTS + '/options',
+                                    endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
                                     queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
                                     queryString: createQueryString({
                                         classRoomId: form.watch('classRoomId'),

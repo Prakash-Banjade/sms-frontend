@@ -15,6 +15,7 @@ import { AppFormPhone } from './app-form-phone';
 import { AppFormText } from './app-form-text';
 import { AppFormEmail } from './app-form-email';
 import { DynamicMultiSelect } from './app-form-dynamic-multiselect';
+import { MultiSelect } from './app-form-multiselect';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -259,6 +260,8 @@ AppForm.Select = AppFormSelect;
 AppForm.DynamicSelect = DynamicSelect;
 
 AppForm.ImageUpload = ImageUpload;
+
+AppForm.MultiSelect = MultiSelect;
 
 AppForm.DynamicMultiSelect = DynamicMultiSelect;
 

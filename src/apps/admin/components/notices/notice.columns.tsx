@@ -36,7 +36,7 @@ export const noticesColumns: ColumnDef<TNotice>[] = [
         }
     },
     {
-        header: "Created at",
+        header: "Published On",
         accessorKey: "createdAt",
         cell: ({ row }) => {
             return <span>{formatDate({ date: new Date(row.original.createdAt) })}</span>
@@ -82,7 +82,7 @@ export const noticesColumns: ColumnDef<TNotice>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id)}>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '?edit=true')}>
                                 <span>Edit notice</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">

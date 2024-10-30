@@ -62,7 +62,7 @@ export const useGetClassRoomsOptions = ({
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TClassRoomOptions>
+    options?: Partial<UseQueryOptions<TClassRoomOptions>>;
 }) => {
     const response = useFetchData<TClassRoomOptions>({
         endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
