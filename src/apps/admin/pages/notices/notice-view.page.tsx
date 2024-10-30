@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { useGetNotice } from "../../components/notices/action"
 import { TSingleNotice } from "@/types/notice.type";
 import NoticeForm from "../../components/notices/notice.form";
