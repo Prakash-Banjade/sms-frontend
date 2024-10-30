@@ -3,30 +3,19 @@ import { EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./glob
 
 export type TStudent = {
     id: string,
-    createdAt: string,
-    firstName: string,
-    lastName: string,
+    fullName: string,
+    rollNo: number,
+    phone: string,
     email: string,
     dob: string,
     studentId: number,
-    rollNo: number,
-    classRoom: {
-        id: string,
-        name: string,
-        parent: {
-            id: string,
-            name: string,
-        } | null;
-    },
-    phone: string,
     gender: Gender,
-    profileImage: {
-        id: string,
-        url: string
-    } | null,
-    account: {
-        id: string
-    }
+    profileImageUrl: string | null,
+    classRoomId: string,
+    classRoom: string,
+    parentClassId: string,
+    parentClass: string,
+    accountId: string
 }
 
 export type TStudentsResponse = {
@@ -34,7 +23,30 @@ export type TStudentsResponse = {
     meta: TMeta;
 }
 
-export type TSingleStudent = TStudent & {
+export type TSingleStudent = {
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rollNo: number,
+    studentId: number,
+    firstName: string,
+    lastName: string,
+    gender: Gender,
+    dob: string,
+    email: string,
+    phone: string,
+    classRoom: {
+        id: string,
+        name: string,
+        parent: {
+            id: string,
+            name: string
+        }
+    },
+    profileImage: {
+        id: string,
+        url: string,
+    } |null,
     religion: EReligion,
     caste: string,
     isPhysicallyChallenged: boolean,

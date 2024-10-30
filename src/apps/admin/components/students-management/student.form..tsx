@@ -8,9 +8,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, ReligionMappings } from "@/utils/labelToValueMappings";
 import { createStudentSchema, studentFormDefaultValues, studentSchemaType } from "../../schemas/student.schema";
-import { createQueryString } from "@/utils/create-query-string";
-import { EClassType } from "@/types/global.type";
-import { useEffect } from "react";
 import GuardiansFields from "./guardians-form-fields";
 import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 

@@ -8,10 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useAppMutation } from "@/hooks/useAppMutation"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import { TSubject } from "@/types/subject.type"
 import SubjectForm from "./subject-form"
 import { Link } from "react-router-dom"
@@ -79,11 +77,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const classroom = row.original;
             const [isEditOpen, setIsEditOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-            const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
 
             return (
                 <>

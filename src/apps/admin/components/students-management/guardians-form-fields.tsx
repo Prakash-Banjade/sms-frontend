@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { CardContent, CardTitle } from "@/components/ui/card"
 import { Plus, Trash2 } from 'lucide-react'
 import { guardianFormFieldsDefaultValues, studentSchemaType } from '../../schemas/student.schema'
-import { EGuardianRelation } from '@/types/global.type'
 import { AppFormSelect } from '@/components/forms/select'
 import { GuardianRelationMappings } from '@/utils/labelToValueMappings'
 import { AppFormText } from '@/components/forms/app-form-text'

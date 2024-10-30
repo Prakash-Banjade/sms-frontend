@@ -10,11 +10,6 @@ import { useGetAttendanceCounts } from "../../attendances/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type Props = {
-    selectedMonth: string,
-    setSelectedMonth: (value: string) => void,
-}
-
 const months: Record<number, string> = {
     1: "January",
     2: "February",

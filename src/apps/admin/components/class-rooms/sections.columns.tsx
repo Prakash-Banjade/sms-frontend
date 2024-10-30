@@ -8,11 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useAppMutation } from "@/hooks/useAppMutation"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/types/class.type"
-import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import ClassSectionForm from "./class-room-section.form"
 
 export const sectionsColumns: ColumnDef<TClass>[] = [
@@ -72,10 +70,10 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const [isEditOpen, setIsEditOpen] = useState(false);
-            const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
+            const [_, setIsSectionFormOpen] = useState(false);
             // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-            const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
+            // const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
 
             return (
                 <>

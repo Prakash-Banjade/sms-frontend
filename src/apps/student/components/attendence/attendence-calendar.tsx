@@ -26,7 +26,7 @@ const statusColors: Record<AttendanceStatus, string> = {
 }
 
 export default function StudentAttendance({ attendanceData }: { attendanceData: TAttendencesResponse }) {
-    const [searchParams, setSearchParams] = useSearchParams(); // Get search parameters
+    const [_, setSearchParams] = useSearchParams(); // Get search parameters
 
 
     const attData = transformAttendanceData(attendanceData.data)

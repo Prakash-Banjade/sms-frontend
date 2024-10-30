@@ -56,7 +56,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
             <FormField
                 control={form.control}
                 name={"sectionId"}
-                render={({ field }) => (
+                render={() => (
                     <FormItem className={cn("relative", containerClassName)}>
                         <div className="">
                             <FormLabel className="">

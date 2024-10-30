@@ -1,6 +1,5 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
 import { EBloodGroup, EMaritalStatus, Gender, TMeta } from "./global.type";
-import { TStudentsWithAttendenceResponse } from "./student.type";
 
 export type Teacher = {
     id: string,

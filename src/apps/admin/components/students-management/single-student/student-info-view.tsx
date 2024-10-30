@@ -24,7 +24,7 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                     <p className="text-muted-foreground">Student ID: {student.studentId}</p>
                     <Badge variant="outline" className="mt-1">
                         {
-                            student.classRoom.parent?.name
+                            student.classRoom?.parent?.name
                                 ? `${student.classRoom.parent.name} - ${student.classRoom.name}`
                                 : `${student.classRoom.name}`
                         }
