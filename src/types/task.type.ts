@@ -37,16 +37,15 @@ export type TSingleTask = {
     },
     attatchments: {
         id: string,
-        url: string
+        url: string,
+        originalName: string,
     }[],
-    classRooms: [
-        {
+    classRooms: {
+        id: string,
+        name: string,
+        parent: {
             id: string,
             name: string,
-            parent: {
-                id: string,
-                name: string,
-            } | null
-        }
-    ]
+        } | null
+    }[]
 }
