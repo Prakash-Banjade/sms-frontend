@@ -39,7 +39,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
 
     const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
 
-    const isDisabled = disableOnNoOption && !data?.data?.length;
+    const isDisabled = disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length));
 
     const handleOnClear = () => {
         setValue(name as string, undefined)

@@ -26,13 +26,13 @@ const taskSchema = z.object({
     description: z.string({ required_error: "Description is required" }),
     submissionDate: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }).transform((value) => new Date(value).toISOString()),
     classRoomId: z.string({ required_error: "Class room is required" })
-        .uuid({ message: 'Invalid class room ID. Must be a valid UUID' }),
+        .uuid({ message: 'Select a class room' }),
     sectionIds: z.array(
         z.string({ required_error: "Section is required" })
-            .uuid({ message: 'Invalid class section ID. Must be a valid UUID' })
+            .uuid({ message: 'Select a section' })
     ).optional(),
     subjectId: z.string({ required_error: "Subject is required" })
-        .uuid({ message: 'Invalid subject ID. Must be a valid UUID' }),
+        .uuid({ message: 'Select a subject' }),
     marks: z.coerce.number().min(0, { message: "Marks is required" }),
     taskType: z.nativeEnum(ETask),
 })
@@ -81,7 +81,7 @@ export default function TaskForm(props: Props) {
             id: props.taskId,
             data: {
                 ...values,
-                classRoomIds: Array.isArray(values.sectionIds) ? values.sectionIds : [values.classRoomId], // need to send as classRoomIds not section Ids
+                classRoomIds: values.sectionIds?.length ? values.sectionIds : [values.classRoomId], // need to send as classRoomIds not section Ids
             },
             invalidateTags: [QueryKey.TASKS],
         });
@@ -97,11 +97,34 @@ export default function TaskForm(props: Props) {
                 <section className="grid lg:grid-cols-2 gap-8 grid-cols-1">
                     <AppForm.Text<taskSchemaType>
                         name="title"
-                        label="Name"
-                        placeholder="eg. Mathematics"
+                        label="Title"
+                        placeholder="eg. Complete the QnA of the day"
                         description={`Enter the title of the ${props.taskType}.`}
                         required
                     />
+
+                    <ClassSectionFormField multipleSections options={data?.data ?? []} isLoading={isLoading} />
+
+                    <AppForm.DynamicSelect<taskSchemaType>
+                        name="subjectId"
+                        label="Subject"
+                        placeholder="Select subject"
+                        description="Select the subject"
+                        fetchOptions={{
+                            endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                            queryString: createQueryString({
+                                classRoomId: form.watch('classRoomId'),
+                            }),
+                            options: {
+                                enabled: !!form.watch('classRoomId'),
+                            }
+                        }}
+                        labelKey={'subjectName'}
+                        required
+                        disableOnNoOption
+                    />
+
                     <AppForm.DatePicker<taskSchemaType>
                         name="submissionDate"
                         label="Submission Date"
@@ -109,32 +132,6 @@ export default function TaskForm(props: Props) {
                         required
                         min={new Date().toISOString().split('T')[0]}
                     />
-
-                    {/* disable on edit */}
-                    {
-                        true && <> 
-                            <ClassSectionFormField multipleSections options={data?.data ?? []} isLoading={isLoading} />
-
-                            <AppForm.DynamicSelect<taskSchemaType>
-                                name="subjectId"
-                                label="Subject"
-                                placeholder="Select subject"
-                                description="Select the subject"
-                                fetchOptions={{
-                                    endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
-                                    queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                                    queryString: createQueryString({
-                                        classRoomId: form.watch('classRoomId'),
-                                    }),
-                                    options: {
-                                        enabled: !!form.watch('classRoomId'),
-                                    }
-                                }}
-                                labelKey={'subjectName'}
-                                required
-                            />
-                        </>
-                    }
 
                     <AppForm.Number<taskSchemaType>
                         name="marks"

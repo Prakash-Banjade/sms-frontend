@@ -20,11 +20,7 @@ import { Badge } from "@/components/ui/badge"
 export const taskColumns: ColumnDef<Task>[] = [
     {
         header: "S.N",
-        cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
-    },
-    {
-        header: "Title",
-        accessorKey: "title",
+        cell: ({ row }) => <p> {row.index + 1} </p>,
     },
     {
         header: "Class",
@@ -61,14 +57,30 @@ export const taskColumns: ColumnDef<Task>[] = [
         }
     },
     {
-        header: "Submission Date",
-        accessorKey: "submissionDate",
-        cell: ({ row }) => <p className="text-14 font-medium">{formatDate({ date: new Date(row.original.submissionDate) })}</p>,
+        header: "Subject",
+        accessorKey: "subject",
+        cell: ({ row }) => <p>{row.original.subjectName}</p>
     },
     {
         header: "Marks",
         accessorKey: "marks",
-        cell: ({ row }) => <p className="text-14 font-medium">{row.original.marks || '-'}</p>
+        cell: ({ row }) => <p>{row.original.marks || '-'}</p>
+    },
+    {
+        header: "Title",
+        accessorKey: "title",
+        cell: ({ row }) => {
+            return <p>
+                {
+                    row.original.title?.length > 50 ? `${row.original.title.substring(0, 50)}...` : row.original.title
+                }
+            </p>
+        }
+    },
+    {
+        header: "Submission Date",
+        accessorKey: "submissionDate",
+        cell: ({ row }) => <p>{formatDate({ date: new Date(row.original.submissionDate) })}</p>,
     },
     {
         id: "actions",

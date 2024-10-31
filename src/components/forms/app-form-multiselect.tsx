@@ -1,7 +1,6 @@
 import { FieldValues, useFormContext } from "react-hook-form";
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { TFormFieldProps } from "./app-form";
-import { SelectProps } from "@radix-ui/react-select";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import {
@@ -21,12 +20,14 @@ import {
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 
-interface AppFormSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
+interface AppFormSelectProps<T> extends TFormFieldProps<T> {
     options: {
         label: React.ReactNode;
         value: string;
     }[],
     disableOnNoOption?: boolean;
+    disabled?: boolean;
+    defaultValue?: string[];
 }
 
 export function MultiSelect<T extends FieldValues>({
@@ -38,11 +39,12 @@ export function MultiSelect<T extends FieldValues>({
     options = [],
     containerClassName = '',
     disableOnNoOption = false,
+    defaultValue = [],
 }: AppFormSelectProps<T>) {
     const { control, setValue: setFormValue, getValues } = useFormContext();
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState<string[]>(getValues(name as string) ?? []);
+    const [value, setValue] = useState<string[]>(getValues(name as string) ?? defaultValue);
 
     const isDisabled = disableOnNoOption && !options?.length;
 
