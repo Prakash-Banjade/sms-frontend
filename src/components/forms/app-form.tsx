@@ -16,6 +16,7 @@ import { AppFormText } from './app-form-text';
 import { AppFormEmail } from './app-form-email';
 import { DynamicMultiSelect } from './app-form-dynamic-multiselect';
 import { MultiSelect } from './app-form-multiselect';
+import { DynamicCombobox } from './dynamic-combobox';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -265,4 +266,5 @@ AppForm.MultiSelect = MultiSelect;
 
 AppForm.DynamicMultiSelect = DynamicMultiSelect;
 
+AppForm.DynamicCombobox = DynamicCombobox;
 export default AppForm;

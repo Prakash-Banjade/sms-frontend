@@ -29,33 +29,38 @@ export const classesColumns: ColumnDef<TClass>[] = [
     },
     {
         header: "Total boys",
-        accessorKey: "totalMalesStudentsCount",
+        accessorKey: "totalMaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalMalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalMaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalMalesStudentsCount}</span>
+                <span>{row.original.totalMaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalMalesStudentsCount}{" "}
+                    {row.original.totalMaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-sm">({Math.round(percentage)}%)</span>
                 </span>
         }
     },
     {
         header: "Total girls",
-        accessorKey: "totalFemalesStudentsCount",
+        accessorKey: "totalFemaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalFemalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalFemaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalFemalesStudentsCount}</span>
+                <span>{row.original.totalFemaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalFemalesStudentsCount}{" "}
+                    {row.original.totalFemaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
                 </span>
         }
+    },
+    {
+        header: "Class Teacher",
+        accessorKey: "classTeacherName",
+        cell: ({ row }) => <span>{row.original.classTeacherName || <span className="text-muted-foreground">"N/A"</span>}</span>,
     },
     {
         header: "Monthly fee",
@@ -71,7 +76,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
         cell: ({ row }) => {
             return !!row.original.location
                 ? <span>{row.original.location}</span>
-                : <span className="text-muted-foreground">**Not Available**</span>
+                : <span className="text-muted-foreground">N/A</span>
         },
     },
     {
@@ -89,8 +94,21 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
                         title="Edit class"
+                        className="w-[97%] max-w-[800px]"
                     >
-                        <ClassRoomForm classRoomId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
+                        <ClassRoomForm
+                            classRoomId={row.original.id}
+                            setIsOpen={setIsEditOpen}
+                            defaultValues={{
+                                ...row.original,
+                                classTeacherId: row.original.classTeacherId,
+                            }}
+                            selectedClassTeacherOption={
+                                (row.original.classTeacherId && row.original.classTeacherName)
+                                    ? { value: row.original.classTeacherId, label: row.original.classTeacherName }
+                                    : undefined
+                            }
+                        />
                     </ResponsiveDialog>
                     <ResponsiveDialog
                         isOpen={isSectionFormOpen}

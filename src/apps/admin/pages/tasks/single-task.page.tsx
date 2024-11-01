@@ -14,15 +14,15 @@ export default function SingleTaskPage() {
     if (!task) return <div>Task not found</div>;
 
     return (
-        <section className="container mx-auto space-y-8">
+        <section className="container @container mx-auto space-y-8">
             <header className="flex justify-between items-start">
                 <div>
                     <h1 className="text-3xl font-bold">{task.title}</h1>
                     <p className="text-muted-foreground mt-2">{task.description}</p>
                 </div>
             </header>
-            <div className="grid md:grid-cols-3 gap-6">
-                <section className="col-span-2">
+            <div className="grid @5xl:grid-cols-3 gap-6">
+                <section className="@5xl:col-span-2">
                     <SingleTaskDetailsCard task={task} />
                 </section>
 

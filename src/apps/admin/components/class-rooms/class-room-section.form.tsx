@@ -77,6 +77,14 @@ export default function ClassSectionForm(props: Props) {
                         placeholder="eg. Room No. 34, Block 1"
                         description="Enter the location of the section"
                     />
+
+                    <AppForm.DynamicCombobox<classRoomFormSchemaType>
+                        name='classTeacherId'
+                        label='Class Teacher'
+                        placeholder='Select class teacher'
+                        description='Select the class teacher'
+                        queryKey={QueryKey.TEACHERS}
+                    />
                 </section>
 
                 <section className="flex gap-4 justify-end">

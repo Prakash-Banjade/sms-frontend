@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
+import { ComboboxOption } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,6 +16,7 @@ type Props = ({
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) & {
     defaultValues?: Partial<classRoomFormSchemaType>;
+    selectedClassTeacherOption?: ComboboxOption;
 }
 
 export default function ClassRoomForm(props: Props) {
@@ -87,6 +89,16 @@ export default function ClassRoomForm(props: Props) {
                         placeholder="eg. Room No. 34, Block 1"
                         description="Enter the location of the class"
                     />
+
+                    <AppForm.DynamicCombobox<classRoomFormSchemaType>
+                        name='classTeacherId'
+                        label='Class Teacher'
+                        placeholder='Select class teacher'
+                        description='Select the class teacher'
+                        queryKey={QueryKey.TEACHERS}
+                        defaultSelected={props.selectedClassTeacherOption}
+                    />
+
                 </section>
 
 

@@ -10,9 +10,11 @@ export type TClass = {
     monthlyFee: number,
     location: string,
     classType: EClassType,
-    totalStudentsCount: number,
-    totalFemalesStudentsCount: number,
-    totalMalesStudentsCount: number,
+    totalStudentsCount: string,
+    totalFemaleStudentsCount: string,
+    totalMaleStudentsCount: string,
+    classTeacherId: string | null,
+    classTeacherName: string | null,
 }
 
 export type TClassesResponse = {

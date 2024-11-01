@@ -42,6 +42,11 @@ export interface PaginatedResponse<T> {
     meta: TMeta;
 }
 
+export type ComboboxOption = {
+    label: string,
+    value: string,
+}
+
 export interface IFileUploadResponse {
     message: string,
     files: {

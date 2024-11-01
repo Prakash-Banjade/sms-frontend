@@ -28,30 +28,30 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
     },
     {
         header: "Total boys",
-        accessorKey: "totalMalesStudentsCount",
+        accessorKey: "totalMaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalMalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalMaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalMalesStudentsCount}</span>
+                <span>{row.original.totalMaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalMalesStudentsCount}{" "}
+                    {row.original.totalMaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-sm">({Math.round(percentage)}%)</span>
                 </span>
         }
     },
     {
         header: "Total girls",
-        accessorKey: "totalFemalesStudentsCount",
+        accessorKey: "totalFemalsStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalFemalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalFemaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalFemalesStudentsCount}</span>
+                <span>{row.original.totalFemaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalFemalesStudentsCount}{" "}
+                    {row.original.totalFemaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
                 </span>
         }
