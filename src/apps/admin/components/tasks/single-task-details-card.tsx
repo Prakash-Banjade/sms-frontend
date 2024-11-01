@@ -1,7 +1,7 @@
 import { CalendarIcon, FileIcon, GraduationCapIcon, Highlighter, UsersIcon } from "lucide-react"
 import { format } from "date-fns"
 
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { TSingleTask } from "@/types/task.type"
@@ -12,7 +12,7 @@ export default function SingleTaskDetailsCard({ task }: { task: TSingleTask }) {
     return (
         <Card className="h-full">
             <CardHeader>
-                <CardDescription className="mt-1.5">{task.description}</CardDescription>
+                <CardTitle className="capitalize">{task.taskType} Details</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="grid gap-4">
