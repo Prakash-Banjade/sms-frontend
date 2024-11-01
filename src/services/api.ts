@@ -78,7 +78,7 @@ export const useAxios = (): AxiosInstance => {
                 } catch (err) {
                     isRefreshing = false;
                     setAuth(null); // Clear auth state if refresh fails
-                    navigate('/', { replace: true, state: { from: location.pathname } });
+                    navigate('/', { replace: true, state: { from: location } });
                     return Promise.reject(err);
                 }
             }
