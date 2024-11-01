@@ -44,6 +44,7 @@ import NoticeViewPage from './pages/notices/notice-view.page';
 import TasksPage from './pages/tasks/task-list.page';
 import AddTaskPage from './pages/tasks/add-task.page';
 import EditTaskPage from './pages/tasks/edit-task.page';
+import SignleTaskView from './components/tasks/single-task-view';
 
 const AdminRoutes = () => {
     return (
@@ -80,6 +81,7 @@ const AdminRoutes = () => {
                             <Route index element={<TasksPage type={ETask.HOMEWORK} />} />
                             <Route path='new' element={<AddTaskPage type={ETask.HOMEWORK} />} />
                             <Route path=":id/edit" element={<EditTaskPage type={ETask.HOMEWORK} />} />
+                            <Route path=":id" element={<SignleTaskView />} />
                         </Route>
                         <Route path='assignments'>
                             <Route index element={<TasksPage type={ETask.ASSIGNMENT} />} />
