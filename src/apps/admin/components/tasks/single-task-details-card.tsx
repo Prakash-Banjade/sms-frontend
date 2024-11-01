@@ -4,22 +4,17 @@ import { format } from "date-fns"
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { useGetTask } from "./action"
-import { ETask } from "@/types/global.type"
+import { TSingleTask } from "@/types/task.type"
 
-export default function SingleTaskViewCard({ taskId, type }: { taskId: string, type: ETask }) {
-    const { data: task, isLoading } = useGetTask({ id: taskId });
+export default function SingleTaskDetailsCard({ task }: { task: TSingleTask }) {
 
-    if (isLoading) return <div>Loading...</div>;
-
-    if (!task) return <div>Task not found</div>;
 
     return (
-        <Card className="w-full border-0">
-            <CardHeader className="px-0 pt-0">
+        <Card className="h-full">
+            <CardHeader>
                 <CardDescription className="mt-1.5">{task.description}</CardDescription>
             </CardHeader>
-            <CardContent className="px-0">
+            <CardContent>
                 <div className="grid gap-4">
                     <div className="flex items-center gap-2">
                         <GraduationCapIcon className="h-5 w-5 text-muted-foreground" />
@@ -42,13 +37,13 @@ export default function SingleTaskViewCard({ taskId, type }: { taskId: string, t
                     }
                     <div className="flex items-center gap-2">
                         <CalendarIcon className="h-5 w-5 text-muted-foreground" />
-                        <span className="font-semibold capitalize">{type} Date:</span>
+                        <span className="font-semibold capitalize">{task.taskType} Date:</span>
                         {format(task.createdAt, "MMMM d, yyyy")}
                     </div>
                     <div className="flex items-center gap-2">
                         <CalendarIcon className="h-5 w-5 text-muted-foreground" />
                         <span className="font-semibold">Submission Date:</span>
-                        {format(task.submissionDate, "MMMM d, yyyy")}
+                        {format(task.deadline, "MMMM d, yyyy")}
                     </div>
                     <div className="flex items-center gap-2">
                         <Highlighter className="h-5 w-5 text-muted-foreground" />

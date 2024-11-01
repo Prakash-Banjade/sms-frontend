@@ -17,7 +17,7 @@ import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useNavigate } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import SingleTaskViewCard from "./single-task-view-card"
+import SingleTaskViewCard from "./single-task-details-card"
 
 export const taskColumns: ColumnDef<Task>[] = [
     {
@@ -82,7 +82,7 @@ export const taskColumns: ColumnDef<Task>[] = [
     {
         header: "Submission Date",
         accessorKey: "submissionDate",
-        cell: ({ row }) => <p>{formatDate({ date: new Date(row.original.submissionDate) })}</p>,
+        cell: ({ row }) => <p>{formatDate({ date: new Date(row.original.deadline) })}</p>,
     },
     {
         id: "actions",
@@ -91,7 +91,6 @@ export const taskColumns: ColumnDef<Task>[] = [
             const task = row.original;
             const navigate = useNavigate();
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-            const [isViewOpen, setIsViewOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation();
 
@@ -115,15 +114,6 @@ export const taskColumns: ColumnDef<Task>[] = [
                         isLoading={isPending}
                     />
 
-                    <ResponsiveDialog
-                        isOpen={isViewOpen}
-                        setIsOpen={setIsViewOpen}
-                        title={task.title}
-                        className="w-[97%] max-w-3xl"
-                    >
-                        <SingleTaskViewCard taskId={task.id} type={task.taskType} />
-                    </ResponsiveDialog>
-
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -133,7 +123,7 @@ export const taskColumns: ColumnDef<Task>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => setIsViewOpen(true)}>
+                            <DropdownMenuButtonItem onClick={() => navigate(task.id)}>
                                 <span>View Details</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => navigate(task.id + '/edit')}>

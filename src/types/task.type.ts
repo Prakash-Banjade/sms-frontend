@@ -1,11 +1,11 @@
-import { ETask, TMeta } from "./global.type"
+import { ETask, ETaskSubmissionStatus, TMeta } from "./global.type"
 
 export type Task = {
     id: string,
     createdAt: string,
     updatedAt: string,
     title: string,
-    submissionDate: string,
+    deadline: string,
     taskType: ETask,
     marks: number | null;
     subjectName: string,
@@ -28,7 +28,7 @@ export type TSingleTask = {
     updatedAt: string,
     title: string,
     description: string,
-    submissionDate: string,
+    deadline: string,
     taskType: ETask,
     marks: number | null,
     subject: {
@@ -48,4 +48,38 @@ export type TSingleTask = {
             name: string,
         } | null
     }[]
+}
+
+export type TSingleTaskStatistics = {
+    totalSubmissions: string,
+    totalEvaluations: string,
+    beforeDeadline: string,
+    afterDeadline: string
+}
+
+export type TaskSubmission = {
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    status: ETaskSubmissionStatus,
+    content: string,
+    student: {
+        id: string,
+        firstName: string;
+        lastName: string;
+        studentId: number;
+    },
+    attachments: {
+        id: string,
+        url: string,
+        originalName: string
+    }[],
+    evaluation: {
+        id: string
+    } | null;
+}
+
+export type TaskSubmissionsResponse = {
+    data: TaskSubmission[],
+    meta: TMeta;
 }

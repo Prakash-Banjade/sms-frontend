@@ -29,4 +29,5 @@ export enum QueryKey {
     ATTENDANCE_COUNT = "attendances/count",
     NOTICES = "notices",
     TASKS = "tasks",
+    TASK_SUBMISSIONS = "task-submissions",
 };

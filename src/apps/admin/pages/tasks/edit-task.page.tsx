@@ -35,7 +35,7 @@ function TaskEditForm({ type, id }: { id: string, type: ETask }) {
             defaultValues={{
                 description: data.description,
                 title: data.title,
-                submissionDate: data.submissionDate,
+                deadline: data.deadline,
                 marks: data.marks ?? 0,
                 subjectId: data.subject.id,
                 taskType: type,

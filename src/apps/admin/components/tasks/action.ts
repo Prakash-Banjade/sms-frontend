@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TasksResponse, TSingleTask } from "@/types/task.type";
+import { TasksResponse, TaskSubmissionsResponse, TSingleTask, TSingleTaskStatistics } from "@/types/task.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetTask = ({
@@ -33,6 +33,42 @@ export const useGetTasks = ({
     const response = useFetchData<TasksResponse>({
         endpoint: QueryKey.TASKS,
         queryKey: queryString ? [QueryKey.TASKS, queryString] : [QueryKey.TASKS],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetTaskStatistics = ({
+    queryString,
+    options,
+    id,
+}: {
+    id: string
+    queryString?: string;
+    options?: UseQueryOptions<TSingleTaskStatistics>
+}) => {
+    const response = useFetchData<TSingleTaskStatistics>({
+        endpoint: QueryKey.TASKS,
+        queryKey: [QueryKey.TASKS, id],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetTaskSubmissions = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: UseQueryOptions<TaskSubmissionsResponse>
+}) => {
+    const response = useFetchData<TaskSubmissionsResponse>({
+        endpoint: QueryKey.TASK_SUBMISSIONS,
+        queryKey: queryString ? [QueryKey.TASK_SUBMISSIONS, queryString] : [QueryKey.TASK_SUBMISSIONS],
         queryString,
         options,
     })

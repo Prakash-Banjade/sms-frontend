@@ -24,7 +24,7 @@ type Props = ({
 const taskSchema = z.object({
     title: z.string().min(3, { message: "Title is required" }),
     description: z.string({ required_error: "Description is required" }),
-    submissionDate: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }).transform((value) => new Date(value).toISOString()),
+    deadline: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }).transform((value) => new Date(value).toISOString()),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Select a class room' }),
     sectionIds: z.array(
@@ -39,7 +39,7 @@ const taskSchema = z.object({
 
 const defaultValues: Partial<taskSchemaType> = {
     title: "",
-    submissionDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+    deadline: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
     description: "",
     subjectId: undefined,
     classRoomId: undefined,
@@ -126,7 +126,7 @@ export default function TaskForm(props: Props) {
                     />
 
                     <AppForm.DatePicker<taskSchemaType>
-                        name="submissionDate"
+                        name="deadline"
                         label="Submission Date"
                         description={`Enter the submission date for ${props.taskType}.`}
                         required
