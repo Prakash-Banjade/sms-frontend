@@ -64,7 +64,6 @@ export default function BookIssueForm({ setIsOpen, studentId }: Props) {
                     placeholder='Select book'
                     description='Select a book from the list'
                     queryKey={QueryKey.LIBRARY_BOOKS}
-                    // defaultSelected={props.selectedClassTeacherOption}
                 />
 
                 <AppForm.DatePicker<bookIssueFormSchemaType>
