@@ -4,13 +4,16 @@ import { useGetClasses } from "../../components/class-rooms/actions"
 import { classesColumns } from "../../components/class-rooms/classes.columns"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import ClassesSearchFilters from "../../components/class-rooms/class-list-filters"
+import { createQueryString } from "@/utils/create-query-string"
 type Props = {}
 
 export default function ClassesListPage({ }: Props) {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetClasses({
-        queryString: searchParams.toString(),
+        queryString: createQueryString({
+            search: searchParams.get('search'),
+        })
     });
 
     if (isLoading) return <div>Loading...</div>;
