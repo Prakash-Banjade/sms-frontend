@@ -51,13 +51,13 @@ export default function SingleTaskDetailsCard({ task }: { task: TSingleTask }) {
                         {task.marks}
                     </div>
                     {
-                        !!task?.attatchments?.length && (
+                        !!task?.attachments?.length && (
                             <>
                                 <Separator />
                                 <div>
                                     <h3 className="font-semibold mb-2">Attachments:</h3>
                                     <ul className="space-y-2">
-                                        {task.attatchments.map((attachment, index) => (
+                                        {task.attachments.map((attachment, index) => (
                                             <li key={index}>
                                                 <a href={attachment.url} target="_blank" rel="noreferrer" className="text-blue-500 hover:text-blue-700 hover:underline">
                                                     <FileIcon className="h-4 w-4 mr-2" />

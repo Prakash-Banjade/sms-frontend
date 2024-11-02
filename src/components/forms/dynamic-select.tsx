@@ -42,7 +42,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
     const isDisabled = disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length));
 
     const handleOnClear = () => {
-        setValue(name as string, undefined)
+        setValue(name as string, '')
         if (clearQueryFilter) setSearchParams(name as string, undefined)
     }
 

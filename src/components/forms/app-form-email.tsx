@@ -26,7 +26,7 @@ export function AppFormEmail<T extends FieldValues>({
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Input type="email" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
+                        <Input type="email" className={inputClassName} placeholder={placeholder} {...field} value={field.value ?? undefined} required={required} {...props} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />

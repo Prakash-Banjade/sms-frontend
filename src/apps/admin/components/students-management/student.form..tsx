@@ -10,9 +10,14 @@ import { BloodGroupMappings, GenderMappings, ReligionMappings } from "@/utils/la
 import { createStudentSchema, studentFormDefaultValues, studentSchemaType } from "../../schemas/student.schema";
 import GuardiansFields from "./guardians-form-fields";
 import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import { IFileUploadResponse } from "@/types/global.type";
 
 type Props = {
-    defaultValues?: Partial<studentSchemaType>;
+    defaultValues?: undefined;
+    documentAttachments?: undefined;
+} | {
+    defaultValues: Partial<studentSchemaType>;
+    documentAttachments: IFileUploadResponse['files'];
 }
 
 export default function StudentForm(props: Props) {
@@ -29,6 +34,13 @@ export default function StudentForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<studentSchemaType>, any>();
 
     async function onSubmit(values: studentSchemaType) {
+        console.log({
+            ...getDirtyValues(values, form),
+            classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId
+            documentAttachmentIds: values.documentAttachmentIds, // IDK when this is changed, dirty value is not getting updated, so manually setting it
+            dormitoryRoomId: values.dormitoryRoomId ?? null,
+        })
+        
         const method = !!params.id ? "patch" : "post";
 
         const response = await mutateAsync({
@@ -38,6 +50,8 @@ export default function StudentForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId
+                documentAttachmentIds: values.documentAttachmentIds, // IDK when this is changed, dirty value is not getting updated, so manually setting it
+                dormitoryRoomId: values.dormitoryRoomId ?? null,
             },
             invalidateTags: [QueryKey.STUDENTS],
         });
@@ -47,17 +61,13 @@ export default function StudentForm(props: Props) {
         }
     }
 
-    // useEffect(() => {
-    //     form.setValue("sectionId", undefined)
-    // }, [form.watch("classRoomId")])
-
     return (
         <AppForm schema={createStudentSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 @container">
 
                 <fieldset className="border border-border rounded-lg p-8">
                     <legend className="px-2 text-sm">Personal Info</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="firstName"
                             label="First name"
@@ -143,7 +153,7 @@ export default function StudentForm(props: Props) {
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Academic Info</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         {
                             !params.id && <ClassSectionFormField />
                         }
@@ -185,7 +195,7 @@ export default function StudentForm(props: Props) {
 
                 <fieldset className="border border-border rounded-lg p-8">
                     <legend className="px-2 text-sm">Address</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="permanentAddress"
                             label="Permanent Address"
@@ -210,7 +220,7 @@ export default function StudentForm(props: Props) {
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Document Details</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="nationalIdCardNo"
                             label="National ID Card No"
@@ -233,12 +243,23 @@ export default function StudentForm(props: Props) {
                             placeholder="eg. Note"
                             description="Additional notes of the student"
                         />
+
+                        <AppForm.FileUpload<studentSchemaType>
+                            name="documentAttachmentIds"
+                            label="Document Attachments"
+                            placeholder="Select document attachments"
+                            description="Image, PDF | Max 5 files | 5 MB each"
+                            multiple
+                            maxLimit={5}
+                            initialUpload={props.documentAttachments ?? []}
+                            accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
+                        />
                     </section>
                 </fieldset>
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Bank Info</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="bankName"
                             label="Bank Name"

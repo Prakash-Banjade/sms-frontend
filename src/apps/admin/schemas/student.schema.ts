@@ -24,7 +24,12 @@ export const studentSchema = z.object({
     admissionDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid admission date',
     }).optional(),
-    dormitoryRoomId: z.string().uuid({ message: 'Invalid dormitory room ID' }).nullish(),
+    dormitoryRoomId: z.string()
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid dormitory room ID',
+        })
+        .nullish(),
 
     // PERSONAL INFORMATION
     firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),
@@ -54,7 +59,7 @@ export const studentSchema = z.object({
     nationalIdCardNo: z.string().optional(),
     birthCertificateNumber: z.string().optional(),
     additionalNotes: z.string().max(1000, { message: "Note is too long. Max 1000 characters." }).nullish(),
-    documentAttatchmentIds: z.array(z.string()).optional(),
+    documentAttachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(), // values can be URLs or UUIDs
 
     // BANK INFORMATION
     bankName: z.string().optional(),
@@ -127,7 +132,7 @@ export const studentFormDefaultValues: Partial<studentSchemaType> = {
     nationalIdCardNo: "",
     birthCertificateNumber: "",
     additionalNotes: "",
-    documentAttatchmentIds: [],
+    documentAttachmentIds: [],
 
     // BANK INFORMATION
     bankName: "",

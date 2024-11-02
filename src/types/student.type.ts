@@ -1,5 +1,5 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
-import { EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./global.type";
+import { EBloodGroup, EGuardianRelation, EReligion, Gender, IFileUploadResponse, TMeta } from "./global.type";
 
 export type TStudent = {
     id: string,
@@ -56,6 +56,7 @@ export type TSingleStudent = {
     nationalIdCardNo: string,
     birthCertificateNumber: string,
     additionalNotes: string | null,
+    documentAttachments: IFileUploadResponse['files'],
     bankName: string,
     bankAccountNumber: string,
     ifscCode: string,

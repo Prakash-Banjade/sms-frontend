@@ -52,6 +52,7 @@ export interface IFileUploadResponse {
     files: {
         id: string,
         url: string,
+        originalName: string,
     }[],
     count: number,
 }

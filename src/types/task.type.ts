@@ -35,7 +35,7 @@ export type TSingleTask = {
         id: string,
         subjectName: string
     },
-    attatchments: {
+    attachments: {
         id: string,
         url: string,
         originalName: string,

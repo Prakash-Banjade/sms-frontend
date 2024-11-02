@@ -27,9 +27,7 @@ export default function EditStudentPage({ }: Props) {
 function StudentEditForm({ id }: { id: string }) {
     const navigate = useNavigate();
 
-    const { data, isLoading } = useGetStudent({
-        id,
-    })
+    const { data, isLoading } = useGetStudent({ id });
 
     const { data: filteredValues, error } = useMemo(() => {
         if (!data) return { data: undefined, error: undefined };
@@ -42,6 +40,7 @@ function StudentEditForm({ id }: { id: string }) {
             additionalNotes: data?.additionalNotes ?? undefined,
             previousSchoolDetails: data?.previousSchoolDetails ?? undefined,
             profileImageId: data?.profileImage?.url ?? undefined,
+            documentAttachmentIds: data?.documentAttachments?.map(attachment => attachment.id) ?? [],
         });
     }, [data])
 
@@ -53,7 +52,8 @@ function StudentEditForm({ id }: { id: string }) {
 
     return (
         <StudentForm
-            defaultValues={filteredValues}
+            defaultValues={filteredValues ?? {}}
+            documentAttachments={data?.documentAttachments ?? []}
         />
     )
 }

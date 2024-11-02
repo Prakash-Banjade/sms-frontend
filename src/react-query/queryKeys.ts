@@ -11,6 +11,7 @@ export enum QueryKey {
     CLASSES = "class-rooms",
     SECTIONS = "sections",
     IMAGES = "upload/images",
+    FILES= "upload/files",
     SUBJECTS = 'subjects',
     SUBJECT_CHAPTERS = 'subject-chapters',
     CLASSROUTINE = 'class-routines',
