@@ -7,7 +7,6 @@ import { Button } from '../ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { formatDateNumeric } from '@/utils/format-date';
 import { Textarea } from "@/components/ui/textarea"
-import { ImageUpload } from './image-upload';
 import { DynamicSelect } from './dynamic-select';
 import { AppCheckbox } from './app-form-checkbox';
 import { AppFormSelect } from './select';
@@ -260,8 +259,6 @@ AppForm.Checkbox = AppCheckbox;
 AppForm.Select = AppFormSelect;
 
 AppForm.DynamicSelect = DynamicSelect;
-
-AppForm.ImageUpload = ImageUpload;
 
 AppForm.FileUpload = FileUpload;
 

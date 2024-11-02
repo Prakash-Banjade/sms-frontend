@@ -14,6 +14,7 @@ import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStudent } from "@/types/student.type"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
+import { ProfileAvatar } from "@/components/ui/avatar"
 
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
@@ -34,7 +35,8 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         },
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline">
+                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
+                    <ProfileAvatar name={row.original.fullName} src={row.original.profileImageUrl || ''} className="size-10" />
                     {row.original.fullName}
                 </Link>
             </TooltipWrapper>
