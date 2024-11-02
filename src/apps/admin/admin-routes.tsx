@@ -45,6 +45,7 @@ import TasksPage from './pages/tasks/task-list.page';
 import AddTaskPage from './pages/tasks/add-task.page';
 import EditTaskPage from './pages/tasks/edit-task.page';
 import SingleTaskPage from './pages/tasks/single-task.page';
+import SingleClassRoomPage from './pages/classes/single-classroom.page';
 
 const AdminRoutes = () => {
     return (
@@ -59,6 +60,7 @@ const AdminRoutes = () => {
                     <Route path="classes">
                         <Route index element={<ClassesListPage />} />
                         <Route path="new" element={<AddClassPage />} />
+                        <Route path=":id" element={<SingleClassRoomPage />} />
                         <Route path="sections" element={<SectionsListPage />} />
                     </Route>
                     <Route path="subjects">

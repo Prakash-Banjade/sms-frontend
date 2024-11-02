@@ -13,6 +13,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/types/class.type"
 import ClassRoomForm from "./class-room.form"
 import ClassSectionForm from "./class-room-section.form"
+import { useNavigate } from "react-router-dom"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -83,10 +84,9 @@ export const classesColumns: ColumnDef<TClass>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
+            const navigate = useNavigate();
             const [isEditOpen, setIsEditOpen] = useState(false);
             const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
 
             return (
                 <>
@@ -129,8 +129,11 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id)}>
+                                <span>View full detail</span>
+                            </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                <span>Edit Class</span>
+                                <span>Edit class</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsSectionFormOpen(true)}>
                                 <span>Add section</span>

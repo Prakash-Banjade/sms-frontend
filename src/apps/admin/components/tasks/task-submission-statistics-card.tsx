@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetTaskStatistics } from "./action";
-import SubmissionStatisticsSkeleton from "../skeletons/task-submissions-statistics-skeleton";
+import SubmissionStatisticsSkeleton from "./skeletons/task-submissions-statistics-skeleton";
 
 type Props = {
     taskId: string;

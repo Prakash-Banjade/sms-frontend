@@ -35,3 +35,19 @@ export type TClassRoomOptions = {
     data: TClassRoomOption[],
     meta: TMeta,
 }
+
+export type TSingleClassRoom = {
+    id: string,
+    name: string,
+    description: string,
+    monthlyTutionFee: number,
+    monthlyFee: number,
+    location: string,
+    classType: EClassType,
+    createdAt: string,
+    updatedAt: string,
+    classTeacherName: string | null,
+    totalStudentsCount: string,
+    totalMaleStudentsCount: string,
+    totalFemaleStudentsCount: string
+}

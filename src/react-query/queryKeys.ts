@@ -31,4 +31,5 @@ export enum QueryKey {
     NOTICES = "notices",
     TASKS = "tasks",
     TASK_SUBMISSIONS = "task-submissions",
+    DETAILS = "details",
 };
