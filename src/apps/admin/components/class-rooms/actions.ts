@@ -49,7 +49,7 @@ export const useGetSections = ({
 }) => {
     const response = useFetchData<TClassesResponse>({
         endpoint: QueryKey.CLASSES + '/' + QueryKey.SECTIONS,
-        queryKey: queryString ? [QueryKey.CLASSES, queryString] : [QueryKey.CLASSES],
+        queryKey: queryString ? [QueryKey.CLASSES, QueryKey.SECTIONS, queryString] : [QueryKey.CLASSES, QueryKey.SECTIONS],
         queryString,
         options,
     })
