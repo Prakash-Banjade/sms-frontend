@@ -50,8 +50,8 @@ export const useGetTaskStatistics = ({
     options?: UseQueryOptions<TSingleTaskStatistics>
 }) => {
     const response = useFetchData<TSingleTaskStatistics>({
-        endpoint: QueryKey.TASKS,
-        queryKey: [QueryKey.TASKS, id],
+        endpoint: QueryKey.TASKS + `/${id}/statistics`,
+        queryKey: [QueryKey.TASKS, id, "statistics"],
         queryString,
         options,
     })

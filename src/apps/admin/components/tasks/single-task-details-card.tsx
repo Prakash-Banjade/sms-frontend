@@ -59,7 +59,7 @@ export default function SingleTaskDetailsCard({ task }: { task: TSingleTask }) {
                                     <ul className="space-y-2">
                                         {task.attachments.map((attachment, index) => (
                                             <li key={index}>
-                                                <a href={attachment.url} target="_blank" rel="noreferrer" className="text-blue-500 hover:text-blue-700 hover:underline">
+                                                <a href={attachment.url} target="_blank" rel="noreferrer" className="flex gap-2 items-center w-fit text-blue-500 hover:text-blue-600 hover:underline">
                                                     <FileIcon className="h-4 w-4 mr-2" />
                                                     {attachment.originalName}
                                                 </a>

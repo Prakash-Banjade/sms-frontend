@@ -3,7 +3,7 @@ import { ClassSectionFormField } from "@/components/forms/class-section-form-fie
 import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
-import { ETask } from "@/types/global.type";
+import { ETask, IFileUploadResponse } from "@/types/global.type";
 import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,10 +13,12 @@ import { useGetClassRoomsOptions } from "../class-rooms/actions";
 
 type Props = ({
     taskId?: undefined;
+    attachments?: undefined;
 } | {
     taskId: string;
     defaultValues: taskSchemaType;
     type: ETask;
+    attachments: IFileUploadResponse['files'];
 }) & {
     taskType: ETask;
 }
@@ -35,6 +37,7 @@ const taskSchema = z.object({
         .uuid({ message: 'Select a subject' }),
     marks: z.coerce.number().min(0, { message: "Marks is required" }),
     taskType: z.nativeEnum(ETask),
+    attachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(), // values can be URLs or UUIDs
 })
 
 const defaultValues: Partial<taskSchemaType> = {
@@ -44,6 +47,7 @@ const defaultValues: Partial<taskSchemaType> = {
     subjectId: undefined,
     classRoomId: undefined,
     sectionIds: [],
+    attachmentIds: [],
     marks: 0,
 }
 
@@ -82,6 +86,7 @@ export default function TaskForm(props: Props) {
             data: {
                 ...values,
                 classRoomIds: values.sectionIds?.length ? values.sectionIds : [values.classRoomId], // need to send as classRoomIds not section Ids
+                attachmentIds: values.attachmentIds,
             },
             invalidateTags: [QueryKey.TASKS],
         });
@@ -139,15 +144,25 @@ export default function TaskForm(props: Props) {
                         placeholder="eg. 100"
                         description="Enter the marks for task or leave it blank."
                     />
+                    <AppForm.Textarea<taskSchemaType>
+                        rows={8}
+                        name="description"
+                        label="Description"
+                        placeholder={`eg. Write some details about ${props.taskType} here`}
+                        required
+                    />
+                    <AppForm.FileUpload<taskSchemaType>
+                        name="attachmentIds"
+                        label="Attachments"
+                        placeholder="Upload attachments"
+                        description="Image, PDF | Max 5 files | 5 MB each"
+                        multiple
+                        maxLimit={5}
+                        initialUpload={props.attachments ?? []}
+                        accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
+                    />
                 </section>
 
-                <AppForm.Textarea<taskSchemaType>
-                    rows={8}
-                    name="description"
-                    label="Description"
-                    placeholder={`eg. Write some details about ${props.taskType} here`}
-                    required
-                />
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel>Cancel</AppForm.Cancel>

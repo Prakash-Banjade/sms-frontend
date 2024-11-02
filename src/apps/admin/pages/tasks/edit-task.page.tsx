@@ -32,6 +32,7 @@ function TaskEditForm({ type, id }: { id: string, type: ETask }) {
             taskType={type}
             taskId={id}
             type={type}
+            attachments={data.attachments}
             defaultValues={{
                 description: data.description,
                 title: data.title,

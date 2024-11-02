@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Teacher } from "@/types/teacher.type"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
+import { ProfileAvatar } from "@/components/ui/avatar"
 
 export const teachersColumns: ColumnDef<Teacher>[] = [
     {
@@ -26,6 +27,14 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
     {
         header: "Name",
         accessorKey: "teacherFullName",
+        cell: ({ row }) => {
+            return <TooltipWrapper label={'Click to view'}>
+                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
+                    <ProfileAvatar name={row.original.firstName + ' ' + row.original.lastName} src={row.original.profileImage?.url || ''} className="size-10" />
+                    {row.original.firstName + ' ' + row.original.lastName}
+                </Link>
+            </TooltipWrapper>
+        }
     },
     {
         header: "Gender",

@@ -180,6 +180,7 @@ export default function StudentForm(props: Props) {
                                 placeholder="Select admission date"
                                 description="Select the admission date"
                                 required
+                                max={new Date().toISOString().split('T')[0]}
                             />
                         }
 

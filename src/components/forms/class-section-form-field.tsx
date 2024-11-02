@@ -69,7 +69,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
             <FormField
                 control={form.control}
                 name={"classRoomId"}
-                render={() => (
+                render={({ field }) => (
                     <FormItem className={cn("relative", containerClassName)}>
                         <div className="">
                             <FormLabel className="">
@@ -83,7 +83,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                 setSelectedClassRoom(data?.data?.find((classRoom) => classRoom.id === val))
                                 setClassRoomId(val)
                                 multipleSections ? setSectionIds([]) : setSectionId('')
-                                form.setValue('classRoomId', val)
+                                field.onChange(val)
                                 form.setValue("subjectId", ''); // reset subjectId also if present
                                 form.setValue("sectionIds", []); // reset sectionIds also if present
                             }}
@@ -130,7 +130,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                         <FormField
                             control={form.control}
                             name={"sectionId"}
-                            render={() => (
+                            render={({ field }) => (
                                 <FormItem className={cn("relative", containerClassName)}>
                                     <div className="">
                                         <FormLabel className="">
@@ -140,7 +140,10 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                     </div>
                                     <Select
                                         value={sectionId || ''}
-                                        onValueChange={val => setSectionId(val)}
+                                        onValueChange={val => {
+                                            setSectionId(val)
+                                            field.onChange(val)
+                                        }}
                                         disabled={
                                             !classRoomId
                                             || !selectedClassRoom?.children?.length

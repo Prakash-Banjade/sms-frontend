@@ -33,7 +33,10 @@ export default function StaffForm(props: Props) {
             method,
             endpoint: QueryKey.STAFFS,
             id: params.id,
-            data: getDirtyValues(values, form),
+            data: {
+                ...getDirtyValues(values, form),
+                profileImageId: values.profileImageId ?? null, 
+            },
             invalidateTags: [QueryKey.STAFFS],
         });
 
@@ -44,80 +47,91 @@ export default function StaffForm(props: Props) {
 
     return (
         <AppForm schema={staffSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 @container">
 
-                <fieldset className="border border-border rounded-lg p-8">
-                    <legend className="px-2 text-sm">Personal Info</legend>
-                    <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Text<staffSchemaType>
-                            name="firstName"
-                            label="First name"
-                            placeholder="eg. John"
-                            description="First name of the staff"
-                            required
-                        />
+                <section className="grid @7xl:grid-cols-3 gap-8">
+                    <fieldset className="border border-border rounded-lg p-8 @7xl:col-span-2">
+                        <legend className="px-2 text-sm">Personal Info</legend>
+                        <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                            <AppForm.Text<staffSchemaType>
+                                name="firstName"
+                                label="First name"
+                                placeholder="eg. John"
+                                description="First name of the staff"
+                                required
+                            />
 
-                        <AppForm.Text<staffSchemaType>
-                            name="lastName"
-                            label="Last name"
-                            placeholder="eg. Doe"
-                            description="Last name of the staff"
-                            required
-                        />
+                            <AppForm.Text<staffSchemaType>
+                                name="lastName"
+                                label="Last name"
+                                placeholder="eg. Doe"
+                                description="Last name of the staff"
+                                required
+                            />
 
-                        <AppForm.Select<staffSchemaType>
-                            name="gender"
-                            label="Gender"
-                            placeholder="Select gender"
-                            description="Select gender of the staff"
-                            options={Object.entries(GenderMappings).map(([key, value]) => ({ label: key, value }))}
-                            required
-                        />
+                            <AppForm.Select<staffSchemaType>
+                                name="gender"
+                                label="Gender"
+                                placeholder="Select gender"
+                                description="Select gender of the staff"
+                                options={Object.entries(GenderMappings).map(([key, value]) => ({ label: key, value }))}
+                                required
+                            />
 
-                        <AppForm.Select<staffSchemaType>
-                            name="maritalStatus"
-                            label="Marital Status"
-                            placeholder="Select marital status"
-                            description="Select martial status of the staff"
-                            options={Object.entries(MaritalStatusMappings).map(([key, value]) => ({ label: key, value }))}
-                            required
-                        />
+                            <AppForm.Select<staffSchemaType>
+                                name="maritalStatus"
+                                label="Marital Status"
+                                placeholder="Select marital status"
+                                description="Select martial status of the staff"
+                                options={Object.entries(MaritalStatusMappings).map(([key, value]) => ({ label: key, value }))}
+                                required
+                            />
 
-                        <AppForm.DatePicker<staffSchemaType>
-                            name="dob"
-                            label="DOB"
-                            placeholder="Select date of birth"
-                            description="Date of birth of the staff"
-                            required
-                            max={new Date().toISOString().split('T')[0]}
-                        />
+                            <AppForm.DatePicker<staffSchemaType>
+                                name="dob"
+                                label="DOB"
+                                placeholder="Select date of birth"
+                                description="Date of birth of the staff"
+                                required
+                                max={new Date().toISOString().split('T')[0]}
+                            />
 
-                        <AppForm.Select<staffSchemaType>
-                            name="bloodGroup"
-                            label="Blood Group"
-                            placeholder="Select blood group"
-                            description="Select blood group of the staff"
-                            options={Object.entries(BloodGroupMappings).map(([key, value]) => ({ label: key, value }))}
-                            required
-                        />
+                            <AppForm.Select<staffSchemaType>
+                                name="bloodGroup"
+                                label="Blood Group"
+                                placeholder="Select blood group"
+                                description="Select blood group of the staff"
+                                options={Object.entries(BloodGroupMappings).map(([key, value]) => ({ label: key, value }))}
+                                required
+                            />
 
-                        <AppForm.Phone<staffSchemaType>
-                            name="phone"
-                            label="Phone No."
-                            placeholder="eg. 9xxxxxxxxxx"
-                            description="Phone number of the staff"
-                            required
-                        />
+                            <AppForm.Phone<staffSchemaType>
+                                name="phone"
+                                label="Phone No."
+                                placeholder="eg. 9xxxxxxxxxx"
+                                description="Phone number of the staff"
+                                required
+                            />
 
-                        <AppForm.Email<staffSchemaType>
-                            name="email"
-                            label="Email"
-                            placeholder="eg. johndoe@gmail.com"
-                            description="Email address of the staff"
-                            required
+                            <AppForm.Email<staffSchemaType>
+                                name="email"
+                                label="Email"
+                                placeholder="eg. johndoe@gmail.com"
+                                description="Email address of the staff"
+                                required
+                            />
+                        </section>
+                    </fieldset>
+
+                    <fieldset className="border border-border rounded-lg p-8 grid place-items-center">
+                        <legend className="px-2 text-sm">Profile Image</legend>
+                        <AppForm.ImageUpload<staffSchemaType>
+                            name="profileImageId"
+                            containerClassName="border-none"
+                            uploadedImageUrl={form.getValues('profileImageId') ?? null}
                         />
-                    </section>
-                </fieldset>
+                    </fieldset>
+                </section>
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Professional Info</legend>

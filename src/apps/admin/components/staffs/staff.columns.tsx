@@ -13,6 +13,7 @@ import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStaff } from "@/types/staff.type"
+import { ProfileAvatar } from "@/components/ui/avatar"
 
 export const staffsColumns: ColumnDef<TStaff>[] = [
     {
@@ -26,8 +27,12 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
     {
         header: "Name",
         cell: ({ row }) => {
-            const staff = row.original;
-            return <span>{staff.firstName} {staff.lastName}</span>
+            return <TooltipWrapper label={'Click to view'}>
+                <div className="flex gap-4 items-center">
+                    <ProfileAvatar name={row.original.firstName + ' ' + row.original.lastName} src={row.original.profileImage?.url || ''} className="size-10" />
+                    {row.original.firstName + ' ' + row.original.lastName}
+                </div>
+            </TooltipWrapper>
         }
     },
     {

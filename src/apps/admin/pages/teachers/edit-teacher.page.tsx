@@ -38,7 +38,10 @@ function TeacherEditForm({ id }: { id: string }) {
 
     return (
         <TeacherForm
-            defaultValues={filteredValues}
+            defaultValues={{
+                ...filteredValues,
+                profileImageId: data?.profileImage?.url ?? null,
+            }}
         />
     )
 }

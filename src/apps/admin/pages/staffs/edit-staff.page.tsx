@@ -38,7 +38,10 @@ function StaffEditForm({ id }: { id: string }) {
 
     return (
         <StaffForm
-            defaultValues={filteredValues}
+            defaultValues={{
+                ...filteredValues,
+                profileImageId: data?.profileImage?.url ?? null,
+            }}
         />
     )
 }
