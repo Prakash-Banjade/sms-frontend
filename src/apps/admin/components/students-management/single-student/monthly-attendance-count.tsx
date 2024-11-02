@@ -46,9 +46,9 @@ export default function MonthlyAttendanceCount() {
             <div className="flex space-x-4">
                 <Select
                     onValueChange={val => {
-                        setSearchParams("month", val)
+                        setSearchParams("month", (+val + 1).toString())
                     }}
-                    defaultValue={(new Date().getMonth() + 1).toString()}
+                    defaultValue={(new Date().getMonth()).toString()}
                 >
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select month" />
