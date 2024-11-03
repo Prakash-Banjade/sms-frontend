@@ -33,6 +33,7 @@ export type TDormitoryRoom = {
     id: string,
     createdAt: string,
     updatedAt: string,
+    name: string,
     roomNumber: number,
     noOfBeds: number,
     costPerBed: number,

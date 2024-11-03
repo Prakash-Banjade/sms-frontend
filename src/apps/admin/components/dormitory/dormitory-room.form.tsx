@@ -17,6 +17,7 @@ type Props = ({
 }
 
 const dormitoryRoomForm = z.object({
+    name: z.string().min(1, { message: 'Room name is required' }),
     roomNumber: z.coerce.number().int({ message: 'Room number must be an integer' }).min(1, { message: 'Room number must be at least 1' }),
     noOfBeds: z.coerce.number().int({ message: 'Number of beds must be an integer' }).positive({ message: 'Number of beds must be a positive number' }),
     costPerBed: z.coerce.number().min(1, { message: 'Cost per bed must be at least 1' }),
@@ -72,9 +73,17 @@ export default function DormitoryRoomForm(props: Props) {
         <AppForm schema={dormitoryRoomForm} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                 <section className="grid 2xl:grid-cols-2 gap-8 grid-cols-1">
+                    <AppForm.Text<dormitoryRoomFormType>
+                        name="name"
+                        label="Room Name"
+                        placeholder={`e.g. Awesome Room`}
+                        description="Enter the room name."
+                        required
+                        min={1}
+                    />
                     <AppForm.Number<dormitoryRoomFormType>
                         name="roomNumber"
-                        label="Name"
+                        label="Room Number"
                         placeholder={`e.g. 123`}
                         description="Enter the room number."
                         required

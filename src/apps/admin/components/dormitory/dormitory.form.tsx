@@ -20,7 +20,7 @@ type Props = ({
 
 const dormitoryForm = z.object({
     name: z.string().min(2, { message: "Name is required" }),
-    type: z.nativeEnum(EDormitoryType).default(EDormitoryType.BOTH).nullish(),
+    type: z.nativeEnum(EDormitoryType),
     description: z.string().nullish(),
     address: z.string().max(50, { message: "Address is too long" }).nullish(),
     intake: z.string().max(50, { message: "Intake is too long" }).nullish(),
