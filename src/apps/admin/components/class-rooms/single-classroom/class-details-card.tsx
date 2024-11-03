@@ -15,7 +15,7 @@ export default function ClassDetailsCard() {
     if (!classRoom) return <div>Class not found</div>;
 
     return (
-        <Card>
+        <Card className="@container">
             <CardHeader>
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-3xl font-bold">{classRoom.name}</CardTitle>
@@ -27,7 +27,7 @@ export default function ClassDetailsCard() {
                 <CardDescription className="text-lg mt-2">Class Overview</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid @4xl:grid-cols-4 @3xl:grid-cols-3 @2xl:grid-cols-2 gap-4"> 
                     <div className="flex items-center">
                         <Users className="mr-2 h-5 w-5 text-muted-foreground" />
                         <span>Total: {classRoom.totalStudentsCount}</span>
@@ -52,7 +52,7 @@ export default function ClassDetailsCard() {
                         <DollarSign className="mr-2 h-5 w-5 text-muted-foreground" />
                         <span>Monthly Tuition Fee: {classRoom.monthlyTutionFee}</span>
                     </div>
-                    <div className="flex items-center md:col-span-4 col-span-2">
+                    <div className="flex items-center col-span-full">
                         <MapPin className="mr-2 h-5 w-5 text-muted-foreground" />
                         <span>Classroom Location: {classRoom.location}</span>
                     </div>
