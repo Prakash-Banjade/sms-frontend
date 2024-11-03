@@ -187,6 +187,7 @@ export default function ImageUpload<T>({
             </label>
             {
                 imageUrl && <Button
+                    type='button'
                     onClick={handleRemove}
                     variant="outline"
                     className='mx-auto'
