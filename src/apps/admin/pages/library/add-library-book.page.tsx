@@ -35,6 +35,8 @@ export const RecentlyAddedBooks = () => {
 
     if (isLoading) return <div>Loading...</div>;
 
+    if (!data || !data?.data?.length) return null;
+
     return (
         <Card className='space-y-6'>
             <CardHeader>
