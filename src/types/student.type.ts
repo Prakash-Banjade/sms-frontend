@@ -15,7 +15,6 @@ export type TStudent = {
     classRoom: string,
     parentClassId: string,
     parentClass: string,
-    accountId: string
 }
 
 export type TStudentsResponse = {
