@@ -43,7 +43,7 @@ function SubjectOverview({ subjectId }: { subjectId: string }) {
                         </div>
                         <div className="flex items-center">
                             <User className="mr-2 h-4 w-4" />
-                            <span>Teacher : {subject?.teacher?.firstName} {subject?.teacher?.lastName}</span>
+                            <span>Teacher : {subject.teacher ? `${subject?.teacher?.firstName} ${subject?.teacher?.lastName}` : <span className="text-muted-foreground">N/A</span>}</span>
                         </div>
                         <div className="flex items-center">
                             <FileText className="mr-2 h-4 w-4" />
