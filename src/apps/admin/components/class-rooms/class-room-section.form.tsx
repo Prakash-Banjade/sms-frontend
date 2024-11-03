@@ -9,14 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
-type Props = ({
-    setIsOpen?: undefined;
-} | {
+type Props = {
     classRoomId?: string;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) & {
     defaultValues?: Partial<classRoomFormSchemaType>;
     parentClassId: string
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function ClassSectionForm(props: Props) {
@@ -34,7 +31,7 @@ export default function ClassSectionForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType & { parentClassId: string }>, any>();
 
     async function onSubmit(values: classRoomFormSchemaType) {
-        const method = ((!!props.setIsOpen && props.classRoomId) || params.id) ? "patch" : "post";
+        const method = props.classRoomId ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
