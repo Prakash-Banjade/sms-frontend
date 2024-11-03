@@ -7,6 +7,9 @@ import { Users, GraduationCap, Book, Award, Clock } from "lucide-react"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import ClassDetailsCard from "../../components/class-rooms/single-classroom/class-details-card"
 import ClassRoomAttendanceChart from "../../components/class-rooms/single-classroom/class-room-attendance-chart"
+import { ClassDetailsLoadingSkeleton } from "../../components/class-rooms/single-classroom/skeletons/class-details-card-skeleton"
+import { useGetClass } from "../../components/class-rooms/actions"
+import { useParams } from "react-router-dom"
 
 // Extended mock data for the class
 const classData = {
@@ -73,11 +76,21 @@ const classData = {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
 export default function SingleClassRoomPage() {
+    const param = useParams();
+
+    const { data: classRoom, isLoading } = useGetClass({ id: param.id! }); // this component is used in a dynamic route, so used not null
+
+    if (!classRoom && !isLoading) return <div>Class not found</div>;
+
     return (
         <div className="container mx-auto @container space-y-8">
-            <ClassDetailsCard />
+            {
+                isLoading
+                    ? <ClassDetailsLoadingSkeleton />
+                    : <ClassDetailsCard classRoom={classRoom} />
+            }
 
-            <ClassRoomAttendanceChart />
+            <ClassRoomAttendanceChart totalStudents={classRoom?.totalStudentsCount ?? 0} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Card>

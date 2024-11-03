@@ -47,7 +47,7 @@ export type TSingleClassRoom = {
     createdAt: string,
     updatedAt: string,
     classTeacherName: string | null,
-    totalStudentsCount: string,
-    totalMaleStudentsCount: string,
-    totalFemaleStudentsCount: string
+    totalStudentsCount: number,
+    totalMaleStudentsCount: number,
+    totalFemaleStudentsCount: number
 }
