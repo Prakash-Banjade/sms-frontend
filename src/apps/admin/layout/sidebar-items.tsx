@@ -35,7 +35,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 ]
             },
             {
-                title: "Classes",
+                title: "Class",
                 url: "classes",
                 icon: Building,
                 items: [
@@ -54,7 +54,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 ]
             },
             {
-                title: "Subjects",
+                title: "Subject",
                 url: "subjects",
                 icon: BookOpenText,
                 items: [
@@ -84,7 +84,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 ]
             },
             {
-                title: "Notices",
+                title: "Notice",
                 url: "notices",
                 icon: BellRing,
             }
