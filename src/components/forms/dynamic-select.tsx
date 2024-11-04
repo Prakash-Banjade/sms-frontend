@@ -75,13 +75,13 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                             {
                                 Array.isArray(data) ? ( // data can be array or object based on if pagination is applied from backend
                                     data?.map((option) => (
-                                        <SelectItem key={option.id} value={option.id}>
+                                        <SelectItem key={option.id ?? option.value} value={option.id ?? option.value}>
                                             {option[labelKey]}
                                         </SelectItem>
                                     ))
                                 ) : (
                                     data?.data?.map((option) => (
-                                        <SelectItem key={option.id} value={option.id}>
+                                        <SelectItem key={option.id ?? option.value} value={option.id ?? option.value}>
                                             {option[labelKey]}
                                         </SelectItem>
                                     ))

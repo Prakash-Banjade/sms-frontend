@@ -42,7 +42,7 @@ export interface PaginatedResponse<T> {
     meta: TMeta;
 }
 
-export type ComboboxOption = {
+export type SelectOption = {
     label: string,
     value: string,
 }

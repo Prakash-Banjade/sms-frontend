@@ -79,7 +79,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                             </FormLabel>
                         </div>
                         <Select
-                            value={classRoomId || ''}
+                            value={classRoomId || undefined}
                             onValueChange={val => {
                                 setSelectedClassRoom(data?.data?.find((classRoom) => classRoom.id === val))
                                 setClassRoomId(val)
@@ -140,7 +140,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                         </FormLabel>
                                     </div>
                                     <Select
-                                        value={sectionId || ''}
+                                        value={sectionId || undefined}
                                         onValueChange={val => {
                                             setSectionId(val)
                                             field.onChange(val)

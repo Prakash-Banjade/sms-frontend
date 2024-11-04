@@ -2,7 +2,7 @@ import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
-import { ComboboxOption, EClassType } from "@/types/global.type";
+import { SelectOption, EClassType } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ type Props = {
     classRoomId: string;
     defaultValues: Partial<classRoomFormSchemaType>;
     parentClassId?: undefined;
-    selectedClassTeacherOption?: ComboboxOption;
+    selectedClassTeacherOption?: SelectOption;
 } | { // for new
     parentClassId: string
     classRoomId?: undefined;

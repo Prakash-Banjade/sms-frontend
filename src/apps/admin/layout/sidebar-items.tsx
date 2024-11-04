@@ -116,7 +116,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     },
                     {
                         title: "Promotion",
-                        url: "students/promotion",
+                        url: "students/promote",
                     },
                 ]
             },

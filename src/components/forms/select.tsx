@@ -41,7 +41,7 @@ export function AppFormSelect<T extends FieldValues>({
                             </span>
                         }
                     </div>
-                    <Select onValueChange={field.onChange} value={field.value} {...props}>
+                    <Select onValueChange={field.onChange} value={field.value} {...props} required={required}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder={placeholder} />

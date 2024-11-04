@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/popover'
 import { TFormFieldProps } from './app-form'
 import { useFetchData } from '@/hooks/useFetchData'
-import { ComboboxOption } from '@/types/global.type'
+import { SelectOption } from '@/types/global.type'
 import { QueryKey } from '@/react-query/queryKeys'
 import { createQueryString } from '@/utils/create-query-string';
 
@@ -30,7 +30,7 @@ interface AppFormDynamicComboboxProps<T> extends TFormFieldProps<T> {
     clearQueryFilter?: boolean;
     queryKey: QueryKey;
     disabled?: boolean;
-    defaultSelected?: ComboboxOption | null;
+    defaultSelected?: SelectOption | null;
 }
 
 
@@ -47,14 +47,14 @@ export function DynamicCombobox<T extends FieldValues>({
     defaultSelected = null
 }: AppFormDynamicComboboxProps<T>) {
     const { control } = useFormContext();
-    const [selectedValue, setSelectedValue] = useState<ComboboxOption | null>(defaultSelected);
+    const [selectedValue, setSelectedValue] = useState<SelectOption | null>(defaultSelected);
 
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState<string>('');
 
     const debouncedValue = useDebounce(search, 500);
 
-    const { data: options, isLoading } = useFetchData<ComboboxOption[]>({
+    const { data: options, isLoading } = useFetchData<SelectOption[]>({
         queryKey: [queryKey, debouncedValue],
         endpoint: queryKey + '/' + QueryKey.OPTIONS,
         queryString: createQueryString({
