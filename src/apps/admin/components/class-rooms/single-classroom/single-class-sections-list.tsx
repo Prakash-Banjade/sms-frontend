@@ -5,7 +5,7 @@ import { useGetClasses } from "../actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import ClassSectionForm from "../class-room-section.form";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Plus } from "lucide-react";
 import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -17,6 +17,8 @@ type Props = {
 }
 
 export default function SingleClassSectionsList({ classRoomId }: Props) {
+    const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
+    
     const { data, isLoading } = useGetClasses({
         queryString: createQueryString({
             parentClassId: classRoomId,
@@ -31,7 +33,25 @@ export default function SingleClassSectionsList({ classRoomId }: Props) {
     return (
         <Card >
             <CardHeader>
-                <CardTitle className="text-xl font-semibold">Sections List</CardTitle>
+                <section className="flex justify-between items-center">
+                    <CardTitle className="text-xl font-semibold">Sections List</CardTitle>
+
+                    <ResponsiveDialog
+                        isOpen={isSectionFormOpen}
+                        setIsOpen={setIsSectionFormOpen}
+                        title="Add Section"
+                    >
+                        <ClassSectionForm
+                            parentClassId={classRoomId}
+                            setIsOpen={setIsSectionFormOpen}
+                        />
+                    </ResponsiveDialog>
+
+                    <Button variant={'outline'} size={'sm'} onClick={() => setIsSectionFormOpen(true)}>
+                        <Plus />
+                        Create New
+                    </Button>
+                </section>
             </CardHeader>
             <CardContent>
                 <Table>
