@@ -99,16 +99,24 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: UsersRound,
                 items: [
                     {
-                        title: "Enrollments",
-                        url: "students/enrollments",
+                        title: "Students",
+                        url: "students",
                     },
                     {
                         title: "New Registration",
                         url: "students/new-registration",
                     },
                     {
-                        title: "Student Details",
-                        url: "students",
+                        title: "Enrollments",
+                        url: "students/enrollments",
+                    },
+                    {
+                        title: "Change Class",
+                        url: "students/change-class",
+                    },
+                    {
+                        title: "Promotion",
+                        url: "students/promotion",
                     },
                 ]
             },

@@ -40,9 +40,10 @@ type Props = ({
     noDescription?: boolean;
     containerClassName?: string;
     multipleSections?: boolean;
+    required?: boolean;
 }
 
-export function ClassSectionFormField({ noDescription = false, containerClassName = '', multipleSections = false, options }: Props) {
+export function ClassSectionFormField({ noDescription = false, containerClassName = '', multipleSections = false, options, required = true }: Props) {
     const form = useFormContext();
 
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOption | undefined>(); // use to render the section option based on the selected class room
@@ -74,7 +75,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                         <div className="">
                             <FormLabel className="">
                                 Class room
-                                <span className="text-red-500">*</span>
+                                {required && <span className="text-red-500">*</span>}
                             </FormLabel>
                         </div>
                         <Select
@@ -88,7 +89,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                 form.setValue("sectionIds", []); // reset sectionIds also if present
                             }}
                             disabled={isLoading}
-                            required
+                            required={required}
                         >
                             <SelectTrigger>
                                 <SelectValue placeholder="Select a class" />
@@ -135,7 +136,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                     <div className="">
                                         <FormLabel className="">
                                             Section
-                                            {!!selectedClassRoom?.children?.length && <span className="text-red-500">*</span>}
+                                            {!!selectedClassRoom?.children?.length && required && <span className="text-red-500">*</span>}
                                         </FormLabel>
                                     </div>
                                     <Select
@@ -149,7 +150,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                             || !selectedClassRoom?.children?.length
                                             || isLoading
                                         }
-                                        required={!!selectedClassRoom?.children?.length}
+                                        required={!!selectedClassRoom?.children?.length && required}
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a section" />

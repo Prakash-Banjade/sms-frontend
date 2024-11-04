@@ -46,6 +46,7 @@ import AddTaskPage from './pages/tasks/add-task.page';
 import EditTaskPage from './pages/tasks/edit-task.page';
 import SingleTaskPage from './pages/tasks/single-task.page';
 import SingleClassRoomPage from './pages/classes/single-classroom.page';
+import StudentChangeClassPage from './pages/students-management/change-class.page';
 
 const AdminRoutes = () => {
     return (
@@ -130,6 +131,7 @@ const AdminRoutes = () => {
                             <Route index element={<StudentAttendancePage />} />
                             <Route path='leave-requests' element={<StudentsLeaveRequestsPage />} />
                         </Route>
+                        <Route path="change-class" element={<StudentChangeClassPage />} />
                         <Route path=":id">
                             <Route index element={<SingleStudentPage />} />
                             <Route path="edit" element={<EditStudentPage />} />
