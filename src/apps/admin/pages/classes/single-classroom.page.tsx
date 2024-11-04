@@ -202,7 +202,7 @@ export default function SingleClassRoomPage() {
                                         dataKey="count"
                                         label={({ name, percent }) => `${name} years (${(percent * 100).toFixed(0)}%)`}
                                     >
-                                        {classData.ageDistribution.map((entry, index) => (
+                                        {classData.ageDistribution.map((_, index) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
                                     </Pie>
