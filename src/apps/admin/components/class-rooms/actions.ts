@@ -39,23 +39,6 @@ export const useGetClasses = ({
     return response;
 }
 
-export const useGetSections = ({
-    queryString,
-    options,
-}: {
-    queryString?: string;
-    options?: UseQueryOptions<TClassesResponse>
-}) => {
-    const response = useFetchData<TClassesResponse>({
-        endpoint: QueryKey.CLASSES + '/' + QueryKey.SECTIONS,
-        queryKey: queryString ? [QueryKey.CLASSES, QueryKey.SECTIONS, queryString] : [QueryKey.CLASSES, QueryKey.SECTIONS],
-        queryString,
-        options,
-    })
-
-    return response;
-}
-
 export const useGetClassRoomsOptions = ({
     queryString,
     options,

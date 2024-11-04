@@ -57,6 +57,11 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         }
     },
     {
+        header: "Class Teacher",
+        accessorKey: "classTeacherName",
+        cell: ({ row }) => <span>{row.original.classTeacherName || <span className="text-muted-foreground">"N/A"</span>}</span>,
+    },
+    {
         header: "Location",
         accessorKey: "location",
         cell: ({ row }) => {
@@ -70,10 +75,6 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const [isEditOpen, setIsEditOpen] = useState(false);
-            const [_, setIsSectionFormOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-            // const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
 
             return (
                 <>
@@ -83,14 +84,20 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                         title="Edit class"
                     >
                         <ClassSectionForm
-                            parentClassId={row.original.id}
-                            setIsOpen={setIsSectionFormOpen}
+                            classRoomId={row.original.id}
+                            setIsOpen={setIsEditOpen}
                             defaultValues={{
                                 name: row.original.name,
                                 monthlyFee: row.original.monthlyFee,
                                 monthlyTutionFee: row.original.monthlyTutionFee,
-                                location: row.original.location
+                                location: row.original.location,
+                                classTeacherId: row.original.classTeacherId
                             }}
+                            selectedClassTeacherOption={
+                                (row.original.classTeacherId && row.original.classTeacherName)
+                                    ? { value: row.original.classTeacherId, label: row.original.classTeacherName }
+                                    : undefined
+                            }
                         />
                     </ResponsiveDialog>
                     <DropdownMenu>

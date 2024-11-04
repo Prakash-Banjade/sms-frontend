@@ -3,12 +3,15 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export type TClassRoomAttendanceStatisticsByDay = {
-    attendanceDate: string,
-    totalPresentStudentsCount: string,
-    totalAbsentStudentsCount: string,
-    totalLateStudentsCount: string,
-    totalLeaveStudentsCount: string,
-}[]
+    data: {
+        attendanceDate: string,
+        totalPresentStudentsCount: string,
+        totalAbsentStudentsCount: string,
+        totalLateStudentsCount: string,
+        totalLeaveStudentsCount: string,
+    }[],
+    totalPresentStudentsCount: number,
+}
 
 export enum ClassRoomAttendancePeriod {
     THIS_WEEK = 'thisWeek',

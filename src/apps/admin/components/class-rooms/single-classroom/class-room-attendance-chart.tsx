@@ -15,7 +15,7 @@ import { AttendanceStatusMappings } from "@/utils/labelToValueMappings";
 import { EAttendanceStatus } from "@/types/global.type";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 
-export default function ClassRoomAttendanceChart({ totalStudents }: { totalStudents: number }) {
+export default function ClassRoomAttendanceChart() {
     const { id } = useParams();
     const [filter, setFilter] = useState<ClassRoomAttendancePeriod>(ClassRoomAttendancePeriod.THIS_WEEK);
     const [selectedStatus, setSelectedStatus] = useState<string[]>([EAttendanceStatus.PRESENT]);
@@ -60,10 +60,10 @@ export default function ClassRoomAttendanceChart({ totalStudents }: { totalStude
             <CardContent>
                 <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={data}>
+                        <LineChart data={data.data}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="attendanceDate" />
-                            <YAxis domain={[0, totalStudents]} />
+                            <YAxis domain={[0, data.totalPresentStudentsCount]} />
                             <Tooltip contentStyle={{ background: 'hsl(var(--background))' }} />
                             <Legend payload={
                                 [

@@ -10,6 +10,7 @@ import ClassRoomAttendanceChart from "../../components/class-rooms/single-classr
 import { ClassDetailsLoadingSkeleton } from "../../components/class-rooms/single-classroom/skeletons/class-details-card-skeleton"
 import { useGetClass } from "../../components/class-rooms/actions"
 import { useParams } from "react-router-dom"
+import SingleClassSectionsList from "../../components/class-rooms/single-classroom/single-class-sections-list"
 
 // Extended mock data for the class
 const classData = {
@@ -76,9 +77,9 @@ const classData = {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
 export default function SingleClassRoomPage() {
-    const param = useParams();
+    const params = useParams();
 
-    const { data: classRoom, isLoading } = useGetClass({ id: param.id! }); // this component is used in a dynamic route, so used not null
+    const { data: classRoom, isLoading } = useGetClass({ id: params.id! }); // this component is used in a dynamic route, so used not null
 
     if (!classRoom && !isLoading) return <div>Class not found</div>;
 
@@ -90,7 +91,9 @@ export default function SingleClassRoomPage() {
                     : <ClassDetailsCard classRoom={classRoom} />
             }
 
-            <ClassRoomAttendanceChart totalStudents={classRoom?.totalStudentsCount ?? 0} />
+            <SingleClassSectionsList classRoomId={params.id!} />
+
+            <ClassRoomAttendanceChart />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Card>

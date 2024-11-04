@@ -16,8 +16,8 @@ export type TClassRoom = {
     location: string,
     classType: string,
     totalStudentsCount: number,
-    totalFemalesStudentsCount: number,
-    totalMalesStudentsCount: number
+    totalFemaleStudentsCount: number,
+    totalMaleStudentsCount: number
 
 }
 
