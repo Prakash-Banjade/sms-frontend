@@ -15,15 +15,41 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { TSubjectChapter } from "@/types/subject.type"
 import { Badge } from "@/components/ui/badge"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 
 type Props = {
     chapter: TSubjectChapter
     subjectId: string;
+    forceDragging?: boolean;
 }
 
-export default function SubjectChapterCard({ chapter, subjectId }: Props) {
+export default function SubjectChapterCard({ chapter, subjectId, forceDragging }: Props) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    const {
+        attributes,
+        isDragging,
+        listeners,
+        setNodeRef,
+        setActivatorNodeRef,
+        transform,
+        transition
+    } = useSortable({
+        id: chapter.chapterNo,
+    })
+
+    const parentStyles = {
+        transform: CSS.Transform.toString(transform),
+        transition: transition || undefined,
+        opacity: isDragging ? "0.5" : "1",
+        lineHeight: "4",
+    }
+
+    const draggableStyles = {
+        cursor: isDragging || forceDragging ? 'grabbing' : 'grab',
+    }
 
     const { mutateAsync, isPending } = useAppMutation();
 
@@ -37,12 +63,17 @@ export default function SubjectChapterCard({ chapter, subjectId }: Props) {
     }
 
     return (
-        <Card className="mb-4" key={chapter.id}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className="mb-4" key={chapter.id} ref={setNodeRef} style={parentStyles}>
+            <CardHeader className="flex flex-row items-center justify-between py-2">
                 <CardTitle className="text-md flex items-center">
-                    <span>
+                    <div
+                        ref={setActivatorNodeRef}
+                        style={draggableStyles}
+                        {...attributes}
+                        {...listeners}
+                    >
                         <GripVertical className="mr-2 h-5 w-5 text-muted-foreground" />
-                    </span>
+                    </div>
                     Chapter {chapter.chapterNo}: {chapter.title}
                     <span className="ml-5">
                         <Badge variant="outline" className="text-xs capitalize">
@@ -96,8 +127,8 @@ export default function SubjectChapterCard({ chapter, subjectId }: Props) {
 
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground break-words">
-                    {chapter.content}
+                <p className="text-sm text-muted-foreground break-words line-clamp-3">
+                    {chapter.content.slice(0, 1000)}
                 </p>
             </CardContent>
         </Card>
