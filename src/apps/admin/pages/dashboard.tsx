@@ -35,7 +35,7 @@ export function AdminDashboard() {
     }
 
     return (
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="container mx-auto flex flex-1 flex-col overflow-hidden">
 
             {/* Dashboard Content */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
