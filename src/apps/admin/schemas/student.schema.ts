@@ -30,6 +30,12 @@ export const studentSchema = z.object({
             message: 'Invalid dormitory room ID',
         })
         .nullish(),
+    routeStopId: z.string()
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid route stop ID',
+        })
+        .nullish(),
 
     // PERSONAL INFORMATION
     firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),

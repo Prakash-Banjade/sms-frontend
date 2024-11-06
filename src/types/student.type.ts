@@ -15,6 +15,8 @@ export type TStudent = {
     classRoom: string,
     parentClassId: string,
     parentClass: string,
+    routeStopId: string | null;
+    routeStop: string | null;
 }
 
 export type TStudentsResponse = {
@@ -45,7 +47,7 @@ export type TSingleStudent = {
     profileImage: {
         id: string,
         url: string,
-    } |null,
+    } | null,
     religion: EReligion,
     caste: string,
     isPhysicallyChallenged: boolean,
@@ -76,8 +78,12 @@ export type TSingleStudent = {
         relation: EGuardianRelation,
     }[],
     dormitoryRoom: {
-        id: true,
+        id: string,
         roomNumber: number,
+    } | null;
+    routeStop: {
+        id: string,
+        name: string,
     } | null;
 }
 

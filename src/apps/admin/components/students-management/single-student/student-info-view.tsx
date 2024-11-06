@@ -72,6 +72,11 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                                 <InfoItem label="Dormitory Room" value={student.dormitoryRoom?.roomNumber.toString()} />
                             )
                         }
+                        {
+                            student?.routeStop && (
+                                <InfoItem label="Route Stop" value={student.routeStop?.name} />
+                            )
+                        }
                     </div>
                 </section>
 

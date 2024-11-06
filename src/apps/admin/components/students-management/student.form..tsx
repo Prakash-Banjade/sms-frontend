@@ -10,15 +10,17 @@ import { BloodGroupMappings, GenderMappings, ReligionMappings } from "@/utils/la
 import { createStudentSchema, studentFormDefaultValues, studentSchemaType } from "../../schemas/student.schema";
 import GuardiansFields from "./guardians-form-fields";
 import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
-import { IFileUploadResponse } from "@/types/global.type";
+import { IFileUploadResponse, SelectOption } from "@/types/global.type";
 import ImageUpload from "@/components/forms/image-upload";
 
 type Props = {
     defaultValues?: undefined;
     documentAttachments?: undefined;
+    defaultRouteStopOption?: undefined; 
 } | {
     defaultValues: Partial<studentSchemaType>;
     documentAttachments: IFileUploadResponse['files'];
+    defaultRouteStopOption?: SelectOption;
 }
 
 export default function StudentForm(props: Props) {
@@ -47,6 +49,7 @@ export default function StudentForm(props: Props) {
                 documentAttachmentIds: values.documentAttachmentIds, // IDK when this is changed, dirty value is not getting updated, so manually setting it
                 dormitoryRoomId: values.dormitoryRoomId ?? null,
                 profileImageId: values.profileImageId ?? null,
+                routeStopId: values.routeStopId ?? null,
             },
             invalidateTags: [QueryKey.STUDENTS],
         });
@@ -184,17 +187,21 @@ export default function StudentForm(props: Props) {
                             />
                         }
 
-                        <AppForm.DynamicSelect<studentSchemaType>
+                        <AppForm.DynamicSelect_V2<studentSchemaType>
                             name="dormitoryRoomId"
                             label="Dormitory room"
                             placeholder="Select dormitory room"
                             description="Select the dormitory room. Skip if not applicable."
-                            fetchOptions={{
-                                endpoint: QueryKey.DORMITORY_ROOMS,
-                                queryKey: [QueryKey.DORMITORY_ROOMS],
-                                queryString: 'skipPagination=true',
-                            }}
-                            labelKey={'roomNumber'}
+                            queryKey={QueryKey.DORMITORY_ROOMS}
+                        />
+
+                        <AppForm.DynamicCombobox<studentSchemaType>
+                            name='routeStopId'
+                            label='Transport Route Stop'
+                            description='Select the route stop. Skip if not applicable.'
+                            placeholder='Select route stop'
+                            queryKey={QueryKey.ROUTE_STOPS}
+                            defaultSelected={props.defaultRouteStopOption}
                         />
 
                     </section>

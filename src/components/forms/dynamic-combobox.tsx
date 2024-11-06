@@ -11,6 +11,7 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
+    CommandSeparator,
 } from "@/components/ui/command"
 import {
     Popover,
@@ -123,6 +124,24 @@ export function DynamicCombobox<T extends FieldValues>({
                                         ))}
                                     </CommandList>
                                 </CommandGroup>
+                                {!!selectedValue && !required && (
+                                    <>
+                                        <CommandSeparator />
+                                        <CommandGroup>
+                                            <CommandItem
+                                                onSelect={() => {
+                                                    setSelectedValue(null)
+                                                    onChange('')
+                                                    setSearch('')
+                                                    setOpen(false)
+                                                }}
+                                                className="justify-center text-center"
+                                            >
+                                                Reset
+                                            </CommandItem>
+                                        </CommandGroup>
+                                    </>
+                                )}
                             </Command>
                         </PopoverContent>
                     </Popover>

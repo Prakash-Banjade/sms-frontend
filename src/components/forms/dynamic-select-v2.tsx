@@ -1,7 +1,7 @@
 import { FieldValues, useFormContext } from "react-hook-form";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { useFetchData, UseFetchDataOptions } from "@/hooks/useFetchData";
-import { PaginatedResponse } from "@/types/global.type";
+import { useFetchData } from "@/hooks/useFetchData";
+import { SelectOption } from "@/types/global.type";
 import { TFormFieldProps } from "./app-form";
 import { SelectProps } from "@radix-ui/react-select";
 import {
@@ -13,33 +13,35 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
+import { QueryKey } from "@/react-query/queryKeys";
 
-interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
-    fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
+interface AppFormDynamicSelectProps<T> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
+    queryKey: QueryKey;
     disableOnNoOption?: boolean;
-    labelKey?: string;
     clearQueryFilter?: boolean;
 }
 
-export function DynamicSelect<T extends FieldValues, F = any>({
+export function DynamicSelect_V2<T extends FieldValues>({
     name,
     label,
     placeholder = '',
     description = '',
     required = false,
+    queryKey,
     containerClassName = '',
-    fetchOptions,
-    labelKey = 'label',
     disableOnNoOption = false,
     clearQueryFilter = false, // this is used in filter components to clear the query params, when clicked on clear button
     ...props
-}: AppFormDynamicSelectProps<T, F>) {
+}: AppFormDynamicSelectProps<T>) {
     const { control, setValue } = useFormContext();
     const { setSearchParams } = useCustomSearchParams();
 
-    const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
+    const { data: options, isLoading } = useFetchData<SelectOption[]>({
+        queryKey: [queryKey],
+        endpoint: queryKey + '/' + QueryKey.OPTIONS,
+    });
 
-    const isDisabled = disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length));
+    const isDisabled = disableOnNoOption && !options?.length;
 
     const handleOnClear = () => {
         setValue(name as string, '')
@@ -73,19 +75,11 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                         </FormControl>
                         <SelectContent>
                             {
-                                Array.isArray(data) ? ( // data can be array or object based on if pagination is applied from backend
-                                    data?.map((option) => (
-                                        <SelectItem key={option.id ?? option.value} value={option.id ?? option.value}>
-                                            {option[labelKey]}
-                                        </SelectItem>
-                                    ))
-                                ) : (
-                                    data?.data?.map((option) => (
-                                        <SelectItem key={option.id ?? option.value} value={option.id ?? option.value}>
-                                            {option[labelKey]}
-                                        </SelectItem>
-                                    ))
-                                )
+                                options?.map(option => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))
                             }
                         </SelectContent>
                     </Select>

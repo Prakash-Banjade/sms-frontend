@@ -18,6 +18,7 @@ import { MultiSelect } from './app-form-multiselect';
 import { DynamicCombobox } from './dynamic-combobox';
 import { FileUpload } from './file-upload';
 import ImageUpload from './image-upload';
+import { DynamicSelect_V2 } from './dynamic-select-v2';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -260,6 +261,8 @@ AppForm.Checkbox = AppCheckbox;
 AppForm.Select = AppFormSelect;
 
 AppForm.DynamicSelect = DynamicSelect;
+
+AppForm.DynamicSelect_V2 = DynamicSelect_V2;
 
 AppForm.FileUpload = FileUpload;
 
