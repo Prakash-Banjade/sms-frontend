@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FullCalendar Theme Overrides */
+.fc {
+    @apply font-sans;
+  }
+  
+  /* Toolbar Styles */
+  .fc .fc-toolbar {
+    @apply mb-6;
+  }
+  
+  .fc .fc-toolbar-title {
+    @apply text-xl font-semibold text-foreground uppercase tracking-wide;
+  }
+  
+  .fc .fc-button-group {
+    @apply shadow-sm rounded-lg overflow-hidden;
+  }
+  
+  .fc .fc-button {
+    @apply shadow-sm rounded-lg text-sm font-medium px-4 py-2 transition-colors uppercase tracking-wide border-0;
+  }
+  
+  .fc .fc-button-primary {
+    @apply bg-card text-card-foreground hover:bg-accent;
+  }
+  
+  .fc .fc-button-primary:not(:disabled).fc-button-active,
+  .fc .fc-button-primary:not(:disabled):active {
+    @apply bg-primary text-primary-foreground shadow-inner;
+  }
+  
+  /* Calendar Grid Styles */
+  .fc .fc-daygrid-day {
+    @apply transition-colors hover:bg-muted/50;
+  }
+  
+  .fc .fc-daygrid-day.fc-day-today {
+    @apply bg-accent;
+  }
+  
+  .fc .fc-daygrid-day-frame {
+    @apply h-full;
+  }
+  
+  .fc .fc-daygrid-day-top {
+    @apply p-2;
+  }
+  
+  .fc .fc-daygrid-day-number,
+  .fc .fc-col-header-cell-cushion {
+    @apply text-foreground font-medium;
+  }
+  
+  .fc .fc-col-header-cell {
+    @apply py-3 uppercase text-sm font-semibold text-muted-foreground border-b-2 border-border;
+  }
+  
+  /* Event Styles */
+  .fc .fc-event {
+    @apply bg-primary border-primary-foreground cursor-pointer rounded-lg shadow-sm transition-transform hover:scale-[1.02];
+  }
+  
+  .fc .fc-event-main {
+    @apply p-1;
+  }
+  
+  .fc .fc-event-time {
+    @apply font-semibold text-sm;
+  }
+  
+  .fc .fc-event-title {
+    @apply font-medium text-sm;
+  }
+  
+  /* Selected Date Style */
+  .fc .fc-highlight {
+    @apply bg-accent bg-opacity-75;
+  }
+  
+  /* More Events Popover */
+  .fc .fc-more-popover {
+    @apply border border-border rounded-lg shadow-lg;
+  }
+  
+  .fc .fc-more-popover .fc-popover-header {
+    @apply bg-muted px-4 py-2 border-b border-border;
+  }
+  
+  /* Time Grid Specific */
+  .fc .fc-timegrid-slot {
+    @apply h-12;
+  }
+  
+  .fc .fc-timegrid-axis {
+    @apply text-sm text-muted-foreground font-medium;
+  }
+  
+  /* List View Specific */
+  .fc .fc-list-day-cushion {
+    @apply bg-muted;
+  }
+  
+  /* Today Button */
+  .fc .fc-today-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 ml-2;
+  }
+  
+  .fc .fc-today-button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
