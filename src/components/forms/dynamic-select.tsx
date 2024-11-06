@@ -17,7 +17,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
     disableOnNoOption?: boolean;
-    labelKey: string;
+    labelKey?: string;
     clearQueryFilter?: boolean;
 }
 
@@ -29,7 +29,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
     required = false,
     containerClassName = '',
     fetchOptions,
-    labelKey,
+    labelKey = 'label',
     disableOnNoOption = false,
     clearQueryFilter = false, // this is used in filter components to clear the query params, when clicked on clear button
     ...props
@@ -38,6 +38,8 @@ export function DynamicSelect<T extends FieldValues, F = any>({
     const { setSearchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
+
+    console.log(data);
 
     const isDisabled = disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length));
 

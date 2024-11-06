@@ -48,6 +48,8 @@ import SingleTaskPage from './pages/tasks/single-task.page';
 import SingleClassRoomPage from './pages/classes/single-classroom.page';
 import StudentChangeClassPage from './pages/students-management/change-class.page';
 import StudentPromotionPage from './pages/students-management/student-promotion.page';
+import TransportationRoutesPage from './pages/transportation/transportation-routes.page';
+import VehiclesPage from './pages/transportation/vehicles.page';
 
 const AdminRoutes = () => {
     return (
@@ -97,6 +99,10 @@ const AdminRoutes = () => {
                                 <Route path="edit" element={<EditTaskPage type={ETask.ASSIGNMENT} />} />
                             </Route>
                         </Route>
+                    </Route>
+                    <Route path="transportation">
+                        <Route path="vehicles" element={<VehiclesPage />} />
+                        <Route path="routes" element={<TransportationRoutesPage />} />
                     </Route>
                     <Route path="dormitory">
                         <Route index element={<DormitoryPage />} />

@@ -203,3 +203,15 @@ export enum ETaskSubmissionStatus {
     Late = 'late',
     Not_Submitted = 'not_submitted',
 }
+
+export enum EVehicleType {
+    Car = 'car',
+    Bus = 'bus',
+    Bike = 'bike',
+    Motorcycle = 'motorcycle',
+    Jeep = 'jeep',
+    Truck = 'truck',
+    Van = 'van',
+    Winger = 'winger',
+    Force = 'force',
+}

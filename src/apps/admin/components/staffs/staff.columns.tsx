@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
@@ -28,10 +28,10 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
         header: "Name",
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <div className="flex gap-4 items-center">
+                <Link to={`/admin/staffs/${row.original.id}`} className="flex gap-4 items-center group">
                     <ProfileAvatar name={row.original.firstName + ' ' + row.original.lastName} src={row.original.profileImage?.url || ''} className="size-10" />
-                    {row.original.firstName + ' ' + row.original.lastName}
-                </div>
+                    <span className="group-hover:text-blue-500 group-hover:underline">{row.original.firstName + ' ' + row.original.lastName}</span>
+                </Link>
             </TooltipWrapper>
         }
     },

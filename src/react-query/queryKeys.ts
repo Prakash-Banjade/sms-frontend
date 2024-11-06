@@ -32,4 +32,5 @@ export enum QueryKey {
     TASKS = "tasks",
     TASK_SUBMISSIONS = "task-submissions",
     DETAILS = "details",
+    VEHICLES = "vehicles",
 };

@@ -1,0 +1,27 @@
+import VehicleForm from "../../components/transportation/vehicles-form"
+import VehiclesList from "../../components/transportation/vehicles-list"
+
+type Props = {}
+
+export default function VehiclesPage({ }: Props) {
+    return (
+        <section className="@container">
+            <div className="flex @7xl:flex-nowrap gap-12 flex-wrap">
+                <section>
+                    <section className='space-y-2 mb-5'>
+                        <h1 className="text-2xl font-bold">Add Vehicle</h1>
+                        <p className="text-muted-foreground">Add a new vehicle by filling out the form below.</p>
+                    </section>
+                    <VehicleForm />
+                </section>
+
+                <section className="grow @7xl:max-w-[1200px]">
+                    <section className='space-y-3 mb-5'>
+                        <h1 className="text-2xl font-bold">Vehicles List</h1>
+                    </section>
+                    <VehiclesList />
+                </section>
+            </div>
+        </section>
+    )
+}
