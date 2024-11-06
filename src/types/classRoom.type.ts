@@ -1,8 +1,4 @@
-
-
 import { TMeta } from "./global.type";
-
-
 
 export type TClassRoom = {
     id: string;

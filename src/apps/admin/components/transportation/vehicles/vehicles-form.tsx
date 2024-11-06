@@ -148,7 +148,7 @@ export default function VehicleForm(props: Props) {
                     fetchOptions={{
                         endpoint: QueryKey.STAFFS + '/' + QueryKey.OPTIONS,
                         queryKey: [QueryKey.STAFFS],
-                        queryString: `type=${EStaff.DRIVER}`,
+                        queryString: `type=${EStaff.DRIVER}&take=50`,
                     }}
                     disableOnNoOption
                 />

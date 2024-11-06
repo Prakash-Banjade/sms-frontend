@@ -13,7 +13,6 @@ export type TVehicle = {
         id: string,
         firstName: string,
         lastName: string,
-        email: string,
         phone: string,
     } | null,
 }

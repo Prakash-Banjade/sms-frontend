@@ -160,13 +160,9 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "transportation/vehicles",
                     },
                     {
-                        title: "Routes",
-                        url: "transportation/routes",
+                        title: "Route Stops",
+                        url: "transportation/route-stops",
                     },
-                    {
-                        title: "Assign Vehicle",
-                        url: "transportation/assign-vehicle",
-                    }
                 ]
             },
             {

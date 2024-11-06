@@ -12,73 +12,71 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TVehicle } from "@/types/vehicle.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import VehicleForm, { vehicleFormType } from "./vehicles-form"
+import { TRouteStop } from "@/types/route-stop.type"
+import RouteStopForm, { routeFormType } from "./route-stop.form"
 
-export const vehiclesColumns: ColumnDef<TVehicle>[] = [
+export const routeStopsColumns: ColumnDef<TRouteStop>[] = [
     {
         header: "S.N",
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
     },
     {
+        header: "Stop Name",
+        accessorKey: "name",
+    },
+    {
+        header: "Stop Location",
+        accessorKey: "location",
+    },
+    {
+        header: "Route Number",
+        accessorKey: "routeNumber",
+        cell: ({ row }) => {
+            return <span className="capitalize">{row.original.sequence}</span>
+        }
+    },
+    {
         header: "Vehicle Number",
         accessorKey: "vehicleNumber",
-    },
-    {
-        header: "Vehicle Model",
-        accessorKey: "vehicleModel",
-    },
-    {
-        header: "Type",
-        accessorKey: "type",
         cell: ({ row }) => {
-            return <span className="capitalize">{row.original.type}</span>
+            return <span className="capitalize">{row.original.vehicle?.vehicleNumber}</span>
+        }
+    },
+    {
+        header: "Vehicle Type",
+        accessorKey: "vehicleType",
+        cell: ({ row }) => {
+            return <span className="capitalize">{row.original.vehicle?.type}</span>
         },
     },
     {
-        header: "Year Made",
-        accessorKey: "yearMade",
+        header: "Pick Up Time",
+        accessorKey: "pickUpTime",
     },
     {
-        header: "Capacity",
-        accessorKey: "capacity",
+        header: "Drop Off Time",
+        accessorKey: "dropOffTime",
     },
     {
-        header: "Driver",
-        accessorKey: "driver",
-        cell: ({ row }) => {
-            return row.original.driver
-                ? <p>
-                    {row.original.driver?.firstName} {row.original.driver?.lastName}
-                </p> : <span className="text-muted-foreground">N/A</span>
-        },
-    },
-    {
-        header: "Note",
-        accessorKey: "note",
-        cell: ({ row }) => {
-            return !!row.original.note
-                ? <p className="text-14 font-medium break-words max-w-[40ch]">
-                    {row.original.note}
-                </p> : <span className="text-muted-foreground">-</span>
-        },
+        header: "Fare",
+        accessorKey: "fare",
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const vehicle = row.original;
+            const routeStop = row.original;
             const [isEditOpen, setIsEditOpen] = useState(false);
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-            const { mutateAsync, isPending } = useAppMutation<vehicleFormType, any>();
+            const { mutateAsync, isPending } = useAppMutation<routeFormType, any>();
 
             async function handleDelete() {
                 await mutateAsync({
                     method: "delete",
-                    endpoint: `${QueryKey.VEHICLES}/${vehicle.id}`,
-                    invalidateTags: [QueryKey.VEHICLES],
+                    endpoint: `${QueryKey.ROUTE_STOPS}/${routeStop.id}`,
+                    invalidateTags: [QueryKey.ROUTE_STOPS],
                 });
             }
 
@@ -87,20 +85,24 @@ export const vehiclesColumns: ColumnDef<TVehicle>[] = [
                     <ResponsiveDialog
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
-                        title="Edit Vehicle"
+                        title="Edit Route Stop"
                         className="w-[97%] max-w-[800px]"
                     >
-                        <VehicleForm vehicleId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={{
-                            ...row.original,
-                            driverId: row.original.driver?.id
-                        }} />
+                        <RouteStopForm
+                            routeStopId={row.original.id}
+                            setIsOpen={setIsEditOpen}
+                            defaultValues={{
+                                ...row.original,
+                                vehicleId: row.original.vehicle?.id
+                            }}
+                        />
                     </ResponsiveDialog>
 
                     <ResponsiveAlertDialog
                         isOpen={isDeleteOpen}
                         setIsOpen={setIsDeleteOpen}
-                        title={`Delete vehicle "${vehicle.vehicleNumber}"`}
-                        description={`Are you sure you want to delete this vehicle?`}
+                        title={`Delete routeStop "${routeStop.name}"`}
+                        description={`Are you sure you want to delete this route stop?`}
                         action={() => handleDelete()}
                         actionLabel="Yes, Delete"
                         isLoading={isPending}

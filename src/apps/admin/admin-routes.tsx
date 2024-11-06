@@ -48,7 +48,7 @@ import SingleTaskPage from './pages/tasks/single-task.page';
 import SingleClassRoomPage from './pages/classes/single-classroom.page';
 import StudentChangeClassPage from './pages/students-management/change-class.page';
 import StudentPromotionPage from './pages/students-management/student-promotion.page';
-import TransportationRoutesPage from './pages/transportation/transportation-routes.page';
+import RouteStopsPage from './pages/transportation/route-stops.page';
 import VehiclesPage from './pages/transportation/vehicles.page';
 
 const AdminRoutes = () => {
@@ -102,7 +102,7 @@ const AdminRoutes = () => {
                     </Route>
                     <Route path="transportation">
                         <Route path="vehicles" element={<VehiclesPage />} />
-                        <Route path="routes" element={<TransportationRoutesPage />} />
+                        <Route path="route-stops" element={<RouteStopsPage />} />
                     </Route>
                     <Route path="dormitory">
                         <Route index element={<DormitoryPage />} />

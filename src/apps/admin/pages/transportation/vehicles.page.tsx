@@ -1,9 +1,7 @@
-import VehicleForm from "../../components/transportation/vehicles-form"
-import VehiclesList from "../../components/transportation/vehicles-list"
+import VehicleForm from "../../components/transportation/vehicles/vehicles-form"
+import VehiclesList from "../../components/transportation/vehicles/vehicles-list"
 
-type Props = {}
-
-export default function VehiclesPage({ }: Props) {
+export default function VehiclesPage() {
     return (
         <section className="@container">
             <div className="flex @7xl:flex-nowrap gap-12 flex-wrap">
@@ -15,7 +13,7 @@ export default function VehiclesPage({ }: Props) {
                     <VehicleForm />
                 </section>
 
-                <section className="grow @7xl:max-w-[1200px]">
+                <section className="grow">
                     <section className='space-y-3 mb-5'>
                         <h1 className="text-2xl font-bold">Vehicles List</h1>
                     </section>
