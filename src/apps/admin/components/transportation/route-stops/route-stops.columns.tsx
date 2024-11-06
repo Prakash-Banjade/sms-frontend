@@ -15,6 +15,12 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TRouteStop } from "@/types/route-stop.type"
 import RouteStopForm, { routeFormType } from "./route-stop.form"
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
+
+
+export enum ERouteStopSortBy {
+    Sequence = 'sequence',
+}
 
 export const routeStopsColumns: ColumnDef<TRouteStop>[] = [
     {
@@ -30,24 +36,23 @@ export const routeStopsColumns: ColumnDef<TRouteStop>[] = [
         accessorKey: "location",
     },
     {
-        header: "Route Number",
-        accessorKey: "routeNumber",
-        cell: ({ row }) => {
-            return <span className="capitalize">{row.original.sequence}</span>
-        }
+        accessorKey: "sequence",
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Sequence" /> 
+        },
     },
     {
         header: "Vehicle Number",
         accessorKey: "vehicleNumber",
         cell: ({ row }) => {
-            return <span className="capitalize">{row.original.vehicle?.vehicleNumber}</span>
+            return <span className="capitalize">{row.original.vehicle?.vehicleNumber || <span className="text-muted-foreground">N/A</span>}</span>
         }
     },
     {
         header: "Vehicle Type",
         accessorKey: "vehicleType",
         cell: ({ row }) => {
-            return <span className="capitalize">{row.original.vehicle?.type}</span>
+            return <span className="capitalize">{row.original.vehicle?.type || <span className="text-muted-foreground">N/A</span>}</span>
         },
     },
     {

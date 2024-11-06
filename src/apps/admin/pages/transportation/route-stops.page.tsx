@@ -53,6 +53,8 @@ function RouteStopsTable() {
       page: searchParams.get('page'),
       take: searchParams.get('take'),
       search: searchParams.get('search'),
+      sortBy: searchParams.get('sortBy'),
+      order: searchParams.get('order'),
     })
   })
 
