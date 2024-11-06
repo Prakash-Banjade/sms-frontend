@@ -21,3 +21,16 @@ export type TVehiclesResponse = {
     data: TVehicle[],
     meta: TMeta,
 }
+
+export type TSingleVehicle = TVehicle & {
+    stops: {
+        id: string,
+        createdAt: string,
+        name: string,
+        location: string,
+        fare: number,
+        sequence: number,
+        pickUpTime: string,
+        dropOffTime: string
+    }[],
+}

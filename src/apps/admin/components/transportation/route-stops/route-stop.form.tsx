@@ -29,13 +29,18 @@ export const routeStopSchema = z.object({
     fare: z
         .coerce
         .number()
-        .min(1, { message: 'Fare must be at least 1' }),
+        .refine(val => val > 0, { message: 'Fare must be greater than 0' }),
 
     sequence: z
         .coerce
         .number()
         .int({ message: 'Sequence must be an integer' })
-        .min(1, { message: 'Sequence must be at least 1' }),
+        .refine(val => val > 0, { message: 'Sequence must be greater than 0' }),
+
+    distance: z
+        .coerce
+        .number()
+        .refine(val => val > 0, { message: 'Distance must be greater than 0' }),
 
     pickUpTime: z
         .string()
@@ -132,6 +137,14 @@ export default function RouteStopForm(props: Props) {
                         description="Enter the route drop off time."
                         placeholder="eg. 30"
                         required
+                    />
+                    <AppForm.Number<routeFormType>
+                        name="distance"
+                        label="Distance (Km)"
+                        description="Enter the route distance."
+                        placeholder="eg. 15"
+                        required
+                        min={1}
                     />
                     <AppForm.Number<routeFormType>
                         name="fare"

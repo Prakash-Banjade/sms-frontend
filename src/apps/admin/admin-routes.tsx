@@ -101,7 +101,9 @@ const AdminRoutes = () => {
                         </Route>
                     </Route>
                     <Route path="transportation">
-                        <Route path="vehicles" element={<VehiclesPage />} />
+                        <Route path="vehicles">
+                            <Route index element={<VehiclesPage />} />
+                        </Route>
                         <Route path="route-stops" element={<RouteStopsPage />} />
                     </Route>
                     <Route path="dormitory">

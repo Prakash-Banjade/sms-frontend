@@ -13,10 +13,15 @@ import RouteStopForm from "../../components/transportation/route-stops/route-sto
 
 export default function RouteStopsPage() {
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [searchParams] = useSearchParams();
 
   return (
     <ContainerLayout
-      title="Route Stops"
+      title={
+        searchParams.get('search')
+          ? `Route Stops - ${searchParams.get('search')?.slice(0, 100)}`
+          : "Route Stops"
+      }
       description="All the route stops in the transport system."
       actionTrigger={
         <>

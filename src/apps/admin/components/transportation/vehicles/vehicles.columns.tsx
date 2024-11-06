@@ -15,6 +15,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TVehicle } from "@/types/vehicle.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import VehicleForm, { vehicleFormType } from "./vehicles-form"
+import { useNavigate } from "react-router-dom"
 
 export const vehiclesColumns: ColumnDef<TVehicle>[] = [
     {
@@ -79,6 +80,7 @@ export const vehiclesColumns: ColumnDef<TVehicle>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const vehicle = row.original;
+            const navigate = useNavigate();
             const [isEditOpen, setIsEditOpen] = useState(false);
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -125,6 +127,9 @@ export const vehiclesColumns: ColumnDef<TVehicle>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuButtonItem onClick={() => navigate(`/admin/transportation/route-stops?search=${vehicle.vehicleNumber}`)}>
+                                <span>View all routes</span>
+                            </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>

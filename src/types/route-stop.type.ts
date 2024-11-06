@@ -9,6 +9,7 @@ export type TRouteStop = {
     sequence: number,
     pickUpTime: string,
     dropOffTime: string,
+    distance: number,
     vehicle: {
         id: string,
         vehicleNumber: string,

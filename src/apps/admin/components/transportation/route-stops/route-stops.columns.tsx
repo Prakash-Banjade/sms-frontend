@@ -59,6 +59,10 @@ export const routeStopsColumns: ColumnDef<TRouteStop>[] = [
         accessorKey: "dropOffTime",
     },
     {
+        header: "Distance (Km)",
+        accessorKey: "distance",
+    },
+    {
         header: "Fare",
         accessorKey: "fare",
     },
