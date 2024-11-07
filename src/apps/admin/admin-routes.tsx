@@ -50,6 +50,9 @@ import StudentChangeClassPage from './pages/students-management/change-class.pag
 import StudentPromotionPage from './pages/students-management/student-promotion.page';
 import RouteStopsPage from './pages/transportation/route-stops.page';
 import VehiclesPage from './pages/transportation/vehicles.page';
+import ExamTypesPage from './pages/examination/exam-types.page';
+import MarkGradesPage from './pages/examination/mark-grades.page';
+import ExamsPage from './pages/examination/exams.page';
 
 const AdminRoutes = () => {
     return (
@@ -75,6 +78,12 @@ const AdminRoutes = () => {
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />
                         <Route path="new" element={<AddClassRoutinePage />} />
+                    </Route>
+                    <Route path="examination">
+                        <Route index element={<Navigate to="exam-setup" />} />
+                        <Route path="exam-type" element={<ExamTypesPage />} />
+                        <Route path="marks-grade" element={<MarkGradesPage />} />
+                        <Route path="exam-setup" element={<ExamsPage />} />
                     </Route>
                     <Route path="notices">
                         <Route index element={<NoticesListPage />} />
