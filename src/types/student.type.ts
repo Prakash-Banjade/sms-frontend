@@ -1,32 +1,22 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
-import { EBloodGroup, EGuardianRelation, EReligion, Gender, TMeta } from "./global.type";
+import { EBloodGroup, EGuardianRelation, EReligion, Gender, IFileUploadResponse, TMeta } from "./global.type";
 
 export type TStudent = {
     id: string,
-    createdAt: string,
-    firstName: string,
-    lastName: string,
+    fullName: string,
+    rollNo: number,
+    phone: string,
     email: string,
     dob: string,
     studentId: number,
-    rollNo: number,
-    classRoom: {
-        id: string,
-        name: string,
-        parent: {
-            id: string,
-            name: string,
-        } | null;
-    },
-    phone: string,
     gender: Gender,
-    profileImage: {
-        id: string,
-        url: string
-    } | null,
-    account: {
-        id: string
-    }
+    profileImageUrl: string | null,
+    classRoomId: string,
+    classRoom: string,
+    parentClassId: string,
+    parentClass: string,
+    routeStopId: string | null;
+    routeStop: string | null;
 }
 
 export type TStudentsResponse = {
@@ -34,7 +24,30 @@ export type TStudentsResponse = {
     meta: TMeta;
 }
 
-export type TSingleStudent = TStudent & {
+export type TSingleStudent = {
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    rollNo: number,
+    studentId: number,
+    firstName: string,
+    lastName: string,
+    gender: Gender,
+    dob: string,
+    email: string,
+    phone: string,
+    classRoom: {
+        id: string,
+        name: string,
+        parent: {
+            id: string,
+            name: string
+        }
+    },
+    profileImage: {
+        id: string,
+        url: string,
+    } | null,
     religion: EReligion,
     caste: string,
     isPhysicallyChallenged: boolean,
@@ -44,6 +57,7 @@ export type TSingleStudent = TStudent & {
     nationalIdCardNo: string,
     birthCertificateNumber: string,
     additionalNotes: string | null,
+    documentAttachments: IFileUploadResponse['files'],
     bankName: string,
     bankAccountNumber: string,
     ifscCode: string,
@@ -64,8 +78,16 @@ export type TSingleStudent = TStudent & {
         relation: EGuardianRelation,
     }[],
     dormitoryRoom: {
-        id: true,
+        id: string,
         roomNumber: number,
+    } | null;
+    routeStop: {
+        id: string,
+        name: string,
+        vehicle: {
+            id: string,
+            vehicleNumber: string
+        } | null
     } | null;
 }
 

@@ -1,8 +1,7 @@
-import type { Column } from "@tanstack/react-table"
-
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
     Command,
     CommandEmpty,
@@ -11,54 +10,82 @@ import {
     CommandItem,
     CommandList,
     CommandSeparator,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
-import { CheckIcon, PlusCircle } from "lucide-react"
-import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+import { CheckIcon, PlusCircle } from "lucide-react";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 
 interface Option {
-    label: string
+    label: string;
     value: string;
     count?: number;
 }
 
 interface FacetedFilterProps {
-    title: string
+    title: string;
     searchKey: string;
-    options: Option[]
+    options: Option[];
+    externalSelectedValue?: string[];
+    setExternalSelectedValue?: (selectedValue: string[]) => void;
+    popoverAlign?: "start" | "end";
 }
 
 export function FacetedFilter({
     title,
     searchKey,
     options,
+    externalSelectedValue,
+    setExternalSelectedValue,
+    popoverAlign = "start",
 }: FacetedFilterProps) {
+    // Use external state if provided, else fall back to URL search params
     const { searchParams, setSearchParams } = useCustomSearchParams();
-    const selectedStatus = searchParams.get(searchKey)?.split(',') ?? [];
+    const [internalSelectedValue, setInternalSelectedValue] = useState<string[]>(
+        searchParams.get(searchKey)?.split(",") ?? []
+    );
 
-    const selectedValues = new Set(options.filter((option) => selectedStatus.includes(option.value))?.map((option) => option.value))
+    // Decide which selected value to use
+    const selectedValue = externalSelectedValue ?? internalSelectedValue;
 
-    const handleSelectStatus = (value: string) => {
-        if (selectedStatus.includes(value)) {
-            selectedStatus.splice(selectedStatus.indexOf(value), 1)
+    const selectedValues = new Set(
+        options.filter((option) => selectedValue.includes(option.value)).map((option) => option.value)
+    );
+
+    const handleSelectValue = (value: string) => {
+        const newSelectedValue = selectedValue.includes(value)
+            ? selectedValue.filter((item) => item !== value)
+            : [...selectedValue, value];
+
+        // Update based on available state management
+        if (setExternalSelectedValue) {
+            setExternalSelectedValue(newSelectedValue);
         } else {
-            selectedStatus.push(value)
+            setInternalSelectedValue(newSelectedValue);
+            setSearchParams(searchKey, newSelectedValue.join(","));
         }
-        setSearchParams(searchKey, selectedStatus.join(','))
-    }
+    };
+
+    const clearFilters = () => {
+        if (setExternalSelectedValue) {
+            setExternalSelectedValue([]);
+        } else {
+            setInternalSelectedValue([]);
+            setSearchParams(searchKey, undefined);
+        }
+    };
 
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 border-dashed">
+                <Button variant="outline" className="border-dashed">
                     <PlusCircle className="mr-2 size-4" />
                     {title}
-                    {selectedValues?.size > 0 && (
+                    {selectedValues.size > 0 && (
                         <>
                             <Separator orientation="vertical" className="mx-2 h-4" />
                             <Badge
@@ -93,19 +120,19 @@ export function FacetedFilter({
                     )}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[12.5rem] p-0" align="start">
+            <PopoverContent className="w-[12.5rem] p-0" align={popoverAlign}>
                 <Command>
                     <CommandInput placeholder={title} />
                     <CommandList className="max-h-full">
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup className="max-h-[18.75rem] overflow-y-auto overflow-x-hidden">
                             {options.map((option) => {
-                                const isSelected = selectedValues.has(option.value)
+                                const isSelected = selectedValues.has(option.value);
 
                                 return (
                                     <CommandItem
                                         key={option.value}
-                                        onSelect={() => handleSelectStatus(option.value)}
+                                        onSelect={() => handleSelectValue(option.value)}
                                     >
                                         <div
                                             className={cn(
@@ -124,7 +151,7 @@ export function FacetedFilter({
                                             </span>
                                         )}
                                     </CommandItem>
-                                )
+                                );
                             })}
                         </CommandGroup>
                         {selectedValues.size > 0 && (
@@ -132,7 +159,7 @@ export function FacetedFilter({
                                 <CommandSeparator />
                                 <CommandGroup>
                                     <CommandItem
-                                        onSelect={() => setSearchParams(searchKey, undefined)}
+                                        onSelect={clearFilters}
                                         className="justify-center text-center"
                                     >
                                         Clear filters
@@ -144,5 +171,5 @@ export function FacetedFilter({
                 </Command>
             </PopoverContent>
         </Popover>
-    )
+    );
 }

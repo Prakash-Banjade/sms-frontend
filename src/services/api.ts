@@ -3,11 +3,12 @@ import { useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import axios, { AxiosInstance } from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const useAxios = (): AxiosInstance => {
     const { access_token, setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const axiosInstance = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
@@ -77,7 +78,7 @@ export const useAxios = (): AxiosInstance => {
                 } catch (err) {
                     isRefreshing = false;
                     setAuth(null); // Clear auth state if refresh fails
-                    navigate('/', { replace: true });
+                    navigate('/', { replace: true, state: { from: location } });
                     return Promise.reject(err);
                 }
             }

@@ -10,11 +10,6 @@ import { useGetAttendanceCounts } from "../../attendances/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type Props = {
-    selectedMonth: string,
-    setSelectedMonth: (value: string) => void,
-}
-
 const months: Record<number, string> = {
     1: "January",
     2: "February",
@@ -51,9 +46,9 @@ export default function MonthlyAttendanceCount() {
             <div className="flex space-x-4">
                 <Select
                     onValueChange={val => {
-                        setSearchParams("month", val)
+                        setSearchParams("month", (+val + 1).toString())
                     }}
-                    defaultValue={(new Date().getMonth() + 1).toString()}
+                    defaultValue={(new Date().getMonth()).toString()}
                 >
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select month" />

@@ -58,12 +58,14 @@ export default function BookIssueForm({ setIsOpen, studentId }: Props) {
     return (
         <AppForm schema={bookIssueFormSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <AppForm.Text<bookIssueFormSchemaType>
-                    name="bookId"
-                    label="Name"
-                    placeholder={`e.g. Book ID`}
-                    required
+                <AppForm.DynamicCombobox<bookIssueFormSchemaType>
+                    name='bookId'
+                    label='Book'
+                    placeholder='Select book'
+                    description='Select a book from the list'
+                    queryKey={QueryKey.LIBRARY_BOOKS}
                 />
+
                 <AppForm.DatePicker<bookIssueFormSchemaType>
                     containerClassName="grow"
                     name="dueDate"

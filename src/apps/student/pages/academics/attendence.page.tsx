@@ -1,14 +1,13 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useAttendenceCounts, useAttendences } from "../../components/attendence/action";
 import AttendenceCalendar from "../../components/attendence/attendence-calendar";
 import { useSearchParams } from "react-router-dom";
-import { getAttendanceMonth, getAttendanceYear } from "@/utils/getAttendanceMonth";
+import { getAttendanceMonth } from "@/utils/getAttendanceMonth";
 import TotalAttendence from "../../components/attendence/total-attendence";
 
 const StudentAttendenceListPage = () => {
     const [searchParams] = useSearchParams();
     const monthInd = useRef(getAttendanceMonth(searchParams));
-    const yearInd = useRef(getAttendanceYear(searchParams));
 
     const { data, isLoading } = useAttendences({
         queryString: `take=32${!!monthInd?.current ? `&month=${monthInd.current}` : ''}`

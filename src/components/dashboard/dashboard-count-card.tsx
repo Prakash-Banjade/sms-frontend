@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { LucideProps } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -11,9 +11,10 @@ type Props = {
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
     navigateTo?: string;
     isLoading?: boolean;
+    footer?: string;
 }
 
-export default function DashboardCountCard({ count, title, icon: Icon, navigateTo, isLoading = false }: Props) {
+export default function DashboardCountCard({ count, title, icon: Icon, navigateTo, footer, isLoading = false }: Props) {
     const navigate = useNavigate();
 
     return (
@@ -25,11 +26,22 @@ export default function DashboardCountCard({ count, title, icon: Icon, navigateT
             <CardContent>
                 {
                     isLoading ? (
-                        <Skeleton className='h-10 w-20' />
+                        <>
+                            <Skeleton className='h-10 w-20' />
+                            {
+                                footer && <Skeleton className='h-6 w-28' />
+                            }
+                        </>
                     ) : (
-                        <div className="text-2xl font-bold">{count}</div>
+                        <>
+                            <div className="text-2xl font-bold">{count}</div>
+                            {
+                                footer && <CardFooter className='text-xs text-muted-foreground p-0'>{footer}</CardFooter>
+                            }
+                        </>
                     )
                 }
+
             </CardContent>
         </Card>
     )

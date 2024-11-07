@@ -42,11 +42,17 @@ export interface PaginatedResponse<T> {
     meta: TMeta;
 }
 
+export type SelectOption = {
+    label: string,
+    value: string,
+}
+
 export interface IFileUploadResponse {
     message: string,
     files: {
         id: string,
         url: string,
+        originalName: string,
     }[],
     count: number,
 }
@@ -190,4 +196,22 @@ export enum EBookTransactionStatus {
     Issued = 'issued',
     Returned = 'returned',
     Overdue = 'overdue',
+}
+
+export enum ETaskSubmissionStatus {
+    Submitted = 'submitted',
+    Late = 'late',
+    Not_Submitted = 'not_submitted',
+}
+
+export enum EVehicleType {
+    Car = 'car',
+    Bus = 'bus',
+    Bike = 'bike',
+    Motorcycle = 'motorcycle',
+    Jeep = 'jeep',
+    Truck = 'truck',
+    Van = 'van',
+    Winger = 'winger',
+    Force = 'force',
 }

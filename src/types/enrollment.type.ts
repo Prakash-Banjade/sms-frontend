@@ -15,7 +15,11 @@ export type TEnrollment = {
     },
     classRoom: {
         id: string,
-        name: string
+        name: string,
+        parent: {
+            id: true,
+            name: true,
+        } | null;
     },
     academicYear: {
         id: string,

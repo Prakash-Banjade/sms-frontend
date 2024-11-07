@@ -29,7 +29,14 @@ export const enrollmentsColumns: ColumnDef<TEnrollment>[] = [
     {
         header: "Class Room",
         cell: ({ row }) => {
-            return <span className="capitalize">{row.original.classRoom?.name}</span>
+            const classRoom = row.original.classRoom;
+
+            return <span className="capitalize">
+                {
+                    classRoom.parent ?
+                        `${classRoom.parent?.name} - ${classRoom.name}` : classRoom.name
+                }
+            </span>
         },
     },
     {

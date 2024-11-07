@@ -8,11 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useAppMutation } from "@/hooks/useAppMutation"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/types/class.type"
-import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import ClassSectionForm from "./class-room-section.form"
 
 export const sectionsColumns: ColumnDef<TClass>[] = [
@@ -30,33 +28,38 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
     },
     {
         header: "Total boys",
-        accessorKey: "totalMalesStudentsCount",
+        accessorKey: "totalMaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalMalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalMaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalMalesStudentsCount}</span>
+                <span>{row.original.totalMaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalMalesStudentsCount}{" "}
+                    {row.original.totalMaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-sm">({Math.round(percentage)}%)</span>
                 </span>
         }
     },
     {
         header: "Total girls",
-        accessorKey: "totalFemalesStudentsCount",
+        accessorKey: "totalFemalsStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalFemalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalFemaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalFemalesStudentsCount}</span>
+                <span>{row.original.totalFemaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalFemalesStudentsCount}{" "}
+                    {row.original.totalFemaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
                 </span>
         }
+    },
+    {
+        header: "Class Teacher",
+        accessorKey: "classTeacherName",
+        cell: ({ row }) => <span>{row.original.classTeacherName || <span className="text-muted-foreground">"N/A"</span>}</span>,
     },
     {
         header: "Location",
@@ -72,10 +75,6 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const [isEditOpen, setIsEditOpen] = useState(false);
-            const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-            const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
 
             return (
                 <>
@@ -85,14 +84,20 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                         title="Edit class"
                     >
                         <ClassSectionForm
-                            parentClassId={row.original.id}
-                            setIsOpen={setIsSectionFormOpen}
+                            classRoomId={row.original.id}
+                            setIsOpen={setIsEditOpen}
                             defaultValues={{
                                 name: row.original.name,
                                 monthlyFee: row.original.monthlyFee,
                                 monthlyTutionFee: row.original.monthlyTutionFee,
-                                location: row.original.location
+                                location: row.original.location,
+                                classTeacherId: row.original.classTeacherId
                             }}
+                            selectedClassTeacherOption={
+                                (row.original.classTeacherId && row.original.classTeacherName)
+                                    ? { value: row.original.classTeacherId, label: row.original.classTeacherName }
+                                    : undefined
+                            }
                         />
                     </ResponsiveDialog>
                     <DropdownMenu>

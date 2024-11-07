@@ -8,14 +8,19 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, ReligionMappings } from "@/utils/labelToValueMappings";
 import { createStudentSchema, studentFormDefaultValues, studentSchemaType } from "../../schemas/student.schema";
-import { createQueryString } from "@/utils/create-query-string";
-import { EClassType } from "@/types/global.type";
-import { useEffect } from "react";
 import GuardiansFields from "./guardians-form-fields";
 import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import { IFileUploadResponse, SelectOption } from "@/types/global.type";
+import ImageUpload from "@/components/forms/image-upload";
 
 type Props = {
-    defaultValues?: Partial<studentSchemaType>;
+    defaultValues?: undefined;
+    documentAttachments?: undefined;
+    defaultRouteStopOption?: undefined; 
+} | {
+    defaultValues: Partial<studentSchemaType>;
+    documentAttachments: IFileUploadResponse['files'];
+    defaultRouteStopOption?: SelectOption;
 }
 
 export default function StudentForm(props: Props) {
@@ -41,6 +46,10 @@ export default function StudentForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId
+                documentAttachmentIds: values.documentAttachmentIds, // IDK when this is changed, dirty value is not getting updated, so manually setting it
+                dormitoryRoomId: values.dormitoryRoomId ?? null,
+                profileImageId: values.profileImageId ?? null,
+                routeStopId: values.routeStopId ?? null,
             },
             invalidateTags: [QueryKey.STUDENTS],
         });
@@ -50,103 +59,110 @@ export default function StudentForm(props: Props) {
         }
     }
 
-    // useEffect(() => {
-    //     form.setValue("sectionId", undefined)
-    // }, [form.watch("classRoomId")])
-
     return (
         <AppForm schema={createStudentSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 @container">
 
-                <fieldset className="border border-border rounded-lg p-8">
-                    <legend className="px-2 text-sm">Personal Info</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Text<studentSchemaType>
-                            name="firstName"
-                            label="First name"
-                            placeholder="eg. John"
-                            description="First name of the student"
-                            required
-                        />
+                <section className="grid @7xl:grid-cols-3 grid-cols-1 gap-8 @container">
+                    <fieldset className="border border-border rounded-lg p-8 @7xl:col-span-2">
+                        <legend className="px-2 text-sm">Personal Info</legend>
+                        <section className="grid @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
+                            <AppForm.Text<studentSchemaType>
+                                name="firstName"
+                                label="First name"
+                                placeholder="eg. John"
+                                description="First name of the student"
+                                required
+                            />
 
-                        <AppForm.Text<studentSchemaType>
-                            name="lastName"
-                            label="Last name"
-                            placeholder="eg. Doe"
-                            description="Last name of the student"
-                            required
-                        />
+                            <AppForm.Text<studentSchemaType>
+                                name="lastName"
+                                label="Last name"
+                                placeholder="eg. Doe"
+                                description="Last name of the student"
+                                required
+                            />
 
-                        <AppForm.Select<studentSchemaType>
-                            name="gender"
-                            label="Gender"
-                            placeholder="Select gender"
-                            description="Select gender of the student"
-                            options={Object.entries(GenderMappings).map(([key, value]) => ({ label: key, value }))}
-                            required
-                        />
+                            <AppForm.Select<studentSchemaType>
+                                name="gender"
+                                label="Gender"
+                                placeholder="Select gender"
+                                description="Select gender of the student"
+                                options={Object.entries(GenderMappings).map(([key, value]) => ({ label: key, value }))}
+                                required
+                            />
 
-                        <AppForm.DatePicker<studentSchemaType>
-                            name="dob"
-                            label="DOB"
-                            placeholder="Select date of birth"
-                            description="Date of birth of the student"
-                            required
-                            max={new Date().toISOString().split('T')[0]}
-                        />
+                            <AppForm.DatePicker<studentSchemaType>
+                                name="dob"
+                                label="DOB"
+                                placeholder="Select date of birth"
+                                description="Date of birth of the student"
+                                required
+                                max={new Date().toISOString().split('T')[0]}
+                            />
 
-                        <AppForm.Select<studentSchemaType>
-                            name="religion"
-                            label="Religion"
-                            placeholder="Select religion"
-                            description="Select religion of the student"
-                            options={Object.entries(ReligionMappings).map(([key, value]) => ({ label: key, value }))}
-                            required
-                        />
+                            <AppForm.Select<studentSchemaType>
+                                name="religion"
+                                label="Religion"
+                                placeholder="Select religion"
+                                description="Select religion of the student"
+                                options={Object.entries(ReligionMappings).map(([key, value]) => ({ label: key, value }))}
+                                required
+                            />
 
-                        <AppForm.Text<studentSchemaType>
-                            name="caste"
-                            label="Caste"
-                            placeholder="eg. Chhetri"
-                            description="Caste of the student"
-                        />
+                            <AppForm.Text<studentSchemaType>
+                                name="caste"
+                                label="Caste"
+                                placeholder="eg. Chhetri"
+                                description="Caste of the student"
+                            />
 
-                        <AppForm.Select<studentSchemaType>
-                            name="bloodGroup"
-                            label="Blood Group"
-                            placeholder="Select blood group"
-                            description="Select blood group of the student"
-                            options={Object.entries(BloodGroupMappings).map(([key, value]) => ({ label: key, value }))}
-                            required
-                        />
+                            <AppForm.Select<studentSchemaType>
+                                name="bloodGroup"
+                                label="Blood Group"
+                                placeholder="Select blood group"
+                                description="Select blood group of the student"
+                                options={Object.entries(BloodGroupMappings).map(([key, value]) => ({ label: key, value }))}
+                                required
+                            />
 
-                        <AppForm.Phone<studentSchemaType>
-                            name="phone"
-                            label="Phone No."
-                            placeholder="eg. 9xxxxxxxxxx"
-                            description="Phone number assiciated with the student"
-                            required
-                        />
+                            <AppForm.Phone<studentSchemaType>
+                                name="phone"
+                                label="Phone No."
+                                placeholder="eg. 9xxxxxxxxxx"
+                                description="Phone number assiciated with the student"
+                                required
+                            />
 
-                        <AppForm.Email<studentSchemaType>
-                            name="email"
-                            label="Email"
-                            placeholder="eg. johndoe@gmail.com"
-                            description="Email address of the student"
-                            required
-                        />
+                            <AppForm.Email<studentSchemaType>
+                                name="email"
+                                label="Email"
+                                placeholder="eg. johndoe@gmail.com"
+                                description="Email address of the student"
+                                required
+                            />
 
-                        <AppForm.Checkbox<studentSchemaType>
-                            name="isPhysicallyChallenged"
-                            label="Is Physically Challenged"
-                            description="Is the student physically challenged?"
+                            <AppForm.Checkbox<studentSchemaType>
+                                name="isPhysicallyChallenged"
+                                label="Is Physically Challenged"
+                                description="Is the student physically challenged?"
+                            />
+                        </section>
+                    </fieldset>
+
+                    <fieldset className="border border-border rounded-lg p-8 grid place-items-center">
+                        <legend className="px-2 text-sm">Profile Image</legend>
+                        <ImageUpload<studentSchemaType>
+                            name="profileImageId"
+                            containerClassName="border-none"
+                            uploadedImageUrl={form.getValues('profileImageId') ?? null}
                         />
-                    </section>
-                </fieldset>
+                    </fieldset>
+                </section>
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Academic Info</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         {
                             !params.id && <ClassSectionFormField />
                         }
@@ -167,20 +183,25 @@ export default function StudentForm(props: Props) {
                                 placeholder="Select admission date"
                                 description="Select the admission date"
                                 required
+                                max={new Date().toISOString().split('T')[0]}
                             />
                         }
 
-                        <AppForm.DynamicSelect<studentSchemaType>
+                        <AppForm.DynamicSelect_V2<studentSchemaType>
                             name="dormitoryRoomId"
                             label="Dormitory room"
                             placeholder="Select dormitory room"
                             description="Select the dormitory room. Skip if not applicable."
-                            fetchOptions={{
-                                endpoint: QueryKey.DORMITORY_ROOMS,
-                                queryKey: [QueryKey.DORMITORY_ROOMS],
-                                queryString: 'skipPagination=true',
-                            }}
-                            labelKey={'roomNumber'}
+                            queryKey={QueryKey.DORMITORY_ROOMS}
+                        />
+
+                        <AppForm.DynamicCombobox<studentSchemaType>
+                            name='routeStopId'
+                            label='Transport Route Stop'
+                            description='Select the route stop. Skip if not applicable.'
+                            placeholder='Select route stop'
+                            queryKey={QueryKey.ROUTE_STOPS}
+                            defaultSelected={props.defaultRouteStopOption}
                         />
 
                     </section>
@@ -188,7 +209,7 @@ export default function StudentForm(props: Props) {
 
                 <fieldset className="border border-border rounded-lg p-8">
                     <legend className="px-2 text-sm">Address</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="permanentAddress"
                             label="Permanent Address"
@@ -213,7 +234,7 @@ export default function StudentForm(props: Props) {
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Document Details</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="nationalIdCardNo"
                             label="National ID Card No"
@@ -236,12 +257,23 @@ export default function StudentForm(props: Props) {
                             placeholder="eg. Note"
                             description="Additional notes of the student"
                         />
+
+                        <AppForm.FileUpload<studentSchemaType>
+                            name="documentAttachmentIds"
+                            label="Document Attachments"
+                            placeholder="Select document attachments"
+                            description="Image, PDF | Max 5 files | 5 MB each"
+                            multiple
+                            maxLimit={5}
+                            initialUpload={props.documentAttachments ?? []}
+                            accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
+                        />
                     </section>
                 </fieldset>
 
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Bank Info</legend>
-                    <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         <AppForm.Text<studentSchemaType>
                             name="bankName"
                             label="Bank Name"

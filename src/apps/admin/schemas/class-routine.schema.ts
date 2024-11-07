@@ -15,11 +15,17 @@ export const classRoutineSchema = z.object({
     classRoomId: z.string()
         .uuid({ message: 'Invalid class room ID. Must be a valid UUID' }),
     sectionId: z.string()
-        .uuid({ message: 'Invalid class section ID. Must be a valid UUID' })
-        .optional(),
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid section ID',
+        })
+        .nullish(),
     subjectId: z.string()
-        .uuid({ message: 'Invalid subject ID. Must be a valid UUID' })
-        .optional()
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid subject ID',
+        })
+        .nullish(),
 }).refine(data => data.type !== ERoutineType.CLASS || !!data.subjectId, {
     message: 'Please select a subject for class routine',
     path: ['subjectId'],

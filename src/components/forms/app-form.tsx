@@ -7,13 +7,18 @@ import { Button } from '../ui/button';
 import { LoaderCircle } from 'lucide-react';
 import { formatDateNumeric } from '@/utils/format-date';
 import { Textarea } from "@/components/ui/textarea"
-import { ImageUpload } from './image-upload';
 import { DynamicSelect } from './dynamic-select';
 import { AppCheckbox } from './app-form-checkbox';
 import { AppFormSelect } from './select';
 import { AppFormPhone } from './app-form-phone';
 import { AppFormText } from './app-form-text';
 import { AppFormEmail } from './app-form-email';
+import { DynamicMultiSelect } from './app-form-dynamic-multiselect';
+import { MultiSelect } from './app-form-multiselect';
+import { DynamicCombobox } from './dynamic-combobox';
+import { FileUpload } from './file-upload';
+import ImageUpload from './image-upload';
+import { DynamicSelect_V2 } from './dynamic-select-v2';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -257,6 +262,15 @@ AppForm.Select = AppFormSelect;
 
 AppForm.DynamicSelect = DynamicSelect;
 
+AppForm.DynamicSelect_V2 = DynamicSelect_V2;
+
+AppForm.FileUpload = FileUpload;
+
 AppForm.ImageUpload = ImageUpload;
 
+AppForm.MultiSelect = MultiSelect;
+
+AppForm.DynamicMultiSelect = DynamicMultiSelect;
+
+AppForm.DynamicCombobox = DynamicCombobox;
 export default AppForm;

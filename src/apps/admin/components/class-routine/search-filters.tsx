@@ -25,7 +25,7 @@ export default function ClassRoutineSearchFilters({ }: Props) {
         }
     })
 
-    const onSubmit = (value: TClassRoutineSearchFilter) => { }
+    const onSubmit = () => { }
 
     return (
         <AppForm<TClassRoutineSearchFilter> form={form} schema={classRoutineSearchFilterSchema}>

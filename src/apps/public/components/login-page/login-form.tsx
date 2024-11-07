@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import AppForm from "@/components/forms/app-form"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
@@ -26,6 +26,7 @@ type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 export function LoginForm({ className, ...props }: LoginFormProps) {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const form = useForm<z.infer<typeof loginFormSchema>>({
         resolver: zodResolver(loginFormSchema),
@@ -49,7 +50,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             setAuth(response.data.access_token);
             const payload: TAuthPayload = jwtDecode(response.data.access_token);
 
-            navigate(`/${payload.role}/dashboard`, { replace: true });
+            navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });
         }
     }
 

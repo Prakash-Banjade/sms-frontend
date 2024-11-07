@@ -21,6 +21,7 @@ import { AppSidebarHeader } from "./sidebar-header"
 import { AppSidebarFooter } from "./sidebar-footer"
 import { useAuth } from "@/contexts/auth-provider"
 import { useMemo } from "react"
+import { ScrollArea } from "../ui/scroll-area"
 
 export type TSidebarMenuItem = {
     title: string,
@@ -38,20 +39,22 @@ export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
     return (
         <Sidebar variant="floating" collapsible="icon">
             <AppSidebarHeader />
-            <SidebarContent>
-                {
-                    menuItems.map((item) => (
-                        <SidebarGroup key={item.groupLabel}>
-                            <SidebarGroupLabel>{item.groupLabel}</SidebarGroupLabel>
-                            <SidebarMenu>
-                                {item.menuItems.map((item) => item.items?.length
-                                    ? <CollapsibleMenuItem key={item.title} item={item} />
-                                    : <NonCollapsibleMenuItem key={item.title} item={item} />
-                                )}
-                            </SidebarMenu>
-                        </SidebarGroup>
-                    ))
-                }
+            <SidebarContent className="overflow-hidden">
+                <ScrollArea className="max-h-full overflow-auto">
+                    {
+                        menuItems.map((item) => (
+                            <SidebarGroup key={item.groupLabel}>
+                                <SidebarGroupLabel>{item.groupLabel}</SidebarGroupLabel>
+                                <SidebarMenu>
+                                    {item.menuItems.map((item) => item.items?.length
+                                        ? <CollapsibleMenuItem key={item.title} item={item} />
+                                        : <NonCollapsibleMenuItem key={item.title} item={item} />
+                                    )}
+                                </SidebarMenu>
+                            </SidebarGroup>
+                        ))
+                    }
+                </ScrollArea>
             </SidebarContent>
             <AppSidebarFooter />
         </Sidebar>

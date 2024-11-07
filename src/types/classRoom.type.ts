@@ -1,8 +1,4 @@
-
-
 import { TMeta } from "./global.type";
-
-
 
 export type TClassRoom = {
     id: string;
@@ -16,8 +12,8 @@ export type TClassRoom = {
     location: string,
     classType: string,
     totalStudentsCount: number,
-    totalFemalesStudentsCount: number,
-    totalMalesStudentsCount: number
+    totalFemaleStudentsCount: number,
+    totalMaleStudentsCount: number
 
 }
 

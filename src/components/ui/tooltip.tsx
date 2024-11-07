@@ -32,7 +32,7 @@ const TooltipWrapper = ({
   children: React.ReactNode,
   label: React.ReactNode,
 }) => {
-  return <TooltipProvider delayDuration={100}>
+  return <TooltipProvider delayDuration={100} disableHoverableContent>
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent>

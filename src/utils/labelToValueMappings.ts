@@ -81,3 +81,10 @@ export const StaffTypeMappings = {
     Accountant: "accountant",
     Other: "other",
 }
+
+export const AttendanceStatusMappings = {
+    Present: "present",
+    Absent: "absent",
+    Late: "late",
+    Leave: "leave",
+}

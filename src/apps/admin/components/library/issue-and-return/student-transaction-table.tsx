@@ -49,6 +49,7 @@ function AllHistoryTable() {
     });
 
     if (isLoading) return <div>Loading...</div>;
+    if (!data) return <div>No transactions found</div>;
 
     return (
         <>
@@ -66,7 +67,7 @@ function AllHistoryTable() {
                             <TableCell>{
                                 transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
                             }</TableCell>
-                            <TableCell>{differenceInDays(new Date(transaction.createdAt), new Date())} days</TableCell>
+                            <TableCell>{differenceInDays(new Date(), new Date(transaction.createdAt))} days</TableCell>
                             <TableCell>-</TableCell>
                             <TableCell>{transaction.renewals}</TableCell>
                             <TableCell>
@@ -86,7 +87,7 @@ function AllHistoryTable() {
                 </TableBody>
             </Table>
             <div className="h-10"></div>
-            {data?.meta?.hasNextPage && <DataTablePagination meta={data?.meta} />}
+            <DataTablePagination meta={data.meta} />
         </>
     )
 }

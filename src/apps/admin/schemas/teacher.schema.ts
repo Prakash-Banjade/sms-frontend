@@ -26,11 +26,7 @@ export const teacherSchema = z.object({
 
     wage: z.coerce.number().min(0, { message: 'Wage must be a positive number' }),
 
-    profileImageId: z.string()
-        .refine(val => z.string().uuid().safeParse(val).success || z.string().url().safeParse(val).success, {
-            message: 'Profile image must be a valid UUID or URL'
-        })
-        .nullish(),
+    profileImageId: z.string().nullish(),
 
     qualification: z.string().min(1, { message: 'Qualification is required' }),
 

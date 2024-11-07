@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { Navigate } from "react-router-dom";
 import { useGetStudent } from "../student-actions";
 import { formatDate } from "@/utils/format-date";
+import { truncateFilename } from "@/utils/truncate-file-name";
 
 export const StudentInfoView = ({ id }: { id: string }) => {
     const { data: student, isLoading } = useGetStudent({
@@ -24,7 +25,7 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                     <p className="text-muted-foreground">Student ID: {student.studentId}</p>
                     <Badge variant="outline" className="mt-1">
                         {
-                            student.classRoom.parent?.name
+                            student.classRoom?.parent?.name
                                 ? `${student.classRoom.parent.name} - ${student.classRoom.name}`
                                 : `${student.classRoom.name}`
                         }
@@ -72,6 +73,13 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                                 <InfoItem label="Dormitory Room" value={student.dormitoryRoom?.roomNumber.toString()} />
                             )
                         }
+                        {
+                            student?.routeStop && (
+                                <InfoItem label="Route Stop - Vehicle" value={
+                                    student.routeStop?.name + (student.routeStop?.vehicle ? ' - ' + student.routeStop?.vehicle?.vehicleNumber : '')
+                                } />
+                            )
+                        }
                     </div>
                 </section>
 
@@ -105,6 +113,20 @@ export const StudentInfoView = ({ id }: { id: string }) => {
                         <InfoItem label="Bank Name" value={student.bankName || 'N/A'} className="capitalize" />
                         <InfoItem label="Bank Account Number" value={student.bankAccountNumber || 'N/A'} />
                         <InfoItem label="IFSC Code" value={student.ifscCode || 'N/A'} />
+                        <div className="space-y-1">
+                            <p className="text-sm font-medium text-muted-foreground">Document Attachments</p>
+                            <ul>
+                                {
+                                    student.documentAttachments?.map(attachment => (
+                                        <li key={attachment.id}>
+                                            <a href={attachment.url} target="_blank" rel="noreferrer" className="text-blue-500 text-sm hover:underline">
+                                                {truncateFilename(attachment.originalName, 40)}
+                                            </a>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
                     </div>
                 </section>
 

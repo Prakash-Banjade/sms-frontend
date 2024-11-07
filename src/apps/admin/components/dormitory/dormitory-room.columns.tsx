@@ -29,6 +29,10 @@ export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
     },
     {
+        header: "Room name",
+        accessorKey: "name"
+    },
+    {
         header: "Room number",
         accessorKey: "roomNumber"
     },
@@ -159,6 +163,7 @@ export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
                             dormitoryRoomId={row.original.id}
                             setIsOpen={setIsEditOpen}
                             defaultValues={{
+                                name: row.original.name,
                                 costPerBed: row.original.costPerBed,
                                 noOfBeds: row.original.noOfBeds,
                                 roomNumber: row.original.roomNumber,

@@ -3,6 +3,7 @@ import { Award, Beaker, Code, FileText, GraduationCap, ListChecks, User } from "
 import { Navigate, useParams } from "react-router-dom"
 import { useGetSubject } from "../../components/subjects/actions";
 import SubjectChapterList from "./subject-chapter-list";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {}
 
@@ -32,7 +33,14 @@ function SubjectOverview({ subjectId }: { subjectId: string }) {
         <>
             <Card className="mb-8 bg-secondary/30">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-3xl font-bold">{subject?.subjectName}</CardTitle>
+                    <CardTitle className="text-3xl font-bold flex items-center gap-2">
+                        {subject?.subjectName}
+                        {
+                            subject.classRoom && <Badge variant={'outline'}>
+                                {subject.classRoom?.name}
+                            </Badge>
+                        }
+                    </CardTitle>
                     <GraduationCap className="h-12 w-12 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
@@ -43,7 +51,7 @@ function SubjectOverview({ subjectId }: { subjectId: string }) {
                         </div>
                         <div className="flex items-center">
                             <User className="mr-2 h-4 w-4" />
-                            <span>Teacher : {subject?.teacher?.firstName} {subject?.teacher?.lastName}</span>
+                            <span>Teacher : {subject.teacher ? `${subject?.teacher?.firstName} ${subject?.teacher?.lastName}` : <span className="text-muted-foreground">N/A</span>}</span>
                         </div>
                         <div className="flex items-center">
                             <FileText className="mr-2 h-4 w-4" />

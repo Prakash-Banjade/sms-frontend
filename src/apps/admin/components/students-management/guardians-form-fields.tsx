@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { CardContent, CardTitle } from "@/components/ui/card"
 import { Plus, Trash2 } from 'lucide-react'
 import { guardianFormFieldsDefaultValues, studentSchemaType } from '../../schemas/student.schema'
-import { EGuardianRelation } from '@/types/global.type'
 import { AppFormSelect } from '@/components/forms/select'
 import { GuardianRelationMappings } from '@/utils/labelToValueMappings'
 import { AppFormText } from '@/components/forms/app-form-text'
@@ -25,7 +24,7 @@ export default function GuardiansFields() {
                     <section key={field.id}>
                         <CardTitle className="text-base font-semibold mb-2">Guardian {index + 1}</CardTitle>
                         <CardContent className='p-0'>
-                            <section className="grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                            <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                                 <AppFormText
                                     name={`guardians.${index}.firstName`}
                                     label="First Name"

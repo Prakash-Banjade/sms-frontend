@@ -14,6 +14,7 @@ import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStudent } from "@/types/student.type"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
+import { ProfileAvatar } from "@/components/ui/avatar"
 
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
@@ -34,8 +35,9 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         },
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline">
-                    {row.original.firstName} {row.original.lastName}
+                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
+                    <ProfileAvatar name={row.original.fullName} src={row.original.profileImageUrl || ''} className="size-10" />
+                    {row.original.fullName}
                 </Link>
             </TooltipWrapper>
         }
@@ -47,9 +49,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
 
             return <span>
                 {
-                    student.classRoom.parent?.name
-                        ? `${student.classRoom.parent.name} - ${student.classRoom.name}`
-                        : `${student.classRoom.name}`
+                    student.parentClass ? `${student.parentClass} - ${student.classRoom}` : `${student.classRoom}`
                 }
             </span>
         }
@@ -99,6 +99,13 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
                     ({calculateExactAge(new Date(row.original.dob))} Y)
                 </span>
             </span>
+        }
+    },
+    {
+        accessorKey: "routeStop",
+        header: "Transport Route stop",
+        cell: ({ row }) => {
+            return row.original.routeStop ? <span>{row.original.routeStop}</span> : <span className="text-muted-foreground">-</span>
         }
     },
     {
