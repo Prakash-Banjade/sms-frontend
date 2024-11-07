@@ -1,44 +1,24 @@
-
-import { Button } from "@/components/ui/button";
-import { useNotices } from "../components/notice/action"
-import NoticeCard from "../components/notice/notice-card"
-import React from "react";
+import { useGetNoticees } from "@/apps/admin/components/notices/action";
+import { DataTable } from "@/components/data-table/data-table";
+import { createQueryString } from "@/utils/create-query-string";
+import { singleNoticeColumns } from "../components/notice/student-notice-column";
 
 
 const NoticePage = () => {
-    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useNotices({});
+    const { data, isLoading } = useGetNoticees({
+        queryString: createQueryString({
+            // search: searchParams.get("search"),
+        }),
+    })
 
-    if (isLoading) return <div>Loading....</div>
-    if (!data) return <div className="text-muted-foreground text-lg  h-[50vh] text-center flex items-center justify-center">
-        No Notice available
-    </div>
+    if (isLoading) return <div>Loading...</div>;
+
     return (
-        <div className="flex flex-col gap-3 p-4 m-auto">
-            <h2 className="text-2xl font-bold">School Notice Board</h2>
-            <p>Stay updated with the latest announcements and events</p>
-            {data.pages.map((group, i) => (
-                <React.Fragment key={i}>
-                    <NoticeCard notices={group.data} />
-                </React.Fragment>
-            ))}
-
-
-            <div className="flex items-center justify-center">
-                <Button
-                    variant={'secondary'}
-                    onClick={() => fetchNextPage()}
-                    disabled={!hasNextPage || isFetchingNextPage}
-                >
-                    {isFetchingNextPage
-                        ? 'Loading more...'
-                        : hasNextPage
-                            ? 'Load More'
-                            : 'Nothing more to load'}
-                </Button>
-            </div>
-            <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
-
-        </div>
+        <DataTable
+            columns={singleNoticeColumns}
+            data={data?.data ?? []}
+            meta={data?.meta}
+        />
     )
 }
 

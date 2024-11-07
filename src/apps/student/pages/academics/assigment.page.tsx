@@ -1,47 +1,26 @@
-import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { NepaliMonths } from "@/types/attendence.type"
-
+import { useGetTasks } from "@/apps/admin/components/tasks/action";
+import { taskColumns } from "@/apps/admin/components/tasks/task.column";
+import { DataTable } from "@/components/data-table/data-table";
+import { ETask } from "@/types/global.type";
+import { createQueryString } from "@/utils/create-query-string";
 
 const AssignmentPage = () => {
+    const { data, isLoading } = useGetTasks({
+        queryString: createQueryString({
+            taskType: ETask.ASSIGNMENT,
+        }),
+    });
+    console.log("🚀 ~ AssignmentPage ~ data:", data);
+    if (isLoading) return <div>Loading...</div>;
+    if (!data) return <div>No Assignment Available</div>;
 
     return (
-        <div className="flex flex-col gap-5 py-8">
-            <div className="flex justify-between px-10">
+        <DataTable
+            columns={taskColumns}
+            data={data?.data ?? []}
+            meta={data?.meta}
+        />
+    );
+};
 
-                <h2>My Attendence</h2>
-
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant={'secondary'}>
-                            View Monthly Attendence
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {
-                            Object.values(NepaliMonths).map((month) => (
-                                <DropdownMenuItem key={month}>
-                                    {month}
-                                </DropdownMenuItem>
-                            ))
-                        }
-                    </DropdownMenuContent>
-                </DropdownMenu>
-
-            </div>
-            <section className="flex gap-10 items-center ">
-                <div>
-                    Today attendence
-                </div>
-            </section>
-        </div>
-    )
-}
-
-export default AssignmentPage
+export default AssignmentPage;
