@@ -42,7 +42,9 @@ export function AdminDashboard() {
                         </CardContent>
                     </Card>
 
-                    <AcademicYearCalendar />
+                    <section className='mt-6'>
+                        <AcademicYearCalendar />
+                    </section>
 
                 </section>
 
