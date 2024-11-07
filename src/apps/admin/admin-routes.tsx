@@ -53,6 +53,8 @@ import VehiclesPage from './pages/transportation/vehicles.page';
 import ExamTypesPage from './pages/examination/exam-types.page';
 import MarkGradesPage from './pages/examination/mark-grades.page';
 import ExamsPage from './pages/examination/exams.page';
+import NewExamPage from './pages/examination/new-exam.page';
+import EditExamPage from './pages/examination/edit-exam.page';
 
 const AdminRoutes = () => {
     return (
@@ -83,7 +85,14 @@ const AdminRoutes = () => {
                         <Route index element={<Navigate to="exam-setup" />} />
                         <Route path="exam-type" element={<ExamTypesPage />} />
                         <Route path="marks-grade" element={<MarkGradesPage />} />
-                        <Route path="exam-setup" element={<ExamsPage />} />
+                        <Route path="exam-setup">
+                            <Route index element={<ExamsPage />} />
+                            <Route path="new" element={<NewExamPage />} />
+                            <Route path=":id">
+                                <Route index element={<Navigate to="edit" />} />
+                                <Route path="edit" element={<EditExamPage />} />
+                            </Route>
+                        </Route>
                     </Route>
                     <Route path="notices">
                         <Route index element={<NoticesListPage />} />
