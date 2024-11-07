@@ -4,7 +4,6 @@ import { createStudentSchema } from "../../schemas/student.schema"
 import { useGetStudent } from "../../components/students-management/student-actions";
 import StudentForm from "../../components/students-management/student.form.";
 import { useMemo } from "react";
-import { SelectOption } from "@/types/global.type";
 
 type Props = {}
 

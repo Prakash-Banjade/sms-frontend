@@ -84,6 +84,10 @@ export type TSingleStudent = {
     routeStop: {
         id: string,
         name: string,
+        vehicle: {
+            id: string,
+            vehicleNumber: string
+        } | null
     } | null;
 }
 
