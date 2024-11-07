@@ -12,6 +12,7 @@ export const classRoomFormSchema = z.object({
     }).optional(),
     location: z.string().optional(),
     classType: z.nativeEnum(EClassType).default(EClassType.PRIMARY).optional(),
+    classTeacherId: z.string().uuid({ message: 'Select a valid class teacher' }).nullish(),
 });
 
 export const classRoomFormDefaultValues: Partial<classRoomFormSchemaType> = {

@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { DataTable } from '@/components/data-table/data-table';
-import { useGetDormitories } from './action';
+import { useGetDormitories } from './actions';
 import { dormitoriesColumns } from './dormitory.columns';
 
 type Props = {}

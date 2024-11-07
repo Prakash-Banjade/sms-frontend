@@ -9,6 +9,10 @@ export enum Role {
     STUDENT = 'student',
     LIBRARIAN = 'librarian',
     STAFF = 'staff',
+    DRIVER = 'driver',
+    LABOR = 'labor',
+    HELPER = 'helper',
+    PEON = 'peon',
 }
 
 export type TCurrentUser = {
@@ -38,11 +42,17 @@ export interface PaginatedResponse<T> {
     meta: TMeta;
 }
 
+export type SelectOption = {
+    label: string,
+    value: string,
+}
+
 export interface IFileUploadResponse {
     message: string,
     files: {
         id: string,
         url: string,
+        originalName: string,
     }[],
     count: number,
 }
@@ -96,6 +106,8 @@ export enum EBloodGroup {
 export enum EGuardianRelation {
     FATHER = 'father',
     MOTHER = 'mother',
+    SISTER = 'sister',
+    BROTHER = 'brother',
     GUARDIAN = 'guardian',
     OTHER = 'other',
 }
@@ -141,11 +153,6 @@ export enum ELeaveRequestStatus {
     REJECTED = 'rejected',
 }
 
-export enum ELibarryBookStatus {
-    RETURNED = 'returned',
-    PENDING = 'pending',
-}
-
 export enum EPaymentMethod {
     CASH = 'cash',
     CREDIT = 'credit',
@@ -183,4 +190,28 @@ export enum EDayOfWeek {
 export enum ERoutineType {
     CLASS = 'class',
     BREAK = 'break',
+}
+
+export enum EBookTransactionStatus {
+    Issued = 'issued',
+    Returned = 'returned',
+    Overdue = 'overdue',
+}
+
+export enum ETaskSubmissionStatus {
+    Submitted = 'submitted',
+    Late = 'late',
+    Not_Submitted = 'not_submitted',
+}
+
+export enum EVehicleType {
+    Car = 'car',
+    Bus = 'bus',
+    Bike = 'bike',
+    Motorcycle = 'motorcycle',
+    Jeep = 'jeep',
+    Truck = 'truck',
+    Van = 'van',
+    Winger = 'winger',
+    Force = 'force',
 }

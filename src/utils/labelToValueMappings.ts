@@ -32,3 +32,59 @@ export const DormitoryTypeMappings = {
     Girls: "girls",
     Both: "both",
 }
+
+export const MaritalStatusMappings = {
+    Single: "single",
+    Married: "married",
+    Widowed: "widowed",
+    Divorced: "divorced",
+}
+
+export const BloodGroupMappings = {
+    "A+": "A+",
+    "A-": "A-",
+    "B+": "B+",
+    "B-": "B-",
+    "O+": "O+",
+    "O-": "O-",
+    "AB+": "AB+",
+    "AB-": "AB-",
+}
+
+export const ReligionMappings = {
+    Islam: "islam",
+    Hindu: "hinduism",
+    Sik: "sikhism",
+    Buddhism: "buddhism",
+    Christianity: "christianity",
+    Protestantism: "protestantism",
+    Other: "other",
+}
+
+export const GuardianRelationMappings = {
+    Father: "father",
+    Mother: "mother",
+    Sister: "sister",
+    Brother: "brother",
+    Guardian: "guardian",
+    Other: "other",
+}
+
+export const StaffTypeMappings = {
+    Driver: "driver",
+    Labor: "labor",
+    Helper: "helper",
+    Peon: "peon",
+    Guard: "guard",
+    Librarian: "librarian",
+    Receptionist: "receptionist",
+    Accountant: "accountant",
+    Other: "other",
+}
+
+export const AttendanceStatusMappings = {
+    Present: "present",
+    Absent: "absent",
+    Late: "late",
+    Leave: "leave",
+}

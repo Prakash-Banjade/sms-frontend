@@ -1,11 +1,14 @@
+import { INVALID_AUTH_CREDENTIALS_MSG } from "@/CONSTANTS";
 import { useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import axios, { AxiosInstance } from "axios";
-import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const useAxios = (): AxiosInstance => {
     const { access_token, setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const axiosInstance = axios.create({
         baseURL: import.meta.env.VITE_API_URL,
@@ -34,6 +37,10 @@ export const useAxios = (): AxiosInstance => {
     axiosInstance.interceptors.response.use(
         (response) => response,
         async (error) => {
+            if (error?.response?.data?.message?.message === INVALID_AUTH_CREDENTIALS_MSG) {
+                return toast.error(INVALID_AUTH_CREDENTIALS_MSG);
+            }
+
             const originalRequest = error.config;
 
             if (error.response?.status === 401 && !originalRequest._retry) {
@@ -71,7 +78,7 @@ export const useAxios = (): AxiosInstance => {
                 } catch (err) {
                     isRefreshing = false;
                     setAuth(null); // Clear auth state if refresh fails
-                    navigate('/', { replace: true });
+                    navigate('/', { replace: true, state: { from: location } });
                     return Promise.reject(err);
                 }
             }

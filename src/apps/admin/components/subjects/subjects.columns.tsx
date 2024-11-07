@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useAppMutation } from "@/hooks/useAppMutation"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import { TSubject } from "@/types/subject.type"
 import SubjectForm from "./subject-form"
+import { Link } from "react-router-dom"
+import { TooltipWrapper } from "@/components/ui/tooltip"
 
 export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
@@ -27,6 +27,15 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
         header: "Subject name",
         accessorKey: "subjectName",
+        cell: ({ row }) => {
+            return (
+                <TooltipWrapper label="Click to view">
+                    <Link to={`${row.original.id}`} className="hover:underline hover:text-blue-500">
+                        <span>{row.original.subjectName}</span>
+                    </Link>
+                </TooltipWrapper>
+            )
+        }
     },
     {
         header: "Class",
@@ -68,11 +77,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const classroom = row.original;
             const [isEditOpen, setIsEditOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-            const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
 
             return (
                 <>

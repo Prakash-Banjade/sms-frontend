@@ -20,7 +20,7 @@ type Props = ({
 
 const dormitoryForm = z.object({
     name: z.string().min(2, { message: "Name is required" }),
-    type: z.nativeEnum(EDormitoryType).default(EDormitoryType.BOTH).nullish(),
+    type: z.nativeEnum(EDormitoryType),
     description: z.string().nullish(),
     address: z.string().max(50, { message: "Address is too long" }).nullish(),
     intake: z.string().max(50, { message: "Intake is too long" }).nullish(),
@@ -70,8 +70,8 @@ export default function DormitoryForm(props: Props) {
 
     return (
         <AppForm schema={dormitoryForm} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <section className="grid 2xl:grid-cols-2 gap-8 grid-cols-1">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 @container">
+                <section className="grid @xl:grid-cols-2 gap-8 grid-cols-1">
                     <AppForm.Text<dormitoryFormType>
                         name="name"
                         label="Name"

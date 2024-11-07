@@ -1,31 +1,27 @@
 import AppForm from "@/components/forms/app-form"
-import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
-import { EClassType } from "@/types/global.type";
+import { SelectOption, EClassType } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
 
-type Props = ({
-    setIsOpen?: undefined;
-} | {
-    classRoomId?: string;
+type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) & {
-    defaultValues?: Partial<classRoomFormSchemaType>;
+} & ({ // for update
+    classRoomId: string;
+    defaultValues: Partial<classRoomFormSchemaType>;
+    parentClassId?: undefined;
+    selectedClassTeacherOption?: SelectOption;
+} | { // for new
     parentClassId: string
-}
+    classRoomId?: undefined;
+    defaultValues?: undefined;
+    selectedClassTeacherOption?: undefined;
+})
 
 export default function ClassSectionForm(props: Props) {
-    const params = useParams();
-    const id = (!!props.setIsOpen && props.classRoomId) ? props.classRoomId : params.id;
-
-    const navigate = useNavigate();
-    const { payload } = useAuth();
-
     const form = useForm<classRoomFormSchemaType>({
         resolver: zodResolver(classRoomFormSchema),
         defaultValues: props?.defaultValues ?? classRoomFormDefaultValues,
@@ -34,12 +30,12 @@ export default function ClassSectionForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType & { parentClassId: string }>, any>();
 
     async function onSubmit(values: classRoomFormSchemaType) {
-        const method = ((!!props.setIsOpen && props.classRoomId) || params.id) ? "patch" : "post";
+        const method = props.classRoomId ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
             endpoint: QueryKey.CLASSES,
-            id,
+            id: props.classRoomId,
             data: {
                 ...getDirtyValues(values, form),
                 classType: EClassType.SECTION,
@@ -49,14 +45,8 @@ export default function ClassSectionForm(props: Props) {
         });
 
         if (response?.data?.message) {
-            onDialogClose();
-            navigate(`/${payload?.role}/classes`);
+            props.setIsOpen(false);
         }
-    }
-
-    const onDialogClose = () => {
-        form.reset();
-        props.setIsOpen && props.setIsOpen(false);
     }
 
     return (
@@ -77,13 +67,22 @@ export default function ClassSectionForm(props: Props) {
                         placeholder="eg. Room No. 34, Block 1"
                         description="Enter the location of the section"
                     />
+
+                    <AppForm.DynamicCombobox<classRoomFormSchemaType>
+                        name='classTeacherId'
+                        label='Class Teacher'
+                        placeholder='Select class teacher'
+                        description='Select the class teacher'
+                        queryKey={QueryKey.TEACHERS}
+                        defaultSelected={props.selectedClassTeacherOption}
+                    />
                 </section>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => props.setIsOpen(false)}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
-                            !!id ? "Save changes" : "Add section"
+                            !!props.classRoomId ? "Save changes" : "Add section"
                         }
                     </AppForm.Submit>
                 </section>

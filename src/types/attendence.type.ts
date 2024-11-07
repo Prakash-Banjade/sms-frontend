@@ -33,13 +33,51 @@ export type TAttendencesResponse = {
     meta: TMeta;
 }
 
-export type TAttendenceCount = {
-    absent: number,
-    present: number,
-    leave: number
-    late: number
-}
+export type TAttendenceCount = Record<EAttendanceStatus, number> & {
+    total: number;
+    [key: string]: number;
+};
+
 export type TAttendenceCounts = {
     monthly: TAttendenceCount,
     yearly: TAttendenceCount
+}
+
+export type TUpdateAttendances = {
+    id?: string;
+    accountId: string;
+    inTime?: string;
+    outTime?: string;
+    status: EAttendanceStatus;
+    date: string;
+}[]
+
+export type TEntityWithAttendance = {
+    id: string,
+    firstName: string,
+    lastName: string,
+    account: {
+        id: string
+    }
+    attendance: {
+        id: string
+        status: EAttendanceStatus,
+        date: string,
+    } | null;
+}
+
+export type TEntityWithAttendanceUpdate = {
+    id: string
+    firstName: string,
+    staffId?: number;
+    teacherId?: number;
+    lastName: string,
+    account: {
+        id: string
+    }
+    attendance: {
+        id?: string
+        status: EAttendanceStatus,
+        date: string,
+    } | null;
 }

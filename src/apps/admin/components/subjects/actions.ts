@@ -1,7 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TClass, } from "@/types/class.type";
-import { TSubjectsResponse } from "@/types/subject.type";
+import { TSubject, TSubjectChaptersResponse, TSubjectsResponse } from "@/types/subject.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSubject = ({
@@ -11,9 +10,9 @@ export const useGetSubject = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<TClass>
+    options?: UseQueryOptions<TSubject>
 }) => {
-    const response = useFetchData<TClass>({
+    const response = useFetchData<TSubject>({
         queryKey: [QueryKey.SUBJECTS, id],
         endpoint: QueryKey.SUBJECTS,
         id,
@@ -34,6 +33,23 @@ export const useGetSubjects = ({
     const response = useFetchData<TSubjectsResponse>({
         endpoint: QueryKey.SUBJECTS,
         queryKey: queryString ? [QueryKey.SUBJECTS, queryString] : [QueryKey.SUBJECTS],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetSubjectChapters = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: UseQueryOptions<TSubjectChaptersResponse>
+}) => {
+    const response = useFetchData<TSubjectChaptersResponse>({
+        endpoint: QueryKey.SUBJECT_CHAPTERS,
+        queryKey: queryString ? [QueryKey.SUBJECT_CHAPTERS, queryString] : [QueryKey.SUBJECT_CHAPTERS],
         queryString,
         options,
     })

@@ -1,24 +1,17 @@
-
 import { TMeta } from "./global.type";
 
 export type TNotice = {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    title: string;
-    description: string;
-    date: string
-
-
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+    title: string
 }
 
-export type TNoticeResponse = {
+export type TNoticesResponse = {
     data: TNotice[];
     meta: TMeta;
 }
-export type TNoticePage = {
-    pages: TNoticeResponse[]
-    pageParams: unknown[]
 
-
+export type TSingleNotice = TNotice & {
+    description: string;
 }

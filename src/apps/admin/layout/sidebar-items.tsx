@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BookOpenText, Building, Bus, Calendar, LayoutDashboard, Shapes, Users, UsersRound } from "lucide-react"
+import { BellRing, BookOpenCheck, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -25,17 +25,13 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "academic-years/new",
                     },
                     {
-                        title: "Academic Year List",
+                        title: "Academic Years",
                         url: "academic-years",
                     },
-                    {
-                        title: "Academic Year Attendance",
-                        url: "#",
-                    }
                 ]
             },
             {
-                title: "Classes",
+                title: "Class",
                 url: "classes",
                 icon: Building,
                 items: [
@@ -46,11 +42,15 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Classes List",
                         url: "classes",
+                    },
+                    {
+                        title: "Sections List",
+                        url: "classes/sections",
                     }
                 ]
             },
             {
-                title: "Subjects",
+                title: "Subject",
                 url: "subjects",
                 icon: BookOpenText,
                 items: [
@@ -78,67 +78,106 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "class-routines",
                     }
                 ]
-            }
-        ]
-    },
-    {
-        groupLabel: "Student",
-        menuItems: [
+            },
             {
-                title: "Student Info",
-                url: "#",
-                icon: UsersRound,
+                title: "Examination",
+                url: "examination",
+                icon: BookOpenCheck,
                 items: [
                     {
-                        title: "Add Student",
-                        url: "#",
+                        title: "Marks Grade",
+                        url: "examination/marks-grade",
                     },
                     {
-                        title: "Student List",
-                        url: "#",
+                        title: "Exam Type",
+                        url: "examination/exam-type",
                     },
                     {
-                        title: "Student Attendance",
-                        url: "#",
+                        title: "Exam Setup",
+                        url: "examination/exam-setup",
                     }
                 ]
             },
             {
-                title: "HomeWork",
-                url: "#",
+                title: "Notice",
+                url: "notices",
+                icon: BellRing,
+            }
+        ]
+    },
+    {
+        groupLabel: "Student Administration",
+        menuItems: [
+            {
+                title: "Student Management",
+                url: "students",
+                icon: UsersRound,
+                items: [
+                    {
+                        title: "Students",
+                        url: "students",
+                    },
+                    {
+                        title: "New Registration",
+                        url: "students/new-registration",
+                    },
+                    {
+                        title: "Enrollments",
+                        url: "students/enrollments",
+                    },
+                    {
+                        title: "Change Class",
+                        url: "students/change-class",
+                    },
+                    {
+                        title: "Promotion",
+                        url: "students/promote",
+                    },
+                ]
+            },
+            {
+                title: "Attendance",
+                url: "students/attendance",
+                icon: Calendar,
+                items: [
+                    {
+                        title: "View Attendance",
+                        url: "students/attendance",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "students/attendance/leave-requests",
+                    }
+                ]
+            },
+            {
+                title: "Tasks",
+                url: "tasks",
                 icon: BookOpenText,
                 items: [
                     {
-                        title: "Add HomeWork",
-                        url: "#",
+                        title: "Homeworks",
+                        url: "tasks/homeworks",
                     },
                     {
-                        title: "HomeWork List",
-                        url: "#",
-                    },
-                    {
-                        title: "HomeWork Report",
-                        url: "#",
+                        title: "Assignments",
+                        url: "tasks/assignments",
                     }
                 ]
             },
             {
                 title: "Transportation",
-                url: "#",
+                url: "transportation",
                 icon: Bus,
                 items: [
                     {
-                        title: "Routes",
-                        url: "#",
-                    },
-                    {
                         title: "Vehicles",
-                        url: "#",
+                        url: "transportation/vehicles",
                     },
                     {
-                        title: "Assign Vehicle",
-                        url: "#",
-                    }
+                        title: "Route Stops",
+                        url: "transportation/route-stops",
+                    },
                 ]
             },
             {
@@ -167,42 +206,135 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Teachers",
-                url: "#",
+                url: "teachers",
                 icon: UsersRound,
                 items: [
                     {
                         title: "Add Teacher",
-                        url: "#",
+                        url: "teachers/new",
                     },
                     {
                         title: "Teacher List",
-                        url: "#",
-                    },
-                    {
-                        title: "Teacher Attendance",
-                        url: "#",
+                        url: "teachers",
                     }
                 ]
             },
             {
                 title: "Non Teaching Staffs",
-                url: "#",
+                url: "staffs",
                 icon: Users,
                 items: [
                     {
-                        title: "Add Non-Teaching Staff",
-                        url: "#",
+                        title: "Add Staff",
+                        url: "staffs/new",
                     },
                     {
-                        title: "Staff List",
-                        url: "#",
-                    },
-                    {
-                        title: "Staff Attendance",
-                        url: "#",
+                        title: "Staffs List",
+                        url: "staffs",
                     }
                 ]
             },
+            {
+                title: "Attendance",
+                url: "employees/attendance",
+                icon: Calendar,
+                items: [
+                    {
+                        title: "View Attendance",
+                        url: "employees/attendance",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "employees/leave-requests",
+                    },
+                ]
+            },
+        ]
+    },
+    {
+        groupLabel: "Library Management",
+        menuItems: [
+            {
+                title: "Overview",
+                url: "library",
+                icon: Library,
+            },
+            {
+                title: "Manage",
+                url: "library/books",
+                icon: BookOpenText,
+                items: [
+                    {
+                        title: "Add New Book",
+                        url: "library/books/new",
+                    },
+                    {
+                        title: "Books Catalog",
+                        url: "library/books",
+                    },
+                    {
+                        title: "Book Categories",
+                        url: "library/books/categories",
+                    }
+                ]
+            },
+            {
+                title: "Issues & Returns",
+                url: "library/issues-and-returns",
+                icon: Calendar,
+            },
+        ]
+    },
+    {
+        groupLabel: "Reports",
+        menuItems: [
+            {
+                title: "Student Report",
+                url: "reports/student-report",
+                icon: UsersRound,
+                items: [
+                    {
+                        title: "Task Evaluation Report",
+                        url: "reports/student-report/task-evaluation",
+                    },
+                    {
+                        title: "Attendance Report",
+                        url: "reports/student-report/attendance",
+                    },
+                ]
+            },
+            {
+                title: "Teacher Report",
+                url: "reports/teacher-report",
+                icon: Users,
+                items: [
+                    {
+                        title: "Attendance Report",
+                        url: "reports/teacher-report/attendance",
+                    },
+                ]
+            },
+            {
+                title: "Staff Report",
+                url: "reports/staff-report",
+                icon: Users2,
+                items: [
+                    {
+                        title: "Attendance Report",
+                        url: "reports/staff-report/attendance",
+                    },
+                ]
+            },
+            {
+                title: "Class Report",
+                url: "reports/class-report",
+                icon: Building,
+            },
+            {
+                title: "Examination Report",
+                url: "reports/examination-report",
+                icon: BookOpenText,
+            }
         ]
     }
 ]

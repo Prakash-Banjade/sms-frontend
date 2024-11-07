@@ -1,6 +1,5 @@
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import RequireAuth from '@/components/auth/require-auth';
-
 import { Role } from '@/types/global.type';
 import { Route, Routes } from 'react-router-dom';
 import { studentSidebarMenuItems } from './layout/sidebar-items';
@@ -10,7 +9,6 @@ import StudentAttendenceListPage from './pages/academics/attendence.page';
 import ClassRoutineListPage from '../admin/pages/class-routine/class-routine-list.page';
 import LeaveRequestPage from './pages/academics/leave-request.page';
 import NoticePage from './pages/notice.page';
-
 
 
 const StudentRoutes = () => {
@@ -23,8 +21,6 @@ const StudentRoutes = () => {
           <Route path="homework" element={<HomeWorkPage />} />
           <Route path="attendance" element={<StudentAttendenceListPage />} />
           <Route path="class-routine" element={<ClassRoutineListPage />} />
-          <Route path='leave-request' element={<LeaveRequestPage />} />
-          <Route path='notices' element={<NoticePage />} />
         </Route>
       </Route>
     </Routes>

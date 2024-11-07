@@ -25,4 +25,21 @@ const TooltipContent = React.forwardRef<
 ))
 TooltipContent.displayName = TooltipPrimitive.Content.displayName
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+const TooltipWrapper = ({
+  children,
+  label,
+}: {
+  children: React.ReactNode,
+  label: React.ReactNode,
+}) => {
+  return <TooltipProvider delayDuration={100} disableHoverableContent>
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent>
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+}
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TooltipWrapper }

@@ -110,6 +110,7 @@ export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
                         title="Edit Dormitory"
+                        className="w-[97%] max-w-[800px]"
                     >
                         <DormitoryForm dormitoryId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
                     </ResponsiveDialog>

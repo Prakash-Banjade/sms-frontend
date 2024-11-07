@@ -11,12 +11,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 
 interface AppFormDynamicSelectProps<T, F> extends TFormFieldProps<T>, Omit<SelectProps, 'name'> {
     fetchOptions: UseFetchDataOptions<PaginatedResponse<F>>
-    // labelKey: keyof PaginatedResponse<F>['data'][0]
     disableOnNoOption?: boolean;
-    labelKey: string;
+    labelKey?: string;
+    clearQueryFilter?: boolean;
 }
 
 export function DynamicSelect<T extends FieldValues, F = any>({
@@ -27,25 +29,41 @@ export function DynamicSelect<T extends FieldValues, F = any>({
     required = false,
     containerClassName = '',
     fetchOptions,
-    labelKey,
+    labelKey = 'label',
     disableOnNoOption = false,
+    clearQueryFilter = false, // this is used in filter components to clear the query params, when clicked on clear button
     ...props
 }: AppFormDynamicSelectProps<T, F>) {
-    const { control } = useFormContext();
+    const { control, setValue } = useFormContext();
+    const { setSearchParams } = useCustomSearchParams();
 
-    const { data } = useFetchData<PaginatedResponse<F>>(fetchOptions);
+    const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
+
+    const isDisabled = disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length));
+
+    const handleOnClear = () => {
+        setValue(name as string, '')
+        if (clearQueryFilter) setSearchParams(name as string, undefined)
+    }
 
     return (
         <FormField
             control={control}
             name={name as string}
             render={({ field }) => (
-                <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={disableOnNoOption && !data?.data?.length} {...props}>
+                <FormItem className={cn("relative", containerClassName)}>
+                    <div>
+                        <FormLabel>
+                            {label}
+                            {(required && !isDisabled) && <span className="text-red-500">*</span>}
+                        </FormLabel>
+                        {
+                            !required && !isDisabled && <span role="button" onClick={() => handleOnClear()} className="text-muted-foreground text-sm absolute right-0 mt-[2px]">
+                                Clear
+                            </span>
+                        }
+                    </div>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={isDisabled || isLoading} {...props} required={(required && !isDisabled)}>
                         <FormControl>
                             <SelectTrigger>
                                 {
@@ -55,11 +73,19 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                         </FormControl>
                         <SelectContent>
                             {
-                                data?.data?.map((option) => (
-                                    <SelectItem key={option.id} value={option.id}>
-                                        {option[labelKey]}
-                                    </SelectItem>
-                                ))
+                                Array.isArray(data) ? ( // data can be array or object based on if pagination is applied from backend
+                                    data?.map((option) => (
+                                        <SelectItem key={option.id ?? option.value} value={option.id ?? option.value}>
+                                            {option[labelKey]}
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    data?.data?.map((option) => (
+                                        <SelectItem key={option.id ?? option.value} value={option.id ?? option.value}>
+                                            {option[labelKey]}
+                                        </SelectItem>
+                                    ))
+                                )
                             }
                         </SelectContent>
                     </Select>

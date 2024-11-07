@@ -1,14 +1,15 @@
-import AsideLinksLayout from "@/components/aside-layout.tsx/aside-links-layout"
 import { DataTable } from "@/components/data-table/data-table"
-import { academicYearAsideQuickLinks_viewAll, academicYearAsideRelatedActions } from "../../components/academic-year/academic-year-aside"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useGetSubjects } from "../../components/subjects/actions"
 import { subjectsColumns } from "../../components/subjects/subjects.columns"
-type Props = {}
+import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
 
-export default function SubjectsListPage({ }: Props) {
+export default function SubjectsListPage() {
     const [searchParams] = useSearchParams();
-    
+    const navigate = useNavigate();
+
     const { data, isLoading } = useGetSubjects({
         queryString: searchParams.toString(),
     });
@@ -16,11 +17,13 @@ export default function SubjectsListPage({ }: Props) {
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <AsideLinksLayout
+        <ContainerLayout
             title="All Subjects"
             description="View all subjects in your school management system."
-            quickLinks={academicYearAsideQuickLinks_viewAll}
-            relatedActions={academicYearAsideRelatedActions}
+            actionTrigger={<Button onClick={() => navigate('new')}>
+                <Plus />
+                Add Subject
+            </Button>}
         >
             <DataTable
                 columns={subjectsColumns}
@@ -28,6 +31,6 @@ export default function SubjectsListPage({ }: Props) {
                 meta={data?.meta}
             />
 
-        </AsideLinksLayout>
+        </ContainerLayout>
     )
 }

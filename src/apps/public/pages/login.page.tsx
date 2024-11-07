@@ -24,14 +24,14 @@ export default function LoginPage({ }: Props) {
           >
             <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
           </svg>
-          School Mgmt System
+          ABHYAM ACADEMY
         </div>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
               &ldquo;Efficient school management software streamlines operations, empowers educators, and fosters a connected learning environment, allowing schools to focus more on education and less on administration.&rdquo;
             </p>
-            <footer className="text-sm">Made by ARIBT</footer>
+            <footer className="text-sm">Made by Abhyam Group</footer>
           </blockquote>
         </div>
       </div>

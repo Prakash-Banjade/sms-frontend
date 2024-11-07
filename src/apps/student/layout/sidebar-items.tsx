@@ -1,7 +1,7 @@
 
 
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, BellRing, ClipboardList, Images, BookCheck, GitPullRequest } from "lucide-react";
+import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, BellRing, ClipboardList, Images, GitPullRequest } from "lucide-react";
 
 export const studentSidebarMenuItems: TGroupMenuItem[] = [
     {
