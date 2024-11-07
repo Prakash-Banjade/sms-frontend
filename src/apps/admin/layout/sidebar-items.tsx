@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BellRing, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, UsersRound } from "lucide-react"
+import { BellRing, BookOpenCheck, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -76,6 +76,25 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Class Routine List",
                         url: "class-routines",
+                    }
+                ]
+            },
+            {
+                title: "Examination",
+                url: "examination",
+                icon: BookOpenCheck,
+                items: [
+                    {
+                        title: "Marks Grade",
+                        url: "examination/marks-grade",
+                    },
+                    {
+                        title: "Exam Type",
+                        url: "examination/exam-type",
+                    },
+                    {
+                        title: "Exam Setup",
+                        url: "examination/exam-setup",
                     }
                 ]
             },
@@ -264,6 +283,58 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 url: "library/issues-and-returns",
                 icon: Calendar,
             },
+        ]
+    },
+    {
+        groupLabel: "Reports",
+        menuItems: [
+            {
+                title: "Student Report",
+                url: "reports/student-report",
+                icon: UsersRound,
+                items: [
+                    {
+                        title: "Task Evaluation Report",
+                        url: "reports/student-report/task-evaluation",
+                    },
+                    {
+                        title: "Attendance Report",
+                        url: "reports/student-report/attendance",
+                    },
+                ]
+            },
+            {
+                title: "Teacher Report",
+                url: "reports/teacher-report",
+                icon: Users,
+                items: [
+                    {
+                        title: "Attendance Report",
+                        url: "reports/teacher-report/attendance",
+                    },
+                ]
+            },
+            {
+                title: "Staff Report",
+                url: "reports/staff-report",
+                icon: Users2,
+                items: [
+                    {
+                        title: "Attendance Report",
+                        url: "reports/staff-report/attendance",
+                    },
+                ]
+            },
+            {
+                title: "Class Report",
+                url: "reports/class-report",
+                icon: Building,
+            },
+            {
+                title: "Examination Report",
+                url: "reports/examination-report",
+                icon: BookOpenText,
+            }
         ]
     }
 ]
