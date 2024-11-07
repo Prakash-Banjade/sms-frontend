@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
-import { Menu, Bell, ChevronDown } from "lucide-react"
 
 export default function AppLoadingSkeleton() {
     return (
