@@ -68,8 +68,8 @@ export const markGradesColumns: ColumnDef<TMarkGrade>[] = [
             async function handleDelete() {
                 await mutateAsync({
                     method: "delete",
-                    endpoint: `${QueryKey.EXAM_TYPES}/${markGrade.id}`,
-                    invalidateTags: [QueryKey.EXAM_TYPES],
+                    endpoint: `${QueryKey.MARKS_GRADES}/${markGrade.id}`,
+                    invalidateTags: [QueryKey.MARKS_GRADES],
                 });
             }
 
