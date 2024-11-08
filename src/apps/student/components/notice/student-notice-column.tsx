@@ -4,7 +4,7 @@ import { TNotice } from "@/types/notice.type";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/utils/format-date";
 
-export const singleNoticeColumns: ColumnDef<TNotice>[] = [
+export const studentNoticeColumns: ColumnDef<TNotice>[] = [
     {
         header: "S.N",
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,

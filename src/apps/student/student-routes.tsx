@@ -1,16 +1,14 @@
-import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
-import RequireAuth from '@/components/auth/require-auth';
-import { Role } from '@/types/global.type';
-import { Route, Routes } from 'react-router-dom';
-import { studentSidebarMenuItems } from './layout/sidebar-items';
-import AssignmentPage from './pages/academics/assigment.page';
-import HomeWorkPage from './pages/academics/homework.page';
-import StudentAttendenceListPage from './pages/academics/attendence.page';
-import ClassRoutineListPage from '../admin/pages/class-routine/class-routine-list.page';
-import NoticeViewPage from '../admin/pages/notices/notice-view.page';
-import NoticePage from './pages/notice.page';
-
-
+import AppRootLayout from "@/components/app-sidebar-layout/root-layout";
+import RequireAuth from "@/components/auth/require-auth";
+import { ETask, Role } from "@/types/global.type";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { studentSidebarMenuItems } from "./layout/sidebar-items";
+import StudentTaskPage from "./pages/academics/assigment.page";
+import StudentAttendenceListPage from "./pages/academics/attendence.page";
+import ClassRoutineListPage from "../admin/pages/class-routine/class-routine-list.page";
+import NoticeViewPage from "../admin/pages/notices/notice-view.page";
+import NoticePage from "./pages/notice.page";
+import SingleStudentTask from "./components/task/assignments/single-assignment";
 
 const StudentRoutes = () => {
   return (
@@ -18,14 +16,33 @@ const StudentRoutes = () => {
       <Route element={<RequireAuth authorizedRoles={[Role.STUDENT]} />}>
         <Route element={<AppRootLayout menuItems={studentSidebarMenuItems} />}>
           <Route path="dashboard" element={<div>Dashboard xa</div>} />
-          <Route path="tasks/assignments" element={<AssignmentPage />} />
-          <Route path="tasks/homeworks" element={<HomeWorkPage />} />
+          <Route path="tasks">
+            <Route index element={<Navigate to="homeworks" />} />
+            <Route path="homeworks">
+              <Route
+                index
+                element={<StudentTaskPage type={ETask.HOMEWORK} />}
+              />
+              <Route path=":id">
+                <Route index element={<SingleStudentTask />} />
+              </Route>
+            </Route>
+            <Route path="assignments">
+              <Route
+                index
+                element={<StudentTaskPage type={ETask.ASSIGNMENT} />}
+              />
+
+              <Route path=":id">
+                <Route index element={<SingleStudentTask />} />
+              </Route>
+            </Route>
+          </Route>
           <Route path="attendance" element={<StudentAttendenceListPage />} />
           <Route path="class-routine" element={<ClassRoutineListPage />} />
-
           <Route path="notices">
-            <Route index element={< NoticePage />} />
-            {/* <Route path=":id" element={<NoticeViewPage />} /> */}
+            <Route index element={<NoticePage />} />
+            <Route path=":id" element={<NoticeViewPage />} />
           </Route>
         </Route>
       </Route>
