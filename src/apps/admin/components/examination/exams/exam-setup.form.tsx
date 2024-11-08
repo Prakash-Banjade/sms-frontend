@@ -1,87 +1,35 @@
 import AppForm from '@/components/forms/app-form';
-import { MILITARY_TIME_REGEX, NUMBER_REGEX_STRING } from '@/CONSTANTS';
+import { NUMBER_REGEX_STRING } from '@/CONSTANTS';
 import { TSubject } from '@/types/subject.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from '@/components/ui/input';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Check } from 'lucide-react';
-import { isFuture, isToday } from 'date-fns';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import LoadingButton from '@/components/forms/loading-button';
+import { examSubjectsSchema, TExamSubjectsSchema } from '@/apps/admin/schemas/exam-setup.schema';
+import _ from 'lodash';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     subjects: TSubject[];
     searchQuery: string;
 } & ({
     examId: string;
+    defaultValues: TExamSubjectsSchema;
 } | {
     examId?: undefined
+    defaultValues?: undefined
 })
 
-const examSubjectSchema = z.object({
-    isChecked: z.boolean(),
-    examDate: z.union([
-        z.literal("").optional(),
-        z.string()
-            .refine((date) => (!isNaN(Date.parse(date)) && (isFuture(new Date(date)) || isToday(new Date(date)))),
-                { message: "Exam date must be in the future" })
-    ]).optional(),
-    startTime: z.union([
-        z.literal("").optional(),
-        z.string()
-            .regex(MILITARY_TIME_REGEX, { message: "Invalid start time. Time must be in format HH:MM" })
-            .min(1, { message: "Start time is required" })
-    ]).optional(),
-    duration: z.union([
-        z.literal("").optional(),
-        z.coerce.number()
-            .int({ message: "Duration must be a number" })
-            .min(1, { message: "Duration must be greater than 0" })
-    ]).optional(),
-    fullMark: z.union([
-        z.literal("").optional(),
-        z.coerce.number()
-            .int({ message: "Full mark must be a number" })
-            .min(1, { message: "Full mark must be greater than 0" })
-    ]).optional(),
-    passMark: z.union([
-        z.literal("").optional(),
-        z.coerce.number()
-            .int({ message: "Pass mark must be a number" })
-            .min(1, { message: "Pass mark must be greater than 0" })
-    ]).optional(),
-    venue: z.union([
-        z.literal("").optional(),
-        z.string().min(1, { message: "Venue is required" })
-    ]).optional(),
-    subjectId: z.union([
-        z.literal("").optional(),
-        z.string({ required_error: "Subject is required" }).uuid({ message: "Invalid subject ID" })
-    ]).optional(),
-}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.fullMark && !!data.passMark && !!data.venue : true, {
-    message: "All fields must be filled for checked subjects",
-    path: ["isChecked"],
-}).refine(data => (data.passMark && data.fullMark) ? data.passMark <= data.fullMark : true, {
-    message: "Pass mark must not be greater than full mark",
-    path: ["passMark"],
-});
-
-const examSubjectsSchema = z.object({
-    examSubjects: z.array(examSubjectSchema).refine((subjects) => subjects.some((subject) => subject.isChecked), {
-        message: "At least one exam subject must be checked",
-    }),
-});
-
-export type TExamSubjectsSchema = z.infer<typeof examSubjectsSchema>;
-
-export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) {
-    const [selectAll, setSelectAll] = useState(false); // used to track the checked subjects
+export default function ExamSetupForm({ subjects, searchQuery, examId, defaultValues }: Props) {
+    const [selectAll, setSelectAll] = useState(defaultValues?.examSubjects?.every(subject => subject.isChecked)); // used to track the checked subjects
 
     const { classRoomId, examTypeId, sectionId } = useMemo(() => {
         const searchParams = new URLSearchParams(searchQuery);
@@ -92,32 +40,44 @@ export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) 
         }
     }, [searchQuery]);
 
+    const navigate = useNavigate();
+
+    // dynamically creating the default values for the form based on the subjects
+    const examFormDefaultValues = useMemo(() => {
+        return ({
+            examSubjects: subjects.map(subject => ({
+                isChecked: false,
+                examDate: "",
+                startTime: "",
+                duration: undefined,
+                fullMark: undefined,
+                passMark: undefined,
+                venue: "",
+                subjectId: subject.id,
+            }))
+        })
+    }, [subjects])
+
     const form = useForm<TExamSubjectsSchema>({
         resolver: zodResolver(examSubjectsSchema),
-        defaultValues: {
-            examSubjects: useMemo(() =>
-                subjects.map(subject => ({
-                    isChecked: false,
-                    examDate: "",
-                    startTime: "",
-                    duration: undefined,
-                    fullMark: undefined,
-                    passMark: undefined,
-                    venue: "",
-                    subjectId: subject.id,
-                })), [subjects]),
-        },
-    })
+        defaultValues: defaultValues ?? examFormDefaultValues,
+    });
+
+    useEffect(() => {
+        form.reset(examId ? defaultValues : examFormDefaultValues);
+    }, [subjects])
 
     const { fields, update } = useFieldArray({
         name: "examSubjects",
         control: form.control,
     })
 
-    const { mutateAsync, isPending } = useAppMutation()
+    const { mutateAsync, isPending } = useAppMutation<any, { message: string }>()
 
     async function onSubmit(values: TExamSubjectsSchema) {
-        await mutateAsync({
+        if (_.differenceWith(values.examSubjects, defaultValues?.examSubjects ?? [], _.isEqual).length === 0) return toast.error('No changes detected');
+
+        const response = await mutateAsync({
             endpoint: QueryKey.EXAMS,
             method: examId ? 'patch' : 'post',
             id: examId,
@@ -128,6 +88,10 @@ export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) 
             },
             invalidateTags: [QueryKey.EXAMS],
         })
+
+        if (response?.data?.message) {
+            navigate(`/admin/examination/exam-setup`)
+        }
     }
 
     const handleSelectAll = (checked: boolean) => {
@@ -158,14 +122,14 @@ export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) 
                                         aria-label="Select all exam subjects"
                                     />
                                 </TableHead>
-                                <TableHead>Subject Code</TableHead>
-                                <TableHead>Subject Name</TableHead>
-                                <TableHead>Exam Date</TableHead>
-                                <TableHead>Start Time</TableHead>
-                                <TableHead>Duration (Min)</TableHead>
-                                <TableHead>Full Mark</TableHead>
-                                <TableHead>Pass Mark</TableHead>
-                                <TableHead>Venue</TableHead>
+                                <TableHead className='min-w-36'>Subject Code</TableHead>
+                                <TableHead className='min-w-36'>Subject Name</TableHead>
+                                <TableHead className='min-w-36'>Exam Date</TableHead>
+                                <TableHead className='min-w-36'>Start Time</TableHead>
+                                <TableHead className='min-w-36'>Duration (Min)</TableHead>
+                                <TableHead className='min-w-36'>Full Mark</TableHead>
+                                <TableHead className='min-w-36'>Pass Mark</TableHead>
+                                <TableHead className='min-w-36'>Venue</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -191,8 +155,8 @@ export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) 
                                             )}
                                         />
                                     </TableCell>
-                                    <TableCell className="w-[100px]">{subjects[index].subjectCode}</TableCell>
-                                    <TableCell>{subjects[index].subjectName}</TableCell>
+                                    <TableCell className="w-[100px]">{subjects[index]?.subjectCode}</TableCell>
+                                    <TableCell>{subjects[index]?.subjectName}</TableCell>
                                     <TableCell>
                                         <FormField
                                             control={form.control}
@@ -321,18 +285,29 @@ export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) 
                 </div>
 
                 <div className='flex gap-2 items-center justify-between mt-6'>
-                    <p className='text-muted-foreground'>
-                        Select subjects and fill all the details.
-                    </p>
+                    <section className='flex gap-2'>
+                        {
+                            !examId && <p className='text-muted-foreground'>
+                                Select subjects and fill all the details.
+                            </p>
+                        }
 
-                    {
-                        form.formState.errors.examSubjects && <div className="text-destructive">
-                            At least one exam must be selected
-                        </div>
-                    }
-                    <LoadingButton isLoading={isPending} className='ml-auto' loadingText='Creating exam...'>
+                        {
+                            form.formState.errors.examSubjects && <div className="text-destructive">
+                                At least one exam must be selected
+                            </div>
+                        }
+                    </section>
+                    <LoadingButton
+                        isLoading={isPending}
+                        className='ml-auto'
+                        loadingText='Creating exam...'
+                        disabled={_.differenceWith(form.watch('examSubjects'), defaultValues?.examSubjects ?? [], _.isEqual).length === 0}
+                    >
                         <Check />
-                        Create Exam
+                        {
+                            examId ? 'Update Exam' : 'Create Exam'
+                        }
                     </LoadingButton>
                 </div>
             </form>

@@ -14,6 +14,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TExam } from "@/types/examination.type"
+import { format } from "date-fns"
 
 export const examsColumns: ColumnDef<TExam>[] = [
     {
@@ -34,6 +35,24 @@ export const examsColumns: ColumnDef<TExam>[] = [
         },
     },
     {
+        header: "Upcoming Subject",
+        accessorKey: "upcomingSubject",
+        cell: ({ row }) => {
+            return row.original.upcomingSubject
+                ? <span>{row.original.upcomingSubject.subjectName}</span>
+                : <span>N/A</span>
+        },
+    },
+    {
+        header: "Exam Date",
+        accessorKey: "examDate",
+        cell: ({ row }) => {
+            return row.original.upcomingSubject
+                ? <span>{format(new Date(row.original.upcomingSubject.examDate), 'dd MMM yyyy')}</span>
+                : <span>N/A</span>
+        },
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
@@ -45,7 +64,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
             async function handleDelete() {
                 await mutateAsync({
                     method: "delete",
-                    endpoint: `${QueryKey.EXAMS}/${row.original.id}`,
+                    endpoint: `${QueryKey.EXAMS}/${row.original.exam_id}`,
                     invalidateTags: [QueryKey.EXAMS],
                 });
             }
@@ -71,10 +90,10 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/edit')}>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/edit')}>
                                 <span>View</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
+                            <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
                                 <span>Delete</span>
                             </DropdownMenuButtonItem>
                         </DropdownMenuContent>
