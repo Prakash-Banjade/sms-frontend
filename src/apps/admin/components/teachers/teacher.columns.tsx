@@ -14,6 +14,7 @@ import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { ProfileAvatar } from "@/components/ui/avatar"
+import { getImageUrl } from "@/lib/utils"
 
 export const teachersColumns: ColumnDef<Teacher>[] = [
     {
@@ -30,7 +31,11 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
                 <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
-                    <ProfileAvatar name={row.original.firstName + ' ' + row.original.lastName} src={row.original.profileImage?.url || ''} className="size-10" />
+                    <ProfileAvatar
+                        name={row.original.firstName + ' ' + row.original.lastName}
+                        src={getImageUrl(row.original.profileImage?.url, "w=40")}
+                        className="size-10"
+                    />
                     {row.original.firstName + ' ' + row.original.lastName}
                 </Link>
             </TooltipWrapper>
