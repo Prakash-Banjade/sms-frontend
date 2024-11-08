@@ -9,67 +9,88 @@ import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/f
 import { Input } from '@/components/ui/input';
 import { useMemo, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { isFuture, isToday } from 'date-fns';
+import { useAppMutation } from '@/hooks/useAppMutation';
+import { QueryKey } from '@/react-query/queryKeys';
+import LoadingButton from '@/components/forms/loading-button';
 
 type Props = {
     subjects: TSubject[];
-}
-
-const examSubjectValidationSchema = z.object({
-    isChecked: z.boolean(),
-    examDate: z.string()
-        .refine((date) => (!isNaN(Date.parse(date)) && (isFuture(new Date(date)) || isToday(new Date(date)))), { message: "Exam date must be in the future" }),
-    startTime: z.string()
-        .regex(MILITARY_TIME_REGEX, { message: "Invalid start time. Time must be in format HH:MM" })
-        .min(1, { message: "Start time is required" }),
-    duration: z.coerce.number()
-        .int({ message: "Duration must be a number" }),
-    fullMark: z.coerce.number()
-        .int({ message: "Full mark must be a number" })
-        .min(1, { message: "Full mark must be a number greater than 0" }),
-    passMark: z.coerce.number()
-        .int({ message: "Pass mark must be a number" })
-        .min(1, { message: "Pass mark must be a number greater than 0" }),
-    venue: z.string()
-        .min(1, { message: "Venue is required" }),
-    subjectId: z.string({ required_error: "Subject is required" }).uuid({ message: "Invalid subject ID" }),
-}).refine(data => data.fullMark >= data.passMark, {
-    message: "Full mark must be greater than or equal to pass mark",
-    path: ["passMark"],
-});
+    searchQuery: string;
+} & ({
+    examId: string;
+} | {
+    examId?: undefined
+})
 
 const examSubjectSchema = z.object({
     isChecked: z.boolean(),
-    examDate: z.string().optional(),
-    startTime: z.string().optional(),
-    duration: z.coerce.number().optional(),
-    fullMark: z.coerce.number().optional(),
-    passMark: z.coerce.number().optional(),
-    venue: z.string().optional(),
-    subjectId: z.string().optional(),
-}).refine((data) => {
-    if (!data.isChecked) return true
-    const { success, error } = examSubjectValidationSchema.safeParse(data);
-    console.log(error)
-
-    return success;
-}, {
+    examDate: z.union([
+        z.literal("").optional(),
+        z.string()
+            .refine((date) => (!isNaN(Date.parse(date)) && (isFuture(new Date(date)) || isToday(new Date(date)))),
+                { message: "Exam date must be in the future" })
+    ]).optional(),
+    startTime: z.union([
+        z.literal("").optional(),
+        z.string()
+            .regex(MILITARY_TIME_REGEX, { message: "Invalid start time. Time must be in format HH:MM" })
+            .min(1, { message: "Start time is required" })
+    ]).optional(),
+    duration: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Duration must be a number" })
+            .min(1, { message: "Duration must be greater than 0" })
+    ]).optional(),
+    fullMark: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Full mark must be a number" })
+            .min(1, { message: "Full mark must be greater than 0" })
+    ]).optional(),
+    passMark: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Pass mark must be a number" })
+            .min(1, { message: "Pass mark must be greater than 0" })
+    ]).optional(),
+    venue: z.union([
+        z.literal("").optional(),
+        z.string().min(1, { message: "Venue is required" })
+    ]).optional(),
+    subjectId: z.union([
+        z.literal("").optional(),
+        z.string({ required_error: "Subject is required" }).uuid({ message: "Invalid subject ID" })
+    ]).optional(),
+}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.fullMark && !!data.passMark && !!data.venue : true, {
     message: "All fields must be filled for checked subjects",
     path: ["isChecked"],
-})
+}).refine(data => (data.passMark && data.fullMark) ? data.passMark <= data.fullMark : true, {
+    message: "Pass mark must not be greater than full mark",
+    path: ["passMark"],
+});
 
 const examSubjectsSchema = z.object({
     examSubjects: z.array(examSubjectSchema).refine((subjects) => subjects.some((subject) => subject.isChecked), {
         message: "At least one exam subject must be checked",
     }),
-})
+});
 
 export type TExamSubjectsSchema = z.infer<typeof examSubjectsSchema>;
 
-export default function ExamSetupForm({ subjects }: Props) {
+export default function ExamSetupForm({ subjects, searchQuery, examId }: Props) {
     const [selectAll, setSelectAll] = useState(false); // used to track the checked subjects
+
+    const { classRoomId, examTypeId, sectionId } = useMemo(() => {
+        const searchParams = new URLSearchParams(searchQuery);
+        return {
+            classRoomId: searchParams.get('classRoomId'),
+            examTypeId: searchParams.get('examTypeId'),
+            sectionId: searchParams.get('sectionId'),
+        }
+    }, [searchQuery]);
 
     const form = useForm<TExamSubjectsSchema>({
         resolver: zodResolver(examSubjectsSchema),
@@ -79,9 +100,9 @@ export default function ExamSetupForm({ subjects }: Props) {
                     isChecked: false,
                     examDate: "",
                     startTime: "",
-                    duration: 0,
-                    fullMark: 0,
-                    passMark: 0,
+                    duration: undefined,
+                    fullMark: undefined,
+                    passMark: undefined,
                     venue: "",
                     subjectId: subject.id,
                 })), [subjects]),
@@ -93,8 +114,20 @@ export default function ExamSetupForm({ subjects }: Props) {
         control: form.control,
     })
 
-    function onSubmit(values: TExamSubjectsSchema) {
-        console.log(values)
+    const { mutateAsync, isPending } = useAppMutation()
+
+    async function onSubmit(values: TExamSubjectsSchema) {
+        await mutateAsync({
+            endpoint: QueryKey.EXAMS,
+            method: examId ? 'patch' : 'post',
+            id: examId,
+            data: {
+                examSubjects: values.examSubjects.filter(subject => subject.isChecked),
+                classRoomId: sectionId ?? classRoomId,
+                examTypeId,
+            },
+            invalidateTags: [QueryKey.EXAMS],
+        })
     }
 
     const handleSelectAll = (checked: boolean) => {
@@ -103,6 +136,13 @@ export default function ExamSetupForm({ subjects }: Props) {
             update(index, { ...form.getValues(`examSubjects.${index}`), isChecked: checked })
         })
     }
+
+    // if no class or exam type is selected, show the message
+    if (!classRoomId || !examTypeId) return (
+        <section className="text-muted-foreground min-h-[300px] grid place-items-center text-center">
+            Select exam type and class
+        </section>
+    );
 
     return (
         <AppForm schema={examSubjectsSchema} form={form}>
@@ -122,7 +162,7 @@ export default function ExamSetupForm({ subjects }: Props) {
                                 <TableHead>Subject Name</TableHead>
                                 <TableHead>Exam Date</TableHead>
                                 <TableHead>Start Time</TableHead>
-                                <TableHead>Duration</TableHead>
+                                <TableHead>Duration (Min)</TableHead>
                                 <TableHead>Full Mark</TableHead>
                                 <TableHead>Pass Mark</TableHead>
                                 <TableHead>Venue</TableHead>
@@ -281,15 +321,19 @@ export default function ExamSetupForm({ subjects }: Props) {
                 </div>
 
                 <div className='flex gap-2 items-center justify-between mt-6'>
+                    <p className='text-muted-foreground'>
+                        Select subjects and fill all the details.
+                    </p>
+
                     {
                         form.formState.errors.examSubjects && <div className="text-destructive">
                             At least one exam must be selected
                         </div>
                     }
-                    <Button type="submit" className='ml-auto'>
+                    <LoadingButton isLoading={isPending} className='ml-auto' loadingText='Creating exam...'>
                         <Check />
                         Create Exam
-                    </Button>
+                    </LoadingButton>
                 </div>
             </form>
 

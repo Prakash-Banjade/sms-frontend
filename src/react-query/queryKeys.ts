@@ -36,4 +36,5 @@ export enum QueryKey {
     ROUTE_STOPS = "route-stops",
     EXAM_TYPES = "exam-types",
     MARKS_GRADES = "marks-grades",
+    EXAMS = "exams",
 };
