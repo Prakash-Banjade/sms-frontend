@@ -1,3 +1,4 @@
+import { MILITARY_TIME_REGEX } from "@/CONSTANTS";
 import { EDayOfWeek, ERoutineType } from "@/types/global.type";
 import { z } from "zod";
 
@@ -6,9 +7,9 @@ export const classRoutineSchema = z.object({
         errorMap: () => ({ message: 'Select a valid day' }),
     }),
     startTime: z.string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, { message: 'Invalid start time. Required format: HH:MM' }),
+        .regex(MILITARY_TIME_REGEX, { message: 'Invalid start time. Required format: HH:MM' }),
     endTime: z.string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, { message: 'Invalid end time. Required format: HH:MM' }),
+        .regex(MILITARY_TIME_REGEX, { message: 'Invalid end time. Required format: HH:MM' }),
     type: z.nativeEnum(ERoutineType, {
         errorMap: () => ({ message: 'Invalid routine type' }),
     }),

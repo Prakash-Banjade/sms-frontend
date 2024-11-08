@@ -58,3 +58,23 @@ export const useGetAcademicYearOptions = ({
     return response;
 }
 
+export const useGetActiveAcademicYear = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: UseQueryOptions<{ id: string, name: string }>
+}) => {
+    const response = useFetchData<{ id: string, name: string }>({
+        endpoint: QueryKey.ACADEMIC_YEARS + '/' + 'active',
+        queryKey: queryString ? [QueryKey.ACADEMIC_YEARS, 'active', queryString] : [QueryKey.ACADEMIC_YEARS, 'active'],
+        queryString,
+        options: {
+            ...options,
+            staleTime: Infinity,
+            gcTime: Infinity,
+        },
+    })
+
+    return response;
+}

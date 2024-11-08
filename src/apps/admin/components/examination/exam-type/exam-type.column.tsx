@@ -1,5 +1,3 @@
-import { TAcademicYear } from "@/types/academic-year.type"
-import { formatDate } from "@/utils/format-date"
 import { ColumnDef } from "@tanstack/react-table"
 import {
     DropdownMenu,
@@ -11,14 +9,14 @@ import {
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useAppMutation } from "@/hooks/useAppMutation"
-import AcademicYearForm, { academicYearFormSchemaType } from "./academic-year-form"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { Badge } from "@/components/ui/badge"
-import { useQueryClient } from "@tanstack/react-query"
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
+import { TExamType } from "@/types/examination.type"
+import ExamTypeForm, { examTypeFormType } from "./exam-type.form"
 
-export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
+export const examTypesColumns: ColumnDef<TExamType>[] = [
     {
         header: "S.N",
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
@@ -28,42 +26,31 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
         accessorKey: "name",
     },
     {
-        header: "Start Date",
-        accessorKey: "startDate",
-        cell: ({ row }) => <p className="text-14 font-medium">{formatDate({ date: new Date(row.original.startDate) })}</p>,
-    },
-    {
-        header: "End Date",
-        accessorKey: "endDate",
-        cell: ({ row }) => <p className="text-14 font-medium">{formatDate({ date: new Date(row.original.endDate) })}</p>,
-    },
-    {
-        header: "Status",
-        accessorKey: "isActive",
+        header: "Description",
+        accessorKey: "description",
         cell: ({ row }) => {
-            return row.original.isActive
-                ? <Badge variant="success">Active</Badge>
-                : <Badge variant="outline">Inactive</Badge>
-        },
+            return !!row.original.description
+                ? <p className="text-14 font-medium break-words max-w-[40ch]">
+                    {row.original.description}
+                </p> : <span className="text-muted-foreground">-</span>
+        }
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const academicYear = row.original;
+            const examType = row.original;
             const [isEditOpen, setIsEditOpen] = useState(false);
-            const queryclient = useQueryClient();
+            const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-            const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
+            const { mutateAsync, isPending } = useAppMutation<examTypeFormType, any>();
 
-            async function changeActive() {
+            async function handleDelete() {
                 await mutateAsync({
-                    method: "patch",
-                    endpoint: `${QueryKey.ACADEMIC_YEARS}/${academicYear.id}/change-active`,
-                    invalidateTags: [QueryKey.ACADEMIC_YEARS],
+                    method: "delete",
+                    endpoint: `${QueryKey.EXAM_TYPES}/${examType.id}`,
+                    invalidateTags: [QueryKey.EXAM_TYPES],
                 });
-
-                queryclient.invalidateQueries({ queryKey: [QueryKey.STUDENTS] })
             }
 
             return (
@@ -71,10 +58,22 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
                     <ResponsiveDialog
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
-                        title="Edit Academic Year"
+                        title="Edit ExamType"
+                        className="w-[97%] max-w-[800px]"
                     >
-                        <AcademicYearForm academicYearId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
+                        <ExamTypeForm examTypeId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={examType} />
                     </ResponsiveDialog>
+
+                    <ResponsiveAlertDialog
+                        isOpen={isDeleteOpen}
+                        setIsOpen={setIsDeleteOpen}
+                        title={`Delete examType "${examType.name}"`}
+                        description={`Are you sure you want to delete this exam type?`}
+                        action={() => handleDelete()}
+                        actionLabel="Yes, Delete"
+                        isLoading={isPending}
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -84,17 +83,12 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            {
-                                !academicYear.isActive && <DropdownMenuButtonItem onClick={changeActive}>
-                                    <span>Set Active</span>
-                                </DropdownMenuButtonItem>
-                            }
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
-                            {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
+                            <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>
-                            </DropdownMenuButtonItem> */}
+                            </DropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

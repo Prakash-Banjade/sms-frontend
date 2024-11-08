@@ -29,11 +29,11 @@ export function DataTablePagination<TData>({
     const [searchParams, setSearchParams] = useSearchParams();
 
     return (
-        <div className="flex items-center justify-between px-2 py-4">
+        <div className="flex items-center sm:justify-between sm:flex-row flex-col gap-3 px-2 py-4">
             <div className="flex-1 text-sm text-muted-foreground">
                 Total: {meta.itemCount} Records
             </div>
-            <div className="flex items-center space-x-6 lg:space-x-8">
+            <div className="w-full sm:w-fit flex flex-wrap items-center justify-between space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">Rows per page</p>
                     <Select
@@ -60,58 +60,60 @@ export function DataTablePagination<TData>({
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-                    Page {meta.page} of {meta.pageCount}
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Button
-                        variant="outline"
-                        className="hidden h-8 w-8 p-0 lg:flex"
-                        onClick={() => {
-                            searchParams.set("page", "1");
-                            setSearchParams(searchParams);
-                        }}
-                        disabled={!meta.hasPreviousPage}
-                    >
-                        <span className="sr-only">Go to first page</span>
-                        <ChevronsLeft className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        className="h-8 w-8 p-0"
-                        onClick={() => {
-                            searchParams.set("page", `${meta.page - 1}`);
-                            setSearchParams(searchParams);
-                        }}
-                        disabled={!meta.hasPreviousPage}
-                    >
-                        <span className="sr-only">Go to previous page</span>
-                        <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        className="h-8 w-8 p-0"
-                        onClick={() => {
-                            searchParams.set("page", `${meta.page + 1}`);
-                            setSearchParams(searchParams);
-                        }}
-                        disabled={!meta.hasNextPage}
-                    >
-                        <span className="sr-only">Go to next page</span>
-                        <ChevronRight className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        className="hidden h-8 w-8 p-0 lg:flex"
-                        onClick={() => {
-                            searchParams.set("page", `${meta.pageCount}`);
-                            setSearchParams(searchParams);
-                        }}
-                        disabled={!meta.hasNextPage}
-                    >
-                        <span className="sr-only">Go to last page</span>
-                        <ChevronsRight className="h-4 w-4" />
-                    </Button>
+                <div className="space-x-6 lg:space-x-8 flex items-center">
+                    <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+                        Page {meta.page} of {meta.pageCount}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Button
+                            variant="outline"
+                            className="hidden h-8 w-8 p-0 lg:flex"
+                            onClick={() => {
+                                searchParams.set("page", "1");
+                                setSearchParams(searchParams);
+                            }}
+                            disabled={!meta.hasPreviousPage}
+                        >
+                            <span className="sr-only">Go to first page</span>
+                            <ChevronsLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="h-8 w-8 p-0"
+                            onClick={() => {
+                                searchParams.set("page", `${meta.page - 1}`);
+                                setSearchParams(searchParams);
+                            }}
+                            disabled={!meta.hasPreviousPage}
+                        >
+                            <span className="sr-only">Go to previous page</span>
+                            <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="h-8 w-8 p-0"
+                            onClick={() => {
+                                searchParams.set("page", `${meta.page + 1}`);
+                                setSearchParams(searchParams);
+                            }}
+                            disabled={!meta.hasNextPage}
+                        >
+                            <span className="sr-only">Go to next page</span>
+                            <ChevronRight className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="hidden h-8 w-8 p-0 lg:flex"
+                            onClick={() => {
+                                searchParams.set("page", `${meta.pageCount}`);
+                                setSearchParams(searchParams);
+                            }}
+                            disabled={!meta.hasNextPage}
+                        >
+                            <span className="sr-only">Go to last page</span>
+                            <ChevronsRight className="h-4 w-4" />
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
