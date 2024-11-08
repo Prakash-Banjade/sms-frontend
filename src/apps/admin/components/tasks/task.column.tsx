@@ -16,8 +16,6 @@ import { Task } from "@/types/task.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useNavigate } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
-import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import SingleTaskViewCard from "./single-task-details-card"
 
 export const taskColumns: ColumnDef<Task>[] = [
     {
