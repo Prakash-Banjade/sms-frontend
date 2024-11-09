@@ -22,7 +22,7 @@ export function useLogoutMutation() {
 
         if (response.status === 204) {
             setAuth(null);
-            navigate("/");
+            navigate("/auth/login", { replace: true, state: { from: location } });
         }
     }
 

@@ -17,7 +17,7 @@ export default function EditTeacherPage({ }: Props) {
             {
                 !!params.id
                     ? <TeacherEditForm id={params.id} />
-                    : <Navigate to="/" /> // TODO: provide a meaningful route
+                    : <Navigate to="/admin/teachers" />
             }
         </ContainerLayout>
     )
@@ -32,7 +32,7 @@ function TeacherEditForm({ id }: { id: string }) {
 
     if (isLoading) return <div className="p-5">Loading the teacher info...</div>
 
-    if (!data) navigate('/') // TODO: provide a meaningful route
+    if (!data) navigate('/admin/teachers')
 
     const { data: filteredValues } = teacherSchema.safeParse(data);
 
