@@ -29,7 +29,7 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
         header: "Name",
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/staffs/${row.original.id}`} className="flex gap-4 items-center group">
+                <Link to={`#`} className="flex gap-4 items-center group">
                     <ProfileAvatar
                         name={row.original.firstName + ' ' + row.original.lastName}
                         src={getImageUrl(row.original.profileImage?.url, "w=40")}
