@@ -2,6 +2,8 @@ export enum QueryKey {
     AUTH_LOGIN = "auth/login",
     AUTH_REFRESH = "auth/refresh",
     AUTH_LOGOUT = "auth/logout",
+    AUTH_FORGOT_PASSWORD = "auth/forgot-password",
+    AUTH_RESET_PASSWORD = "auth/reset-password",
     ME = "accounts/me",
     USERS = "users",
     TEACHERS = "teachers",

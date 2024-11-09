@@ -10,7 +10,7 @@ type Props = {}
 export default function SingleSubjectPage({ }: Props) {
     const params = useParams();
 
-    if (!params.id) return <Navigate to="/" />
+    if (!params.id) return <Navigate to="/admin/subjects" />;
 
     return (
         <section className="container mx-auto">

@@ -14,6 +14,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
+import { EMAIL_REGEX } from "@/CONSTANTS"
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const loginFormSchema = z.object({
@@ -71,7 +72,15 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                             placeholder="********"
                         />
                         <p className="text-sm text-muted-foreground mt-2 text-right">
-                            <Link to="/forgot-password" className="hover:underline">Forgot password?</Link>
+                            <Link
+                                to="/auth/forgot-password"
+                                className="hover:underline"
+                                state={{
+                                    email: EMAIL_REGEX.test(form.getValues('email')) ? form.getValues('email') : ''
+                                }}
+                            >
+                                Forgot password?
+                            </Link>
                         </p>
                     </section>
 

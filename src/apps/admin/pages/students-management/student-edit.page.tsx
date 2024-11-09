@@ -18,7 +18,7 @@ export default function EditStudentPage({ }: Props) {
             {
                 !!params.id
                     ? <StudentEditForm id={params.id} />
-                    : <Navigate to="/" /> // TODO: provide a meaningful route
+                    : <Navigate to="/admin/students" />
             }
         </ContainerLayout>
     )
@@ -49,7 +49,7 @@ function StudentEditForm({ id }: { id: string }) {
 
     if (isLoading) return <div className="p-5">Loading the student info...</div>
 
-    if (!data) navigate('/') // TODO: provide a meaningful route
+    if (!data) navigate('/admin/students');
 
     return (
         <StudentForm
