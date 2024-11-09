@@ -1,0 +1,59 @@
+import { MILITARY_TIME_REGEX } from "@/CONSTANTS";
+import { isFuture, isToday } from "date-fns";
+import { z } from "zod";
+
+const examSubjectSchema = z.object({
+    isChecked: z.boolean(),
+    examDate: z.union([
+        z.literal("").optional(),
+        z.string()
+            .refine((date) => (!isNaN(Date.parse(date)) && (isFuture(new Date(date)) || isToday(new Date(date)))),
+                { message: "Exam date must be in the future" })
+    ]).optional(),
+    startTime: z.union([
+        z.literal("").optional(),
+        z.string()
+            .regex(MILITARY_TIME_REGEX, { message: "Invalid start time. Time must be in format HH:MM" })
+            .min(1, { message: "Start time is required" })
+    ]).optional(),
+    duration: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Duration must be a number" })
+            .min(1, { message: "Duration must be greater than 0" })
+    ]).optional(),
+    fullMark: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Full mark must be a number" })
+            .min(1, { message: "Full mark must be greater than 0" })
+    ]).optional(),
+    passMark: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Pass mark must be a number" })
+            .min(1, { message: "Pass mark must be greater than 0" })
+    ]).optional(),
+    venue: z.union([
+        z.literal("").optional(),
+        z.string().min(1, { message: "Venue is required" })
+    ]).optional(),
+    subjectId: z.union([
+        z.literal("").optional(),
+        z.string({ required_error: "Subject is required" }).uuid({ message: "Invalid subject ID" })
+    ]).optional(),
+}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.fullMark && !!data.passMark && !!data.venue : true, {
+    message: "All fields must be filled for checked subjects",
+    path: ["isChecked"],
+}).refine(data => (data.passMark && data.fullMark) ? data.passMark <= data.fullMark : true, {
+    message: "Pass mark must not be greater than full mark",
+    path: ["passMark"],
+});
+
+export const examSubjectsSchema = z.object({
+    examSubjects: z.array(examSubjectSchema).refine((subjects) => subjects.some((subject) => subject.isChecked), {
+        message: "At least one exam subject must be checked",
+    }),
+});
+
+export type TExamSubjectsSchema = z.infer<typeof examSubjectsSchema>;

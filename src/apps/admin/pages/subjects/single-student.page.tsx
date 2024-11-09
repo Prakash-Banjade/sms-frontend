@@ -5,7 +5,7 @@ import StudentAttendanceView from "../../components/students-management/single-s
 export const SingleStudentPage = () => {
   const params = useParams();
 
-  if (!params.id) return <Navigate to="/" />; // TODO: provide a meaningful route
+  if (!params.id) return <Navigate to="/admin/students" />;
 
   return (
     <div className="@container">

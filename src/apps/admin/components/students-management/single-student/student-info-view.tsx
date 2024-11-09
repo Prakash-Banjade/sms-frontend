@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import { useGetStudent } from "../student-actions";
 import { formatDate } from "@/utils/format-date";
 import { truncateFilename } from "@/utils/truncate-file-name";
+import { getImageUrl } from "@/lib/utils";
 
 export const StudentInfoView = ({ id }: { id: string }) => {
     const { data: student, isLoading } = useGetStudent({
@@ -14,12 +15,12 @@ export const StudentInfoView = ({ id }: { id: string }) => {
 
     if (isLoading) return <div className="p-5">Loading the student info...</div>
 
-    if (!student) return <Navigate to="/" />; // TODO: provide a meaningful route
+    if (!student) return <Navigate to="/admin/students" />;
 
     return (
         <Card className="@container">
             <CardHeader className="flex @xs:flex-row flex-col items-center gap-4">
-                <ProfileAvatar src={student.profileImage?.url || ''} name={`${student.firstName} ${student.lastName}`} className="@lg:size-36 size-24 text-4xl" />
+                <ProfileAvatar src={getImageUrl(student.profileImage?.url, 'w=250')} name={`${student.firstName} ${student.lastName}`} className="@lg:size-36 size-24 text-4xl" />
                 <div>
                     <CardTitle className="text-2xl capitalize">{student.firstName} {student.lastName}</CardTitle>
                     <p className="text-muted-foreground">Student ID: {student.studentId}</p>

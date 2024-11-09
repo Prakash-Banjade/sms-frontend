@@ -129,6 +129,7 @@ export default function StaffForm(props: Props) {
                             name="profileImageId"
                             containerClassName="border-none"
                             uploadedImageUrl={form.getValues('profileImageId') ?? null}
+                            imageQuery="w=200&q=70"
                         />
                     </fieldset>
                 </section>

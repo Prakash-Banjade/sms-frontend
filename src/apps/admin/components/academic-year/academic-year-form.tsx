@@ -57,8 +57,6 @@ export default function AcademicYearForm(props: Props) {
             invalidateTags: [QueryKey.ACADEMIC_YEARS],
         });
 
-        console.log(response)
-
         if (response?.data?.message) {
             onDialogClose();
             navigate(`/${payload?.role}/academic-years`);

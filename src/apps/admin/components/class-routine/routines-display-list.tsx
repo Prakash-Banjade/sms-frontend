@@ -103,14 +103,12 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
     const { mutateAsync, isPending } = useAppMutation();
 
     const handleDelete = async () => {
-        const response = await mutateAsync({
+        await mutateAsync({
             endpoint: QueryKey.CLASSROUTINE,
             method: "delete",
             id: classRoutine.id,
             invalidateTags: [QueryKey.CLASSROUTINE],
         });
-
-        console.log(response)
     }
 
     return (

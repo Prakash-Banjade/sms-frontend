@@ -19,7 +19,7 @@ function ExamSubjectsTable({ searchQuery }: { searchQuery: string }) {
     const { data, isLoading } = useGetSubjects({
         queryString: searchQuery,
         options: {
-            enabled: !!searchQuery,
+            enabled: (!!searchQuery && searchQuery.includes('classRoomId')),
         }
     })
 

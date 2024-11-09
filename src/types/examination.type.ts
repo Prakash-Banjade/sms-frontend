@@ -29,11 +29,15 @@ export type TMarkGradesResponse = {
 }
 
 export type TExam = {
-    id: string,
-    createdAt: string,
+    exam_id: string,
+    exam_createdAt: string,
     examType: string,
     classRoom: string,
     parentClass: string | null,
+    upcomingSubject: {
+        examDate: string,
+        subjectName: string
+    } | null;
 }
 
 export type TExamsResponse = {
@@ -69,5 +73,5 @@ export type TSingleExam = {
         fullMark: number,
         passMark: number,
         venue: string,
-    }
+    }[]
 }
