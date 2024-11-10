@@ -1,6 +1,7 @@
 import { ProfileAvatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getImageUrl } from '@/lib/utils'
 import { Teacher } from '@/types/teacher.type'
 
 
@@ -10,7 +11,7 @@ type Props = {
     teachers: Teacher[]
 }
 
-const TeacherCard = ({ teachers }: Props) => {
+const TeacherList = ({ teachers }: Props) => {
     return (
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -18,7 +19,7 @@ const TeacherCard = ({ teachers }: Props) => {
                 <Card key={teacher.id} className="flex flex-col h-full">
                     <CardHeader className="flex-grow">
                         <div className="flex items-center space-x-4">
-                            <ProfileAvatar name={teacher.teacherFullName} src={teacher.profileImage?.url || ''} className="size-10" />
+                            <ProfileAvatar name={teacher.teacherFullName} src={getImageUrl(teacher.profileImage?.url, 'w=40')} className="size-10" />
                             <div>
                                 <CardTitle className="text-lg">{teacher.teacherFullName}</CardTitle>
                                 <Badge variant="info" className="mt-1 capitalize">
@@ -51,4 +52,4 @@ const TeacherCard = ({ teachers }: Props) => {
     )
 }
 
-export default TeacherCard
+export default TeacherList

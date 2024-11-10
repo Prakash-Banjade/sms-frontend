@@ -1,6 +1,6 @@
 import { useGetTeachers } from "@/apps/admin/components/teachers/actions";
 import { createQueryString } from "@/utils/create-query-string";
-import TeacherCard from "../components/teacher/teacher-card";
+import TeacherList from "../components/teacher/teacher-card";
 
 
 const StudentTeacherListPage = () => {
@@ -22,7 +22,7 @@ const StudentTeacherListPage = () => {
   return (
     <div className="container mx-auto flex flex-col gap-8">
       <h2 className="text-lg font-semibold">My Teachers</h2>
-      <TeacherCard teachers={data.data} />
+      <TeacherList teachers={data.data} />
     </div >
   )
 }
