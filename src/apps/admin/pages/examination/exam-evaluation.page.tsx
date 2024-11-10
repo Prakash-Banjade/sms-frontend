@@ -10,7 +10,7 @@ export default function ExamEvaluationPage() {
 
     const { data: exam, isLoading } = useGetExam({
         id: params.id!,
-        // queryString: 'onlyPastExamSubjects=true', // only get the exam subjects with past exam date 
+        queryString: 'onlyPastExamSubjects=true', // only get the exam subjects with past exam date 
         options: { enabled: !!params.id }
     });
 

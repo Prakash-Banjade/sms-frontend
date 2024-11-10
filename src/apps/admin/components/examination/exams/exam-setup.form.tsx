@@ -6,7 +6,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from '@/components/ui/input';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Check } from 'lucide-react';
 import { useAppMutation } from '@/hooks/useAppMutation';
@@ -30,6 +30,7 @@ type Props = {
 
 export default function ExamSetupForm({ subjects, searchQuery, examId, defaultValues }: Props) {
     const [selectAll, setSelectAll] = useState(defaultValues?.examSubjects?.every(subject => subject.isChecked)); // used to track the checked subjects
+    const defaultExamType = useRef<string>(new URLSearchParams(searchQuery).get('examTypeId') ?? ''); // used to track if exam type is changed in exam edit page
 
     const { classRoomId, examTypeId, sectionId } = useMemo(() => {
         const searchParams = new URLSearchParams(searchQuery);
@@ -65,17 +66,19 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
 
     useEffect(() => {
         form.reset(examId ? defaultValues : examFormDefaultValues);
-    }, [subjects])
+    }, [subjects]);
 
     const { fields, update } = useFieldArray({
         name: "examSubjects",
         control: form.control,
     })
 
-    const { mutateAsync, isPending } = useAppMutation<any, { message: string }>()
+    const { mutateAsync, isPending } = useAppMutation<any, { message: string }>();
 
     async function onSubmit(values: TExamSubjectsSchema) {
-        if (_.differenceWith(values.examSubjects, form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0) return toast.error('No changes detected');
+        if (_.differenceWith(values.examSubjects, form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0
+            && defaultExamType.current === new URLSearchParams(searchQuery).get('examTypeId')
+        ) return toast.error('No changes detected');
 
         const response = await mutateAsync({
             endpoint: QueryKey.EXAMS,
@@ -302,7 +305,10 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                         isLoading={isPending}
                         className='ml-auto'
                         loadingText='Creating exam...'
-                        disabled={_.differenceWith(form.watch('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0}
+                        disabled={
+                            _.differenceWith(form.watch('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0
+                            && defaultExamType.current === new URLSearchParams(searchQuery).get('examTypeId')
+                        }
                     >
                         <Check />
                         {
