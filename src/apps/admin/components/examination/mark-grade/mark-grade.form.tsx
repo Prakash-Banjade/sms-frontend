@@ -77,7 +77,7 @@ export default function MarkGradeForm(props: Props) {
     }
 
     const onDialogClose = () => {
-        form.reset();
+        form.reset(form.formState.defaultValues);
         props.setIsOpen && props.setIsOpen(false);
     }
 
