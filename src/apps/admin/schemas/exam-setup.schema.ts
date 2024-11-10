@@ -4,6 +4,7 @@ import { z } from "zod";
 
 const examSubjectSchema = z.object({
     isChecked: z.boolean(),
+    id: z.string().optional(), // used to keep the id of exam subject which is used to update the exam subject
     examDate: z.union([
         z.literal("").optional(),
         z.string()

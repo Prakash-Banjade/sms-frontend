@@ -103,7 +103,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/edit')}>
-                                <span>View</span>
+                                <span>Manage</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/evaluation')}>
                                 <span>Evaluation</span>

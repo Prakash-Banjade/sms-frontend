@@ -209,6 +209,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                                         <Input
                                                             type="number"
                                                             {...field}
+                                                            value={field.value ?? ''}
                                                             min={1}
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}
@@ -230,6 +231,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                                         <Input
                                                             type="number"
                                                             {...field}
+                                                            value={field.value ?? ''}
                                                             min={1}
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}
@@ -251,6 +253,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                                         <Input
                                                             type="number"
                                                             {...field}
+                                                            value={field.value ?? ''}
                                                             min={1}
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}

@@ -90,6 +90,7 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
 
                         return ({
                             isChecked: true,
+                            id: examSubject.id, // due to the presence of this id, exam subject id updated instead of complete replace
                             examDate: formatDateNumeric({ date: new Date(examSubject.examDate) }) ?? '',
                             startTime: examSubject.startTime,
                             duration: examSubject.duration,
