@@ -14,7 +14,6 @@ import {
     DrawerTitle,
 } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { ScrollArea } from './scroll-area';
 import { cn } from '@/lib/utils';
 
 export function ResponsiveDialog({
