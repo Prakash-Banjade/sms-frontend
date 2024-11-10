@@ -93,7 +93,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "examination/exam-type",
                     },
                     {
-                        title: "Exam Setup",
+                        title: "Exam Setup & Evaluation",
                         url: "examination/exam-setup",
                     }
                 ]

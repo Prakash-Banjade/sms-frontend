@@ -84,7 +84,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
                     <ResponsiveDialog
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
-                        title="Edit class"
+                        title="Edit Subject"
                         className="max-w-[800px]"
                     >
                         <SubjectForm

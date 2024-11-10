@@ -53,7 +53,6 @@ export default function ClassRoutineForm(props: Props) {
     }
 
     const onDialogClose = () => {
-        form.reset();
         props.setIsOpen && props.setIsOpen(false);
     }
 

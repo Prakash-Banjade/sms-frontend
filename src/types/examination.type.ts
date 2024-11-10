@@ -1,4 +1,5 @@
 import { TMeta } from "./global.type";
+import { TStudent } from "./student.type";
 
 export type TExamType = {
     id: string,
@@ -74,4 +75,6 @@ export type TSingleExam = {
         passMark: number,
         venue: string,
     }[]
-}
+};
+
+export type TExamStudent = Pick<TStudent, 'id' | 'fullName' | 'rollNo' | 'profileImageUrl'>;

@@ -55,6 +55,7 @@ import MarkGradesPage from './pages/examination/mark-grades.page';
 import ExamsPage from './pages/examination/exams.page';
 import NewExamPage from './pages/examination/new-exam.page';
 import EditExamPage from './pages/examination/edit-exam.page';
+import ExamEvaluationPage from './pages/examination/exam-evaluation.page';
 
 const AdminRoutes = () => {
     return (
@@ -91,6 +92,7 @@ const AdminRoutes = () => {
                             <Route path=":id">
                                 <Route index element={<Navigate to="edit" />} />
                                 <Route path="edit" element={<EditExamPage />} />
+                                <Route path="evaluation" element={<ExamEvaluationPage />} />
                             </Route>
                         </Route>
                     </Route>

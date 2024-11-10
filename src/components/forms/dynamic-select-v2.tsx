@@ -37,7 +37,7 @@ export function DynamicSelect_V2<T extends FieldValues>({
     const { setSearchParams } = useCustomSearchParams();
 
     const { data: options, isLoading } = useFetchData<SelectOption[]>({
-        queryKey: [queryKey],
+        queryKey: [queryKey, QueryKey.OPTIONS],
         endpoint: queryKey + '/' + QueryKey.OPTIONS,
     });
 
