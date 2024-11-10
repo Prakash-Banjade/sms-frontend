@@ -93,6 +93,9 @@ export const examsColumns: ColumnDef<TExam>[] = [
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/edit')}>
                                 <span>View</span>
                             </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/evaluation')}> 
+                                <span>Evaluation</span>
+                            </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
                                 <span>Delete</span>
                             </DropdownMenuButtonItem>

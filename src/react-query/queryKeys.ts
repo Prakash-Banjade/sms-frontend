@@ -39,4 +39,5 @@ export enum QueryKey {
     EXAM_TYPES = "exam-types",
     MARKS_GRADES = "marks-grades",
     EXAMS = "exams",
+    EXAM_REPORTS = "exam-reports",
 };

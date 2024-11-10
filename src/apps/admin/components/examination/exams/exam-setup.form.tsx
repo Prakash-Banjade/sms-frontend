@@ -75,7 +75,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
     const { mutateAsync, isPending } = useAppMutation<any, { message: string }>()
 
     async function onSubmit(values: TExamSubjectsSchema) {
-        if (_.differenceWith(values.examSubjects, defaultValues?.examSubjects ?? [], _.isEqual).length === 0) return toast.error('No changes detected');
+        if (_.differenceWith(values.examSubjects, form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0) return toast.error('No changes detected');
 
         const response = await mutateAsync({
             endpoint: QueryKey.EXAMS,
@@ -302,7 +302,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                         isLoading={isPending}
                         className='ml-auto'
                         loadingText='Creating exam...'
-                        disabled={_.differenceWith(form.watch('examSubjects'), defaultValues?.examSubjects ?? [], _.isEqual).length === 0}
+                        disabled={_.differenceWith(form.watch('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0}
                     >
                         <Check />
                         {
