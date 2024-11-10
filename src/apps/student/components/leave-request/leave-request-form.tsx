@@ -5,8 +5,10 @@ import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";;
 import { leaveRequestDefaultValues, LeaveRequestSchema, leaveRequestSchemaType } from "../../schemas/leave-request.schema";
 import { useForm } from "react-hook-form";
+import { useNavigate, } from "react-router-dom";
 
 export default function LeaveRequestForm() {
+    const navigate = useNavigate()
     const form = useForm<leaveRequestSchemaType>({
         resolver: zodResolver(LeaveRequestSchema),
         defaultValues: leaveRequestDefaultValues
@@ -26,6 +28,7 @@ export default function LeaveRequestForm() {
 
         if (response?.data?.message) {
             form.reset();
+            navigate("/confirm")
         }
     }
 
