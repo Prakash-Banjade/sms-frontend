@@ -60,7 +60,7 @@ const ProfileAvatar = ({
   const secondInitial = words[1] ? words[1][0].toUpperCase() : '';
 
   return <Avatar className={className}>
-    <AvatarImage src={src} alt={name} />
+    <AvatarImage src={src} alt={name} className="object-cover" />
     <AvatarFallback>
       {(firstInitial + secondInitial).slice(0, 2)}
     </AvatarFallback>

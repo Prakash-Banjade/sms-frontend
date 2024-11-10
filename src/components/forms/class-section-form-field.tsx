@@ -86,6 +86,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                 multipleSections ? setSectionIds([]) : setSectionId('')
                                 field.onChange(val)
                                 form.setValue("subjectId", ''); // reset subjectId also if present
+                                form.setValue("sectionId", ''); // reset subjectId also if present
                                 form.setValue("sectionIds", []); // reset sectionIds also if present
                             }}
                             disabled={isLoading}

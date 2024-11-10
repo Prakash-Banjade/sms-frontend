@@ -14,6 +14,7 @@ import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { TStaff } from "@/types/staff.type"
 import { ProfileAvatar } from "@/components/ui/avatar"
+import { getImageUrl } from "@/lib/utils"
 
 export const staffsColumns: ColumnDef<TStaff>[] = [
     {
@@ -28,8 +29,12 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
         header: "Name",
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/staffs/${row.original.id}`} className="flex gap-4 items-center group">
-                    <ProfileAvatar name={row.original.firstName + ' ' + row.original.lastName} src={row.original.profileImage?.url || ''} className="size-10" />
+                <Link to={`#`} className="flex gap-4 items-center group">
+                    <ProfileAvatar
+                        name={row.original.firstName + ' ' + row.original.lastName}
+                        src={getImageUrl(row.original.profileImage?.url, "w=40")}
+                        className="size-10"
+                    />
                     <span className="group-hover:text-blue-500 group-hover:underline">{row.original.firstName + ' ' + row.original.lastName}</span>
                 </Link>
             </TooltipWrapper>

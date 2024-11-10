@@ -4,7 +4,6 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
 import { TClassesResponse } from "@/types/class.type";
-import { TeachersResponse } from "@/types/teacher.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -40,7 +39,11 @@ export default function SubjectForm(props: Props) {
             method,
             endpoint: QueryKey.SUBJECTS,
             id,
-            data: getDirtyValues(values, form),
+            data: {
+                ...getDirtyValues(values, form),
+                classRoomId: values.classRoomId ?? null,
+                teacherId: values.teacherId ?? null,
+            },
             invalidateTags: [QueryKey.SUBJECTS],
         });
 
@@ -113,24 +116,19 @@ export default function SubjectForm(props: Props) {
                         placeholder="Select class room"
                         description="Select the class room. Can assigned later."
                         fetchOptions={{
-                            endpoint: QueryKey.CLASSES,
-                            queryKey: [QueryKey.CLASSES],
+                            endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
+                            queryKey: [QueryKey.CLASSES, QueryKey.OPTIONS],
                             queryString: 'page=1&take=50',
                         }}
                         labelKey={'name'}
                     />
 
-                    <AppForm.DynamicSelect<subjectFormSchemaType, TeachersResponse>
+                    <AppForm.DynamicSelect_V2<subjectFormSchemaType>
                         name="teacherId"
                         label="Subject Teacher"
                         placeholder="Select teacher"
                         description="Select the subject teacher. Can assigned later."
-                        fetchOptions={{
-                            endpoint: QueryKey.TEACHERS,
-                            queryKey: [QueryKey.TEACHERS],
-                            queryString: 'page=1&take=50',
-                        }}
-                        labelKey={'teacherFullName'}
+                        queryKey={QueryKey.TEACHERS}
                     />
 
                 </section>

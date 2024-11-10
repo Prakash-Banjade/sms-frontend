@@ -9,8 +9,18 @@ export const subjectFormSchema = z.object({
     theoryFM: z.coerce.number().int({ message: 'Theory full marks must be an integer' }).refine(val => val >= 0),
     practicalPM: z.coerce.number().int({ message: 'Practical pass marks must be an integer' }).refine(val => val >= 0),
     practicalFM: z.coerce.number().int({ message: 'Practical full marks must be an integer' }).refine(val => val >= 0),
-    classRoomId: z.string().uuid({ message: 'Class room ID must be a valid UUID' }).nullish(),
-    teacherId: z.string().uuid({ message: 'Teacher ID must be a valid UUID' }).nullish(),
+    classRoomId: z.string()
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid class room ID',
+        })
+        .nullish(),
+    teacherId: z.string()
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid teacher ID',
+        })
+        .nullish(),
 });
 
 export type subjectFormSchemaType = z.infer<typeof subjectFormSchema>;

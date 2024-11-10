@@ -8,6 +8,8 @@ import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import { useFormContext } from 'react-hook-form'
 
+export const IMAGE_QUERY = "w=200&q=80";
+
 interface ImageUploaderProps<T> {
     name: keyof T;
     description?: string;
@@ -16,6 +18,7 @@ interface ImageUploaderProps<T> {
     accept?: string;
     containerClassName?: string,
     uploadedImageUrl?: string | null;
+    imageQuery?: string;
 }
 
 export default function ImageUpload<T>({
@@ -26,6 +29,7 @@ export default function ImageUpload<T>({
     name,
     containerClassName = '',
     uploadedImageUrl = null,
+    imageQuery = IMAGE_QUERY,
 }: ImageUploaderProps<T>) {
     const [isDragging, setIsDragging] = useState(false)
     const [uploadProgress, setUploadProgress] = useState(0)
@@ -84,7 +88,7 @@ export default function ImageUpload<T>({
 
             if (data && data?.files && !!data?.files.length) {
                 const file = data.files[0];
-                setImageUrl(file.url);
+                setImageUrl(file.url + '?' + imageQuery);
                 form.setValue(name as string, file.id);
             }
 

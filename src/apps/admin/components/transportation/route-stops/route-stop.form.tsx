@@ -1,4 +1,5 @@
 import AppForm from "@/components/forms/app-form"
+import { MILITARY_TIME_REGEX } from "@/CONSTANTS";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
@@ -44,11 +45,11 @@ export const routeStopSchema = z.object({
 
     pickUpTime: z
         .string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, { message: 'Invalid pick up time. Required format: HH:MM' }),
+        .regex(MILITARY_TIME_REGEX, { message: 'Invalid pick up time. Required format: HH:MM' }),
 
     dropOffTime: z
         .string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, { message: 'Invalid drop off time. Required format: HH:MM' }),
+        .regex(MILITARY_TIME_REGEX, { message: 'Invalid drop off time. Required format: HH:MM' }),
 
     vehicleId: z
         .string()

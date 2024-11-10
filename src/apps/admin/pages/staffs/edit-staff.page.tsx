@@ -17,7 +17,7 @@ export default function EditStaffPage({ }: Props) {
             {
                 !!params.id
                     ? <StaffEditForm id={params.id} />
-                    : <Navigate to="/" /> // TODO: provide a meaningful route
+                    : <Navigate to="/admin/staffs" />
             }
         </ContainerLayout>
     )
@@ -32,7 +32,7 @@ function StaffEditForm({ id }: { id: string }) {
 
     if (isLoading) return <div className="p-5">Loading the staff info...</div>
 
-    if (!data) navigate('/') // TODO: provide a meaningful route
+    if (!data) navigate('/admin/staffs');
 
     const { data: filteredValues } = staffSchema.safeParse(data);
 

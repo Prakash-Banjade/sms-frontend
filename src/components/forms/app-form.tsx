@@ -19,6 +19,7 @@ import { DynamicCombobox } from './dynamic-combobox';
 import { FileUpload } from './file-upload';
 import ImageUpload from './image-upload';
 import { DynamicSelect_V2 } from './dynamic-select-v2';
+import { NUMBER_REGEX_STRING } from '@/CONSTANTS';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -244,7 +245,7 @@ AppForm.Number = function Number<T extends FieldValues>({
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Input type="number" pattern='^[0-9]*$' className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
+                        <Input type="number" pattern={NUMBER_REGEX_STRING} className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
