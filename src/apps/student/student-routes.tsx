@@ -12,6 +12,10 @@ import SingleStudentTask from "./components/task/assignments/single-assignment";
 import StudentTeacherListPage from "./pages/student-teacher-list.page";
 import StudentVechicleDetailsPage from "./pages/student-vechicle-details.page";
 import StudentLibraryDetailsPage from "./pages/student-library-details.page";
+import LeaveRequestPage from "./pages/academics/leave-request.page";
+import LeaveRequestConfirmation from "./components/leave-request/leave-request-confirmation";
+import StudentDormitoryPage from "./pages/academics/stu-dormitory.page";
+
 
 const StudentRoutes = () => {
   return (
@@ -46,6 +50,12 @@ const StudentRoutes = () => {
           <Route path="teachers" element={<StudentTeacherListPage />} />
           <Route path='trasports' element={<StudentVechicleDetailsPage />} />
           <Route path='library' element={<StudentLibraryDetailsPage />} />
+          <Route path='dormitory' element={<StudentDormitoryPage />} />
+
+          <Route path="leave-request">
+            <Route index element={<LeaveRequestPage />} />
+            <Route path="confirm" element={<LeaveRequestConfirmation />} />
+          </Route>
           <Route path="notices">
             <Route index element={<NoticePage />} />
             <Route path=":id" element={<NoticeViewPage />} />

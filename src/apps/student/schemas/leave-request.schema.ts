@@ -13,10 +13,10 @@ export const LeaveRequestSchema = z.object({
         .string()
         .min(1, { message: 'Description is required' }),
 
-    accountId: z
-        .string()
-        .uuid({ message: 'Invalid UUID format' })
-        .optional(),
+    // accountId: z
+    //     .string()
+    //     .uuid({ message: 'Invalid UUID format' })
+    //     .optional(),
 }).refine((data) => new Date(data.leaveFrom) < new Date(data.leaveTo), {
     message: "Leave from date cannot be greater than leave to date",
     path: ["leaveFrom"],

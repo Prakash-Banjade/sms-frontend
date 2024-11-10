@@ -65,13 +65,13 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
         ],
     },
     {
-        groupLabel: "Transportation",
+        groupLabel: "Facilities",
         menuItems: [
-            // {
-            //     title: "Bus Route",
-            //     url: "bus-route",
-            //     icon: Bus,
-            // },
+            {
+                title: "Dormitory",
+                url: "dormitory",
+                icon: Bus,
+            },
             {
                 title: "Bus Info",
                 url: "trasports",
