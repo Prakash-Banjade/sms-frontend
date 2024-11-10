@@ -39,11 +39,6 @@ export const markGradeSchema = z.object({
 
 const defaultValues: Partial<markGradeFormType> = {
     gradeName: "",
-    gradeScale: undefined,
-    percentFrom: undefined,
-    percentTo: undefined,
-    gpaFrom: undefined,
-    gpaTo: undefined,
     description: "",
 }
 
@@ -72,12 +67,12 @@ export default function MarkGradeForm(props: Props) {
         });
 
         if (response?.data?.message) {
+            form.reset(defaultValues);
             onDialogClose();
         }
     }
 
     const onDialogClose = () => {
-        form.reset(form.formState.defaultValues);
         props.setIsOpen && props.setIsOpen(false);
     }
 

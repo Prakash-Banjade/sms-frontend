@@ -245,7 +245,16 @@ AppForm.Number = function Number<T extends FieldValues>({
                         {required && <span className="text-red-500">*</span>}
                     </FormLabel>
                     <FormControl>
-                        <Input type="number" pattern={NUMBER_REGEX_STRING} className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
+                        <Input
+                            type="number"
+                            pattern={NUMBER_REGEX_STRING}
+                            className={inputClassName}
+                            placeholder={placeholder}
+                            {...field}
+                            {...props}
+                            required={required}
+                            value={field.value ?? ''}
+                        />
                     </FormControl>
                     {description && <FormDescription>{description}</FormDescription>}
                     <FormMessage />
