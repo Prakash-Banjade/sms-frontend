@@ -18,7 +18,10 @@ export const studentSchema = z.object({
     // ACADEMIC INFORMATION
     classRoomId: z.string().uuid({ message: 'Invalid class room' }),
     sectionId: z.string()
-        .uuid({ message: 'Invalid class section. Must be a valid UUID' })
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid section ID',
+        })
         .nullish(),
     rollNo: z.coerce.number({ required_error: 'Roll number is required' }),
     admissionDate: z.string().refine((val) => !isNaN(Date.parse(val)), {

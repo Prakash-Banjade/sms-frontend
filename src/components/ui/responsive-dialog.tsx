@@ -14,6 +14,7 @@ import {
     DrawerTitle,
 } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 export function ResponsiveDialog({
     children,
@@ -35,7 +36,8 @@ export function ResponsiveDialog({
     if (!isMobile) {
         return (
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogContent className={className}>
+                {/* TODO: FIX THIS OVERFLOW STYLE USING SCROLLAREA */}
+                <DialogContent className={cn('max-h-[97vh] overflow-y-auto', className)}>
                     <DialogHeader>
                         <DialogTitle>{title}</DialogTitle>
                         {description && (
