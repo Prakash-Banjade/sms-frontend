@@ -9,13 +9,13 @@ const StudentVechicleDetailsPage = () => {
     });
 
     if (isLoading) return <div>Loading...</div>;
-    if (!data) return <div>No vechicle found</div>
-    else if (data?.data.length === 0) {
+    if (!data || data?.data.length === 0) {
         return (
             <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">
                 No vechicle available!!
             </div>
         );
+
     }
     return (
         <div className="conatiner mx-auto">
