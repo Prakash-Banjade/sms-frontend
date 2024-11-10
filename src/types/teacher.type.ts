@@ -41,3 +41,24 @@ export type TSingleTeacher = Omit<Teacher, 'teacherFullName'> & {
 export type TeacherWithAttendanceResponse = (TEntityWithAttendance & {})[]
 
 export type TeacherWithAttendanceUpdate = (TEntityWithAttendanceUpdate & {})[]
+
+
+/**
+|--------------------------------------------------
+| TYPES FOR STUDENT VIEW
+|--------------------------------------------------
+*/
+
+export type St_Teacher = {
+    teacherId: string,
+    teacherFullName: string,
+    email: string
+    phone: string
+    profileImageUrl: string | null
+    subject: string
+};
+
+export type St_TeacherResponse = {
+    data: St_Teacher[],
+    meta: TMeta
+}
