@@ -38,7 +38,7 @@ export type TExam = {
     upcomingSubject: {
         examDate: string,
         subjectName: string
-    } | null;
+    } | string | null; // TODO: cPanel database is returning JSON string instead of object, fix it
 }
 
 export type TExamsResponse = {

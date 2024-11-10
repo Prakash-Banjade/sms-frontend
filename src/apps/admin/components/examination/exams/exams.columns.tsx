@@ -39,7 +39,13 @@ export const examsColumns: ColumnDef<TExam>[] = [
         accessorKey: "upcomingSubject",
         cell: ({ row }) => {
             return row.original.upcomingSubject
-                ? <span>{row.original.upcomingSubject.subjectName}</span>
+                ? <span>
+                    {
+                        typeof row.original.upcomingSubject === 'string'
+                            ? JSON.parse(row.original.upcomingSubject).subjectName
+                            : row.original.upcomingSubject.subjectName
+                    }
+                </span>
                 : <span>N/A</span>
         },
     },
@@ -48,7 +54,13 @@ export const examsColumns: ColumnDef<TExam>[] = [
         accessorKey: "examDate",
         cell: ({ row }) => {
             return row.original.upcomingSubject
-                ? <span>{format(new Date(row.original.upcomingSubject.examDate), 'dd MMM yyyy')}</span>
+                ? <span>
+                    {
+                        typeof row.original.upcomingSubject === 'string'
+                            ? format(new Date(JSON.parse(row.original.upcomingSubject).examDate), 'dd MMM yyyy')
+                            : row.original.upcomingSubject.examDate
+                    }
+                </span>
                 : <span>N/A</span>
         },
     },
@@ -93,7 +105,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/edit')}>
                                 <span>View</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/evaluation')}> 
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/evaluation')}>
                                 <span>Evaluation</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
