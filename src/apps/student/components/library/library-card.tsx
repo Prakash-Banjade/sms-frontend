@@ -1,43 +1,41 @@
-import { ProfileAvatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertTriangle, Calendar, CheckCircle, Clock } from 'lucide-react'
-import { useState } from 'react'
-type BookInfo = {
-    id: string,
-    title: string,
-    author: string,
-    borrowDate: string,
-    dueDate: string,
-    status: string
-    coverUrl: string
+import { TLibraryBookTransaction } from '@/types/library-book.type'
+import { formatDate } from '@/utils/format-date'
+import { differenceInDays } from 'date-fns'
+import { Calendar, Clock } from 'lucide-react'
+
+
+type Props = {
+    transaction: TLibraryBookTransaction
 }
 
-const [books, setBooks] = useState<BookInfo[]>([
-    { id: "1", title: "To Kill a Mockingbird", author: "Harper Lee", borrowDate: "2023-05-01", dueDate: "2023-05-15", status: 'returned', coverUrl: "https://i.pravatar.cc/150?img=2" },
-    { id: " 2", title: "1984", author: "George Orwell", borrowDate: "2023-05-10", dueDate: "2023-05-24", status: 'borrowed', coverUrl: "https://i.pravatar.cc/150?img=3" },
-    { id: " 3", title: "The Great Gatsby", author: "F. Scott Fitzgerald", borrowDate: "2023-04-20", dueDate: "2023-05-04", status: 'overdue', coverUrl: "https://i.pravatar.cc/150?img=4" },
-    { id: "4", title: "Pride and Prejudice", author: "Jane Austen", borrowDate: "2023-05-05", dueDate: "2023-05-19", status: 'borrowed', coverUrl: "https://i.pravatar.cc/150?img=5" },
-    { id: " 5", title: "The Catcher in the Rye", author: "J.D. Salinger", borrowDate: "2023-04-15", dueDate: "2023-04-29", status: 'returned', coverUrl: "https://i.pravatar.cc/150?img=6" },
-])
-const getStatusBadge = (status: BookInfo['status']) => {
-    switch (status) {
-        case 'borrowed':
-            return <Badge variant="secondary"><Clock className="mr-1 h-3 w-3" /> Borrowed</Badge>
-        case 'overdue':
-            return <Badge variant="destructive"><AlertTriangle className="mr-1 h-3 w-3" /> Overdue</Badge>
-        case 'returned':
-            return <Badge variant="outline"><CheckCircle className="mr-1 h-3 w-3" /> Returned</Badge>
-    }
-}
-
-const LibraryCard = () => {
+const LibraryCard = ({ transaction }: Props) => {
+    const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0 && !transaction.returnedAt;
     return (
-        <div>
-            {
-                //
-            }
-        </div>
+        <Card key={transaction.id} className="flex flex-col h-full">
+            <CardHeader className="pb-2 flex  flex-row justify-between">
+                <div className="flex items-center space-x-4">
+                    <CardTitle className="text-lg text-wrap">{transaction.bookName} </CardTitle>
+                </div>
+                <Badge variant={isOverDue ? 'destructiveOutline' : transaction.returnedAt ? 'success' : 'info'} className="text-sm h-fit">
+                    {isOverDue ? 'Overdue' : transaction.returnedAt ? 'Returned' : 'Issued'}
+                </Badge>
+            </CardHeader>
+            <CardContent className="flex-grow">
+                <div className="space-y-2">
+                    <div className="flex items-center">
+                        <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">Borrowed : {formatDate({ date: new Date(transaction.createdAt) })}</span>
+                    </div>
+                    <div className="flex items-center">
+                        <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">Due : {formatDate({ date: new Date(transaction.dueDate) })}</span>
+                    </div>
+
+                </div>
+            </CardContent>
+        </Card>
     )
 }
 
