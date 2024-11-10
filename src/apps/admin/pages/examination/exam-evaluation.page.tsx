@@ -10,6 +10,7 @@ export default function ExamEvaluationPage() {
 
     const { data: exam, isLoading } = useGetExam({
         id: params.id!,
+        // queryString: 'onlyPastExamSubjects=true', // only get the exam subjects with past exam date 
         options: { enabled: !!params.id }
     });
 
@@ -32,7 +33,14 @@ export default function ExamEvaluationPage() {
 };
 
 const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubjects: TSingleExam['examSubjects'] }) => {
-    const { data: students, isLoading } = useGetExamStudents({ id: examId });
+    const { data: students, isLoading } = useGetExamStudents({
+        id: examId,
+        options: {
+            enabled: !!examSubjects.length,
+        }
+    });
+
+    if (!examSubjects?.length) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>
 
     if (isLoading) return <div>Loading...</div>;
 
