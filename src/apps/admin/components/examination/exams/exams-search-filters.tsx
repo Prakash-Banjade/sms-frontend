@@ -12,7 +12,7 @@ export default function ExamsSearchFilters() {
             {
                 isLoading
                     ? <Skeleton className="h-6 w-10" />
-                    : <FacetedFilter title="Exam Type" searchKey="examTypes" options={data?.map(({ label }) => ({ label: label, value: label })) || []} />
+                    : <FacetedFilter title="Exam Type" searchKey="examTypes" options={Array.isArray(data) && data?.map(({ label }) => ({ label: label, value: label })) || []} />
             }
         </section>
     )
