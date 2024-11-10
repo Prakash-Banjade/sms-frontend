@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import TaskSubmissionForm from "./task-submission";
 import { Card } from "@/components/ui/card";
 import TaskDetails from "./task-details";
+import { ETaskSubmissionStatus } from "@/types/global.type";
 
 const SingleStudentTask = () => {
     const { id } = useParams();
@@ -11,12 +12,13 @@ const SingleStudentTask = () => {
     if (isLoading) return <div>Loading...</div>;
     if (!task) return <div>Task not found</div>;
 
-    const content = task.submissions[0].content;
-    const status = task.submissions[0].status;
-    const attachments = task.submissions[0].attachments.map((attachment) => ({
+    // Check if submissions array is empty
+    const content = task.submissions.length > 0 ? task.submissions[0].content : "";
+    const status = task.submissions.length > 0 ? task.submissions[0].status : ETaskSubmissionStatus.Not_Submitted;
+    const attachments = task.submissions.length > 0 ? task.submissions[0].attachments.map((attachment) => ({
         id: attachment.id,
         url: attachment.url
-    }));
+    })) : [];
 
 
     return (
