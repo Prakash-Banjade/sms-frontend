@@ -122,7 +122,7 @@ AppForm.Cancel = function Cancel({ children, action, ...props }: AppFormActionPr
         <FormItem>
             <FormControl>
                 <Button variant={'outline'} type="reset" {...props} disabled={disabled} onClick={() => {
-                    form.reset();
+                    form.reset(form.formState.defaultValues);
                     action?.();
                 }}>
                     {children}

@@ -74,8 +74,8 @@ export const useGetStudentTransactions = ({
     return response;
 }
 
-export const useGetLibraryOverviewCount = () => {
-    const response = useFetchData<TLibraryOverviewCount>({
+export const useGetLibraryOverviewCount = <T = TLibraryOverviewCount>() => {
+    const response = useFetchData<T>({
         endpoint: QueryKey.LIBRARY_BOOKS + '/count',
         queryKey: [QueryKey.LIBRARY_BOOKS, 'count'],
     })
