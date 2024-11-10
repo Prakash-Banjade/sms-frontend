@@ -9,6 +9,9 @@ import ClassRoutineListPage from "../admin/pages/class-routine/class-routine-lis
 import NoticeViewPage from "../admin/pages/notices/notice-view.page";
 import NoticePage from "./pages/notice.page";
 import SingleStudentTask from "./components/task/assignments/single-assignment";
+import StudentTeacherListPage from "./pages/student-teacher-list.page";
+import StudentVechicleDetailsPage from "./pages/student-vechicle-details.page";
+import StudentLibraryDetailsPage from "./pages/student-library-details.page";
 
 const StudentRoutes = () => {
   return (
@@ -40,6 +43,9 @@ const StudentRoutes = () => {
           </Route>
           <Route path="attendance" element={<StudentAttendenceListPage />} />
           <Route path="class-routine" element={<ClassRoutineListPage />} />
+          <Route path="teachers" element={<StudentTeacherListPage />} />
+          <Route path='trasports' element={<StudentVechicleDetailsPage />} />
+          <Route path='library' element={<StudentLibraryDetailsPage />} />
           <Route path="notices">
             <Route index element={<NoticePage />} />
             <Route path=":id" element={<NoticeViewPage />} />

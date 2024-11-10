@@ -7,7 +7,6 @@ export type Teacher = {
     firstName: string,
     lastName: string,
     teacherId: number,
-    teacherFullName: string,
     gender: Gender,
     email: string,
     phone: string,
