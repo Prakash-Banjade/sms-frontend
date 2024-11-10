@@ -40,14 +40,14 @@ export const useGetTeachers = ({
     return response;
 }
 
-export const useGetTeachersWithAttendances = ({
+export const useGetTeachersWithAttendances = <T = TeacherWithAttendanceResponse,>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: Partial<UseQueryOptions<TeacherWithAttendanceResponse>>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
-    const response = useFetchData<TeacherWithAttendanceResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.TEACHERS + '/' + QueryKey.ATTENDANCES,
         queryKey: queryString ? [QueryKey.TEACHERS, queryString] : [QueryKey.TEACHERS],
         queryString,
