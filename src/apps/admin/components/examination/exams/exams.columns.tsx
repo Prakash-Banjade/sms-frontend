@@ -58,7 +58,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
                     {
                         typeof row.original.upcomingSubject === 'string'
                             ? format(new Date(JSON.parse(row.original.upcomingSubject).examDate), 'dd MMM yyyy')
-                            : row.original.upcomingSubject.examDate
+                            : format(new Date(row.original.upcomingSubject.examDate), 'dd MMM yyyy')
                     }
                 </span>
                 : <span>N/A</span>
