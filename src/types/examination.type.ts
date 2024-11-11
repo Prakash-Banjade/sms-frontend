@@ -82,3 +82,20 @@ export type TExamSubjectsResponse = {
     data: TExamSubject[];
     meta: TMeta;
 }
+
+export type TExamReport = {
+    id: string,
+    createdAt: string,
+    obtainedMarks: number,
+    percentage: number,
+    gpa: number,
+    grade: string,
+    student: {
+        id: string,
+    }
+}
+
+export type TExamReportsResponse = {
+    data: TExamReport[];
+    meta: TMeta;
+}

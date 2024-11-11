@@ -5,7 +5,7 @@ import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from '@/components/ui/input';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Check } from 'lucide-react';
 import { useAppMutation } from '@/hooks/useAppMutation';
@@ -22,18 +22,28 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useGetExamReports } from '../data-access';
+import { createQueryString } from '@/utils/create-query-string';
 
 type Props = {
     examSubjects: TExamSubject[];
     students: TExamStudent[];
-} & ({
-    defaultValues: TExamEvaluationsSchema;
-} | {
-    defaultValues?: undefined
-})
+}
 
-export default function ExamEvaluationForm({ examSubjects, students, defaultValues }: Props) {
-    const [selectAll, setSelectAll] = useState(defaultValues?.evaluations?.every(evaluation => evaluation.isChecked)); // used to track the checked subjects
+export default function ExamEvaluationForm({ examSubjects, students }: Props) {
+    const [selectAll, setSelectAll] = useState(false); // used to track the checked subjects
+    const [selectedSubjectId, setSelectedSubjectId] = useState<string | undefined>(examSubjects[0]?.id); // used to keep track of the selected subject, this is used to refetch the exam reports
+
+    // fetch exam reports based on the exam subject to keep the default values
+    const { data: reports, isLoading } = useGetExamReports({
+        queryString: createQueryString({
+            examSubjectId: selectedSubjectId,
+            skipPagination: 'true',
+        }),
+        options: {
+            enabled: !!selectedSubjectId,
+        }
+    });
 
     // dynamically creating the default values for the form based on the subjects
     const examEvaluationDefaultValues: Partial<TExamEvaluationsSchema> = useMemo(() => {
@@ -45,7 +55,7 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                     obtainedMarks: undefined,
                 })
             }),
-            examSubjectId: undefined,
+            examSubjectId: examSubjects[0]?.id,
         })
     }, [students]);
 
@@ -54,12 +64,33 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
         defaultValues: examEvaluationDefaultValues,
     });
 
+    useEffect(() => {
+        if (reports?.data) {
+            form.reset({
+                ...form.getValues(),
+                evaluations: form.getValues('evaluations').map(evaluation => {
+                    const foundReport = reports.data.find(report => report.student?.id === evaluation.studentId);
+
+                    return {
+                        ...evaluation,
+                        reportId: foundReport?.id,
+                        isChecked: !!foundReport,
+                        obtainedMarks: foundReport?.obtainedMarks || undefined
+                    }
+                })
+
+            });
+
+            if (reports.data.length === students.length) setSelectAll(true);
+        }
+    }, [reports])
+
     const { fields, update } = useFieldArray({
         name: "evaluations",
         control: form.control,
     });
 
-    const { mutateAsync, isPending } = useAppMutation<any, { message: string }>()
+    const { mutateAsync, isPending } = useAppMutation<any, { message: string }>();
 
     async function onSubmit(values: TExamEvaluationsSchema) {
         const updatedValues = _.differenceWith(values.evaluations, form.formState.defaultValues?.evaluations ?? [], _.isEqual);
@@ -68,7 +99,7 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
 
         await mutateAsync({
             endpoint: QueryKey.EXAM_REPORTS,
-            method: defaultValues ? 'patch' : 'post',
+            method: 'patch', // always patch request
             data: {
                 evaluations: updatedValues.filter(subject => subject.isChecked),
                 examSubjectId: values.examSubjectId
@@ -84,16 +115,18 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
         })
     }
 
+    if (isLoading) return <div>Loading...</div>;
+
     return (
         <AppForm schema={examEvaluationsSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="" aria-disabled={isPending || isLoading}>
                 <div className='rounded-md border overflow-hidden'>
                     <Table>
                         <TableHeader>
                             <TableRow className='bg-tableheader/50'>
                                 <TableHead colSpan={3} className='min-w-36 text-center border-r text-base'>Students</TableHead>
                                 <TableHead colSpan={examSubjects?.length ?? 0} className='min-w-36 text-center text-base'>
-                                    <ExanSubjectSelect examSubjects={examSubjects} />
+                                    <ExanSubjectSelect examSubjects={examSubjects} setSelectedSubjectId={setSelectedSubjectId} />
                                 </TableHead>
                             </TableRow>
                             <TableRow className='bg-tableheader'>
@@ -134,6 +167,7 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                                                                 update(index, { ...form.getValues(`evaluations.${index}`), isChecked: !!checked })
                                                                 setSelectAll(form.getValues("evaluations").every((subject) => subject.isChecked))
                                                             }}
+                                                            disabled={isPending || isLoading}
                                                         />
                                                     </FormControl>
                                                 </FormItem>
@@ -155,7 +189,7 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                                                             min={10}
                                                             required
                                                             value={field.value ?? ''}
-                                                            disabled={!form.getValues(`evaluations.${index}.isChecked`)}
+                                                            disabled={!form.getValues(`evaluations.${index}.isChecked`) || isPending || isLoading}
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -180,13 +214,11 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                     <LoadingButton
                         isLoading={isPending}
                         className='ml-auto'
-                        loadingText={!!defaultValues ? 'Updating changes...' : 'Submitting...'}
-                        disabled={_.differenceWith(form.watch('evaluations'), form.formState.defaultValues?.evaluations ?? [], _.isEqual).length === 0}
+                        loadingText={'Submitting...'}
+                        disabled={_.differenceWith(form.watch('evaluations'), form.formState.defaultValues?.evaluations ?? [], _.isEqual).length === 0 || isLoading}
                     >
                         <Check />
-                        {
-                            !!defaultValues ? 'Update Changes' : 'Submit'
-                        }
+                        Submit
                     </LoadingButton>
                 </div>
             </form>
@@ -195,7 +227,13 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
     )
 }
 
-function ExanSubjectSelect({ examSubjects }: { examSubjects: TExamSubject[] }) {
+function ExanSubjectSelect({
+    examSubjects,
+    setSelectedSubjectId
+}: {
+    examSubjects: TExamSubject[],
+    setSelectedSubjectId: React.Dispatch<React.SetStateAction<string | undefined>>
+}) {
     const form = useFormContext<TExamEvaluationsSchema>();
 
     return (
@@ -204,7 +242,13 @@ function ExanSubjectSelect({ examSubjects }: { examSubjects: TExamSubject[] }) {
             name="examSubjectId"
             render={({ field }) => (
                 <FormItem>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                        onValueChange={val => {
+                            setSelectedSubjectId(val)
+                            field.onChange(val)
+                        }}
+                        defaultValue={field.value}
+                    >
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select exam subject" />
