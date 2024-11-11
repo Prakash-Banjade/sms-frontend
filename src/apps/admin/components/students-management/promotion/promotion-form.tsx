@@ -78,7 +78,7 @@ export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOp
                     required
                     fetchOptions={{
                         endpoint: QueryKey.ACADEMIC_YEARS + '/' + QueryKey.OPTIONS,
-                        queryKey: [QueryKey.ACADEMIC_YEARS],
+                        queryKey: [QueryKey.ACADEMIC_YEARS, QueryKey.OPTIONS],
                         queryString: 'page=1&take=50',
                     }}
                     labelKey="label"
