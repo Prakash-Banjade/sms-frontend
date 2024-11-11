@@ -20,8 +20,8 @@ const nonResetFilters = ['take', 'page', 'search']
 export default function DetailedLibraryBookTransactions() {
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [searchFilters, setSearchFilters] = useState({
-        status: searchParams.get('status') ?? undefined,
-        date: searchParams.get('date') ?? undefined,
+        status: searchParams.get('status') ?? '',
+        date: searchParams.get('date') ?? '',
     })
 
     const { data, isLoading } = useGetBookTransactions({
@@ -34,7 +34,7 @@ export default function DetailedLibraryBookTransactions() {
         }),
     });
 
-    const handleSearchFiltersChange = (value: string | undefined, key: keyof typeof searchFilters) => {
+    const handleSearchFiltersChange = (value: string, key: keyof typeof searchFilters) => {
         setSearchFilters({ ...searchFilters, [key]: value })
         setSearchParams(key, value)
     }
@@ -55,7 +55,7 @@ export default function DetailedLibraryBookTransactions() {
                             onValueChange={val => handleSearchFiltersChange(val, 'status')}
                             value={searchFilters.status}
                         >
-                            <SelectTrigger className="w-[180px]" value={searchFilters.status}>
+                            <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Filter by status" />
                             </SelectTrigger>
                             <SelectContent>
@@ -72,7 +72,7 @@ export default function DetailedLibraryBookTransactions() {
                             onValueChange={val => handleSearchFiltersChange(val, 'date')}
                             value={searchFilters.date}
                         >
-                            <SelectTrigger className="w-[180px]" value={searchFilters.date}>
+                            <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Filter by date" />
                             </SelectTrigger>
                             <SelectContent>
@@ -86,8 +86,9 @@ export default function DetailedLibraryBookTransactions() {
                             <Button
                                 variant='ghost'
                                 onClick={() => {
-                                    handleSearchFiltersChange(undefined, 'status')
-                                    handleSearchFiltersChange(undefined, 'date')
+                                    setSearchFilters({ status: '', date: '' })
+                                    setSearchParams('status', '')
+                                    setSearchParams('date', '')
                                 }}
                                 className='h-8 px-2 lg:px-3'
                             >
