@@ -2,7 +2,7 @@ import { useGetExamReportByStudent } from "@/apps/admin/components/examination/d
 import GetExamReportByStudentForm from "@/apps/admin/components/report/examination-report/get-exam-report-by-student-form";
 import StudentExamReportSummary from "@/apps/admin/components/report/examination-report/student-exam-report-summary";
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
@@ -12,6 +12,7 @@ import { getImageUrl } from "@/lib/utils";
 import { Mail, Phone } from "lucide-react";
 import { StudentDetailedMarksTable } from "@/apps/admin/components/report/examination-report/student-detailed-marks-table";
 import ReportCardPrintBtn from "@/apps/admin/components/report/examination-report/report-card-print-preview";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 
 const chartConfig = {
     desktop: {
@@ -26,29 +27,29 @@ const chartConfig = {
 
 
 export default function ExaminationReport_StudentWise() {
-    const [searchQuery, setSearchQuery] = useState<string>('');
 
     return (
         <ContainerLayout
             title="Examination Report"
         >
-            <GetExamReportByStudentForm setSearchQuery={setSearchQuery} />
-            <ReportSection searchQuery={searchQuery} />
+            <GetExamReportByStudentForm />
+            <ReportSection />
         </ContainerLayout>
     )
 }
 
-function ReportSection({ searchQuery }: { searchQuery: string }) {
+function ReportSection() {
+    const { searchParams } = useCustomSearchParams();
+    
     const { examTypeId, studentId } = useMemo(() => {
-        const searchParams = new URLSearchParams(searchQuery);
         return {
             studentId: searchParams.get('studentId'),
             examTypeId: searchParams.get('examTypeId'),
         }
-    }, [searchQuery]);
+    }, [searchParams]);
 
     const { data, isLoading } = useGetExamReportByStudent({
-        queryString: searchQuery,
+        queryString: searchParams.toString(),
         options: { enabled: !!examTypeId && !!studentId }
     });
 

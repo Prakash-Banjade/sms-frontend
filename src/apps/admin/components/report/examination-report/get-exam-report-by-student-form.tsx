@@ -1,14 +1,10 @@
 import AppForm from "@/components/forms/app-form";
 import { Button } from "@/components/ui/button";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { QueryKey } from "@/react-query/queryKeys";
-import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-type Props = {
-    setSearchQuery: (value: string) => void;
-}
 
 const formSchema = z.object({
     studentId: z.string({ required_error: "Student ID is required" }).min(1, { message: "Student ID is required" }),
@@ -17,17 +13,20 @@ const formSchema = z.object({
 
 type TFormSchema = z.infer<typeof formSchema>
 
-export default function GetExamReportByStudentForm({ setSearchQuery }: Props) {
+export default function GetExamReportByStudentForm() {
+    const { searchParams, setSearchParams } = useCustomSearchParams();
+
     const form = useForm<TFormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            studentId: '',
-            examTypeId: '',
+            studentId: searchParams.get('studentId') ?? '',
+            examTypeId: searchParams.get('examTypeId') ?? '',
         }
     });
 
     const onSubmit = (values: TFormSchema) => {
-        setSearchQuery(createQueryString(values));
+        setSearchParams('studentId', values.studentId);
+        setSearchParams('examTypeId', values.examTypeId);
     }
 
     return (
