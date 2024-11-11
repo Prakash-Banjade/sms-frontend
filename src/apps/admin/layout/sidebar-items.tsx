@@ -95,6 +95,10 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Exam Setup & Evaluation",
                         url: "examination/exam-setup",
+                    },
+                    {
+                        title: "Exam Routine",
+                        url: "examination/exam-routines",
                     }
                 ]
             },
