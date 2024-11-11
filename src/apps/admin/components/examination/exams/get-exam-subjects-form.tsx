@@ -18,7 +18,7 @@ type Props = {
 const getExamSubjectsSchema = z.object({
     classRoomId: z.string().uuid({ message: "Select class" }).optional(),
     examTypeId: z.string().uuid({ message: "Select exam type" }).optional(),
-    sectionId: z.string().optional(),
+    ////sectionId: z.string().optional(),
 })
 
 type TGetExamSubjectsSchema = z.infer<typeof getExamSubjectsSchema>
@@ -30,7 +30,7 @@ export default function GetExamSubjectsForm({ setSearchQuery, searchQuery, defau
             const searchParams = new URLSearchParams(searchQuery);
             return {
                 classRoomId: searchParams.get('classRoomId') ?? undefined,
-                sectionId: searchParams.get('sectionId') ?? undefined,
+                ////sectionId: searchParams.get('sectionId') ?? undefined,
                 examTypeId: searchParams.get('examTypeId') ?? undefined,
             }
         }, [searchQuery]),
@@ -39,7 +39,7 @@ export default function GetExamSubjectsForm({ setSearchQuery, searchQuery, defau
     const onSubmit = (values: TGetExamSubjectsSchema) => {
         setSearchQuery(createQueryString({
             classRoomId: values.classRoomId,
-            sectionId: values.sectionId,
+            ////sectionId: values.sectionId,
             examTypeId: values.examTypeId,
             skipPagination: 'true',
         }))
@@ -61,14 +61,14 @@ export default function GetExamSubjectsForm({ setSearchQuery, searchQuery, defau
                         defaultExamType && setSearchQuery(createQueryString({ // trigger only on edit
                             examTypeId: val,
                             classRoomId: form.getValues('classRoomId'),
-                            sectionId: form.getValues('sectionId'),
+                            ////sectionId: form.getValues('sectionId'),
                         }))
                     }}
                 />
                 {
                     !searchQuery && (
                         <>
-                            <ClassSectionFormField noDescription containerClassName='w-[200px]' required={false} />
+                            <ClassSectionFormField noDescription noSection containerClassName='w-[200px]' required={false} />
 
                             <Button type="submit" className="self-end" disabled={!form.getValues('examTypeId') || !form.getValues('classRoomId')}>
                                 Search

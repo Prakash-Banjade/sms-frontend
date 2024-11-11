@@ -38,12 +38,13 @@ type Props = ({
     isLoading: boolean;
 }) & {
     noDescription?: boolean;
+    noSection?: boolean;
     containerClassName?: string;
     multipleSections?: boolean;
     required?: boolean;
 }
 
-export function ClassSectionFormField({ noDescription = false, containerClassName = '', multipleSections = false, options, required = true }: Props) {
+export function ClassSectionFormField({ noDescription = false, containerClassName = '', multipleSections = false, options, required = true, noSection = false }: Props) {
     const form = useFormContext();
 
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0] | undefined>(); // use to render the section option based on the selected class room
@@ -113,7 +114,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
 
 
             {
-                multipleSections
+                (multipleSections && !noSection)
                     ? (
                         <MultiSection
                             values={sectionIds}
@@ -128,7 +129,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                             description={noDescription ? undefined : "Select sections"}
                         />
                     )
-                    : (
+                    : !noSection && (
                         <FormField
                             control={form.control}
                             name={"sectionId"}

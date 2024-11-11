@@ -29,10 +29,10 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
 
     // remove invalid searchParams, like classRoomId=xyz and sectionId=xyz
     useEffect(() => {
-        if (!data?.data) return;
+        if (!data) return;
 
         const classRoomId = searchParams.get(classRoomKey);
-        const isCorrectClassRoomId = data?.data?.find((classRoom) => classRoom.id === classRoomId);
+        const isCorrectClassRoomId = data?.find((classRoom) => classRoom.id === classRoomId);
 
         if (classRoomId && !isCorrectClassRoomId) {
             setSearchParams(classRoomKey, undefined)
@@ -62,7 +62,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                     <SelectContent>
                         <SelectGroup>
                             {
-                                data?.data?.map((classRoom) => (
+                                data?.map((classRoom) => (
                                     <SelectItem value={classRoom.id} key={classRoom.id}>{classRoom.name}</SelectItem>
                                 ))
                             }
@@ -84,7 +84,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                         onValueChange={val => setSearchParams("sectionId", val)}
                         disabled={
                             !searchParams.get(classRoomKey)
-                            || !data?.data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.length
+                            || !data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.length
                             || isLoading
                         }
                     >
@@ -94,7 +94,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                         <SelectContent>
                             <SelectGroup>
                                 {
-                                    data?.data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
+                                    data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
                                         <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
                                     ))
                                 }

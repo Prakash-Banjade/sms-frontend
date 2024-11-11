@@ -8,7 +8,7 @@ export default function ExamsSearchFilters() {
 
     return (
         <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
-            <ClassRoomSearchFilterInputs />
+            <ClassRoomSearchFilterInputs onlyClassRoom />
             {
                 isLoading
                     ? <Skeleton className="h-6 w-10" />

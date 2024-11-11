@@ -22,11 +22,11 @@ export default function ExamRoutinePage() {
 }
 
 function ExamRoutineSection({ searchQuery }: { searchQuery: string }) {
-    const { classRoomId, sectionId, examTypeId } = useMemo(() => {
+    const { classRoomId, examTypeId } = useMemo(() => {
         const searchParams = new URLSearchParams(searchQuery);
         return {
             classRoomId: searchParams.get('classRoomId'),
-            sectionId: searchParams.get('sectionId'),
+            ////sectionId: searchParams.get('sectionId'),
             examTypeId: searchParams.get('examTypeId'),
         }
     }, [searchQuery])
@@ -34,7 +34,8 @@ function ExamRoutineSection({ searchQuery }: { searchQuery: string }) {
     const { data, isLoading } = useGetExamSubjects({
         queryString: createQueryString({
             take: 50,
-            classRoomId: sectionId ?? classRoomId,
+            ////classRoomId: sectionId ?? classRoomId,
+            classRoomId,
             examTypeId,
             order: 'ASC'
         }),

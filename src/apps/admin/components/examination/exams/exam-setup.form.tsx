@@ -32,12 +32,12 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
     const [selectAll, setSelectAll] = useState(defaultValues?.examSubjects?.every(subject => subject.isChecked)); // used to track the checked subjects
     const defaultExamType = useRef<string>(new URLSearchParams(searchQuery).get('examTypeId') ?? ''); // used to track if exam type is changed in exam edit page
 
-    const { classRoomId, examTypeId, sectionId } = useMemo(() => {
+    const { classRoomId, examTypeId } = useMemo(() => {
         const searchParams = new URLSearchParams(searchQuery);
         return {
             classRoomId: searchParams.get('classRoomId'),
             examTypeId: searchParams.get('examTypeId'),
-            sectionId: searchParams.get('sectionId'),
+            ////sectionId: searchParams.get('sectionId'),
         }
     }, [searchQuery]);
 
@@ -86,7 +86,8 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
             id: examId,
             data: {
                 examSubjects: values.examSubjects.filter(subject => subject.isChecked),
-                classRoomId: sectionId ?? classRoomId,
+                ////classRoomId: sectionId ?? classRoomId,
+                classRoomId,
                 examTypeId,
             },
             invalidateTags: [QueryKey.EXAMS],

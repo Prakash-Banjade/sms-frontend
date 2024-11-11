@@ -49,7 +49,7 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
         if (exam) {
             setSearchQuery(createQueryString({
                 classRoomId: exam?.classRoom?.parent?.id || exam?.classRoom.id,
-                sectionId: exam?.classRoom?.parent?.id ? exam?.classRoom.id : undefined,
+                ////sectionId: exam?.classRoom?.parent?.id ? exam?.classRoom.id : undefined,
                 examTypeId: exam?.examType.id,
             }))
         }
@@ -57,7 +57,7 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
 
     // fetching the classroom subjects
     const { data: subjects, isLoading } = useGetSubjects({
-        queryString: `${searchQuery}&examId=${exam?.id}`,
+        queryString: searchQuery,
         options: { enabled: (!!exam && !!searchQuery) }
     })
 
