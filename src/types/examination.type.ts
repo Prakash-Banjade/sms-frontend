@@ -83,6 +83,25 @@ export type TExamSubjectsResponse = {
     meta: TMeta;
 }
 
+export type TExamSubject_Raw = {
+    id: string,
+    examDate: string,
+    startTime: string,
+    duration: number,
+    fullMark: number,
+    passMark: number,
+    venue: string,
+    subjectName: string,
+    examType: string,
+    classRoomName: string,
+    parentClassName: string | null;
+}
+
+export type TExamSubjectsResponse_Raw = {
+    data: TExamSubject_Raw[];
+    meta: TMeta;
+}
+
 export type TExamReport = {
     id: string,
     createdAt: string,
