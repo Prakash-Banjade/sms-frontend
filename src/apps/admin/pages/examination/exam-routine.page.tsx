@@ -35,7 +35,8 @@ function ExamRoutineTable({ searchQuery }: { searchQuery: string }) {
         queryString: createQueryString({
             take: 50,
             classRoomId: sectionId ?? classRoomId,
-            examTypeId
+            examTypeId,
+            order: 'ASC'
         }),
         options: {
             enabled: (!!classRoomId && !!examTypeId)

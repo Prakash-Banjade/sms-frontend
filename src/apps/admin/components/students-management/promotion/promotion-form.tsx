@@ -47,7 +47,7 @@ export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOp
 
     async function onSubmit(values: studentPromotionSchemaType) {
         // check if section is selected or not
-        if (data?.data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionId) {
+        if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionId) {
             form.setError("sectionId", { type: "required", message: "Section is required" });
             return;
         }
@@ -71,7 +71,7 @@ export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOp
     return (
         <AppForm schema={studentPromotionSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ClassSectionFormField options={data?.data ?? []} isLoading={isLoading} />
+                <ClassSectionFormField options={data ?? []} isLoading={isLoading} />
 
                 <AppForm.DynamicSelect<studentPromotionSchemaType>
                     name="academicYearId"

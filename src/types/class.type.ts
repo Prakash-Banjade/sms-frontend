@@ -22,19 +22,14 @@ export type TClassesResponse = {
     meta: TMeta,
 }
 
-export type TClassRoomOption = {
+export type TClassRoomOptions = {
     id: string,
     name: string
     children: {
         id: string,
         name: string
     }[]
-}
-
-export type TClassRoomOptions = {
-    data: TClassRoomOption[],
-    meta: TMeta,
-}
+}[]
 
 export type TSingleClassRoom = {
     id: string,

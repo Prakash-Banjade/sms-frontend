@@ -338,6 +338,16 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Examination Report",
                 url: "reports/examination-report",
                 icon: BookOpenText,
+                items: [
+                    {
+                        title: "Student Wise Report",
+                        url: "reports/examination-report/student-wise",
+                    },
+                    {
+                        title: "Subject Wise Report",
+                        url: "reports/examination-report/subject-wise",
+                    }
+                ]
             }
         ]
     }

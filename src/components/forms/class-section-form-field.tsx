@@ -9,7 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { TClassRoomOption, TClassRoomOptions } from "@/types/class.type";
+import { TClassRoomOptions } from "@/types/class.type";
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { cn } from "@/lib/utils";
 import {
@@ -34,7 +34,7 @@ type Props = ({
     options?: undefined;
     isLoading?: undefined;
 } | {
-    options: TClassRoomOptions["data"]; // this is required to control the validation of classroom and section outside of this component
+    options: TClassRoomOptions; // this is required to control the validation of classroom and section outside of this component
     isLoading: boolean;
 }) & {
     noDescription?: boolean;
@@ -46,7 +46,7 @@ type Props = ({
 export function ClassSectionFormField({ noDescription = false, containerClassName = '', multipleSections = false, options, required = true }: Props) {
     const form = useFormContext();
 
-    const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOption | undefined>(); // use to render the section option based on the selected class room
+    const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0] | undefined>(); // use to render the section option based on the selected class room
     const [classRoomId, setClassRoomId] = useState<string | undefined>(form.getValues("classRoomId") || ''); // use to store the selected class room id
     const [sectionId, setSectionId] = useState<string | undefined>(form.getValues("sectionId") || ''); // use to store the selected section id
     const [sectionIds, setSectionIds] = useState<string[]>(form.getValues("sectionIds") || []); // use to store the selected section ids
@@ -61,7 +61,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
 
     useEffect(() => { // update selected class room on data change, specially on first render on edit page
         if (data) {
-            setSelectedClassRoom(data?.data?.find((classRoom) => classRoom.id === form.getValues("classRoomId")))
+            setSelectedClassRoom(data?.find((classRoom) => classRoom.id === form.getValues("classRoomId")))
         }
     }, [data])
 
@@ -81,7 +81,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                         <Select
                             value={classRoomId || undefined}
                             onValueChange={val => {
-                                setSelectedClassRoom(data?.data?.find((classRoom) => classRoom.id === val))
+                                setSelectedClassRoom(data?.find((classRoom) => classRoom.id === val))
                                 setClassRoomId(val)
                                 multipleSections ? setSectionIds([]) : setSectionId('')
                                 field.onChange(val)
@@ -98,7 +98,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                             <SelectContent>
                                 <SelectGroup>
                                     {
-                                        data?.data?.map((classRoom) => (
+                                        data?.map((classRoom) => (
                                             <SelectItem value={classRoom.id} key={classRoom.id}>{classRoom.name}</SelectItem>
                                         ))
                                     }
@@ -141,7 +141,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                                         </FormLabel>
                                     </div>
                                     <Select
-                                        value={sectionId || undefined}
+                                        value={sectionId || ''}
                                         onValueChange={val => {
                                             setSectionId(val)
                                             field.onChange(val)
