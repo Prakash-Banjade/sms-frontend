@@ -14,7 +14,6 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TExam } from "@/types/examination.type"
-import { format } from "date-fns"
 
 export const examsColumns: ColumnDef<TExam>[] = [
     {
@@ -35,36 +34,6 @@ export const examsColumns: ColumnDef<TExam>[] = [
         },
     },
     {
-        header: "Upcoming Subject",
-        accessorKey: "upcomingSubject",
-        cell: ({ row }) => {
-            return row.original.upcomingSubject
-                ? <span>
-                    {
-                        typeof row.original.upcomingSubject === 'string'
-                            ? JSON.parse(row.original.upcomingSubject).subjectName
-                            : row.original.upcomingSubject.subjectName
-                    }
-                </span>
-                : <span>N/A</span>
-        },
-    },
-    {
-        header: "Exam Date",
-        accessorKey: "examDate",
-        cell: ({ row }) => {
-            return row.original.upcomingSubject
-                ? <span>
-                    {
-                        typeof row.original.upcomingSubject === 'string'
-                            ? format(new Date(JSON.parse(row.original.upcomingSubject).examDate), 'dd MMM yyyy')
-                            : format(new Date(row.original.upcomingSubject.examDate), 'dd MMM yyyy')
-                    }
-                </span>
-                : <span>N/A</span>
-        },
-    },
-    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
@@ -76,7 +45,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
             async function handleDelete() {
                 await mutateAsync({
                     method: "delete",
-                    endpoint: `${QueryKey.EXAMS}/${row.original.exam_id}`,
+                    endpoint: `${QueryKey.EXAMS}/${row.original.id}`,
                     invalidateTags: [QueryKey.EXAMS],
                 });
             }
@@ -102,10 +71,10 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/edit')}>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/edit')}>
                                 <span>Manage</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => navigate(row.original.exam_id + '/evaluation')}>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/evaluation')}>
                                 <span>Evaluation</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">

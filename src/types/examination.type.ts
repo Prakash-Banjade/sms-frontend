@@ -30,15 +30,11 @@ export type TMarkGradesResponse = {
 }
 
 export type TExam = {
-    exam_id: string,
-    exam_createdAt: string,
+    id: string,
+    createdAt: string,
     examType: string,
     classRoom: string,
-    parentClass: string | null,
-    upcomingSubject: {
-        examDate: string,
-        subjectName: string
-    } | string | null; // TODO: cPanel database is returning JSON string instead of object, fix it
+    parentClass: string | null
 }
 
 export type TExamsResponse = {
