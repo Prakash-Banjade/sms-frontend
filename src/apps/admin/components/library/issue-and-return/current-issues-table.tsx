@@ -56,30 +56,42 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
                     <TableHead>Book Name</TableHead>
                     <TableHead>Issued Date</TableHead>
                     <TableHead>Due Date</TableHead>
-                    <TableHead>Issues Days</TableHead>
+                    <TableHead>Issue Days</TableHead>
                     <TableHead>Fine</TableHead>
                     <TableHead>Renewals</TableHead>
+                    <TableHead>Last Renewal</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data?.data?.map((transaction) => (
-                    <TableRow key={transaction.id}>
-                        <TableCell>
-                            <Checkbox
-                                checked={selectedTransactions.includes(transaction.id)}
-                                onCheckedChange={() => handleCheckboxChange(transaction.id)}
-                                aria-label={`Select ${transaction.bookName}`}
-                            />
-                        </TableCell>
-                        <TableCell>{transaction.bookCode}</TableCell>
-                        <TableCell>{transaction.bookName}</TableCell>
-                        <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
-                        <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
-                        <TableCell>{differenceInDays(new Date(transaction.createdAt), new Date())} days</TableCell>
-                        <TableCell>-</TableCell>
-                        <TableCell>{transaction.renewals}</TableCell>
-                    </TableRow>
-                ))}
+                {data?.data?.map((transaction) => {
+                    const renewals = transaction.renewals?.split(',');
+                    
+                    return (
+                        <TableRow key={transaction.id}>
+                            <TableCell>
+                                <Checkbox
+                                    checked={selectedTransactions.includes(transaction.id)}
+                                    onCheckedChange={() => handleCheckboxChange(transaction.id)}
+                                    aria-label={`Select ${transaction.bookName}`}
+                                />
+                            </TableCell>
+                            <TableCell>{transaction.bookCode}</TableCell>
+                            <TableCell>{transaction.bookName}</TableCell>
+                            <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
+                            <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
+                            <TableCell>{Math.abs(differenceInDays(new Date(transaction.createdAt), new Date()))} days</TableCell>
+                            <TableCell>-</TableCell>
+                            <TableCell>{renewals?.length}</TableCell>
+                            <TableCell>
+                                {
+                                    renewals?.length
+                                        ? formatDate({ date: new Date(renewals[renewals.length - 1]) })
+                                        : '-'
+                                }
+                                </TableCell>
+                        </TableRow>
+                    )
+                })}
                 {
                     data?.data?.length === 0 && <TableRow>
                         <TableCell colSpan={8} className="h-24 text-center">

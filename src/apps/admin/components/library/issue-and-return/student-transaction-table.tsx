@@ -58,25 +58,29 @@ function AllHistoryTable() {
                     <TableHeadings headings={['Book Code', 'Title', 'Issued At', 'Due At', 'Returned At', 'Issued Days', 'Fine', 'Renewals', 'Status']} />
                 </TableHeader>
                 <TableBody>
-                    {data?.data?.map((transaction) => (
-                        <TableRow key={transaction.id}>
-                            <TableCell>{transaction.bookCode}</TableCell>
-                            <TableCell>{transaction.bookName}</TableCell>
-                            <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
-                            <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
-                            <TableCell>{
-                                transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
-                            }</TableCell>
-                            <TableCell>{differenceInDays(new Date(), new Date(transaction.createdAt))} days</TableCell>
-                            <TableCell>-</TableCell>
-                            <TableCell>{transaction.renewals}</TableCell>
-                            <TableCell>
-                                <Badge variant={transaction.returnedAt ? 'success' : 'warning'} className="text-sm">
-                                    {transaction.returnedAt ? 'Returned' : 'Issued'}
-                                </Badge>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {data?.data?.map((transaction) => {
+                        const renewals = transaction.renewals?.split(',');
+                        
+                        return (
+                            <TableRow key={transaction.id}>
+                                <TableCell>{transaction.bookCode}</TableCell>
+                                <TableCell>{transaction.bookName}</TableCell>
+                                <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
+                                <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
+                                <TableCell>{
+                                    transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
+                                }</TableCell>
+                                <TableCell>{differenceInDays(new Date(), new Date(transaction.createdAt))} days</TableCell>
+                                <TableCell>-</TableCell>
+                                <TableCell>{renewals?.length}</TableCell>
+                                <TableCell>
+                                    <Badge variant={transaction.returnedAt ? 'success' : 'warning'} className="text-sm">
+                                        {transaction.returnedAt ? 'Returned' : 'Issued'}
+                                    </Badge>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
                     {
                         data?.data?.length === 0 && <TableRow>
                             <TableCell colSpan={9} className="h-24 text-center">

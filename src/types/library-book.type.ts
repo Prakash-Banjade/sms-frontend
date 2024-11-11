@@ -54,7 +54,7 @@ export type TStudentTransaction = {
     id: string,
     dueDate: string,
     returnedAt: string | null,
-    renewals: number,
+    renewals: string,
     createdAt: string,
     bookName: string,
     bookCode: string
