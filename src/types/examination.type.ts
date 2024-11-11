@@ -61,20 +61,28 @@ export type TSingleExam = {
             name: string,
         } | null,
     },
-    examSubjects: {
-        id: string,
-        subject: {
-            id: string,
-            subjectCode: string,
-            subjectName: string,
-        },
-        duration: number,
-        examDate: string,
-        startTime: string,
-        fullMark: number,
-        passMark: number,
-        venue: string,
-    }[]
+    examSubjects: TExamSubject[];
 };
 
 export type TExamStudent = Pick<TStudent, 'id' | 'fullName' | 'rollNo' | 'profileImageUrl'>;
+
+export type TExamSubject = {
+    id: string,
+    createdAt: string
+    examDate: string
+    startTime: string
+    duration: number,
+    fullMark: number,
+    passMark: number,
+    venue: string;
+    subject: {
+        id: string,
+        subjectCode: string,
+        subjectName: string,
+    },
+}
+
+export type TExamSubjectsResponse = {
+    data: TExamSubject[];
+    meta: TMeta;
+}

@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TExamsResponse, TExamStudent, TExamType, TExamTypesResponse, TMarkGradesResponse, TSingleExam } from "@/types/examination.type";
+import { TExamsResponse, TExamStudent, TExamSubjectsResponse, TExamType, TExamTypesResponse, TMarkGradesResponse, TSingleExam } from "@/types/examination.type";
 import { SelectOption } from "@/types/global.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
@@ -124,6 +124,23 @@ export const useGetExamStudents = ({
     const response = useFetchData<TExamStudent[]>({
         queryKey: [QueryKey.EXAMS, id, QueryKey.STUDENTS],
         endpoint: QueryKey.EXAMS + '/' + id + '/' + QueryKey.STUDENTS,
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetExamSubjects = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<TExamSubjectsResponse>>
+}) => {
+    const response = useFetchData<TExamSubjectsResponse>({
+        queryKey: queryString ? [QueryKey.EXAM_SUBJECTS, queryString] : [QueryKey.EXAM_SUBJECTS],
+        endpoint: QueryKey.EXAM_SUBJECTS,
         queryString,
         options,
     })

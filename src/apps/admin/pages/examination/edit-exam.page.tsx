@@ -16,6 +16,7 @@ export default function EditExamPage() {
 
     const { data, isLoading } = useGetExam({ // fetching the exam
         id: params.id!,
+        queryString: "includeExamSubjects=true", // include exam subjects in the response
     })
 
     const classRoomName = useMemo(() => {
@@ -75,7 +76,7 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
                 searchQuery={searchQuery}
                 defaultValues={{
                     examSubjects: subjects?.data?.map(subject => {
-                        const examSubject = exam.examSubjects.find(examSubject => examSubject.subject?.id === subject.id);
+                        const examSubject = exam.examSubjects?.find(examSubject => examSubject.subject?.id === subject.id);
 
                         if (!examSubject) return ({
                             isChecked: false,

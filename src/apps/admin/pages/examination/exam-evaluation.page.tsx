@@ -2,15 +2,18 @@ import { Navigate, useParams } from "react-router-dom"
 import { useGetExam, useGetExamStudents } from "../../components/examination/data-access";
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import { Badge } from "@/components/ui/badge";
-import { TSingleExam } from "@/types/examination.type";
 import ExamEvaluationForm from "../../components/examination/exam-evaluation/exam-evaluation-form";
+import { createQueryString } from "@/utils/create-query-string";
+import { TExamSubject } from "@/types/examination.type";
 
 export default function ExamEvaluationPage() {
     const params = useParams();
 
     const { data: exam, isLoading } = useGetExam({
         id: params.id!,
-        queryString: 'onlyPastExamSubjects=true', // only get the exam subjects with past exam date 
+        queryString: createQueryString({
+            includeExamSubjects: true,
+        }),
         options: { enabled: !!params.id }
     });
 
@@ -32,15 +35,13 @@ export default function ExamEvaluationPage() {
     )
 };
 
-const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubjects: TSingleExam['examSubjects'] }) => {
+const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubjects: TExamSubject[] }) => {
     const { data: students, isLoading } = useGetExamStudents({
         id: examId,
-        options: {
-            enabled: !!examSubjects.length,
-        }
+        options: { enabled: !!examId }
     });
 
-    if (!examSubjects?.length) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>
+    if (!students?.length) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>
 
     if (isLoading) return <div>Loading...</div>;
 

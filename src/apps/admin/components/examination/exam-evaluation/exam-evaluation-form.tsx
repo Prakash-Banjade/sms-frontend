@@ -1,7 +1,7 @@
 import AppForm from '@/components/forms/app-form';
 import { NUMBER_REGEX_STRING } from '@/CONSTANTS';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from '@/components/ui/input';
@@ -11,13 +11,20 @@ import { Check } from 'lucide-react';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import LoadingButton from '@/components/forms/loading-button';
 import _ from 'lodash';
-import { TExamStudent, TSingleExam } from '@/types/examination.type';
+import { TExamStudent, TExamSubject } from '@/types/examination.type';
 import { examEvaluationsSchema, TExamEvaluationsSchema } from '@/apps/admin/schemas/exam-evaluation.schema';
 import toast from 'react-hot-toast';
 import { QueryKey } from '@/react-query/queryKeys';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 type Props = {
-    examSubjects: TSingleExam['examSubjects'];
+    examSubjects: TExamSubject[];
     students: TExamStudent[];
 } & ({
     defaultValues: TExamEvaluationsSchema;
@@ -29,22 +36,18 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
     const [selectAll, setSelectAll] = useState(defaultValues?.evaluations?.every(evaluation => evaluation.isChecked)); // used to track the checked subjects
 
     // dynamically creating the default values for the form based on the subjects
-    const examEvaluationDefaultValues = useMemo(() => {
+    const examEvaluationDefaultValues: Partial<TExamEvaluationsSchema> = useMemo(() => {
         return ({
             evaluations: students.flatMap(student => {
                 return ({
                     isChecked: false,
                     studentId: student.id,
-                    marks: examSubjects.map(subject => {
-                        return ({
-                            examSubjectId: subject.id,
-                            obtainedMarks: undefined,
-                        })
-                    }),
+                    obtainedMarks: undefined,
                 })
-            })
+            }),
+            examSubjectId: undefined,
         })
-    }, [students])
+    }, [students]);
 
     const form = useForm<TExamEvaluationsSchema>({
         resolver: zodResolver(examEvaluationsSchema),
@@ -54,25 +57,24 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
     const { fields, update } = useFieldArray({
         name: "evaluations",
         control: form.control,
-    })
+    });
 
     const { mutateAsync, isPending } = useAppMutation<any, { message: string }>()
 
     async function onSubmit(values: TExamEvaluationsSchema) {
         const updatedValues = _.differenceWith(values.evaluations, form.formState.defaultValues?.evaluations ?? [], _.isEqual);
-        
+
         if (updatedValues.length === 0) return toast.error('No changes detected');
 
-        const response = await mutateAsync({
+        await mutateAsync({
             endpoint: QueryKey.EXAM_REPORTS,
             method: defaultValues ? 'patch' : 'post',
             data: {
                 evaluations: updatedValues.filter(subject => subject.isChecked),
+                examSubjectId: values.examSubjectId
             },
             invalidateTags: [QueryKey.EXAM_REPORTS],
         })
-
-        console.log(response);
     }
 
     const handleSelectAll = (checked: boolean) => {
@@ -90,7 +92,9 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                         <TableHeader>
                             <TableRow className='bg-tableheader/50'>
                                 <TableHead colSpan={3} className='min-w-36 text-center border-r text-base'>Students</TableHead>
-                                <TableHead colSpan={examSubjects?.length ?? 0} className='min-w-36 text-center text-base'>Marks</TableHead>
+                                <TableHead colSpan={examSubjects?.length ?? 0} className='min-w-36 text-center text-base'>
+                                    <ExanSubjectSelect examSubjects={examSubjects} />
+                                </TableHead>
                             </TableRow>
                             <TableRow className='bg-tableheader'>
                                 <TableHead className="w-[50px]">
@@ -102,11 +106,15 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                                 </TableHead>
                                 <TableHead className='min-w-36'>Roll No</TableHead>
                                 <TableHead className='min-w-36 border-r'>Student Name</TableHead>
-                                {
-                                    examSubjects?.map(examSubject => (
-                                        <TableHead className='min-w-36' key={examSubject.id}>{examSubject.subject?.subjectName}</TableHead>
-                                    ))
-                                }
+                                <TableHead className='min-w-36'>
+                                    Obtained Marks&nbsp;
+                                    {form.getValues("examSubjectId") && (<span>
+                                        (FM:&nbsp;
+                                        {
+                                            examSubjects.find(subject => subject.id === form.getValues("examSubjectId"))?.fullMark
+                                        })
+                                    </span>)}
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -134,31 +142,27 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
                                     </TableCell>
                                     <TableCell className="w-[100px]">{students[index]?.rollNo}</TableCell>
                                     <TableCell className='border-r'>{students[index]?.fullName}</TableCell>
-                                    {
-                                        examSubjects?.map((examSubject, subjectIndex) => (
-                                            <TableCell key={examSubject.id}>
-                                                <FormField
-                                                    control={form.control}
-                                                    name={`evaluations.${index}.marks.${subjectIndex}.obtainedMarks`}
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormControl>
-                                                                <Input
-                                                                    {...field}
-                                                                    pattern={NUMBER_REGEX_STRING}
-                                                                    min={1}
-                                                                    required
-                                                                    value={field.value ?? ''}
-                                                                    disabled={!form.getValues(`evaluations.${index}.isChecked`)}
-                                                                />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                        ))
-                                    }
+                                    <TableCell>
+                                        <FormField
+                                            control={form.control}
+                                            name={`evaluations.${index}.obtainedMarks`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            {...field}
+                                                            pattern={NUMBER_REGEX_STRING}
+                                                            min={10}
+                                                            required
+                                                            value={field.value ?? ''}
+                                                            disabled={!form.getValues(`evaluations.${index}.isChecked`)}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -188,5 +192,33 @@ export default function ExamEvaluationForm({ examSubjects, students, defaultValu
             </form>
 
         </AppForm>
+    )
+}
+
+function ExanSubjectSelect({ examSubjects }: { examSubjects: TExamSubject[] }) {
+    const form = useFormContext<TExamEvaluationsSchema>();
+
+    return (
+        <FormField
+            control={form.control}
+            name="examSubjectId"
+            render={({ field }) => (
+                <FormItem>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select exam subject" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {examSubjects.map(examSubject => (
+                                <SelectItem key={examSubject.id} value={examSubject.id}>{examSubject.subject?.subjectName}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )}
+        />
     )
 }
