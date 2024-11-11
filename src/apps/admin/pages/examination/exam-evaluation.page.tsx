@@ -13,6 +13,7 @@ export default function ExamEvaluationPage() {
         id: params.id!,
         queryString: createQueryString({
             onlyPast: true,
+            // includeExamSubjects: true,
         }),
         options: { enabled: !!params.id }
     });

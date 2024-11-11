@@ -57,6 +57,8 @@ import NewExamPage from './pages/examination/new-exam.page';
 import EditExamPage from './pages/examination/edit-exam.page';
 import ExamEvaluationPage from './pages/examination/exam-evaluation.page';
 import ExamRoutinePage from './pages/examination/exam-routine.page';
+import ExaminationReport_SubjectWise from './pages/reports/examination-report/subject-wise-report.page';
+import ExaminationReport_StudentWise from './pages/reports/examination-report/student-wise-report.page';
 
 const AdminRoutes = () => {
     return (
@@ -178,6 +180,13 @@ const AdminRoutes = () => {
                         </Route>
                         <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
                         <Route path="members" element={<LibraryMembersPage />} />
+                    </Route>
+                    <Route path="reports">
+                        <Route path="examination-report">
+                            <Route index element={<Navigate to="student-wise" />} />
+                            <Route path="student-wise" element={<ExaminationReport_StudentWise />} />
+                            <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
+                        </Route>
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

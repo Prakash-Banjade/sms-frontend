@@ -118,3 +118,48 @@ export type TExamReportsResponse = {
     data: TExamReport[];
     meta: TMeta;
 }
+
+export type TExamReportByStudent = {
+    student: {
+        id: string,
+        firstName: string,
+        lastName: string,
+        rollNo: number,
+        classRoomId: string,
+        phone: string,
+        email: string,
+        parentClassId: string | null,
+        classRoomName: string,
+        parentClassName: string | null,
+        profileImageUrl: string | null,
+    },
+    examReport: {
+        id: string,
+        examType: {
+            id: string,
+            name: string
+        },
+        examSubjects: {
+            id: string,
+            fullMark: number,
+            passMark: number,
+            subject: {
+                id: string,
+                subjectName: string,
+                subjectCode: string
+            },
+            examReports: {
+                id: string,
+                obtainedMarks: number,
+                percentage: number,
+                gpa: number,
+                grade: string
+            }[]
+        }[]
+    } | null;
+    percentage: number,
+    gpa: number,
+    grade: string,
+    failedSubjectsCount: number,
+    weakestSubject: string
+}
