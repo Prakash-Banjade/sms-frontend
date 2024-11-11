@@ -12,7 +12,7 @@ export default function ExamEvaluationPage() {
     const { data: exam, isLoading } = useGetExam({
         id: params.id!,
         queryString: createQueryString({
-            includeExamSubjects: true,
+            onlyPast: true,
         }),
         options: { enabled: !!params.id }
     });
@@ -41,7 +41,7 @@ const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubject
         options: { enabled: !!examId }
     });
 
-    if (!students?.length) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>
+    if (!examSubjects?.length) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>
 
     if (isLoading) return <div>Loading...</div>;
 
