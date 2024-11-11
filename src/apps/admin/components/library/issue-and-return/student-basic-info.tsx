@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import BookRenewForm from './book-renew-form'
+import { getImageUrl } from '@/lib/utils'
 
 type Props = {
     student: TLibraryStudent | undefined;
@@ -47,7 +48,7 @@ export default function Library_StudentBasicInfo({ student, selectedTransactions
         <Card className="md:col-span-1 @container">
             <CardContent className="p-6">
                 <div className="flex flex-col items-center mb-6">
-                    <ProfileAvatar name={student.name} className="w-24 h-24 rounded-full" src={student.profileImageUrl ?? ''} />
+                    <ProfileAvatar name={student.name} className="w-24 h-24 rounded-full" src={getImageUrl(student.profileImageUrl, 'w=100')} />
                     <h2 className="text-xl font-semibold mt-4">{student.name}</h2>
                     <div className='text-sm space-x-6 mt-1'>
                         <span>Roll No.: {student.rollNo}</span>

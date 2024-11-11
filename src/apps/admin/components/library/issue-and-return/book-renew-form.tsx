@@ -15,7 +15,9 @@ const bookRenewFormSchema = z.object({
     transactionIds: z.array(z.string()).min(1, { message: "At least one transaction is required" }),
     dueDate: z.string({ required_error: "Due date is required" }).refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid due date',
-    }),
+    }).refine((val) => new Date(val) > new Date(), {
+        message: 'Due date must be after today',
+    })
 })
 
 const defaultValues: Partial<bookRenewFormSchemaType> = {
