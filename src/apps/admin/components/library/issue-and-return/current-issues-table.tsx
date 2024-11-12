@@ -64,7 +64,7 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
             </TableHeader>
             <TableBody>
                 {data?.data?.map((transaction) => {
-                    const renewals = transaction.renewals?.split(',');
+                    const renewals = transaction.renewals?.split(',').filter(renewal => renewal !== '');
                     
                     return (
                         <TableRow key={transaction.id}>
