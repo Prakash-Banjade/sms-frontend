@@ -1,8 +1,9 @@
-import { Calendar, MessageSquare, PieChart, Users } from 'lucide-react'
+import { Calendar, MessageSquare, PieChart, Users, Users2 } from 'lucide-react'
 import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import DashboardCountCard from '@/components/dashboard/dashboard-count-card'
 import { AcademicYearCalendar } from '../components/dashboard/academic-events-calendar'
+import { useGetAdminDashboard } from '../data-access/dashboard-data-access'
 
 const financeData = Array.from({ length: 12 }).map((_, i) => ({
     month: i + 1,
@@ -11,15 +12,17 @@ const financeData = Array.from({ length: 12 }).map((_, i) => ({
 }))
 
 export function AdminDashboard() {
+    const { data: dashboard, isLoading } = useGetAdminDashboard({});
+
     return (
         <div className='@container'>
             <div className="grid @5xl:grid-cols-3 grid-cols-1 gap-6">
                 <section className='@5xl:col-span-2'>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                        <DashboardCountCard title="Total Students" count={1234} icon={Users} footer="+10% from last month" />
-                        <DashboardCountCard title="Total Teachers" count={56} icon={Users} footer="+2 new this month" />
-                        <DashboardCountCard title="Total Classes" count={32} icon={PieChart} footer="Across all grades" />
-                        <DashboardCountCard title="Attendance Rate" count={95} icon={Users} footer="Last 30 days average" />
+                        <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} />
+                        <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} />
+                        <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} />
+                        <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} />
                     </div>
 
                     {/* Income vs Expense Chart */}

@@ -7,7 +7,7 @@ import { Skeleton } from '../ui/skeleton';
 
 type Props = {
     title: string;
-    count: number;
+    count: number | string | undefined;
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
     navigateTo?: string;
     isLoading?: boolean;
