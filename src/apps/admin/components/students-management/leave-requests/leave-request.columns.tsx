@@ -60,7 +60,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
         cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.leaveTo) })}</span>
     },
     {
-        accessorKey: "Reacon",
+        accessorKey: "Reason",
         header: "Reason",
         cell: ({ row }) => <span>{row.original?.title}</span>
     },
