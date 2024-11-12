@@ -39,7 +39,7 @@ export default function ChangeClassForm({ selectedStudentIds, setIsOpen }: Props
 
     async function onSubmit(values: changeClassSchemaType) {
         // check if section is selected or not
-        if (data?.data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionId) {
+        if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionId) {
             form.setError("sectionId", { type: "required", message: "Section is required" });
             return;
         }
@@ -63,7 +63,7 @@ export default function ChangeClassForm({ selectedStudentIds, setIsOpen }: Props
     return (
         <AppForm schema={changeClassSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ClassSectionFormField options={data?.data ?? []} isLoading={isLoading} />
+                <ClassSectionFormField options={data ?? []} isLoading={isLoading} />
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={() => setIsOpen(false)}>Cancel</AppForm.Cancel>

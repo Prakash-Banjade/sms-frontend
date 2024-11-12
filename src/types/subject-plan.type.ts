@@ -1,5 +1,4 @@
 
-import { TClassRoom } from "./classRoom.type";
 import { TMeta } from "./global.type";
 import { Teacher } from "./teacher.type";
 
@@ -25,7 +24,7 @@ export type TSubjectPlan = {
     theoryFM: number,
     practicalPM: number,
     practicalFM: number,
-    classRoom: TClassRoom,
+    classRoom: any, // TODO: use correct type
     teacher: Teacher
 
 }

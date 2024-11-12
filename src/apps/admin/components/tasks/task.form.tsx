@@ -72,7 +72,7 @@ export default function TaskForm(props: Props) {
 
     async function onSubmit(values: taskSchemaType) {
         // check if section is selected or not
-        if (data?.data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionIds?.length) {
+        if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionIds?.length) {
             form.setError("sectionIds", { type: "required", message: "Section is required" });
             return;
         }
@@ -108,7 +108,7 @@ export default function TaskForm(props: Props) {
                         required
                     />
 
-                    <ClassSectionFormField multipleSections options={data?.data ?? []} isLoading={isLoading} />
+                    <ClassSectionFormField multipleSections options={data ?? []} isLoading={isLoading} />
 
                     <AppForm.DynamicSelect<taskSchemaType>
                         name="subjectId"
