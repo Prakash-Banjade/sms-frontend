@@ -28,7 +28,7 @@ export function FileUpload<T>({
     maxLimit = 10,
     ...props
 }: AppFormFileUploadProps<T>) {
-    const { control, setValue, setError, clearErrors } = useFormContext();
+    const { control, setValue, setError, clearErrors, getValues } = useFormContext();
     const [uploaded, setUploaded] = useState<IFileUploadResponse['files']>(initialUpload);
 
     const { mutateAsync, isPending } = useAppMutation<FormData, IFileUploadResponse>();
@@ -62,7 +62,7 @@ export function FileUpload<T>({
 
             if (data && data?.files && !!data?.files.length) {
                 setValue(name as string, (
-                    multiple ? data.files.map(file => file.id) : data.files[0].id // handling single and multiple uploads
+                    multiple ? [...getValues(name as string), ...data.files.map(file => file.id)] : [...getValues(name as string), data.files[0].id] // handling single and multiple uploads
                 ));
                 setUploaded(prev => [...prev, ...data.files]);
             }
