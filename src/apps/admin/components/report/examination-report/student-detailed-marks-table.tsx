@@ -22,10 +22,10 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
                             <TableCell>{subject.subject.subjectName}</TableCell>
                             <TableCell>{subject.fullMark}</TableCell>
                             <TableCell>{subject.passMark}</TableCell>
-                            <TableCell>{subject.examReports[0].obtainedMarks}</TableCell>
-                            <TableCell>{subject.examReports[0].percentage}</TableCell>
-                            <TableCell>{subject.examReports[0].gpa}</TableCell>
-                            <TableCell>{subject.examReports[0].grade}</TableCell>
+                            <TableCell>{subject.examReports[0]?.obtainedMarks}</TableCell>
+                            <TableCell>{subject.examReports[0]?.percentage}</TableCell>
+                            <TableCell>{subject.examReports[0]?.gpa}</TableCell>
+                            <TableCell>{subject.examReports[0]?.grade}</TableCell>
                         </TableRow>
                     ))
                 }

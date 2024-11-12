@@ -55,7 +55,7 @@ export default function GetExamSubjectsForm({ setSearchQuery, searchQuery, defau
                     placeholder="Select exam type"
                     queryKey={QueryKey.EXAM_TYPES}
                     disableOnNoOption
-                    containerClassName="w-[200px]"
+                    containerClassName="min-w-[200px]"
                     defaultSelected={defaultExamType}
                     onChange={val => {
                         defaultExamType && setSearchQuery(createQueryString({ // trigger only on edit

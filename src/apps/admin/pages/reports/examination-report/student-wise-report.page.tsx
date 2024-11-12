@@ -57,8 +57,8 @@ function ReportSection() {
         if (!data) return [];
 
         return data.examReport?.examSubjects.map(subject => ({
-            subjectName: subject.subject.subjectName,
-            percentage: subject.examReports[0].percentage,
+            subjectName: subject.subject?.subjectName,
+            percentage: subject.examReports[0]?.percentage,
         }))
     }, [data]);
 
@@ -115,10 +115,10 @@ function ReportSection() {
 
             {/* report summary */}
             <StudentExamReportSummary
-                failedSubjects={data.failedSubjectsCount}
-                gpa={data.gpa}
-                percentage={data.percentage}
-                weakestSubject={data.weakestSubject}
+                failedSubjects={data?.failedSubjectsCount}
+                gpa={data?.gpa}
+                percentage={data?.percentage}
+                weakestSubject={data?.weakestSubject}
             />
 
             {/* bar chart: subject wise performance */}

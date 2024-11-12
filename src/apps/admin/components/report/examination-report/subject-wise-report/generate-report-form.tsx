@@ -46,7 +46,7 @@ export default function GetExamReportBySubjectForm() {
                         placeholder="Select exam type"
                         queryKey={QueryKey.EXAM_TYPES}
                         disableOnNoOption
-                        containerClassName="w-[200px]"
+                        containerClassName="min-w-[200px]"
                         required
                     />
 
