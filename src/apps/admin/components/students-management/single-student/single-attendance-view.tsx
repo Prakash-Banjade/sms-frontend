@@ -9,11 +9,9 @@ import MonthlyAttendanceCount from './monthly-attendance-count'
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams'
 import { createQueryString } from '@/utils/create-query-string'
 import YearlyAttendanceCount from './yearly-attendance-count'
-import { useParams } from 'react-router-dom'
 
-export default function StudentAttendanceView({ accountId }: { accountId: string | undefined }) {
+export default function SingleAttendanceView({ accountId }: { accountId: string | undefined }) {
     const currentDate = new Date();
-    const params = useParams();
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
 
@@ -23,7 +21,7 @@ export default function StudentAttendanceView({ accountId }: { accountId: string
             month: searchParams.get('month'),
             year: searchParams.get('year'),
             take: 32,
-            studentId: params.id,
+            accountId,
         }),
     })
 

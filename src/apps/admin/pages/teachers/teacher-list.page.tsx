@@ -3,7 +3,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { teachersColumns } from "../../components/teachers/teacher.columns"
 import { useSearchParams } from "react-router-dom"
 import { useGetTeachers } from "../../components/teachers/actions"
-import TeacherSearchFilters from "./teacher-search-filters"
+import TeacherSearchFilters from "../../components/teachers/teacher-search-filters"
 import { createQueryString } from "@/utils/create-query-string"
 
 type Props = {}

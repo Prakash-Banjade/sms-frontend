@@ -1,29 +1,7 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TAttendence, TAttendenceCounts, TAttendencesResponse } from "@/types/attendence.type";
-
-
+import { TAttendenceCounts, TAttendencesResponse } from "@/types/attendence.type";
 import { UseQueryOptions } from "@tanstack/react-query";
-
-export const useAttendence = ({
-    id,
-    queryString,
-    options,
-}: {
-    id: string;
-    queryString?: string;
-    options?: UseQueryOptions<TAttendence>
-}) => {
-    const response = useFetchData<TAttendence>({
-        queryKey: [QueryKey.ATTENDANCES, id],
-        endpoint: QueryKey.ATTENDANCES,
-        id,
-        queryString,
-        options,
-    })
-
-    return response;
-}
 
 export const useAttendences = ({
     queryString,
@@ -41,6 +19,7 @@ export const useAttendences = ({
 
     return response;
 }
+
 export const useAttendenceCounts = ({
     queryString,
     options,

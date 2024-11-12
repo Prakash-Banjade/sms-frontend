@@ -63,12 +63,12 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
 
     return (
         <Card className={cn(
-            "flex flex-col",
+            "flex flex-col min-w-56",
             classRoutine.type === ERoutineType.BREAK && "bg-secondary"
         )}>
             <CardContent className="p-4 flex flex-col justify-between flex-grow">
                 <div>
-                    <header className="flex items-center gap-5">
+                    <header className="flex items-center justify-between gap-5">
                         <h3 className="font-semibold text-lg">
                             {
                                 classRoutine.type === ERoutineType.CLASS

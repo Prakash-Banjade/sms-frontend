@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 import { StudentInfoView } from "../../components/students-management/single-student/student-info-view";
-import StudentAttendanceView from "../../components/students-management/single-student/student-attendance-view";
+import SingleAttendanceView from "../../components/students-management/single-student/single-attendance-view";
 import { useState } from "react";
 
 export const SingleStudentPage = () => {
@@ -16,7 +16,7 @@ export const SingleStudentPage = () => {
           <StudentInfoView id={params.id} setAccountId={setAccountId} />
         </div>
         <div className="grow">
-          <StudentAttendanceView accountId={accountId} />
+          <SingleAttendanceView accountId={accountId} />
         </div>
       </div>
     </div>
