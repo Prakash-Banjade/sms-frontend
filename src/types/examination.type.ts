@@ -163,3 +163,24 @@ export type TExamReportByStudent = {
     failedSubjectsCount: number,
     weakestSubject: string
 }
+
+export type TExamReportBySubject = {
+    data: {
+        id: string,
+        obtainedMarks: number,
+        percentage: number,
+        gpa: number,
+        grade: string,
+        fullMark: number,
+        passMark: number,
+        studentId: string,
+        rollNo: number,
+        fullName: string,
+        classRoomName: string
+    }[],
+    count: {
+        totalPassed: string,
+        totalFailed: string,
+    },
+    meta: TMeta,
+}
