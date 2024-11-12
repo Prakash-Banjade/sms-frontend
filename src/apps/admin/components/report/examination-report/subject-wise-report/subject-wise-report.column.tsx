@@ -12,12 +12,8 @@ export const subjectWiseReportColumns: ColumnDef<TExamReportBySubject['data'][0]
         accessorKey: "fullName",
     },
     {
-        header: "Full Mark",
-        accessorKey: "fullMark",
-    },
-    {
-        header: "Pass Mark",
-        accessorKey: "passMark",
+        header: "Class",
+        accessorKey: "classRoomName",
     },
     {
         header: "Obtained Mark",

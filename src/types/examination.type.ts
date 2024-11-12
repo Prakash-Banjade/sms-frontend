@@ -175,6 +175,7 @@ export type TExamReportBySubject = {
         passMark: number,
         studentId: string,
         rollNo: number,
+        subjectName: string,
         fullName: string,
         classRoomName: string
     }[],

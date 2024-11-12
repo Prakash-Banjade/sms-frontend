@@ -8,6 +8,10 @@ import { createQueryString } from "@/utils/create-query-string";
 import SearchInput from "@/components/search-components/search-input";
 import { DataTable } from "@/components/data-table/data-table";
 import { subjectWiseReportColumns } from "@/apps/admin/components/report/examination-report/subject-wise-report/subject-wise-report.column";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useGetClassRoomsOptions } from "@/apps/admin/components/class-rooms/actions";
+import { useSearchParams } from "react-router-dom";
+import { Label } from "@/components/ui/label";
 
 export default function ExaminationReport_SubjectWise() {
     return (
@@ -39,6 +43,7 @@ function ReportSection() {
             page: searchParams.get('page'),
             take: searchParams.get('take'),
             search: searchParams.get('search'),
+            sectionId: searchParams.get('sectionId'),
         }),
         options: { enabled: !!examTypeId && !!classRoomId && !!examSubjectId }
     });
@@ -51,6 +56,18 @@ function ReportSection() {
 
     return (
         <section className="p-6 rounded-lg border space-y-6">
+            <section className="flex justify-between gap-5">
+                <h2 className="text-2xl font-medium">{data?.data[0]?.subjectName} Report</h2>
+                <div className="flex flex-col gap-1">
+                    <span>
+                        Full Mark: {data?.data[0]?.fullMark}
+                    </span>
+                    <span>
+                        Pass Mark: {data?.data[0]?.passMark}
+                    </span>
+                </div>
+            </section>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                     <CardHeader className="pb-2">
@@ -75,48 +92,53 @@ function ReportSection() {
                     data={data?.data ?? []}
                     columns={subjectWiseReportColumns}
                     meta={data?.meta}
-                    filters={<section className="flex gap-6">
-                        <SearchInput label="Search" placeholder="Search by student name" className="w-full" />
-                    </section>}
+                    filters={<SearchFilters enabled={!!data?.data?.length} />}
                 />
-
-                {/* <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="w-[100px]">Roll No</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Full Mark</TableHead>
-                            <TableHead>Pass Mark</TableHead>
-                            <TableHead>Obtained Marks</TableHead>
-                            <TableHead>Percentage</TableHead>
-                            <TableHead>GPA</TableHead>
-                            <TableHead>Grade</TableHead>
-                            <TableHead>Remark</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {data?.data?.map((report) => (
-                            <TableRow key={report.id}>
-                                <TableCell>{report.rollNo}</TableCell>
-                                <TableCell>{report.fullName}</TableCell>
-                                <TableCell>{report.fullMark}</TableCell>
-                                <TableCell>{report.passMark}</TableCell>
-                                <TableCell>{report.obtainedMarks}</TableCell>
-                                <TableCell>{report.percentage}</TableCell>
-                                <TableCell>{report.gpa}</TableCell>
-                                <TableCell>{report.grade}</TableCell>
-                                <TableCell>
-                                    {
-                                        report.obtainedMarks >= report.passMark
-                                            ? <Badge variant={'success'}>Passed</Badge>
-                                            : <Badge variant={'destructive'}>Failed</Badge>
-                                    }
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table> */}
             </section>
         </section>
     )
 };
+
+function SearchFilters({ enabled = false }: { enabled?: boolean }) {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const classRoomId = searchParams.get('classRoomId');
+
+    const { data, isLoading } = useGetClassRoomsOptions({
+        queryString: 'page=1&take=50',
+        options: { enabled }
+    });
+
+    return (
+        <section className="flex gap-6">
+            <SearchInput
+                label="Search"
+                placeholder="Search by student name"
+            />
+            <section className="space-y-2">
+                <Label>Select class</Label>
+                <Select
+                    value={searchParams.get('sectionId') ?? ''}
+                    onValueChange={val => {
+                        !!val ? searchParams.set('sectionId', val) : searchParams.delete('sectionId');
+                        setSearchParams(searchParams);
+                    }}
+                    disabled={!enabled || isLoading}
+                >
+                    <SelectTrigger className="min-w-[200px]">
+                        <SelectValue placeholder="Section" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectItem value={'all'}>All</SelectItem>
+                            {
+                                data?.find((classRoom) => classRoom.id === classRoomId)?.children?.map((section) => (
+                                    <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
+                                ))
+                            }
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </section>
+        </section>
+    )
+}
