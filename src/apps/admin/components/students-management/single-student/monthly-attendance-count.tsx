@@ -27,17 +27,21 @@ const months: Record<number, string> = {
 
 const years = Array.from({ length: 5 }, (_, i) => (new Date().getFullYear() - i)).reverse();
 
-export default function MonthlyAttendanceCount() {
+export default function MonthlyAttendanceCount({ accountId }: { accountId: string | undefined }) {
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetAttendanceCounts({
         queryString: createQueryString({
             month: searchParams.get('month'),
             year: searchParams.get('year'),
+            accountId
         }),
+        options: { enabled: !!accountId }
     })
 
     const getPercentage = (count: number, total: number) => {
+        if (total === 0) return 0;
+        
         return ((count / total) * 100).toFixed(2);
     }
 

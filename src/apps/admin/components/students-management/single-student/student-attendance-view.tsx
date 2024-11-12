@@ -11,7 +11,7 @@ import { createQueryString } from '@/utils/create-query-string'
 import YearlyAttendanceCount from './yearly-attendance-count'
 import { useParams } from 'react-router-dom'
 
-export default function StudentAttendanceView() {
+export default function StudentAttendanceView({ accountId }: { accountId: string | undefined }) {
     const currentDate = new Date();
     const params = useParams();
     const { searchParams, setSearchParams } = useCustomSearchParams()
@@ -97,10 +97,10 @@ export default function StudentAttendanceView() {
                         </div>
                     </TabsContent>
                     <TabsContent value="monthly" className="mt-4">
-                        <MonthlyAttendanceCount />
+                        <MonthlyAttendanceCount accountId={accountId} />
                     </TabsContent>
                     <TabsContent value="yearly" className="mt-4">
-                        <YearlyAttendanceCount />
+                        <YearlyAttendanceCount accountId={accountId} />
                     </TabsContent>
                 </Tabs>
             </CardContent>

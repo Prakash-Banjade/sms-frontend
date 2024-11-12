@@ -12,16 +12,20 @@ import { CountsLoadingSkeleton } from "./monthly-attendance-count";
 
 const years = Array.from({ length: 5 }, (_, i) => (new Date().getFullYear() - i)).reverse();
 
-export default function YearlyAttendanceCount() {
+export default function YearlyAttendanceCount({accountId }: { accountId: string | undefined }) {
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetAttendanceCounts({
         queryString: createQueryString({
             year: searchParams.get('year'),
+            accountId,
         }),
+        options: { enabled: !!accountId }
     })
 
     const getPercentage = (count: number, total: number) => {
+        if (total === 0) return 0;
+        
         return ((count / total) * 100).toFixed(2);
     }
 

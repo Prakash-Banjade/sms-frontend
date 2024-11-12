@@ -7,11 +7,16 @@ import { useGetStudent } from "../student-actions";
 import { formatDate } from "@/utils/format-date";
 import { truncateFilename } from "@/utils/truncate-file-name";
 import { getImageUrl } from "@/lib/utils";
+import { useEffect } from "react";
 
-export const StudentInfoView = ({ id }: { id: string }) => {
+export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
     const { data: student, isLoading } = useGetStudent({
         id,
     });
+
+    useEffect(() => {
+        if (student?.account?.id) setAccountId(student.account.id);
+    }, [student])
 
     if (isLoading) return <div className="p-5">Loading the student info...</div>
 

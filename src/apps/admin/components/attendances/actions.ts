@@ -8,7 +8,7 @@ export const useGetAttendances = ({
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TAttendencesResponse>
+    options?: Partial<UseQueryOptions<TAttendencesResponse>>
 }) => {
     const response = useFetchData<TAttendencesResponse>({
         queryKey: queryString ? [QueryKey.ATTENDANCES, queryString] : [QueryKey.ATTENDANCES],
@@ -25,7 +25,7 @@ export const useGetAttendanceCounts = ({
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TAttendenceCounts>
+    options?: Partial<UseQueryOptions<TAttendenceCounts>>
 }) => {
     const response = useFetchData<TAttendenceCounts>({
         queryKey: queryString ? [QueryKey.ATTENDANCES, queryString] : [QueryKey.ATTENDANCES],

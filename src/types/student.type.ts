@@ -89,6 +89,9 @@ export type TSingleStudent = {
             vehicleNumber: string
         } | null
     } | null;
+    account: {
+        id: string;
+    },
 }
 
 export type TStudentsWithAttendenceResponse = (TEntityWithAttendance & {
