@@ -78,3 +78,13 @@ export type TLibraryOverviewCount = {
         transactionCount: string
     }[]
 }
+/**
+|--------------------------------------------------
+| student view type
+|--------------------------------------------------
+*/
+export type TSt_TrasactionCount = {
+    issuedCount: number,
+    overdueCount: number,
+    totalCount: number,
+}

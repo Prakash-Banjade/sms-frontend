@@ -9,6 +9,7 @@ const StudentAttendenceListPage = () => {
     const [searchParams] = useSearchParams();
     const monthInd = useRef(getAttendanceMonth(searchParams));
 
+
     const { data, isLoading } = useAttendences({
         queryString: `take=32${!!monthInd?.current ? `&month=${monthInd.current}` : ''}`
     });
@@ -18,9 +19,13 @@ const StudentAttendenceListPage = () => {
 
 
     if (isLoading) return <div>Loading..</div>;
-    if (!data) return <div className="flex justify-center items-center h-[50vh] text-muted-foreground">
-        No attendance available
-    </div>;
+    if (!data || data?.data.length === 0) {
+        return (
+            <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">
+                No attendence available!!
+            </div>
+        );
+    }
 
     return (
         <div className=" flex flex-col lg:flex-row gap-10 justify-between p-6">

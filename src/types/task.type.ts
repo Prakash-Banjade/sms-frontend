@@ -14,7 +14,10 @@ export type Task = {
         name: string
     }[],
     parentClassId: string | null,
-    parentClassName: string | null
+    parentClassName: string | null,
+    submission: {
+        status: ETaskSubmissionStatus
+    }[]
 }
 
 export type TasksResponse = {
@@ -47,7 +50,16 @@ export type TSingleTask = {
             id: string,
             name: string,
         } | null
+    }[],
+    submissions: {
+        status: ETaskSubmissionStatus,
+        content: string,
+        attachments: {
+            id: string,
+            url: string
+        }[]
     }[]
+
 }
 
 export type TSingleTaskStatistics = {
@@ -83,3 +95,4 @@ export type TaskSubmissionsResponse = {
     data: TaskSubmission[],
     meta: TMeta;
 }
+

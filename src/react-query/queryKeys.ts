@@ -14,7 +14,7 @@ export enum QueryKey {
     CLASSES = "class-rooms",
     SECTIONS = "sections",
     IMAGES = "upload/images",
-    FILES= "upload/files",
+    FILES = "upload/files",
     SUBJECTS = 'subjects',
     SUBJECT_CHAPTERS = 'subject-chapters',
     CLASSROUTINE = 'class-routines',
@@ -23,7 +23,6 @@ export enum QueryKey {
     DORMITORY_ROOMS = "dormitory-system/dormitory-rooms",
     ENROLLMENTS = "enrollments",
     OPTIONS = "options",
-    ATTENDANCES = "attendances",
     LEAVE_REQUESTS = "leave-requests",
     EMPLOYEES = "employees",
     LIBRARY_BOOKS = "library-books",
@@ -42,4 +41,5 @@ export enum QueryKey {
     EXAMS = "exams",
     EXAM_REPORTS = "exam-reports",
     EXAM_SUBJECTS = "exam-subjects",
+    ATTENDANCES = 'attendances',
 };

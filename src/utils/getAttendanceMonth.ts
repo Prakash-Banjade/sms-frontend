@@ -12,16 +12,3 @@ export function getAttendanceMonth(searchParams: URLSearchParams) {
 
     return undefined;
 }
-export function getAttendanceYear(searchParams: URLSearchParams) {
-
-    const year = searchParams.get('year');
-
-    if (year && !isNaN(Number(year))) {
-        const yearInd = Math.abs(Number(year));
-
-
-        return yearInd;
-    }
-
-    return undefined;
-}
