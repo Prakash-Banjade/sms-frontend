@@ -13,8 +13,8 @@ type Props = {
 const LibraryCard = ({ transaction }: Props) => {
     const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0 && !transaction.returnedAt;
     return (
-        <Card key={transaction.id} className="flex flex-col h-full">
-            <CardHeader className="pb-2 flex  flex-row justify-between">
+        <Card key={transaction.id} className="flex flex-col gap-3 h-full">
+            <CardHeader className="pb-2 flex   flex-row justify-between">
                 <div className="flex items-center space-x-4">
                     <CardTitle className="text-lg text-wrap">{transaction.bookName} </CardTitle>
                 </div>

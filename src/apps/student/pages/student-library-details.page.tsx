@@ -27,7 +27,7 @@ const StudentLibraryDetailsPage = () => {
     }
     return (
         <div className="mx-auto container flex flex-col gap-6">
-            {/* TODO:coonecrt with api  */}
+
             <h2 className="text-lg font-semibold">My Library</h2>
             <LibraryStatistics />
             <section className="flex flex-wrap  justify-between ">
