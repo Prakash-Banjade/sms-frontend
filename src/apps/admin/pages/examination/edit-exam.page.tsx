@@ -2,7 +2,7 @@ import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import ExamSetupForm from "../../components/examination/exams/exam-setup.form";
 import { Navigate, useParams } from "react-router-dom";
 import { useGetExam } from "../../components/examination/data-access";
-import { useGetSubjects } from "../../components/subjects/actions";
+import { useGetSubjects } from "../../components/subjects/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { useEffect, useMemo, useState } from "react";
 import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form";

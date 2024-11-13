@@ -4,6 +4,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
 import { TClassesResponse } from "@/types/class.type";
+import { ESubjectType } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -76,6 +77,15 @@ export default function SubjectForm(props: Props) {
                         placeholder="eg. HM101"
                         description="Enter the subject code"
                         required
+                    />
+
+                    <AppForm.Select<subjectFormSchemaType>
+                        name="type"
+                        label="Subject Type"
+                        placeholder="Select subject type"
+                        description="Select the subject type"
+                        required
+                        options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))}
                     />
 
                     <AppForm.Number<subjectFormSchemaType>

@@ -1,6 +1,6 @@
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
 import { useGetClassRoomsOptions } from '@/apps/admin/components/class-rooms/actions';
-import { HTMLAttributes, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
     Select,
     SelectContent,
@@ -53,14 +53,20 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                     <Label className="">
                         Class
                     </Label>
-                    <ResetBtn onClick={() => setSearchParams(classRoomKey, undefined)} />
                 </div>
-                <Select value={searchParams.get(classRoomKey) ?? ''} onValueChange={val => setSearchParams(classRoomKey, val)} disabled={isLoading}>
+                <Select
+                    value={searchParams.get(classRoomKey) ?? ''}
+                    onValueChange={val => {
+                        val === 'all' ? setSearchParams(classRoomKey, undefined) : setSearchParams(classRoomKey, val)
+                    }}
+                    disabled={isLoading}
+                >
                     <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Select a class" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
+                            <SelectItem value="all">All</SelectItem>
                             {
                                 data?.map((classRoom) => (
                                     <SelectItem value={classRoom.id} key={classRoom.id}>{classRoom.name}</SelectItem>
@@ -77,11 +83,12 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                         <Label className="">
                             Section
                         </Label>
-                        <ResetBtn onClick={() => setSearchParams("sectionId", undefined)} />
                     </div>
                     <Select
                         value={searchParams.get("sectionId") ?? ''}
-                        onValueChange={val => setSearchParams("sectionId", val)}
+                        onValueChange={val => {
+                            val === 'all' ? setSearchParams('sectionId', undefined) : setSearchParams('sectionId', val)
+                        }}
                         disabled={
                             !searchParams.get(classRoomKey)
                             || !data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.length
@@ -93,6 +100,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
+                                <SelectItem value="all">All</SelectItem>
                                 {
                                     data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
                                         <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
@@ -104,13 +112,5 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                 </section>
             }
         </>
-    )
-}
-
-function ResetBtn(props: HTMLAttributes<HTMLButtonElement>) {
-    return (
-        <button type="button" className="text-muted-foreground text-sm absolute right-0 mt-[2px]" {...props}>
-            Clear
-        </button>
     )
 }

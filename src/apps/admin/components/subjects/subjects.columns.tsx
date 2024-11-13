@@ -14,6 +14,7 @@ import { TSubject } from "@/types/subject.type"
 import SubjectForm from "./subject-form"
 import { Link } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 
 export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
@@ -25,8 +26,10 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         accessorKey: "subjectCode",
     },
     {
-        header: "Subject name",
         accessorKey: "subjectName",
+        header: ({ column }) => {
+            return <DataTableColumnHeader column={column} title="Subject Name" />
+        },
         cell: ({ row }) => {
             return (
                 <TooltipWrapper label="Click to view">
@@ -55,6 +58,13 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
             return !!row.original?.teacher
                 ? <span>{teacherName}</span>
                 : <span className="text-muted-foreground">**Not Assigned**</span>
+        }
+    },
+    {
+        header: "Subject type",
+        accessorKey: "subjectType",
+        cell: ({ row }) => {
+            return <span className="capitalize">{row.original.type}</span>
         }
     },
     {

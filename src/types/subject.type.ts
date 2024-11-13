@@ -1,4 +1,4 @@
-import { ESubjectChapterPriority, TMeta } from "./global.type";
+import { ESubjectChapterPriority, ESubjectType, TMeta } from "./global.type";
 
 export type TSubject = {
     id: string,
@@ -11,6 +11,7 @@ export type TSubject = {
     practicalPM: number,
     practicalFM: number,
     content: string,
+    type: ESubjectType,
     classRoom: {
         id: string,
         name: string,

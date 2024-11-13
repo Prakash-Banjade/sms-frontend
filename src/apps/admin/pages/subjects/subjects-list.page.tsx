@@ -1,17 +1,29 @@
 import { DataTable } from "@/components/data-table/data-table"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { useGetSubjects } from "../../components/subjects/actions"
+import { useGetSubjects } from "../../components/subjects/data-access"
 import { subjectsColumns } from "../../components/subjects/subjects.columns"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
+import SearchInput from "@/components/search-components/search-input"
+import { createQueryString } from "@/utils/create-query-string"
+import { FacetedFilter } from "@/components/data-table/faceted-filter"
+import { ESubjectType } from "@/types/global.type"
+import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
 
 export default function SubjectsListPage() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
     const { data, isLoading } = useGetSubjects({
-        queryString: searchParams.toString(),
+        queryString: createQueryString({
+            page: searchParams.get("page"),
+            take: searchParams.get("take"),
+            search: searchParams.get("search"),
+            types: searchParams.get("types"),
+            sortBy: searchParams.get("sortBy"),
+            order: searchParams.get("order"),
+        })
     });
 
     if (isLoading) return <div>Loading...</div>;
@@ -29,8 +41,20 @@ export default function SubjectsListPage() {
                 columns={subjectsColumns}
                 data={data?.data ?? []}
                 meta={data?.meta}
+                filters={<SubjectsSearchFilters />}
             />
 
         </ContainerLayout>
+    )
+}
+
+function SubjectsSearchFilters() {
+
+    return (
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
+            <SearchInput placeholder="Search..." label="Search by name" />
+            <ClassRoomSearchFilterInputs onlyClassRoom />
+            <FacetedFilter searchKey="types" title="Subject Type" options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))} />
+        </section>
     )
 }

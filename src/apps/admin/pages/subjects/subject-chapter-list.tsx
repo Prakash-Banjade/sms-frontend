@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Save } from "lucide-react"
-import { useGetSubjectChapters } from "../../components/subjects/actions"
+import { useGetSubjectChapters } from "../../components/subjects/data-access"
 import { createQueryString } from "@/utils/create-query-string"
 import { useEffect, useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
