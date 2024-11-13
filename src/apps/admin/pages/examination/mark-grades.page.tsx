@@ -16,6 +16,9 @@ export default function MarkGradePage() {
                 <section className="@7xl:col-span-2">
                     <section className='space-y-3 mb-5'>
                         <h1 className="text-2xl font-bold">Mark Grades List</h1>
+                        <p className="text-sm text-info bg-info/10 p-1 px-3 rounded-full w-fit">
+                            <strong>! Note</strong>: Mark grades are used to calculate the final mark of the student. So it is recommended to add grades once and never change.
+                        </p>
                     </section>
                     <MarkGradesList />
                 </section>
