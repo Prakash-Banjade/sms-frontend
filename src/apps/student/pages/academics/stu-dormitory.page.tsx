@@ -4,7 +4,7 @@ import DormitoryCard from "../../components/dormitory/dormitory-card";
 
 const StudentDormitoryPage = () => {
 
-    const { data, isLoading } = useGetDormitories({
+    const { isLoading } = useGetDormitories({
     });
     if (isLoading) return <div>Loading...</div>;
     // if (!data || data?.data.length === 0) {

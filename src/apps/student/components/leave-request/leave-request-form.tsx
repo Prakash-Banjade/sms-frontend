@@ -21,9 +21,9 @@ export default function LeaveRequestForm() {
 
         const response = await mutateAsync({
             method,
-            endpoint: QueryKey.LEAVEREQUEST,
+            endpoint: QueryKey.LEAVE_REQUESTS,
             data: getDirtyValues(values, form),
-            invalidateTags: [QueryKey.LEAVEREQUEST],
+            invalidateTags: [QueryKey.LEAVE_REQUESTS],
         });
 
         if (response?.data?.message) {

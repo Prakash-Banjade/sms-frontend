@@ -1,5 +1,5 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Separator } from "@radix-ui/react-separator";
 import { AppSidebar, TGroupMenuItem } from "./sidebar";
 import { ThemeToggleBtn } from "../theme-toggle";
