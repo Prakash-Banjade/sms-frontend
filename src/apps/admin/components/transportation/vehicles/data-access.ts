@@ -23,14 +23,14 @@ export const useGetVehicle = ({
     return response;
 }
 
-export const useGetVehicles = ({
+export const useGetVehicles = <T = TVehiclesResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TVehiclesResponse>
+    options?: UseQueryOptions<T>
 }) => {
-    const response = useFetchData<TVehiclesResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.VEHICLES,
         queryKey: queryString ? [QueryKey.VEHICLES, queryString] : [QueryKey.VEHICLES],
         queryString,
