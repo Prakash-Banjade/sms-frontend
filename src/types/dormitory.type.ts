@@ -73,3 +73,21 @@ export type TDormitoryRoomResponse = {
     meta: TMeta,
 }
 
+/**
+|--------------------------------------------------
+| my dormitory for student
+|--------------------------------------------------
+*/
+export type TMyDormitory = {
+    id: string
+    roomNumber: number,
+    noOfBeds: number,
+    costPerBed: number,
+    dormitoryName: string
+    roomTypeName: string,
+    roomMates: {
+        id: string
+        name: string
+        classroomName: string
+    }[]
+}
