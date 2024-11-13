@@ -10,7 +10,7 @@ const RequireAuth = ({ authorizedRoles }: { authorizedRoles: Role[] }) => {
     return payload?.role && authorizedRoles?.includes(payload?.role) ? (
         <Outlet />
     ) : (
-        <Navigate to="/" state={{ from: location }} replace />
+        <Navigate to="/auth/login" state={{ from: location }} replace />
     );
 };
 

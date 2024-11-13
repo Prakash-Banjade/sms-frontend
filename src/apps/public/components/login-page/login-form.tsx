@@ -8,12 +8,13 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import AppForm from "@/components/forms/app-form"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
+import { EMAIL_REGEX } from "@/CONSTANTS"
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const loginFormSchema = z.object({
@@ -26,6 +27,7 @@ type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 export function LoginForm({ className, ...props }: LoginFormProps) {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const form = useForm<z.infer<typeof loginFormSchema>>({
         resolver: zodResolver(loginFormSchema),
@@ -49,7 +51,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             setAuth(response.data.access_token);
             const payload: TAuthPayload = jwtDecode(response.data.access_token);
 
-            navigate(`/${payload.role}/dashboard`, { replace: true });
+            navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });
         }
     }
 
@@ -70,7 +72,15 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                             placeholder="********"
                         />
                         <p className="text-sm text-muted-foreground mt-2 text-right">
-                            <Link to="/forgot-password" className="hover:underline">Forgot password?</Link>
+                            <Link
+                                to="/auth/forgot-password"
+                                className="hover:underline"
+                                state={{
+                                    email: EMAIL_REGEX.test(form.getValues('email')) ? form.getValues('email') : ''
+                                }}
+                            >
+                                Forgot password?
+                            </Link>
                         </p>
                     </section>
 

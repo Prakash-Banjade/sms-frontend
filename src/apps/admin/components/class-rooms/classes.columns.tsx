@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { useAppMutation } from "@/hooks/useAppMutation"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/types/class.type"
-import { classRoomFormSchemaType } from "@/schemas/class-room.schema"
 import ClassRoomForm from "./class-room.form"
+import ClassSectionForm from "./class-room-section.form"
+import { useNavigate } from "react-router-dom"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -30,33 +30,38 @@ export const classesColumns: ColumnDef<TClass>[] = [
     },
     {
         header: "Total boys",
-        accessorKey: "totalMalesStudentsCount",
+        accessorKey: "totalMaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalMalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalMaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalMalesStudentsCount}</span>
+                <span>{row.original.totalMaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalMalesStudentsCount}{" "}
+                    {row.original.totalMaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-sm">({Math.round(percentage)}%)</span>
                 </span>
         }
     },
     {
         header: "Total girls",
-        accessorKey: "totalFemalesStudentsCount",
+        accessorKey: "totalFemaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = row.original.totalStudentsCount === 0
+            const percentage = +row.original.totalStudentsCount === 0
                 ? 0
-                : (row.original.totalFemalesStudentsCount / row.original.totalStudentsCount) * 100;
+                : (+row.original.totalFemaleStudentsCount / +row.original.totalStudentsCount) * 100;
             return !percentage ?
-                <span>{row.original.totalFemalesStudentsCount}</span>
+                <span>{row.original.totalFemaleStudentsCount}</span>
                 : <span>
-                    {row.original.totalFemalesStudentsCount}{" "}
+                    {row.original.totalFemaleStudentsCount}{" "}
                     <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
                 </span>
         }
+    },
+    {
+        header: "Class Teacher",
+        accessorKey: "classTeacherName",
+        cell: ({ row }) => <span>{row.original.classTeacherName || <span className="text-muted-foreground">"N/A"</span>}</span>,
     },
     {
         header: "Monthly fee",
@@ -72,18 +77,16 @@ export const classesColumns: ColumnDef<TClass>[] = [
         cell: ({ row }) => {
             return !!row.original.location
                 ? <span>{row.original.location}</span>
-                : <span className="text-muted-foreground">**Not Available**</span>
+                : <span className="text-muted-foreground">N/A</span>
         },
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const classroom = row.original;
+            const navigate = useNavigate();
             const [isEditOpen, setIsEditOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-            const { mutateAsync } = useAppMutation<classRoomFormSchemaType, any>();
+            const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
 
             return (
                 <>
@@ -91,8 +94,31 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
                         title="Edit class"
+                        className="w-[97%] max-w-[800px]"
                     >
-                        <ClassRoomForm classRoomId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={row.original} />
+                        <ClassRoomForm
+                            classRoomId={row.original.id}
+                            setIsOpen={setIsEditOpen}
+                            defaultValues={{
+                                ...row.original,
+                                classTeacherId: row.original.classTeacherId,
+                            }}
+                            selectedClassTeacherOption={
+                                (row.original.classTeacherId && row.original.classTeacherName)
+                                    ? { value: row.original.classTeacherId, label: row.original.classTeacherName }
+                                    : undefined
+                            }
+                        />
+                    </ResponsiveDialog>
+                    <ResponsiveDialog
+                        isOpen={isSectionFormOpen}
+                        setIsOpen={setIsSectionFormOpen}
+                        title="Add Section"
+                    >
+                        <ClassSectionForm
+                            parentClassId={row.original.id}
+                            setIsOpen={setIsSectionFormOpen}
+                        />
                     </ResponsiveDialog>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -103,8 +129,14 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id)}>
+                                <span>View full detail</span>
+                            </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                <span>Edit</span>
+                                <span>Edit class</span>
+                            </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={() => setIsSectionFormOpen(true)}>
+                                <span>Add section</span>
                             </DropdownMenuButtonItem>
                             {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>

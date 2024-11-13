@@ -23,7 +23,7 @@ export interface AsideLinksLayoutProps extends PropsWithChildren {
 
 export default function AsideLinksLayout({ title, description, quickLinks, relatedActions, children }: AsideLinksLayoutProps) {
     return (
-        <div className="p-6 flex gap-12 justify-between">
+        <div className="flex gap-12 justify-between">
             <div className="flex flex-col gap-6 flex-1">
                 <header className='mb-6 space-y-3'>
                     <h1 className="text-3xl font-bold">{title}</h1>

@@ -14,8 +14,11 @@ const badgeVariants = cva(
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+        destructiveOutline: "font-base text-red-700 bg-red-50 ring-red-600/20 dark:text-red-50 dark:bg-red-700 dark:ring-red-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap",
         outline: "text-foreground",
-        success: "font-base text-green-700 bg-green-50 ring-green-600/20 dark:text-green-50 dark:bg-green-700 dark:ring-green-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap"
+        success: "font-base text-green-700 bg-green-50 ring-green-600/20 dark:text-green-50 dark:bg-green-700 dark:ring-green-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap",
+        info: "font-base text-cyan-700 bg-cyan-50 ring-cyan-600/20 dark:text-cyan-50 dark:bg-cyan-700 dark:ring-cyan-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap",
+        warning: "font-base text-yellow-700 bg-yellow-50 ring-yellow-600/20 dark:text-yellow-50 dark:bg-yellow-700 dark:ring-yellow-100/20 inline-flex flex-shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap", 
       },
     },
     defaultVariants: {
@@ -26,7 +29,7 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+  VariantProps<typeof badgeVariants> { }
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (

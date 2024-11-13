@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useAuth } from "@/contexts/auth-provider";
 import { useMemo } from "react";
+import { useGetActiveAcademicYear } from "@/apps/admin/components/academic-year/actions";
+import { Badge } from "../ui/badge";
+import { Skeleton } from "../ui/skeleton";
 
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
@@ -25,11 +28,13 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
             ?.menuItems?.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
 
         const item = menuItem?.items?.length
-            ? menuItem.items.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
+            ? menuItem.items.find(item => location.pathname === `/${payload?.role}/${item.url}`)
             : undefined;
 
         return { menuItem, item };
     }, [location, menuItems])
+
+    const { data, isLoading } = useGetActiveAcademicYear({});
 
     return (
         <SidebarProvider>
@@ -57,11 +62,17 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                             }
                         </BreadcrumbList>
                     </Breadcrumb>
-                    <div className="ml-auto">
+                    <div className="ml-auto flex items-center gap-10">
+                        <span>
+                            {
+                                isLoading ? <Skeleton className="h-4 w-4" /> : <Badge variant="outline" className="text-sm">{data?.name}</Badge>
+                            }
+                        </span>
+
                         <ThemeToggleBtn />
                     </div>
                 </header>
-                <main className="">
+                <main className="p-6">
                     <Outlet />
                 </main>
             </SidebarInset>

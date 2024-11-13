@@ -16,6 +16,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { Badge } from "@/components/ui/badge"
+import { useQueryClient } from "@tanstack/react-query"
 
 export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
     {
@@ -51,7 +52,7 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
         cell: ({ row }) => {
             const academicYear = row.original;
             const [isEditOpen, setIsEditOpen] = useState(false);
-            // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+            const queryclient = useQueryClient();
 
             const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
 
@@ -61,6 +62,8 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
                     endpoint: `${QueryKey.ACADEMIC_YEARS}/${academicYear.id}/change-active`,
                     invalidateTags: [QueryKey.ACADEMIC_YEARS],
                 });
+
+                queryclient.invalidateQueries({ queryKey: [QueryKey.STUDENTS] })
             }
 
             return (

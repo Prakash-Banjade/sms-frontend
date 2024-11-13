@@ -4,7 +4,6 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
 import { TClassesResponse } from "@/types/class.type";
-import { TeachersResponse } from "@/types/teacher.types";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -40,7 +39,11 @@ export default function SubjectForm(props: Props) {
             method,
             endpoint: QueryKey.SUBJECTS,
             id,
-            data: getDirtyValues(values, form),
+            data: {
+                ...getDirtyValues(values, form),
+                classRoomId: values.classRoomId ?? null,
+                teacherId: values.teacherId ?? null,
+            },
             invalidateTags: [QueryKey.SUBJECTS],
         });
 
@@ -57,8 +60,8 @@ export default function SubjectForm(props: Props) {
 
     return (
         <AppForm schema={subjectFormSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <section className="grid lg:grid-cols-2 gap-8 grid-cols-1">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="@container space-y-8">
+                <section className="grid @2xl:grid-cols-2 @4xl:grid-cols-3 gap-8 grid-cols-1">
                     <AppForm.Text<subjectFormSchemaType>
                         name="subjectName"
                         label="Subject name"
@@ -113,24 +116,19 @@ export default function SubjectForm(props: Props) {
                         placeholder="Select class room"
                         description="Select the class room. Can assigned later."
                         fetchOptions={{
-                            endpoint: QueryKey.CLASSES,
-                            queryKey: [QueryKey.CLASSES],
+                            endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
+                            queryKey: [QueryKey.CLASSES, QueryKey.OPTIONS],
                             queryString: 'page=1&take=50',
                         }}
                         labelKey={'name'}
                     />
 
-                    <AppForm.DynamicSelect<subjectFormSchemaType, TeachersResponse>
+                    <AppForm.DynamicSelect_V2<subjectFormSchemaType>
                         name="teacherId"
                         label="Subject Teacher"
                         placeholder="Select teacher"
                         description="Select the subject teacher. Can assigned later."
-                        fetchOptions={{
-                            endpoint: QueryKey.TEACHERS,
-                            queryKey: [QueryKey.TEACHERS],
-                            queryString: 'page=1&take=50',
-                        }}
-                        labelKey={'teacherFullName'}
+                        queryKey={QueryKey.TEACHERS}
                     />
 
                 </section>

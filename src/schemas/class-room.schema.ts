@@ -1,3 +1,4 @@
+import { EClassType } from "@/types/global.type";
 import { z } from "zod";
 
 export const classRoomFormSchema = z.object({
@@ -5,11 +6,13 @@ export const classRoomFormSchema = z.object({
     description: z.string().nullish(),
     monthlyTutionFee: z.coerce.number().nonnegative({ message: 'Monthly tuition fee must be a positive number' }).refine(value => value >= 0, {
         message: 'Monthly tuition fee is required',
-    }),
+    }).optional(),
     monthlyFee: z.coerce.number().nonnegative({ message: 'Monthly fee must be a positive number' }).refine(value => value >= 0, {
         message: 'Monthly fee is required',
-    }),
+    }).optional(),
     location: z.string().optional(),
+    classType: z.nativeEnum(EClassType).default(EClassType.PRIMARY).optional(),
+    classTeacherId: z.string().uuid({ message: 'Select a valid class teacher' }).nullish(),
 });
 
 export const classRoomFormDefaultValues: Partial<classRoomFormSchemaType> = {

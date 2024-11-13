@@ -5,6 +5,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import usePersist from "@/hooks/usePersist";
+import AppLoadingSkeleton from "../app-sidebar-layout/app-loading-skeleton";
 
 const PersistLogin = () => {
     const { persist } = usePersist();
@@ -46,7 +47,7 @@ const PersistLogin = () => {
     } else if (isPending) {
         //persist: yes, token: no
         // console.log("loading");
-        content = <h1>Refresh loading...</h1>;
+        content = <AppLoadingSkeleton />;
     } else if (isError) {
         //persist: yes, token: no
 
