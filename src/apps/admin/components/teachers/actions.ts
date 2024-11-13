@@ -23,14 +23,14 @@ export const useGetTeacher = <T = TSingleTeacher>({
     return response;
 }
 
-export const useGetTeachers = ({
+export const useGetTeachers = <T = TeachersResponse,>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TeachersResponse>
+    options?: UseQueryOptions<T>
 }) => {
-    const response = useFetchData<TeachersResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.TEACHERS,
         queryKey: queryString ? [QueryKey.TEACHERS, queryString] : [QueryKey.TEACHERS],
         queryString,

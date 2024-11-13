@@ -1,7 +1,7 @@
 
 
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, BellRing, ClipboardList, Images } from "lucide-react";
+import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, Images, GitPullRequest, BookOpenText } from "lucide-react";
 
 export const studentSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -18,14 +18,19 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
         groupLabel: "Academics",
         menuItems: [
             {
-                title: "Assignment",
-                url: "assignments",
-                icon: ClipboardList,
-            },
-            {
-                title: "Homework",
-                url: "homework",
-                icon: ClipboardList,
+                title: "Tasks",
+                url: "tasks",
+                icon: BookOpenText,
+                items: [
+                    {
+                        title: "Homeworks",
+                        url: "tasks/homeworks",
+                    },
+                    {
+                        title: "Assignments",
+                        url: "tasks/assignments",
+                    }
+                ]
             },
             {
                 title: "Attendance",
@@ -52,19 +57,24 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 url: "teachers",
                 icon: Users,
             },
+            {
+                title: "Leave Request",
+                url: "leave-request",
+                icon: GitPullRequest,
+            },
         ],
     },
     {
-        groupLabel: "Transportation",
+        groupLabel: "Facilities",
         menuItems: [
             {
-                title: "Bus Route",
-                url: "bus-route",
+                title: "Dormitory",
+                url: "dormitory",
                 icon: Bus,
             },
             {
                 title: "Bus Info",
-                url: "bus-info",
+                url: "trasports",
                 icon: Bus,
             },
         ],
@@ -80,7 +90,7 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
         ],
     },
     {
-        groupLabel: "Campus Resources",
+        groupLabel: "School Resources",
         menuItems: [
             {
                 title: "Library",
@@ -94,14 +104,5 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
             },
         ],
     },
-    {
-        groupLabel: "Notifications",
-        menuItems: [
-            {
-                title: "Notice",
-                url: "notice",
-                icon: BellRing,
-            },
-        ],
-    },
+
 ];
