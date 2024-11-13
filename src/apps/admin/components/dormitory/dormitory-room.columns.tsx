@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/hover-card"
 import DormitoryRoomForm, { dormitoryRoomFormType } from "./dormitory-room.form"
 import { ProfileAvatar } from "@/components/ui/avatar"
+import { getImageUrl } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 
 export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
@@ -94,13 +96,15 @@ export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
                             return <li key={student.id}>
                                 <HoverCard openDelay={100} closeDelay={100}>
                                     <HoverCardTrigger>
-                                        <span className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
-                                            {studentName}
-                                        </span>
+                                        <Badge variant={'outline'} className="text-sm">
+                                            <span className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
+                                                {studentName}
+                                            </span>
+                                        </Badge>
                                     </HoverCardTrigger>
                                     <HoverCardContent className="w-80">
-                                        <div className="flex justify-between space-x-4">
-                                            <ProfileAvatar src={student.profileImage?.url} name={studentName} />
+                                        <div className="flex justify-between items-center space-x-4">
+                                            <ProfileAvatar src={getImageUrl(student.profileImage?.url, 'w=80')} className="size-20" name={studentName} />
                                             <div className="space-y-1">
                                                 <h4 className="text-sm font-semibold">{studentName}</h4>
                                                 <p className="text-sm">
