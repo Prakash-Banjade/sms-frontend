@@ -61,6 +61,10 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                     {
                         title: "Subjects List",
                         url: "subjects",
+                    },
+                    {
+                        title: "Student Subject Selection",
+                        url: "subjects/selection",
                     }
                 ]
             },

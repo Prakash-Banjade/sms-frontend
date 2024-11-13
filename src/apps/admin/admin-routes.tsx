@@ -60,6 +60,7 @@ import ExamRoutinePage from './pages/examination/exam-routine.page';
 import ExaminationReport_SubjectWise from './pages/reports/examination-report/subject-wise-report.page';
 import ExaminationReport_StudentWise from './pages/reports/examination-report/student-wise-report.page';
 import SingleTeacherPage from './pages/teachers/single-teacher.page';
+import SubjectSelectionPage from './pages/subjects/subject-selection.page';
 
 const AdminRoutes = () => {
     return (
@@ -81,6 +82,7 @@ const AdminRoutes = () => {
                         <Route index element={<SubjectsListPage />} />
                         <Route path="new" element={<AddSubjectPage />} />
                         <Route path=":id" element={<SingleSubjectPage />} />
+                        <Route path="selection" element={<SubjectSelectionPage />} />
                     </Route>
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />
