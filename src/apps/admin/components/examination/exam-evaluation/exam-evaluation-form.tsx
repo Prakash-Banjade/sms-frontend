@@ -186,7 +186,9 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                                         <Input
                                                             {...field}
                                                             pattern={NUMBER_REGEX_STRING}
-                                                            min={10}
+                                                            type='number'
+                                                            min={1}
+                                                            step={0.01}
                                                             required
                                                             value={field.value ?? ''}
                                                             disabled={!form.getValues(`evaluations.${index}.isChecked`) || isPending || isLoading}
