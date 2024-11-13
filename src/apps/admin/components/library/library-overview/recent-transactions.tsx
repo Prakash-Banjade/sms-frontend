@@ -4,12 +4,10 @@ import { useGetBookTransactions } from "../actions";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/utils/format-date";
 import TableHeadings from "@/components/data-table/table-headings";
-import { differenceInDays } from "date-fns";
+import { isBefore, startOfDay } from "date-fns";
 
 export default function RecentLibraryBookTransactions() {
-    const { data, isLoading } = useGetBookTransactions({
-        queryString: 'take=5',
-    });
+    const { data, isLoading } = useGetBookTransactions({});
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -25,8 +23,8 @@ export default function RecentLibraryBookTransactions() {
                         <TableHeadings headings={['Book', 'Student', 'Class', 'Date', 'Returned', 'Status']} />
                     </TableHeader>
                     <TableBody>
-                        {data?.data?.map((transaction) => {
-                            const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0 && !transaction.returnedAt;
+                        {data?.data?.slice(0, 5).map((transaction: any) => { // we are slicing the data but not using take=5 in query because it would make two queries to the backend due to the transaction query in detailed transaction section
+                            const isOverDue = isBefore(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())) && !transaction.returnedAt;
 
                             return (
                                 <TableRow key={transaction.id}>
