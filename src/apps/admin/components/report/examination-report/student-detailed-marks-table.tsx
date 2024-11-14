@@ -1,5 +1,6 @@
 import { TExamReportByStudent } from "@/types/examination.type";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge";
 
 export function StudentDetailedMarksTable({ examReport }: { examReport: TExamReportByStudent['examReport'] }) {
     return (
@@ -13,6 +14,7 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
                     <TableHead>Percentage</TableHead>
                     <TableHead>GPA</TableHead>
                     <TableHead>Grade</TableHead>
+                    <TableHead>Status</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -26,6 +28,9 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
                             <TableCell>{subject.examReports[0]?.percentage}</TableCell>
                             <TableCell>{subject.examReports[0]?.gpa}</TableCell>
                             <TableCell>{subject.examReports[0]?.grade}</TableCell>
+                            <TableCell>{subject.examReports[0]?.obtainedMarks >= subject.passMark
+                                ? <Badge variant={'success'}>Passed</Badge>
+                                : <Badge variant={'destructive'}>Failed</Badge>}</TableCell>
                         </TableRow>
                     ))
                 }
