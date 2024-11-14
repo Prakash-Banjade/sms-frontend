@@ -8,6 +8,7 @@ const StudentTeacherListPage = () => {
 
   const { data, isLoading } = useGetTeachers<St_TeacherResponse>({
     queryString: createQueryString({
+      skipPagination: 'true',
     }),
   });
 
