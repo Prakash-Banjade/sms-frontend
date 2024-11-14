@@ -30,10 +30,10 @@ export default function ClassRoutineListPage({ }: Props) {
                 payload?.role === Role.ADMIN && <ClassRoutineSearchFilters />
             }
             <Tabs defaultValue={defaultTab} className="mt-6" onValueChange={setCurrentTab}>
-                <TabsList className="w-full grid grid-cols-7">
+                <TabsList className="w-full h-auto flex flex-wrap gap-2">
                     {
                         Object.values(EDayOfWeek).map((day) => (
-                            <TabsTrigger key={day} value={day} className="capitalize">
+                            <TabsTrigger key={day} value={day} className="capitalize flex-1">
                                 {day}
                             </TabsTrigger>
                         ))
