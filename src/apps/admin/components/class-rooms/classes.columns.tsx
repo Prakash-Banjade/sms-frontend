@@ -14,6 +14,7 @@ import { TClass } from "@/types/class.type"
 import ClassRoomForm from "./class-room.form"
 import ClassSectionForm from "./class-room-section.form"
 import { useNavigate } from "react-router-dom"
+import { Badge } from "@/components/ui/badge"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -61,7 +62,23 @@ export const classesColumns: ColumnDef<TClass>[] = [
     {
         header: "Class Teacher",
         accessorKey: "classTeacherName",
-        cell: ({ row }) => <span>{row.original.classTeacherName || <span className="text-muted-foreground">"N/A"</span>}</span>,
+        cell: ({ row }) => {
+            const teachersArray = row.original.childClassTeachers
+                ? row.original.childClassTeachers.map((teacher) => (
+                    <span key={teacher.className}>{teacher.teacherName} <Badge variant={"outline"}>{teacher.className}</Badge></span>
+                )) : [];
+
+            return <ul className="flex flex-col gap-1">
+                {
+                    row.original.classTeacherName && <li>{row.original.classTeacherName}</li>
+                }
+                {
+                    teachersArray.map((teacher, index) => (
+                        <li key={index}>{teacher}</li>
+                    ))
+                }
+            </ul>
+        },
     },
     {
         header: "Monthly fee",

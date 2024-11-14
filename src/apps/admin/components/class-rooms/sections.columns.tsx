@@ -19,6 +19,10 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
     },
     {
+        header: "Class name",
+        accessorKey: "parentClassName",
+    },
+    {
         header: "Section name",
         accessorKey: "name",
     },
