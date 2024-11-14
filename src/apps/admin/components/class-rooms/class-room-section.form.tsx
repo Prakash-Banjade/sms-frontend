@@ -40,6 +40,7 @@ export default function ClassSectionForm(props: Props) {
                 ...getDirtyValues(values, form),
                 classType: EClassType.SECTION,
                 parentClassId: props.parentClassId,
+                classTeacherId: values.classTeacherId ?? null,
             },
             invalidateTags: [QueryKey.CLASSES],
         });

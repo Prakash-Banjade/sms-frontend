@@ -1,10 +1,11 @@
-import { ESubjectChapterPriority } from "@/types/global.type";
+import { ESubjectChapterPriority, ESubjectType } from "@/types/global.type";
 import { z } from "zod";
 
 export const subjectFormSchema = z.object({
     subjectName: z.string().min(1, { message: 'Subject name is required' }),
     subjectCode: z.string().min(1, { message: 'Subject code is required' }),
     content: z.string().min(1, { message: 'Content description is required' }),
+    type: z.nativeEnum(ESubjectType, { message: 'Invalid subject type' }),
     theoryPM: z.coerce.number().int({ message: 'Theory pass marks must be an integer' }).refine(val => val >= 0),
     theoryFM: z.coerce.number().int({ message: 'Theory full marks must be an integer' }).refine(val => val >= 0),
     practicalPM: z.coerce.number().int({ message: 'Practical pass marks must be an integer' }).refine(val => val >= 0),
@@ -29,6 +30,7 @@ export const subjectFormDefaultValues: Partial<subjectFormSchemaType> = {
     subjectName: "",
     content: "",
     subjectCode: "",
+    type: ESubjectType.Regular,
 };
 
 export const subjectChapterSchema = z.object({

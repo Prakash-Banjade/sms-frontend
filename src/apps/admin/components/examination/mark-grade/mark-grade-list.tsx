@@ -5,9 +5,7 @@ import { useGetMarkGrades } from '../data-access';
 import SearchInput from '@/components/search-components/search-input';
 import { markGradesColumns } from './mark-grade.columns';
 
-type Props = {}
-
-export default function MarkGradesList({ }: Props) {
+export default function MarkGradesList() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetMarkGrades({

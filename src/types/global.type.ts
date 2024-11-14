@@ -75,6 +75,11 @@ export enum EClassType {
     YEAR = 'year',
 }
 
+export enum ESubjectType {
+    Regular = 'regular',
+    Optional = 'optional',
+}
+
 export enum EReligion {
     ISLAM = 'islam',
     HINDUISM = 'hinduism',

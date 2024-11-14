@@ -34,13 +34,17 @@ export default function ClassRoomForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType>, any>();
 
     async function onSubmit(values: classRoomFormSchemaType) {
+        console.log(values)
         const method = ((!!props.setIsOpen && props.classRoomId) || params.id) ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
             endpoint: QueryKey.CLASSES,
             id,
-            data: getDirtyValues(values, form),
+            data: {
+                ...getDirtyValues(values, form),
+                classTeacherId: values.classTeacherId ?? null,
+            },
             invalidateTags: [QueryKey.CLASSES],
         });
 

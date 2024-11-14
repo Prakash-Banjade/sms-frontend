@@ -6,7 +6,7 @@ import { createQueryString } from "@/utils/create-query-string";
 import { EDayOfWeek, ERoutineType, Role } from "@/types/global.type";
 import { EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import ClassRoutineForm from "./class-routine.form";
 import {
@@ -20,10 +20,9 @@ import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useAuth } from "@/contexts/auth-provider";
 import { cn } from "@/lib/utils";
+import { compareAsc, parse } from "date-fns";
 
-type Props = {}
-
-export function ClassRoutinesDisplayList({ }: Props) {
+export function ClassRoutinesDisplayList() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetClassRoutines({
@@ -31,14 +30,23 @@ export function ClassRoutinesDisplayList({ }: Props) {
             ...Object.fromEntries(searchParams.entries()),
             dayOfTheWeek: searchParams.get("dayOfTheWeek") ?? EDayOfWeek.MONDAY,
         }),
-    })
+    });
+
+    const sortedSchedule = useMemo(() => {
+        if (!data?.data?.length) return [];
+
+        return data.data.sort((a, b) => compareAsc(
+            parse(a.startTime, 'HH:mm', new Date()),
+            parse(b.startTime, 'HH:mm', new Date())
+        ));
+    }, [data]);
 
     if (isLoading) return <div>Loading...</div>;
 
     return (
         !!data?.data?.length
             ? <div className="flex gap-8 flex-wrap mt-8">
-                {data?.data.map((classRoutine) => (
+                {sortedSchedule.map((classRoutine) => (
                     <ClassRoutineCard key={classRoutine.id} classRoutine={classRoutine} />
                 ))}
             </div>
@@ -122,6 +130,8 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                     classRoomId={classRoutine.id}
                     setIsOpen={setIsEditOpen}
                     defaultValues={{
+                        classRoomId: classRoutine.classRoom?.id,
+                        subjectId: classRoutine.subject?.id,
                         startTime: classRoutine.startTime,
                         endTime: classRoutine.endTime,
                         dayOfTheWeek: classRoutine.dayOfTheWeek,

@@ -13,7 +13,7 @@ import TableHeadings from "@/components/data-table/table-headings"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useState } from "react"
 import SearchInput from "@/components/search-components/search-input"
-import { differenceInDays } from "date-fns"
+import { isBefore, startOfDay } from "date-fns"
 
 const nonResetFilters = ['take', 'page', 'search']
 
@@ -21,7 +21,7 @@ export default function DetailedLibraryBookTransactions() {
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [searchFilters, setSearchFilters] = useState({
         status: searchParams.get('status') ?? '',
-        date: searchParams.get('date') ?? '',
+        period: searchParams.get('period') ?? '',
     })
 
     const { data, isLoading } = useGetBookTransactions({
@@ -30,7 +30,7 @@ export default function DetailedLibraryBookTransactions() {
             page: searchParams.get('page'),
             search: searchParams.get('search'),
             status: searchParams.get('status'),
-            date: searchParams.get('date'),
+            period: searchParams.get('period'),
         }),
     });
 
@@ -69,26 +69,26 @@ export default function DetailedLibraryBookTransactions() {
                             </SelectContent>
                         </Select>
                         <Select
-                            onValueChange={val => handleSearchFiltersChange(val, 'date')}
-                            value={searchFilters.date}
+                            onValueChange={val => handleSearchFiltersChange(val, 'period')}
+                            value={searchFilters.period}
                         >
                             <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Filter by date" />
+                                <SelectValue placeholder="Filter by period" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="today">Today</SelectItem>
-                                <SelectItem value="thisWeek">This Week</SelectItem>
-                                <SelectItem value="thisMonth">This Month</SelectItem>
-                                <SelectItem value="lastMonth">Last Month</SelectItem>
+                                <SelectItem value="last_week">Last Week</SelectItem>
+                                <SelectItem value="this_month">This Month</SelectItem>
+                                <SelectItem value="last_month">Last Month</SelectItem>
                             </SelectContent>
                         </Select>
                         {searchParams.size > 0 && !Array.from(searchParams.entries()).every(([key, _]) => nonResetFilters.includes(key)) && (
                             <Button
                                 variant='ghost'
                                 onClick={() => {
-                                    setSearchFilters({ status: '', date: '' })
+                                    setSearchFilters({ status: '', period: '' })
                                     setSearchParams('status', '')
-                                    setSearchParams('date', '')
+                                    setSearchParams('period', '')
                                 }}
                                 className='h-8 px-2 lg:px-3'
                             >
@@ -105,7 +105,7 @@ export default function DetailedLibraryBookTransactions() {
                     </TableHeader>
                     <TableBody>
                         {data?.data?.map((transaction, index) => {
-                            const isOverDue = differenceInDays(new Date(transaction.dueDate), new Date()) < 0 && !transaction.returnedAt;
+                            const isOverDue = isBefore(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())) && !transaction.returnedAt;
 
                             return (
                                 <TableRow key={transaction.id}>

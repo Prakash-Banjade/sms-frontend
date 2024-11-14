@@ -2,7 +2,7 @@ import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form"
 import { useState } from "react";
 import ExamSetupForm from "../../components/examination/exams/exam-setup.form";
-import { useGetSubjects } from "../../components/subjects/actions";
+import { useGetSubjects } from "../../components/subjects/data-access";
 
 export default function NewExamPage() {
     const [searchQuery, setSearchQuery] = useState<string>('');

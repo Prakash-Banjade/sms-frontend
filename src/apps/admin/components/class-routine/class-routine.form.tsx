@@ -1,10 +1,9 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
-import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType } from "../../schemas/class-routine.schema";
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
@@ -22,6 +21,7 @@ type Props = ({
 
 export default function ClassRoutineForm(props: Props) {
     const params = useParams();
+    const navigate = useNavigate();
     const id = (!!props.setIsOpen && props.classRoomId) ? props.classRoomId : params.id;
 
     const form = useForm<classRoutineSchemaType>({
@@ -39,16 +39,17 @@ export default function ClassRoutineForm(props: Props) {
             endpoint: QueryKey.CLASSROUTINE,
             id,
             data: {
-                ...getDirtyValues({
-                    ...values,
-                }, form),
-                classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId to add the class routine for that section
+                ...values,
+                classRoomId: (values.sectionId ?? values.classRoomId), // should have to send the section Id as classRoomId to add the class routine for that section
             },
             invalidateTags: [QueryKey.CLASSROUTINE],
         });
 
         if (response?.data?.message) {
             onDialogClose();
+            if (!props.setIsOpen) {
+                navigate(`/admin/class-routines?dayOfTheWeek=${values.dayOfTheWeek}&classRoomId=${values.classRoomId}&sectionId=${values.sectionId}`);
+            }
         }
     }
 

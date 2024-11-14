@@ -1,13 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Award, Beaker, Code, FileText, GraduationCap, ListChecks, User } from "lucide-react"
 import { Navigate, useParams } from "react-router-dom"
-import { useGetSubject } from "../../components/subjects/actions";
+import { useGetSubject } from "../../components/subjects/data-access";
 import SubjectChapterList from "./subject-chapter-list";
 import { Badge } from "@/components/ui/badge";
 
-type Props = {}
-
-export default function SingleSubjectPage({ }: Props) {
+export default function SingleSubjectPage() {
     const params = useParams();
 
     if (!params.id) return <Navigate to="/admin/subjects" />;
@@ -25,9 +23,9 @@ function SubjectOverview({ subjectId }: { subjectId: string }) {
         id: subjectId,
     })
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <div>Loading...</div>;
 
-    if (!subject) return null;
+    if (!subject) return <Navigate to="/admin/subjects" />;
 
     return (
         <>

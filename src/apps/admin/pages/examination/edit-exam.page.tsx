@@ -2,9 +2,9 @@ import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import ExamSetupForm from "../../components/examination/exams/exam-setup.form";
 import { Navigate, useParams } from "react-router-dom";
 import { useGetExam } from "../../components/examination/data-access";
-import { useGetSubjects } from "../../components/subjects/actions";
+import { useGetSubjects } from "../../components/subjects/data-access";
 import { createQueryString } from "@/utils/create-query-string";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form";
 import { formatDateNumeric } from "@/utils/format-date";
 import { TSingleExam } from "@/types/examination.type";
@@ -19,10 +19,6 @@ export default function EditExamPage() {
         queryString: "includeExamSubjects=true", // include exam subjects in the response
     })
 
-    const classRoomName = useMemo(() => {
-        return data?.classRoom?.parent ? `${data?.classRoom?.parent?.name} - ${data?.classRoom?.name}` : data?.classRoom?.name
-    }, [data])
-
     if (isLoading) return <div>Loading...</div>;
 
     if (!data) return <Navigate to="/admin/exam-setup" />
@@ -32,7 +28,7 @@ export default function EditExamPage() {
             title={"Update Exam"}
             description={
                 <Badge variant="outline" className="text-sm">
-                    {classRoomName}
+                    {data?.classRoom?.name}
                 </Badge>
             }
         >
@@ -48,7 +44,7 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
     useEffect(() => {
         if (exam) {
             setSearchQuery(createQueryString({
-                classRoomId: exam?.classRoom?.parent?.id || exam?.classRoom.id,
+                classRoomId: exam?.classRoom.id,
                 ////sectionId: exam?.classRoom?.parent?.id ? exam?.classRoom.id : undefined,
                 examTypeId: exam?.examType.id,
             }))
