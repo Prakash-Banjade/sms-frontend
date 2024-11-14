@@ -80,14 +80,16 @@ export default function SubjectForm(props: Props) {
                         required
                     />
 
-                    <AppForm.Select<subjectFormSchemaType>
-                        name="type"
-                        label="Subject Type"
-                        placeholder="Select subject type"
-                        description="Select the subject type"
-                        required
-                        options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))}
-                    />
+                    <section>
+                        <AppForm.Select<subjectFormSchemaType>
+                            name="type"
+                            label="Subject Type"
+                            placeholder="Select subject type"
+                            required
+                            options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))}
+                        />
+                        <p className="text-sm text-info mt-2">! Note: It is not recommended to change the subject type once created. May cause unexpected issues.</p>
+                    </section>
 
                     <AppForm.Number<subjectFormSchemaType>
                         name="theoryFM"
