@@ -16,7 +16,7 @@ export const useAxios = (): AxiosInstance => {
             Authorization: `Bearer ${access_token}`,
         },
         withCredentials: true,
-        timeout: 5000, // Optional: 5 seconds timeout
+        timeout: 10000, // Optional: 10 seconds timeout
     });
 
     const MAX_RETRIES = 3;
