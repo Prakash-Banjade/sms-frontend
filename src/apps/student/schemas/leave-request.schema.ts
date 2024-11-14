@@ -13,14 +13,25 @@ export const LeaveRequestSchema = z.object({
         .string()
         .min(1, { message: 'Description is required' }),
 
-    // accountId: z
-    //     .string()
-    //     .uuid({ message: 'Invalid UUID format' })
-    //     .optional(),
-}).refine((data) => new Date(data.leaveFrom) < new Date(data.leaveTo), {
-    message: "Leave from date cannot be greater than leave to date",
-    path: ["leaveFrom"],
-});
+})
+    // .refine((data) => {
+    //     const leaveFromDate = new Date(data.leaveFrom);
+    //     const leaveToDate = new Date(data.leaveTo);
+    //     const today = new Date();
+
+    //     // Ensure leaveFrom and leaveTo are not in the past
+    //     if (leaveFromDate < today || leaveToDate < today) {
+    //         return false;
+    //     }
+    //     return true;
+    // }, {
+    //     message: "Leave dates cannot be in the past",
+    //     path: ["leaveFrom", "leaveTo"]
+    // })
+    .refine((data) => new Date(data.leaveFrom) <= new Date(data.leaveTo), {
+        message: "Leave from date cannot be greater than leave to date",
+        path: ["leaveFrom"],
+    });
 
 
 export type leaveRequestSchemaType = z.infer<typeof LeaveRequestSchema>;

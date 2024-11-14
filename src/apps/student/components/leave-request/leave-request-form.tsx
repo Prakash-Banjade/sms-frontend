@@ -28,7 +28,7 @@ export default function LeaveRequestForm() {
 
         if (response?.data?.message) {
             form.reset();
-            navigate("/confirm")
+            navigate("confirm")
         }
     }
 
