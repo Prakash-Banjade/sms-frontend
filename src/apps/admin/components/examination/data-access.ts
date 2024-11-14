@@ -102,7 +102,7 @@ export const useGetExamStudents = ({
     options?: Partial<UseQueryOptions<TExamStudent[]>>
 }) => {
     const response = useFetchData<TExamStudent[]>({
-        queryKey: [QueryKey.EXAMS, id, QueryKey.STUDENTS],
+        queryKey: queryString ? [QueryKey.EXAMS, id, QueryKey.STUDENTS, queryString] : [QueryKey.EXAMS, id, QueryKey.STUDENTS],
         endpoint: QueryKey.EXAMS + '/' + id + '/' + QueryKey.STUDENTS,
         queryString,
         options,

@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/select"
 import { useGetExamReports } from '../data-access';
 import { createQueryString } from '@/utils/create-query-string';
+import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
+import { ESubjectType } from '@/types/global.type';
 
 type Props = {
     examSubjects: TExamSubject[];
@@ -40,15 +42,13 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
             examSubjectId: selectedSubjectId,
             skipPagination: 'true',
         }),
-        options: {
-            enabled: !!selectedSubjectId,
-        }
+        options: { enabled: !!selectedSubjectId }
     });
 
     // dynamically creating the default values for the form based on the subjects
     const examEvaluationDefaultValues: Partial<TExamEvaluationsSchema> = useMemo(() => {
         return ({
-            evaluations: students.flatMap(student => {
+            evaluations: students.map(student => {
                 return ({
                     isChecked: false,
                     studentId: student.id,
@@ -65,16 +65,16 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
     });
 
     useEffect(() => {
-        if (reports?.data) {
+        if (reports?.data && students.length) {
             form.reset({
                 ...form.getValues(),
-                evaluations: form.getValues('evaluations').map(evaluation => {
-                    const foundReport = reports.data.find(report => report.student?.id === evaluation.studentId);
+                evaluations: students.map(student => {
+                    const foundReport = reports.data.find(report => report.student?.id === student.id);
 
                     return {
-                        ...evaluation,
                         reportId: foundReport?.id,
                         isChecked: !!foundReport,
+                        studentId: student.id,
                         obtainedMarks: foundReport?.obtainedMarks || undefined
                     }
                 })
@@ -83,7 +83,8 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
 
             if (reports.data.length === students.length) setSelectAll(true);
         }
-    }, [reports])
+
+    }, [students, reports])
 
     const { fields, update } = useFieldArray({
         name: "evaluations",
@@ -236,6 +237,7 @@ function ExanSubjectSelect({
     examSubjects: TExamSubject[],
     setSelectedSubjectId: React.Dispatch<React.SetStateAction<string | undefined>>
 }) {
+    const { setSearchParams } = useCustomSearchParams();
     const form = useFormContext<TExamEvaluationsSchema>();
 
     return (
@@ -246,8 +248,11 @@ function ExanSubjectSelect({
                 <FormItem>
                     <Select
                         onValueChange={val => {
+                            const selectedSubject = examSubjects.find(subject => subject.id === val)?.subject;
+                            setSearchParams('optionalSubjectId', selectedSubject?.type === ESubjectType.Optional ? selectedSubject.id : undefined);
                             setSelectedSubjectId(val)
                             field.onChange(val)
+
                         }}
                         defaultValue={field.value}
                     >

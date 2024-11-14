@@ -42,4 +42,5 @@ export enum QueryKey {
     EXAM_REPORTS = "exam-reports",
     EXAM_SUBJECTS = "exam-subjects",
     ATTENDANCES = 'attendances',
+    OPTIONAL_SUBJECTS = 'optional-subjects',
 };

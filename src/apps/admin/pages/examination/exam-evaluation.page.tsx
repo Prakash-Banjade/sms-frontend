@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import ExamEvaluationForm from "../../components/examination/exam-evaluation/exam-evaluation-form";
 import { createQueryString } from "@/utils/create-query-string";
 import { TExamSubject } from "@/types/examination.type";
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
+import { useEffect } from "react";
 
 export default function ExamEvaluationPage() {
     const params = useParams();
@@ -37,8 +39,17 @@ export default function ExamEvaluationPage() {
 };
 
 const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubjects: TExamSubject[] }) => {
+    const { searchParams, setSearchParams } = useCustomSearchParams();
+
+    useEffect(() => {
+        setSearchParams('optionalSubjectId', undefined); // Clear optional subject id on mount
+    }, [])
+
     const { data: students, isLoading } = useGetExamStudents({
         id: examId,
+        queryString: createQueryString({
+            optionalSubjectId: searchParams.get('optionalSubjectId'),
+        }),
         options: { enabled: !!examId }
     });
 

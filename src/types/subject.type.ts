@@ -41,3 +41,10 @@ export type TSubjectChaptersResponse = {
     data: TSubjectChapter[],
     meta: TMeta;
 }
+
+export type TOptionalSubject = {
+    id: string,
+    subjectId: string,
+    subjectName: string,
+    studentIds: string[]
+}

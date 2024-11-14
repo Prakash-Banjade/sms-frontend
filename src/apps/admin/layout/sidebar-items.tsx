@@ -130,7 +130,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "students/enrollments",
                     },
                     {
-                        title: "Student Subject Selection",
+                        title: "Optional Subject Selection",
                         url: "students/subject-selection",
                     },
                     {

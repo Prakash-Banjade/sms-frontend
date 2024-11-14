@@ -1,5 +1,6 @@
 import { TExamReportByStudent } from "@/types/examination.type";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { ESubjectType } from "@/types/global.type";
 
 export function StudentDetailedMarksTable({ examReport }: { examReport: TExamReportByStudent['examReport'] }) {
     return (
@@ -19,12 +20,18 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
                 {
                     examReport?.examSubjects.map(subject => (
                         <TableRow key={subject.id}>
-                            <TableCell>{subject.subject.subjectName}</TableCell>
+                            <TableCell>
+                                {
+                                    subject.subject?.type === ESubjectType.Optional
+                                        ? `O. ${subject.subject?.subjectName}`
+                                        : subject.subject?.subjectName
+                                }
+                            </TableCell>
                             <TableCell>{subject.fullMark}</TableCell>
                             <TableCell>{subject.passMark}</TableCell>
                             <TableCell>{subject.examReports[0]?.obtainedMarks}</TableCell>
-                            <TableCell>{subject.examReports[0]?.percentage}</TableCell>
-                            <TableCell>{subject.examReports[0]?.gpa}</TableCell>
+                            <TableCell>{subject.examReports[0]?.percentage} %</TableCell>
+                            <TableCell>{subject.examReports[0]?.gpa?.toFixed(2)}</TableCell>
                             <TableCell>{subject.examReports[0]?.grade}</TableCell>
                         </TableRow>
                     ))

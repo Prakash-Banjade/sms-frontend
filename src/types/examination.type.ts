@@ -1,4 +1,4 @@
-import { TMeta } from "./global.type";
+import { ESubjectType, TMeta } from "./global.type";
 import { TStudent } from "./student.type";
 
 export type TExamType = {
@@ -70,6 +70,7 @@ export type TExamSubject = {
         id: string,
         subjectCode: string,
         subjectName: string,
+        type: ESubjectType,
     },
 }
 
@@ -140,7 +141,8 @@ export type TExamReportByStudent = {
             subject: {
                 id: string,
                 subjectName: string,
-                subjectCode: string
+                subjectCode: string,
+                type: ESubjectType
             },
             examReports: {
                 id: string,

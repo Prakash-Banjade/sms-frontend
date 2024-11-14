@@ -32,7 +32,7 @@ export default function ReportCardPrintBtn({ data }: Props) {
                 <Card className="border-4 border-primary">
                     <CardHeader className="text-center border-b border-primary">
                         <div>
-                            <h1 className="text-3xl font-bold">{'Abhyam Academy'}</h1> 
+                            <h1 className="text-3xl font-bold">{'Abhyam Academy'}</h1>
                             <p className="text-muted-foreground flex items-center justify-center">
                                 <MapPin className="w-4 h-4 mr-2" />
                                 Coming Soon...
@@ -85,8 +85,9 @@ export default function ReportCardPrintBtn({ data }: Props) {
                             <div className="text-lg font-semibold">
                                 Overall Percentage: {data.percentage}%
                             </div>
-                            <div className="text-lg font-semibold">
-                                GPA: {data.gpa}
+                            <div className="text-lg font-semibold flex flex-col items-end">
+                                <span>GPA: {data.gpa?.toFixed(2)}</span>
+                                <span>Grade: {data.grade}</span>
                             </div>
                         </div>
 
