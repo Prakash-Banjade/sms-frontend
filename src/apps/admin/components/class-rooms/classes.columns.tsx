@@ -63,8 +63,12 @@ export const classesColumns: ColumnDef<TClass>[] = [
         header: "Class Teacher",
         accessorKey: "classTeacherName",
         cell: ({ row }) => {
-            const teachersArray = Array.isArray(row.original.childClassTeachers)
-                ? row.original.childClassTeachers?.map((teacher) => (
+            const teachersArrayParsed = typeof row.original.childClassTeachers === 'string'
+                ? JSON.parse(row.original.childClassTeachers)
+                : row.original.childClassTeachers;
+
+            const teachersArray = Array.isArray(teachersArrayParsed)
+                ? teachersArrayParsed?.map((teacher) => (
                     <span key={teacher.className}>{teacher.teacherName} <Badge variant={"outline"}>{teacher.className}</Badge></span>
                 )) : [];
 
