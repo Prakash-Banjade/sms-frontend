@@ -23,14 +23,14 @@ export const useGetStudent = ({
     return response;
 }
 
-export const useGetStudents = ({
+export const useGetStudents = <T = TStudentsResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: Partial<UseQueryOptions<TStudentsResponse>>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
-    const response = useFetchData<TStudentsResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.STUDENTS,
         queryKey: queryString ? [QueryKey.STUDENTS, queryString] : [QueryKey.STUDENTS],
         queryString,
