@@ -17,6 +17,15 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { TMeta } from "@/types/global.type";
 
+function getNearestTensArray(num: number) {
+    const result = [];
+    for (let i = 10; i <= 50; i += 10) {
+        result.push(i);
+        if (i >= num) break;
+    }
+    return result;
+}
+
 interface DataTablePaginationProps<TData> {
     table?: Table<TData>;
     meta: TMeta;
@@ -52,7 +61,7 @@ export function DataTablePagination<TData>({
                             <SelectValue placeholder={meta.take} />
                         </SelectTrigger>
                         <SelectContent side="top">
-                            {[10, 20, 30, 40, 50].map((pageSize) => (
+                            {getNearestTensArray(meta.itemCount).map((pageSize) => (
                                 <SelectItem key={pageSize} value={`${pageSize}`}>
                                     {pageSize}
                                 </SelectItem>
