@@ -34,7 +34,6 @@ export type TExam = {
     createdAt: string,
     examType: string,
     classRoom: string,
-    parentClass: string | null
 }
 
 export type TExamsResponse = {
@@ -52,10 +51,6 @@ export type TSingleExam = {
     classRoom: {
         id: string,
         name: string,
-        parent: {
-            id: string,
-            name: string,
-        } | null,
     },
     examSubjects: TExamSubject[];
 };
@@ -94,7 +89,6 @@ export type TExamSubject_Raw = {
     subjectName: string,
     examType: string,
     classRoomName: string,
-    parentClassName: string | null;
 }
 
 export type TExamSubjectsResponse_Raw = {
