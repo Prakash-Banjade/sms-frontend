@@ -16,6 +16,7 @@ import LeaveRequestPage from "./pages/academics/leave-request.page";
 import LeaveRequestConfirmation from "./components/leave-request/leave-request-confirmation";
 import StudentDormitoryPage from "./pages/academics/stu-dormitory.page";
 import StudentExamRoutinePage from "./pages/academics/st-exam-routine.page";
+import StudentExamReportPage from "./pages/academics/stu-exam-report.page";
 
 
 
@@ -55,6 +56,7 @@ const StudentRoutes = () => {
           <Route path='library' element={<StudentLibraryDetailsPage />} />
           <Route path='dormitory' element={<StudentDormitoryPage />} />
           <Route path='exam-routine' element={<StudentExamRoutinePage />} />
+          <Route path='exam-report' element={<StudentExamReportPage />} />
           <Route path="leave-request">
             <Route index element={<LeaveRequestPage />} />
             <Route path="confirm" element={<LeaveRequestConfirmation />} />
