@@ -55,7 +55,7 @@ export type TSingleExam = {
     examSubjects: TExamSubject[];
 };
 
-export type TExamStudent = Pick<TStudent, 'id' | 'fullName' | 'rollNo' | 'profileImageUrl'>;
+export type TExamStudent = Pick<TStudent, 'id' | 'fullName' | 'rollNo'>;
 
 export type TExamSubject = {
     id: string,
