@@ -23,6 +23,7 @@ export default function SubjectsListPage() {
             types: searchParams.get("types"),
             sortBy: searchParams.get("sortBy"),
             order: searchParams.get("order"),
+            classRoomId: searchParams.get('classRoomId'),
         })
     });
 
