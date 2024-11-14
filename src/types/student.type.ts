@@ -1,14 +1,22 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
 import { EBloodGroup, EGuardianRelation, EReligion, Gender, IFileUploadResponse, TMeta } from "./global.type";
 
-export type TStudent = {
+export type TStudent_BasicInfo = {
     id: string,
     fullName: string,
     rollNo: number,
+    studentId: number,
+}
+
+export type TStudent_BasicInfoResponse = {
+    data: TStudent_BasicInfo[];
+    meta: TMeta;
+}
+
+export type TStudent = TStudent_BasicInfo & {
     phone: string,
     email: string,
     dob: string,
-    studentId: number,
     gender: Gender,
     profileImageUrl: string | null,
     classRoomId: string,
