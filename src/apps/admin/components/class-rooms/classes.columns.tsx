@@ -81,6 +81,9 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         <li key={index}>{teacher}</li>
                     ))
                 }
+                {
+                    teachersArray.length === 0 && !row.original.classTeacherName && <li className="text-muted-foreground">N/A</li>
+                }
             </ul>
         },
     },
