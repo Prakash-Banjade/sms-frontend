@@ -33,14 +33,25 @@ export default function ExamReportCard({ report }: { report: TExamReportByStuden
                         <div className="grid gap-4 mb-6">
                             <div className="flex justify-between items-center">
                                 <h3 className="text-lg font-semibold">{examReport.examType.name}</h3>
-                                <Badge variant={grade === 'F' ? 'destructive' : 'success'}>{grade}</Badge>
+                                <div className="flex gap-2 items-center">
+                                    Grade:
+                                    <span className="text-muted-foreground">
+                                        {grade}
+                                    </span>
+                                    {/* <Badge variant={grade === 'F' ? 'destructive' : 'default'}> {grade}</Badge> */}
+                                </div>
                             </div>
                             <Progress value={percentage} className="w-full"
 
                             />
-                            <div className="flex justify-between text-sm text-muted-foreground">
-                                <span>Percentage: {percentage.toFixed(2)}%</span>
-                                <span>GPA: {gpa.toFixed(2)}</span>
+                            <div className="flex justify-between gap-8 ">
+                                <p>
+                                    Percentage:<span className="text-muted-foreground text-sm ml-2"> {percentage.toFixed(2)}%</span>
+                                </p>
+                                <p>
+
+                                    GPA:<span className="text-muted-foreground text-sm ml-2"> {gpa.toFixed(2)}</span>
+                                </p>
                             </div>
                         </div>
 
