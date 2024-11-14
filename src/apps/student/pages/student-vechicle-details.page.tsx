@@ -72,7 +72,7 @@ const StudentVechicleDetailsPage = () => {
                         route && route.data.length > 0 ? (
                             <VechicleRoutes routes={route.data} />
                         ) : (
-                            <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">
+                            <div className="h-[40vh] flex items-center justify-center font-semibold text-muted-foreground">
                                 No route available for the selected vehicle.
                             </div>
                         )
