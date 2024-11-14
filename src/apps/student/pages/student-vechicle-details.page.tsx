@@ -12,11 +12,8 @@ import { QueryKey } from "@/react-query/queryKeys";
 const StudentVechicleDetailsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectedVehicleNumber, setSelectedVehicleNumber] = useState<string | null>(searchParams.get("search") || null);
-
-    // Fetch all vehicles
     const { data, isLoading } = useGetVehicles({});
 
-    if (!data) return <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">No vehicle available</div>;
 
     // Filtered vehicles based on selected vehicle number
     const filteredVehicles = selectedVehicleNumber
@@ -31,6 +28,8 @@ const StudentVechicleDetailsPage = () => {
             enabled: !!selectedVehicleNumber // Only fetch when a vehicle is selected
         }
     });
+
+    if (!data) return <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">No vehicle available</div>;
 
     // Handle vehicle selection change
     const handleVehicleSelect = (vehicleNumber: string) => {
