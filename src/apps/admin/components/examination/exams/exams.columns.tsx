@@ -28,9 +28,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
         header: "Class Room",
         accessorKey: "className",
         cell: ({ row }) => {
-            return row.original.parentClass
-                ? <span>{row.original.parentClass} - {row.original.classRoom}</span>
-                : <span>{row.original.classRoom}</span>
+            return row.original.classRoom;
         },
     },
     {
