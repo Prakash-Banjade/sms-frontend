@@ -19,7 +19,7 @@ export type TClass = {
     childClassTeachers: {
         className: string,
         teacherName: string
-    }[] | null;
+    }[] | string | null;
 }
 
 export type TClassesResponse = {
