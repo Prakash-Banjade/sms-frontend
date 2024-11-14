@@ -44,6 +44,7 @@ export default function SubjectForm(props: Props) {
                 ...getDirtyValues(values, form),
                 classRoomId: values.classRoomId ?? null,
                 teacherId: values.teacherId ?? null,
+                type: values.type,
             },
             invalidateTags: [QueryKey.SUBJECTS],
         });
