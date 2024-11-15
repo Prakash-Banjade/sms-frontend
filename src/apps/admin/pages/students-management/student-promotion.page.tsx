@@ -83,6 +83,7 @@ function StudentsTable({ searchQuery }: { searchQuery: string }) {
                         <StudentPromotionForm
                             setIsOpen={setIsFormOpen}
                             selectedStudentsWithRoll={studentsWithRoll}
+                            searchQuery={searchQuery} // this is just to invalidate the fetched students
                         />
                     </ResponsiveDialog>
 

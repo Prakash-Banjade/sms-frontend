@@ -10,7 +10,8 @@ import { IStudenIdtWithRoll } from "@/apps/admin/pages/students-management/stude
 
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    selectedStudentsWithRoll: IStudenIdtWithRoll[]
+    selectedStudentsWithRoll: IStudenIdtWithRoll[];
+    searchQuery: string; // this is just to invalidate the fetched students
 }
 
 const studentPromotionSchema = z.object({
@@ -34,7 +35,7 @@ const defaultValues: Partial<studentPromotionSchemaType> = {
 
 export type studentPromotionSchemaType = z.infer<typeof studentPromotionSchema>;
 
-export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOpen }: Props) {
+export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOpen, searchQuery }: Props) {
     // fetching options outside to validate class room and sections
     const { data, isLoading } = useGetClassRoomsOptions({ queryString: 'page=1&take=50' });
 
@@ -60,7 +61,7 @@ export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOp
                 classRoomId: values.sectionId ?? values.classRoomId, // should have to send the section Id as classRoomId
                 studentsWithRollNo: selectedStudentsWithRoll,
             },
-            invalidateTags: [QueryKey.STUDENTS],
+            invalidateTags: [QueryKey.STUDENTS, searchQuery],
         });
 
         if (response?.data?.message) {
