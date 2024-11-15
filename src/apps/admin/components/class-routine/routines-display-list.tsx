@@ -127,10 +127,11 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                 title="Edit class routine"
             >
                 <ClassRoutineForm
-                    classRoomId={classRoutine.id}
+                    classRoutineId={classRoutine.id}
                     setIsOpen={setIsEditOpen}
                     defaultValues={{
-                        classRoomId: classRoutine.classRoom?.id,
+                        classRoomId: classRoutine.classRoom?.parent?.id ? classRoutine.classRoom?.parent?.id : classRoutine.classRoom?.id,
+                        sectionId: classRoutine.classRoom?.parent?.id ? classRoutine.classRoom?.id : null,
                         subjectId: classRoutine.subject?.id,
                         startTime: classRoutine.startTime,
                         endTime: classRoutine.endTime,

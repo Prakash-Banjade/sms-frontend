@@ -3,7 +3,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType } from "../../schemas/class-routine.schema";
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
@@ -13,7 +13,7 @@ import { ClassSectionFormField } from "@/components/forms/class-section-form-fie
 type Props = ({
     setIsOpen?: undefined;
 } | {
-    classRoomId?: string;
+    classRoutineId?: string;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) & {
     defaultValues?: Partial<classRoutineSchemaType>;
@@ -21,8 +21,7 @@ type Props = ({
 
 export default function ClassRoutineForm(props: Props) {
     const params = useParams();
-    const navigate = useNavigate();
-    const id = (!!props.setIsOpen && props.classRoomId) ? props.classRoomId : params.id;
+    const id = (!!props.setIsOpen && props.classRoutineId) ? props.classRoutineId : params.id;
 
     const form = useForm<classRoutineSchemaType>({
         resolver: zodResolver(classRoutineSchema),
@@ -32,7 +31,7 @@ export default function ClassRoutineForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<classRoutineSchemaType>, any>();
 
     async function onSubmit(values: classRoutineSchemaType) {
-        const method = ((!!props.setIsOpen && props.classRoomId) || params.id) ? "patch" : "post";
+        const method = ((!!props.setIsOpen && props.classRoutineId) || params.id) ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
@@ -47,9 +46,6 @@ export default function ClassRoutineForm(props: Props) {
 
         if (response?.data?.message) {
             onDialogClose();
-            if (!props.setIsOpen) {
-                navigate(`/admin/class-routines?dayOfTheWeek=${values.dayOfTheWeek}&classRoomId=${values.classRoomId}&sectionId=${values.sectionId}`);
-            }
         }
     }
 
@@ -70,10 +66,10 @@ export default function ClassRoutineForm(props: Props) {
                         options={Object.entries(RoutineTypeMappings).map(([label, value]) => ({ label, value }))}
                     />
 
-                    { // while on edit, no need to update class room & subject
-                        !id && <>
-                            <ClassSectionFormField />
+                    <ClassSectionFormField />
 
+                    { // while on edit, no need to update subject
+                        !id && <>
                             <AppForm.DynamicSelect<classRoutineSchemaType>
                                 name="subjectId"
                                 label="Subject"
