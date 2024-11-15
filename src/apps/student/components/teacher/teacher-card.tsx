@@ -22,23 +22,23 @@ const TeacherList = ({ teachers }: Props) => {
                         </div>
                     </CardHeader>
                     <CardContent className='flex flex-col gap-3'>
-                        <div className='flex gap-2 items-center text-muted-foreground'>
+                        <div className='flex gap-2 items-center '>
                             <Book className=" h-4 w-4" />
-                            {teacher.subject}
+                            <span className='text-muted-foreground'> {teacher.subject}</span>
                         </div>
                         <a
                             href={`mailto:${teacher.email}`}
-                            className="text-muted-foreground hover:underline hover:text-blue-500 flex items-center"
+                            className=" hover:underline hover:text-blue-500 flex items-center"
                         >
                             <Mail className="mr-2 h-4 w-4" />
-                            {teacher.email}
+                            <span className='text-muted-foreground'> {teacher.email}</span>
                         </a>
                         <a
                             href={`tel:${teacher.email}`}
-                            className="text-muted-foreground hover:underline hover:text-blue-500 flex items-center"
+                            className="hover:underline hover:text-blue-500 flex items-center"
                         >
                             <Phone className="mr-2 h-4 w-4" />
-                            {teacher.phone}
+                            <span className='text-muted-foreground'> {teacher.phone}</span>
                         </a>
                     </CardContent>
                 </Card>
