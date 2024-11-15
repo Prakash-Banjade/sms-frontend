@@ -47,7 +47,7 @@ const StudentExamReportPage = () => {
                             <ExamReportCard report={examReportData} />
                         ) : (
                             <div className="h-[400px] grid place-items-center text-muted-foreground">
-                                No exam routine available
+                                No exam report available
                             </div>
                         )
                     )
