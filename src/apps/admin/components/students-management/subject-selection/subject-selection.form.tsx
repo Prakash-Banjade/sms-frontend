@@ -23,8 +23,10 @@ type Props = {
 }
 
 const subjectSelectionSchema = z.object({
+    optionalSubjectId: z.string().optional(),
+    isChecked: z.boolean().optional(),
     subjectId: z.string().uuid({ message: 'Subject ID is required' }),
-    studentIds: z.array(z.string({ required_error: 'Student ID is required' }).uuid({ message: 'Invalid student ID' })).default([]).optional(),
+    studentId: z.string({ required_error: 'Student ID is required' }).uuid({ message: 'Invalid student ID' }),
 })
 
 const subjectSelectionsSchema = z.object({
@@ -34,12 +36,16 @@ const subjectSelectionsSchema = z.object({
 type TSubjectSelectionsSchema = z.infer<typeof subjectSelectionsSchema>;
 
 export default function SubjectSelectionForm({ students, subjects, studentsMeta }: Props) {
-    const formDefaultValue = useMemo(() => {
+    const formDefaultValue: TSubjectSelectionsSchema = useMemo(() => {
         return {
-            selections: subjects.map(subject => ({
-                subjectId: subject.subjectId, // subject.id is optionalSubject id, but the actual subject id is subject.subjectId, refer backend
-                studentIds: subject.studentIds,
-            })),
+            selections: students.flatMap(student => {
+                return subjects.map(subject => ({
+                    optionalSubjectId: subject.id,
+                    studentId: student.id,
+                    isChecked: subject.studentIds?.includes(student.id),
+                    subjectId: subject.subjectId,
+                }))
+            })
         };
     }, [subjects]);
 
@@ -53,19 +59,12 @@ export default function SubjectSelectionForm({ students, subjects, studentsMeta 
         control: form.control,
     });
 
-    // Function to handle adding/removing student IDs based on checkbox state
-    const handleSubjectCheckboxChange = (studentId: string, subjectId: string, checked: boolean) => {
-        const subjectIndex = selectionsField.findIndex(field => field.subjectId === subjectId);
-
-        if (subjectIndex !== -1) {
-            const currentStudentIds = form.getValues(`selections.${subjectIndex}.studentIds`) || [];
-            const updatedStudentIds = checked
-                ? [...currentStudentIds, studentId]
-                : currentStudentIds.filter(id => id !== studentId);
-
-            form.setValue(`selections.${subjectIndex}.studentIds`, updatedStudentIds);
+    function handleCheckboxChange(studentId: string, subjectId: string, checked: boolean) {
+        const foundSubjectSelectionIndex = selectionsField.findIndex(field => field.studentId === studentId && field.subjectId === subjectId);
+        if (foundSubjectSelectionIndex !== -1) {
+            form.setValue(`selections.${foundSubjectSelectionIndex}.isChecked`, checked);
         }
-    };
+    }
 
     const { mutateAsync, isPending } = useAppMutation();
 
@@ -73,10 +72,22 @@ export default function SubjectSelectionForm({ students, subjects, studentsMeta 
         const updatedValues = _.differenceWith(values.selections, (formDefaultValue?.selections || []), _.isEqual);
         if (!updatedValues.length) return toast.error('No changes detected');
 
+        const groupedData = _.groupBy(updatedValues, 'optionalSubjectId');
+
+        const selections = Object.entries(groupedData).map(([key, value]) => {
+            return {
+                optionalSubjectId: key,
+                studentIds: value.map(selection => ({
+                    id: selection.studentId,
+                    isChecked: selection.isChecked,
+                }))
+            }
+        })
+
         await mutateAsync({
             endpoint: QueryKey.OPTIONAL_SUBJECTS,
             method: 'patch', // always patch
-            data: { selections: updatedValues },
+            data: { selections },
             invalidateTags: [QueryKey.OPTIONAL_SUBJECTS],
         })
     }
@@ -110,14 +121,14 @@ export default function SubjectSelectionForm({ students, subjects, studentsMeta 
                                         <TableCell key={subjectIndex}>
                                             <FormField
                                                 control={form.control}
-                                                name={`selections.${subjectIndex}.studentIds`}
-                                                render={({ field }) => (
+                                                name={`selections.${subjectIndex}.isChecked`}
+                                                render={() => (
                                                     <FormItem className="w-fit">
                                                         <FormControl>
                                                             <Checkbox
-                                                                checked={field.value?.includes(student.id)}
+                                                                checked={form.watch('selections')?.find(selection => selection.studentId === student.id && selection.subjectId === subject.subjectId)?.isChecked}
                                                                 onCheckedChange={(checked) => {
-                                                                    handleSubjectCheckboxChange(student.id, subject.subjectId, !!checked);
+                                                                    handleCheckboxChange(student.id, subject.subjectId, !!checked);
                                                                 }}
                                                             />
                                                         </FormControl>

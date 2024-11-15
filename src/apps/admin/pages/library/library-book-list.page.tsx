@@ -34,6 +34,8 @@ function LibraryBookList() {
         queryString: createQueryString({
             search: searchParams.get('search'),
             categories: searchParams.get('categories'),
+            page: searchParams.get('page'),
+            take: searchParams.get('take'),
         }),
     });
 
