@@ -26,6 +26,8 @@ export const TeachersList = () => {
         queryString: createQueryString({
             search: searchParams.get('search'),
             teacherId: searchParams.get('teacherId'),
+            page: searchParams.get('page'),
+            take: searchParams.get('take'),
         }),
     });
 

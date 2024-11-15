@@ -13,6 +13,8 @@ export default function ClassesListPage({ }: Props) {
     const { data, isLoading } = useGetClasses({
         queryString: createQueryString({
             search: searchParams.get('search'),
+            page: searchParams.get('page'),
+            take: searchParams.get('take'),
         })
     });
 
