@@ -28,9 +28,9 @@ const StudentProfile = ({ student }: Props) => {
                 <CardContent>
                     <Tabs defaultValue="personal">
                         <TabsList className="w-full justify-evenly py-6 mb-4">
-                            <TabsTrigger className="px-4 py-2 rounded-md data-[state=active]:bg-muted-foreground data-[state=active]:text-primary " value="personal">Personal</TabsTrigger>
-                            <TabsTrigger className="px-4 py-2 rounded-md data-[state=active]:bg-muted-foreground data-[state=active]:text-primary" value="academic">Academic</TabsTrigger>
-                            <TabsTrigger className="px-4 py-2 rounded-md data-[state=active]:bg-muted-foreground data-[state=active]:text-primary" value="guardians">Guardians</TabsTrigger>
+                            <TabsTrigger className="px-4 py-2 rounded-md data-[state=active]:bg-muted-foreground data-[state=active]:text-primary-foreground " value="personal">Personal</TabsTrigger>
+                            <TabsTrigger className="px-4 py-2 rounded-md data-[state=active]:bg-muted-foreground data-[state=active]:text-primary-foreground" value="academic">Academic</TabsTrigger>
+                            <TabsTrigger className="px-4 py-2 rounded-md data-[state=active]:bg-muted-foreground data-[state=active]:text-primary-foreground" value="guardians">Guardians</TabsTrigger>
                         </TabsList>
 
                         {/* Tabs Content */}
