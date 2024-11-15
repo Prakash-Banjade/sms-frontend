@@ -23,13 +23,25 @@ const examSubjectSchema = z.object({
             .int({ message: "Duration must be a number" })
             .min(1, { message: "Duration must be greater than 0" })
     ]).optional(),
-    fullMark: z.union([
+    theoryFM: z.union([
         z.literal("").optional(),
         z.coerce.number()
             .int({ message: "Full mark must be a number" })
             .min(1, { message: "Full mark must be greater than 0" })
     ]).optional(),
-    passMark: z.union([
+    theoryPM: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Pass mark must be a number" })
+            .min(1, { message: "Pass mark must be greater than 0" })
+    ]).optional(),
+    practicalFM: z.union([
+        z.literal("").optional(),
+        z.coerce.number()
+            .int({ message: "Full mark must be a number" })
+            .min(1, { message: "Full mark must be greater than 0" })
+    ]).optional(),
+    practicalPM: z.union([
         z.literal("").optional(),
         z.coerce.number()
             .int({ message: "Pass mark must be a number" })
@@ -43,13 +55,16 @@ const examSubjectSchema = z.object({
         z.literal("").optional(),
         z.string({ required_error: "Subject is required" }).uuid({ message: "Invalid subject ID" })
     ]).optional(),
-}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.fullMark && !!data.passMark && !!data.venue : true, {
+}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.theoryFM && !!data.theoryPM && !!data.venue : true, {
     message: "All fields must be filled for checked subjects",
     path: ["isChecked"],
-}).refine(data => (data.passMark && data.fullMark) ? data.passMark <= data.fullMark : true, {
+}).refine(data => (data.theoryPM && data.theoryFM) ? data.theoryPM <= data.theoryFM : true, {
     message: "Pass mark must not be greater than full mark",
-    path: ["passMark"],
-});
+    path: ["theoryPM"],
+}).refine(data => (data.practicalPM && data.practicalFM) ? data.practicalPM <= data.practicalFM : true, {
+    message: "Pass mark must not be greater than full mark",
+    path: ["practicalPM"],
+})
 
 export const examSubjectsSchema = z.object({
     examSubjects: z.array(examSubjectSchema).refine((subjects) => subjects.some((subject) => subject.isChecked), {

@@ -52,7 +52,8 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                 return ({
                     isChecked: false,
                     studentId: student.id,
-                    obtainedMarks: undefined,
+                    theoryOM: undefined,
+                    theoryPM: undefined,
                 })
             }),
             examSubjectId: examSubjects[0]?.id,
@@ -75,7 +76,8 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                         reportId: foundReport?.id,
                         isChecked: !!foundReport,
                         studentId: student.id,
-                        obtainedMarks: foundReport?.obtainedMarks || undefined
+                        theoryOM: foundReport?.theoryOM,
+                        practicalOM: foundReport?.practicalOM,
                     }
                 })
 
@@ -141,11 +143,20 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                 <TableHead className='min-w-36'>Roll No</TableHead>
                                 <TableHead className='min-w-36 border-r'>Student Name</TableHead>
                                 <TableHead className='min-w-36'>
-                                    Obtained Marks&nbsp;
+                                    Th. Obtained Marks&nbsp;
                                     {form.getValues("examSubjectId") && (<span>
                                         (FM:&nbsp;
                                         {
-                                            examSubjects.find(subject => subject.id === form.getValues("examSubjectId"))?.fullMark
+                                            examSubjects.find(subject => subject.id === form.getValues("examSubjectId"))?.theoryFM
+                                        })
+                                    </span>)}
+                                </TableHead>
+                                <TableHead className='min-w-36'>
+                                    Pr. Obtained Marks&nbsp;
+                                    {form.getValues("examSubjectId") && (<span>
+                                        (FM:&nbsp;
+                                        {
+                                            examSubjects.find(subject => subject.id === form.getValues("examSubjectId"))?.practicalFM
                                         })
                                     </span>)}
                                 </TableHead>
@@ -180,7 +191,30 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                     <TableCell>
                                         <FormField
                                             control={form.control}
-                                            name={`evaluations.${index}.obtainedMarks`}
+                                            name={`evaluations.${index}.theoryOM`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            {...field}
+                                                            pattern={NUMBER_REGEX_STRING}
+                                                            type='number'
+                                                            min={1}
+                                                            step={0.01}
+                                                            required
+                                                            value={field.value ?? ''}
+                                                            disabled={!form.getValues(`evaluations.${index}.isChecked`) || isPending || isLoading}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <FormField
+                                            control={form.control}
+                                            name={`evaluations.${index}.practicalOM`}
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormControl>

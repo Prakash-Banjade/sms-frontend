@@ -63,8 +63,10 @@ export type TExamSubject = {
     examDate: string
     startTime: string
     duration: number,
-    fullMark: number,
-    passMark: number,
+    theoryFM: number,
+    theoryPM: number,
+    practicalFM: number,
+    practicalPM: number,
     venue: string;
     subject: {
         id: string,
@@ -84,8 +86,10 @@ export type TExamSubject_Raw = {
     examDate: string,
     startTime: string,
     duration: number,
-    fullMark: number,
-    passMark: number,
+    theoryFM: number,
+    theoryPM: number,
+    practicalFM: number,
+    practicalPM: number,
     venue: string,
     subjectName: string,
     examType: string,
@@ -100,7 +104,8 @@ export type TExamSubjectsResponse_Raw = {
 export type TExamReport = {
     id: string,
     createdAt: string,
-    obtainedMarks: number,
+    theoryOM: number,
+    practicalOM: number,
     percentage: number,
     gpa: number,
     grade: string,
@@ -136,8 +141,10 @@ export type TExamReportByStudent = {
         },
         examSubjects: {
             id: string,
-            fullMark: number,
-            passMark: number,
+            theoryFM: number,
+            theoryPM: number,
+            practicalFM: number,
+            practicalPM: number,
             subject: {
                 id: string,
                 subjectName: string,
@@ -146,7 +153,8 @@ export type TExamReportByStudent = {
             },
             examReports: {
                 id: string,
-                obtainedMarks: number,
+                theoryOM: number,
+                practicalOM: number,
                 percentage: number,
                 gpa: number,
                 grade: string
@@ -163,7 +171,8 @@ export type TExamReportByStudent = {
 export type TExamReportBySubject = {
     data: {
         id: string,
-        obtainedMarks: number,
+        theoryOM: number,
+        practicalOM: number,
         percentage: number,
         gpa: number,
         grade: string,

@@ -7,19 +7,26 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Full Mark</TableHead>
-                    <TableHead>Pass Marks</TableHead>
-                    <TableHead>Obtained Marks</TableHead>
-                    <TableHead>Percentage</TableHead>
-                    <TableHead>GPA</TableHead>
-                    <TableHead>Grade</TableHead>
+                    <TableHead rowSpan={2}>S. Code</TableHead>
+                    <TableHead rowSpan={2}>Subject</TableHead>
+                    <TableHead colSpan={3}>Theory</TableHead>
+                    <TableHead colSpan={3}>Practical</TableHead>
+                    <TableHead rowSpan={2}>Total</TableHead>
+                    <TableHead rowSpan={2}>Percentage</TableHead>
+                    <TableHead rowSpan={2}>GPA</TableHead>
+                    <TableHead rowSpan={2}>Grade</TableHead>
+                </TableRow>
+                <TableRow>
+                    <TableHead>Full</TableHead>
+                    <TableHead>Pass</TableHead>
+                    <TableHead>Obt</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {
                     examReport?.examSubjects.map(subject => (
                         <TableRow key={subject.id}>
+                            <TableCell>{subject.subject?.subjectCode}</TableCell>
                             <TableCell>
                                 {
                                     subject.subject?.type === ESubjectType.Optional
@@ -27,9 +34,12 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
                                         : subject.subject?.subjectName
                                 }
                             </TableCell>
-                            <TableCell>{subject.fullMark}</TableCell>
-                            <TableCell>{subject.passMark}</TableCell>
-                            <TableCell>{subject.examReports[0]?.obtainedMarks}</TableCell>
+                            <TableCell>{subject.theoryFM}</TableCell>
+                            <TableCell>{subject.theoryPM}</TableCell>
+                            <TableCell>{subject.examReports[0]?.theoryOM}</TableCell>
+                            <TableCell>{subject.practicalFM}</TableCell>
+                            <TableCell>{subject.practicalPM}</TableCell>
+                            <TableCell>{subject.examReports[0]?.practicalOM}</TableCell>
                             <TableCell>{subject.examReports[0]?.percentage && `${subject.examReports[0]?.percentage} %`}</TableCell>
                             <TableCell>{subject.examReports[0]?.gpa?.toFixed(2)}</TableCell>
                             <TableCell>{subject.examReports[0]?.grade}</TableCell>

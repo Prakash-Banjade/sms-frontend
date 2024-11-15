@@ -51,8 +51,10 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                 examDate: "",
                 startTime: "",
                 duration: undefined,
-                fullMark: undefined,
-                passMark: undefined,
+                theoryFM: subject.theoryFM,
+                theoryPM: subject.theoryPM,
+                practicalFM: subject.practicalFM,
+                practicalPM: subject.practicalPM,
                 venue: "",
                 subjectId: subject.id,
             }))
@@ -131,8 +133,10 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                 <TableHead className='min-w-36'>Exam Date</TableHead>
                                 <TableHead className='min-w-36'>Start Time</TableHead>
                                 <TableHead className='min-w-36'>Duration (Min)</TableHead>
-                                <TableHead className='min-w-36'>Full Mark</TableHead>
-                                <TableHead className='min-w-36'>Pass Mark</TableHead>
+                                <TableHead className='min-w-36'>Th. Full Mark</TableHead>
+                                <TableHead className='min-w-36'>Th. Pass Mark</TableHead>
+                                <TableHead className='min-w-36'>Pr. Full Mark</TableHead>
+                                <TableHead className='min-w-36'>Pr. Pass Mark</TableHead>
                                 <TableHead className='min-w-36'>Venue</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -225,7 +229,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                     <TableCell>
                                         <FormField
                                             control={form.control}
-                                            name={`examSubjects.${index}.fullMark`}
+                                            name={`examSubjects.${index}.theoryFM`}
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormControl>
@@ -237,6 +241,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
+                                                            max={subjects[index]?.theoryFM}
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -247,7 +252,7 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                     <TableCell>
                                         <FormField
                                             control={form.control}
-                                            name={`examSubjects.${index}.passMark`}
+                                            name={`examSubjects.${index}.theoryPM`}
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormControl>
@@ -259,6 +264,53 @@ export default function ExamSetupForm({ subjects, searchQuery, examId, defaultVa
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
+                                                            max={subjects[index]?.theoryPM}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <FormField
+                                            control={form.control}
+                                            name={`examSubjects.${index}.practicalFM`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            type="number"
+                                                            {...field}
+                                                            value={field.value ?? ''}
+                                                            min={1}
+                                                            required
+                                                            pattern={NUMBER_REGEX_STRING}
+                                                            disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
+                                                            max={subjects[index]?.practicalFM}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <FormField
+                                            control={form.control}
+                                            name={`examSubjects.${index}.practicalPM`}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            type="number"
+                                                            {...field}
+                                                            value={field.value ?? ''}
+                                                            min={1}
+                                                            required
+                                                            pattern={NUMBER_REGEX_STRING}
+                                                            disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
+                                                            max={subjects[index]?.practicalPM}
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
