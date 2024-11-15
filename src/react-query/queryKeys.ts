@@ -42,5 +42,6 @@ export enum QueryKey {
     EXAM_REPORTS = "exam-reports",
     EXAM_SUBJECTS = "exam-subjects",
     ATTENDANCES = 'attendances',
-    DORMITORY_ME = 'dormitory-system/dormitory-rooms/me'
+    DORMITORY_ME = 'dormitory-system/dormitory-rooms/me',
+    STUDENT_ME = 'students/me'
 };

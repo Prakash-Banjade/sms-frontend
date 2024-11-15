@@ -17,6 +17,7 @@ import LeaveRequestConfirmation from "./components/leave-request/leave-request-c
 import StudentDormitoryPage from "./pages/academics/stu-dormitory.page";
 import StudentExamRoutinePage from "./pages/academics/st-exam-routine.page";
 import StudentExamReportPage from "./pages/academics/stu-exam-report.page";
+import StudentDashboardPage from "./pages/student-dashboard.page";
 
 
 
@@ -26,7 +27,7 @@ const StudentRoutes = () => {
     <Routes>
       <Route element={<RequireAuth authorizedRoles={[Role.STUDENT]} />}>
         <Route element={<AppRootLayout menuItems={studentSidebarMenuItems} />}>
-          <Route path="dashboard" element={<div>Dashboard xa</div>} />
+          <Route path="dashboard" element={<StudentDashboardPage />} />
           <Route path="tasks">
             <Route index element={<Navigate to="homeworks" />} />
             <Route path="homeworks">

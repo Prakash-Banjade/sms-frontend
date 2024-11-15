@@ -80,3 +80,24 @@ export const useGetLibraryStudent = ({
 
 
 
+/**
+|--------------------------------------------------
+| my details for student
+|--------------------------------------------------
+*/
+export const useGetStudent_Me = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<TSingleStudent>>
+}) => {
+    const response = useFetchData<TSingleStudent>({
+        endpoint: QueryKey.STUDENT_ME,
+        queryKey: queryString ? [QueryKey.STUDENT_ME, queryString] : [QueryKey.STUDENT_ME],
+        queryString,
+        options,
+    })
+
+    return response;
+}
