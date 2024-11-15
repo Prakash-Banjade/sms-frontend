@@ -90,10 +90,12 @@ export const classesColumns: ColumnDef<TClass>[] = [
     {
         header: "Monthly fee",
         accessorKey: "monthlyFee",
+        cell: ({ row }) => row.original.monthlyFee?.toLocaleString()
     },
     {
         header: "Monthly tution fee",
         accessorKey: "monthlyTutionFee",
+        cell: ({ row }) => row.original.monthlyTutionFee?.toLocaleString()
     },
     {
         header: "Location",
