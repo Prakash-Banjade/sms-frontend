@@ -117,7 +117,6 @@ export type TLibraryStudent = {
     phone: string,
     email: string,
     profileImageUrl: string | null,
-    classRoom: string,
-    parentClass: string | null,
+    classRoomName: string,
     transactionCount: string;
 }

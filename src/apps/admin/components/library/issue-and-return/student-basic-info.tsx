@@ -97,7 +97,7 @@ export default function Library_StudentBasicInfo({ student, selectedTransactions
                     <div className="text-sm space-y-1">
                         <p className="flex justify-between">
                             <span className="font-medium">Class / Section:</span>
-                            <span>{student.parentClass ? `${student.parentClass} / ${student.classRoom}` : student.classRoom}</span>
+                            <span>{student.classRoomName}</span>
                         </p>
                         <p className="flex justify-between">
                             <span className="font-medium">Contact:</span>
