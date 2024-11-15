@@ -1,32 +1,36 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { BookOpen, AlertTriangle, TrendingDown } from 'lucide-react'
+import { BookOpen, AlertTriangle, TrendingDown, GraduationCap, MapPin, Phone, Mail } from 'lucide-react'
 import { TExamReportByStudent } from "@/types/examination.type"
 import { getImageUrl } from "@/lib/utils"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import ReportCardPrintBtn from "@/apps/admin/components/report/examination-report/report-card-print-preview"
 import { StudentDetailedMarksTable } from "@/apps/admin/components/report/examination-report/student-detailed-marks-table"
+import { InfoRow } from "../dashboard/student-profile"
 
 export default function ExamReportCard({ report }: { report: TExamReportByStudent }) {
     const { student, examReport, percentage, gpa, grade, failedSubjectsCount, weakestSubject } = report
 
     return (
         <Card className="w-full  mx-auto">
-            <CardHeader className="flex flex-col sm:flex-row items-center gap-4">
-
-                <ProfileAvatar
-                    src={getImageUrl(student.profileImageUrl, 'w=100')}
-                    name={student.firstName + " " + student.lastName}
-                    className="w-24 h-24 rounded-full"
-                />
-                <div className="text-center space-y-2 sm:text-left">
-                    <CardTitle className="text-2xl">{student.firstName} {student.lastName}</CardTitle>
-                    <p className="text-muted-foreground">Roll No: {student.rollNo}</p>
-                    <p className="text-muted-foreground">{student.classRoomName}</p>
+            <CardHeader>
+                <div className="flex items-center space-x-4">
+                    <ProfileAvatar
+                        src={getImageUrl(student.profileImageUrl, 'w=80')}
+                        className="size-20"
+                        name={`${student.firstName} ${student.lastName}`}
+                    />
+                    <div className="space-y-2">
+                        <CardTitle>{`${student.firstName} ${student.lastName}`}</CardTitle>
+                    </div>
                 </div>
             </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-y-4 items-center  justify-center">
+                <InfoRow icon={<GraduationCap />} label="Class" value={`${student.classRoomName} (${student.parentClassName})`} />
+                <InfoRow icon={<MapPin />} label="Roll Number" value={student.rollNo} />
+                <InfoRow icon={<Mail />} label="Email" value={student.email} />
+                <InfoRow icon={<Phone />} label="Phone" value={student.phone} />
+            </CardContent>
             <CardContent>
                 {examReport ? (
                     <>
@@ -38,7 +42,6 @@ export default function ExamReportCard({ report }: { report: TExamReportByStuden
                                     <span className="text-muted-foreground">
                                         {grade}
                                     </span>
-                                    {/* <Badge variant={grade === 'F' ? 'destructive' : 'default'}> {grade}</Badge> */}
                                 </div>
                             </div>
                             <Progress value={percentage} className="w-full"
