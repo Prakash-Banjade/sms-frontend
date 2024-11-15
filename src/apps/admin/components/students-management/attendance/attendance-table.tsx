@@ -33,7 +33,7 @@ export default function AttendanceTable({ attendances, setAttendances }: Props) 
                     ...student,
                     attendance: {
                         ...student.attendance,
-                        status,
+                        status: student.attendance.status === status ? null : status,
                     }
                 }
             } else if (student.account?.id === accountId && !student.attendance) {

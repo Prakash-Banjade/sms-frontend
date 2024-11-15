@@ -77,7 +77,7 @@ export type TEntityWithAttendanceUpdate = {
     }
     attendance: {
         id?: string
-        status: EAttendanceStatus,
+        status: EAttendanceStatus | null,
         date: string,
     } | null;
 }

@@ -106,9 +106,7 @@ export type TStudentsWithAttendenceResponse = (TEntityWithAttendance & {
     rollNo: number
 })[]
 
-export type TStudentsWithAttendenceUpdate = (TEntityWithAttendanceUpdate & {
-    rollNo: number
-})[]
+export type TStudentsWithAttendenceUpdate = (TEntityWithAttendanceUpdate & { rollNo: number })[]
 
 export type TLibraryStudent = {
     id: string,
