@@ -39,7 +39,7 @@ export default function TeacherClassSchecule() {
                 <Tabs value={selectedDay} onValueChange={val => setSelectedDay(val as EDayOfWeek)}> 
                     <TabsList className="w-full h-auto flex flex-wrap gap-2">
                         {Object.entries(DayOfWeekMappings).map(([key, value]) => (
-                            <TabsTrigger key={value} value={value}>{key}</TabsTrigger>
+                            <TabsTrigger key={value} value={value} className="flex-1">{key}</TabsTrigger>
                         ))}
                     </TabsList>
                     {Object.entries(DayOfWeekMappings).map(([key, value]) => (
