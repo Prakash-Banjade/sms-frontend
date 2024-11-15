@@ -8,7 +8,7 @@ import { AlertTriangle, Book, BookOpen } from "lucide-react"
 const LibraryStatistics = () => {
     const { data, isLoading } = useGetLibraryOverviewCount<TSt_TrasactionCount>()
     if (!data) return <div className="min-h-40 text-muted-foreground text-center">
-        No library Statisstics available
+        No library Statistics available
     </div>
     if (isLoading) return <div>Loading..</div>
 
