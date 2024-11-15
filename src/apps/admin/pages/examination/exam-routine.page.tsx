@@ -1,35 +1,34 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useGetExamSubjects } from "../../components/examination/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { format, parse } from "date-fns";
 import { TExamSubject_Raw } from "@/types/examination.type";
 import ExamRoutinePrint from "../../components/examination/exam-routine/exam-routine-print-preview";
+import { useSearchParams } from "react-router-dom";
 
 export default function ExamRoutinePage() {
-    const [searchQuery, setSearchQuery] = useState<string>('');
-
     return (
         <ContainerLayout
             title="Exam Routine"
         >
-            <GetExamSubjectsForm setSearchQuery={setSearchQuery} />
-            <ExamRoutineSection searchQuery={searchQuery} />
+            <GetExamSubjectsForm />
+            <ExamRoutineSection />
         </ContainerLayout>
     )
 }
 
-function ExamRoutineSection({ searchQuery }: { searchQuery: string }) {
+function ExamRoutineSection() {
+    const [searchParams] = useSearchParams();
+
     const { classRoomId, examTypeId } = useMemo(() => {
-        const searchParams = new URLSearchParams(searchQuery);
         return {
             classRoomId: searchParams.get('classRoomId'),
-            ////sectionId: searchParams.get('sectionId'),
             examTypeId: searchParams.get('examTypeId'),
         }
-    }, [searchQuery])
+    }, [searchParams]);
 
     const { data, isLoading } = useGetExamSubjects({
         queryString: createQueryString({
@@ -69,8 +68,8 @@ export function ExamRoutineTable({ subjects }: { subjects: TExamSubject_Raw[] })
                     <TableHead>Exam Date</TableHead>
                     <TableHead>Start Time</TableHead>
                     <TableHead>Duration</TableHead>
-                    <TableHead>Full Mark</TableHead>
-                    <TableHead>Pass Mark</TableHead>
+                    {/* <TableHead>Full Mark</TableHead>
+                    <TableHead>Pass Mark</TableHead> */}
                     <TableHead>Venue</TableHead>
                 </TableRow>
             </TableHeader>
@@ -81,8 +80,8 @@ export function ExamRoutineTable({ subjects }: { subjects: TExamSubject_Raw[] })
                         <TableCell>{new Date(examSubject.examDate).toDateString()}</TableCell>
                         <TableCell>{format(parse(examSubject.startTime, "HH:mm", new Date()), "hh:mm a")}</TableCell>
                         <TableCell>{examSubject.duration} Minutes</TableCell>
-                        <TableCell>{examSubject.fullMark}</TableCell>
-                        <TableCell>{examSubject.passMark}</TableCell>
+                        {/* <TableCell>{examSubject.fullMark}</TableCell>
+                        <TableCell>{examSubject.passMark}</TableCell> */}
                         <TableCell>{examSubject.venue}</TableCell>
                     </TableRow>
                 ))}

@@ -38,9 +38,9 @@ export const subjectWiseReportColumns: ColumnDef<TExamReportBySubject['data'][0]
             const report = row.original;
 
             return (
-                report.obtainedMarks >= report.passMark
-                    ? <Badge variant={'success'}>Passed</Badge>
-                    : <Badge variant={'destructive'}>Failed</Badge>
+                (report.theoryOM < report.passMark)
+                    ? <Badge variant={'destructive'}>Failed</Badge>
+                    : <Badge variant={'success'}>Passed</Badge>
             )
         },
     }
