@@ -30,7 +30,7 @@ export function StudentDetailedMarksTable({ examReport }: { examReport: TExamRep
                             <TableCell>{subject.fullMark}</TableCell>
                             <TableCell>{subject.passMark}</TableCell>
                             <TableCell>{subject.examReports[0]?.obtainedMarks}</TableCell>
-                            <TableCell>{subject.examReports[0]?.percentage} %</TableCell>
+                            <TableCell>{subject.examReports[0]?.percentage && `${subject.examReports[0]?.percentage} %`}</TableCell>
                             <TableCell>{subject.examReports[0]?.gpa?.toFixed(2)}</TableCell>
                             <TableCell>{subject.examReports[0]?.grade}</TableCell>
                         </TableRow>

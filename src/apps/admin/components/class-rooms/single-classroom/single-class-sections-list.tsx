@@ -18,7 +18,7 @@ type Props = {
 
 export default function SingleClassSectionsList({ classRoomId }: Props) {
     const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
-    
+
     const { data, isLoading } = useGetClasses({
         queryString: createQueryString({
             parentClassId: classRoomId,
@@ -54,7 +54,7 @@ export default function SingleClassSectionsList({ classRoomId }: Props) {
                 </section>
             </CardHeader>
             <CardContent>
-                <Table>
+                {data?.data?.length ? <Table>
                     <TableHeader>
                         <TableHeadings headings={['Section Name', 'Total Students', 'Total Male Students', 'Total Female Students', 'Class Teacher', 'Location']} />
                     </TableHeader>
@@ -75,7 +75,7 @@ export default function SingleClassSectionsList({ classRoomId }: Props) {
                             )
                         })}
                     </TableBody>
-                </Table>
+                </Table> : <p className="text-muted-foreground">No sections found.</p>}
             </CardContent>
         </Card>
     )
