@@ -32,8 +32,10 @@ export type TMarkGradesResponse = {
 export type TExam = {
     id: string,
     createdAt: string,
+    examTypeId: string,
     examType: string,
     classRoom: string,
+    classRoomId: string,
 }
 
 export type TExamsResponse = {

@@ -3,46 +3,40 @@ import { ClassSectionFormField } from "@/components/forms/class-section-form-fie
 import { Button } from "@/components/ui/button";
 import { QueryKey } from "@/react-query/queryKeys";
 import { SelectOption } from "@/types/global.type";
-import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
-
-type Props = {
-    setSearchQuery: (value: string) => void;
-    searchQuery?: string; // this is passed when editing the exam setup
-    defaultExamType?: SelectOption;
-}
 
 const getExamSubjectsSchema = z.object({
     classRoomId: z.string().uuid({ message: "Select class" }).optional(),
     examTypeId: z.string().uuid({ message: "Select exam type" }).optional(),
-    ////sectionId: z.string().optional(),
 })
 
 type TGetExamSubjectsSchema = z.infer<typeof getExamSubjectsSchema>
 
-export default function GetExamSubjectsForm({ setSearchQuery, searchQuery, defaultExamType }: Props) {
+type Props = {
+    defaultExamType?: SelectOption;
+}
+
+export default function GetExamSubjectsForm({ defaultExamType }: Props) {
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const form = useForm<TGetExamSubjectsSchema>({
         resolver: zodResolver(getExamSubjectsSchema),
         defaultValues: useMemo(() => {
-            const searchParams = new URLSearchParams(searchQuery);
             return {
                 classRoomId: searchParams.get('classRoomId') ?? undefined,
-                ////sectionId: searchParams.get('sectionId') ?? undefined,
                 examTypeId: searchParams.get('examTypeId') ?? undefined,
             }
-        }, [searchQuery]),
+        }, [searchParams]),
     })
 
     const onSubmit = (values: TGetExamSubjectsSchema) => {
-        setSearchQuery(createQueryString({
-            classRoomId: values.classRoomId,
-            ////sectionId: values.sectionId,
-            examTypeId: values.examTypeId,
-            skipPagination: 'true',
-        }))
+        !!values.classRoomId && searchParams.set('classRoomId', values.classRoomId)
+        !!values.examTypeId && searchParams.set('examTypeId', values.examTypeId)
+        setSearchParams(searchParams);
     }
 
     return (
@@ -56,17 +50,14 @@ export default function GetExamSubjectsForm({ setSearchQuery, searchQuery, defau
                     queryKey={QueryKey.EXAM_TYPES}
                     disableOnNoOption
                     containerClassName="min-w-[200px]"
-                    defaultSelected={defaultExamType}
-                    onChange={val => {
-                        defaultExamType && setSearchQuery(createQueryString({ // trigger only on edit
-                            examTypeId: val,
-                            classRoomId: form.getValues('classRoomId'),
-                            ////sectionId: form.getValues('sectionId'),
-                        }))
+                    defaultSelected={defaultExamType} // used to set the default value on edit
+                    onChange={val => { // used to trigger only on edit
+                        !!val && searchParams.set('examTypeId', val)
+                        setSearchParams(searchParams);
                     }}
                 />
                 {
-                    !searchQuery && (
+                    !searchParams.get('classRoomId') && (
                         <>
                             <ClassSectionFormField noDescription noSection containerClassName='w-[200px]' required={false} />
 

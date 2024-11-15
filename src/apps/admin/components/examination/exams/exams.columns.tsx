@@ -69,7 +69,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/edit')}>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/edit' + '?classRoomId=' + row.original.classRoomId + '&examTypeId=' + row.original.examTypeId)}>
                                 <span>Manage</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/evaluation')}>

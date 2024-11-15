@@ -45,7 +45,6 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
         if (exam) {
             setSearchQuery(createQueryString({
                 classRoomId: exam?.classRoom.id,
-                ////sectionId: exam?.classRoom?.parent?.id ? exam?.classRoom.id : undefined,
                 examTypeId: exam?.examType.id,
             }))
         }
@@ -62,14 +61,11 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
     return (
         <>
             <GetExamSubjectsForm
-                setSearchQuery={setSearchQuery}
-                searchQuery={searchQuery}
                 defaultExamType={{ value: exam?.examType.id, label: exam?.examType.name }}
             />
             <ExamSetupForm
                 subjects={subjects?.data ?? []}
                 examId={exam.id}
-                searchQuery={searchQuery}
                 defaultValues={{
                     examSubjects: subjects?.data?.map(subject => {
                         const examSubject = exam.examSubjects?.find(examSubject => examSubject.subject?.id === subject.id);
@@ -79,8 +75,10 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
                             examDate: "",
                             startTime: "",
                             duration: undefined,
-                            fullMark: undefined,
-                            passMark: undefined,
+                            theoryFM: subject.theoryFM,
+                            theoryPM: subject.theoryPM,
+                            practicalFM: subject.practicalFM,
+                            practicalPM: subject.practicalPM,
                             venue: "",
                             subjectId: subject.id,
                         }) as TExamSubjectsSchema["examSubjects"][0];
@@ -91,8 +89,10 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
                             examDate: formatDateNumeric({ date: new Date(examSubject.examDate) }) ?? '',
                             startTime: examSubject.startTime,
                             duration: examSubject.duration,
-                            fullMark: examSubject.fullMark,
-                            passMark: examSubject.passMark,
+                            practicalFM: examSubject.practicalFM,
+                            practicalPM: examSubject.practicalPM,
+                            theoryFM: examSubject.theoryFM,
+                            theoryPM: examSubject.theoryPM,
                             venue: examSubject.venue,
                             subjectId: subject.id,
                         }) as TExamSubjectsSchema["examSubjects"][0];
