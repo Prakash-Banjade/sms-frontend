@@ -318,7 +318,7 @@ export default function StudentForm(props: Props) {
                 </fieldset>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate('/admin/students')}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
                             !!params.id ? "Save changes" : "Submit"

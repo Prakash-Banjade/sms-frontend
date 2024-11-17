@@ -221,7 +221,7 @@ export default function StaffForm(props: Props) {
                 </fieldset>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate('/admin/staffs')}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
                             !!params.id ? "Save changes" : "Add Staff"

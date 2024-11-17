@@ -93,7 +93,7 @@ export default function NoticeForm(props: Props) {
                 />
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate('/admin/notices')}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
                             !!props.noticeId ? "Save changes" : "Add Notice"
