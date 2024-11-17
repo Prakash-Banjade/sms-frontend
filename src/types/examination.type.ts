@@ -19,8 +19,6 @@ export type TMarkGrade = {
     gradeScale: number,
     percentFrom: number,
     percentTo: number,
-    gpaFrom: number,
-    gpaTo: number,
     description: string | null,
 }
 

@@ -38,14 +38,6 @@ export const markGradesColumns: ColumnDef<TMarkGrade>[] = [
         accessorKey: "percentTo",
     },
     {
-        header: "GPA From",
-        accessorKey: "gpaFrom",
-    },
-    {
-        header: "GPA To",
-        accessorKey: "gpaTo",
-    },
-    {
         header: "Description",
         accessorKey: "description",
         cell: ({ row }) => {

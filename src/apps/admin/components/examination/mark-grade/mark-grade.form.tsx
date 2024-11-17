@@ -19,21 +19,17 @@ type Props = ({
 
 export const markGradeSchema = z.object({
     gradeName: z.string()
-        .min(1, { message: "Grade name is required" })
+        .min(0, { message: "Grade name is required" })
         .regex(GRADE_REGEX, { message: "Invalid grade name format" }),
     gradeScale: z.coerce.number()
         .int({ message: "Grade scale must be an integer" })
-        .min(1, { message: "Grade scale must be at least 1" }),
+        .min(0, { message: "Grade scale must be at least 1" }),
     percentFrom: z.coerce.number()
         .nonnegative({ message: "Percent from must be 0 or more" })
         .max(99, { message: "Percent from must be 99 or less" }),
     percentTo: z.coerce.number()
-        .min(1, { message: "Percent to must be at least 1" })
+        .min(0, { message: "Percent to must be at least 1" })
         .max(100, { message: "Percent to must be 100 or less" }),
-    gpaFrom: z.coerce.number()
-        .min(1, { message: "GPA from must be at least 1" }),
-    gpaTo: z.coerce.number()
-        .min(1, { message: "GPA to must be at least 1" }),
     description: z.string().nullish(),
 })
 
@@ -101,8 +97,8 @@ export default function MarkGradeForm(props: Props) {
                         description="Percentage from the grade is applied."
                         required
                         placeholder="e.g. 90"
-                        min={1}
-                        max={100}
+                        min={0}
+                        max={99}
                         step={0.01}
                     />
                     <AppForm.Number<markGradeFormType>
@@ -113,24 +109,6 @@ export default function MarkGradeForm(props: Props) {
                         placeholder="e.g. 100"
                         min={1}
                         max={100}
-                        step={0.01}
-                    />
-                    <AppForm.Number<markGradeFormType>
-                        name="gpaFrom"
-                        label="GPA From"
-                        description="GPA from the grade is applied."
-                        required
-                        placeholder="e.g. 3.5"
-                        min={1}
-                        step={0.01}
-                    />
-                    <AppForm.Number<markGradeFormType>
-                        name="gpaTo"
-                        label="GPA To"
-                        description="GPA to the grade is applied."
-                        required
-                        placeholder="e.g. 4.0"
-                        min={1}
                         step={0.01}
                     />
                 </section>
