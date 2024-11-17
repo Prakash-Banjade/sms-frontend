@@ -11,10 +11,9 @@ import { MoreHorizontal } from "lucide-react"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
-import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TMarkGrade } from "@/types/examination.type"
-import MarkGradeForm, { markGradeFormType } from "./mark-grade.form"
+import { markGradeFormType } from "./mark-grade.form"
 
 export const markGradesColumns: ColumnDef<TMarkGrade>[] = [
     {
@@ -52,7 +51,7 @@ export const markGradesColumns: ColumnDef<TMarkGrade>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const markGrade = row.original;
-            const [isEditOpen, setIsEditOpen] = useState(false);
+            // const [isEditOpen, setIsEditOpen] = useState(false);
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation<markGradeFormType, any>();
@@ -67,14 +66,14 @@ export const markGradesColumns: ColumnDef<TMarkGrade>[] = [
 
             return (
                 <>
-                    <ResponsiveDialog
+                    {/* <ResponsiveDialog
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
                         title="Edit MarkGrade"
                         className="w-[97%] max-w-[800px]"
                     >
                         <MarkGradeForm markGradeId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={markGrade} />
-                    </ResponsiveDialog>
+                    </ResponsiveDialog> */}
 
                     <ResponsiveAlertDialog
                         isOpen={isDeleteOpen}
@@ -95,9 +94,9 @@ export const markGradesColumns: ColumnDef<TMarkGrade>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
+                            {/* <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
-                            </DropdownMenuButtonItem>
+                            </DropdownMenuButtonItem> */}
                             <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>
                             </DropdownMenuButtonItem>
