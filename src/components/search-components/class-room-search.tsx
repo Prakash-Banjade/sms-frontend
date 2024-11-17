@@ -66,7 +66,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="reset" className='text-muted-foreground'>Select Class</SelectItem>
+                            <SelectItem value="reset" className='text-xs text-muted-foreground'>Select Class</SelectItem>
                             {
                                 data?.map((classRoom) => (
                                     <SelectItem value={classRoom.id} key={classRoom.id}>{classRoom.name}</SelectItem>
@@ -100,7 +100,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectItem value="reset" className='text-muted-foreground'>Select Section</SelectItem>
+                                <SelectItem value="reset" className='text-xs text-muted-foreground'>Select Section</SelectItem>
                                 {
                                     data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
                                         <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>

@@ -3,7 +3,6 @@ import GetExamReportBySubjectForm from "@/apps/admin/components/report/examinati
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createQueryString } from "@/utils/create-query-string";
 import SearchInput from "@/components/search-components/search-input";
 import { DataTable } from "@/components/data-table/data-table";
@@ -12,6 +11,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useGetClassRoomsOptions } from "@/apps/admin/components/class-rooms/actions";
 import { useSearchParams } from "react-router-dom";
 import { Label } from "@/components/ui/label";
+import DashboardCountCard from "@/components/dashboard/dashboard-count-card";
 
 export default function ExaminationReport_SubjectWise() {
     return (
@@ -55,36 +55,34 @@ function ReportSection() {
     if (!data) return <div className="mt-20 text-center">No data found</div>;
 
     return (
-        <section className="p-6 rounded-lg border space-y-6">
+        <section className="p-6 rounded-lg border space-y-6 @container">
             <section className="flex justify-between gap-5">
-                <h2 className="text-2xl font-medium">{data?.data[0]?.subjectName} Report</h2>
-                <div className="flex flex-col gap-1">
-                    <span>
-                        Full Mark: {data?.data[0]?.fullMark}
-                    </span>
-                    <span>
-                        Pass Mark: {data?.data[0]?.passMark}
-                    </span>
+                <h2 className="text-2xl font-medium">{data?.examSubject?.subjectName} Report</h2>
+                <div className="flex gap-8">
+                    <section>
+                        <span className="text-xs text-muted-foreground">Full Mark</span>
+                        <div className="flex flex-col">
+                            <span>Theory: {data?.examSubject?.theoryFM}</span>
+                            <span>Practical: {data?.examSubject?.practicalFM}</span>
+                        </div>
+                    </section>
+                    <section>
+                        <span className="text-xs text-muted-foreground">Pass Mark</span>
+                        <div className="flex flex-col">
+                            <span>Theory: {data?.examSubject?.theoryPM}</span>
+                            <span>Practical: {data?.examSubject?.practicalPM}</span>
+                        </div>
+                    </section>
                 </div>
             </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium">Passed Students</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-2xl font-bold">{data.count?.totalPassed}</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium">Failed Students</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-2xl font-bold">{data.count?.totalFailed}</p>
-                    </CardContent>
-                </Card>
+            <div className="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-4 gap-6">
+                <DashboardCountCard className="col-span-2" count={data?.count?.totalPassed} title="Total Passed Students" />
+                <DashboardCountCard className="col-span-2" count={data?.count?.totalFailed} title="Total Failed Students" />
+                <DashboardCountCard count={data?.count?.theoryPassed} title="Passed In Theory" />
+                <DashboardCountCard count={data?.count?.theoryFailed} title="Failed In Theory" />
+                <DashboardCountCard count={data?.count?.practicalPassed} title="Passed In Practical" />
+                <DashboardCountCard count={data?.count?.practicalFailed} title="Failed In Practical" />
             </div>
 
             <section className="space-y-6">
@@ -92,20 +90,20 @@ function ReportSection() {
                     data={data?.data ?? []}
                     columns={subjectWiseReportColumns}
                     meta={data?.meta}
-                    filters={<SearchFilters enabled={!!data?.data?.length} />}
+                    filters={<SearchFilters />}
                 />
             </section>
         </section>
     )
 };
 
-function SearchFilters({ enabled = false }: { enabled?: boolean }) {
+function SearchFilters() {
     const [searchParams, setSearchParams] = useSearchParams();
     const classRoomId = searchParams.get('classRoomId');
 
     const { data, isLoading } = useGetClassRoomsOptions({
         queryString: 'page=1&take=50',
-        options: { enabled }
+        options: { enabled: !!classRoomId }
     });
 
     return (
@@ -115,21 +113,21 @@ function SearchFilters({ enabled = false }: { enabled?: boolean }) {
                 placeholder="Search by student name"
             />
             <section className="space-y-2">
-                <Label>Select class</Label>
+                <Label>Select section</Label>
                 <Select
                     value={searchParams.get('sectionId') ?? ''}
                     onValueChange={val => {
-                        !!val ? searchParams.set('sectionId', val) : searchParams.delete('sectionId');
+                        (!!val && val !== 'all') ? searchParams.set('sectionId', val) : searchParams.delete('sectionId');
                         setSearchParams(searchParams);
                     }}
-                    disabled={!enabled || isLoading}
+                    disabled={!classRoomId || isLoading}
                 >
                     <SelectTrigger className="min-w-[200px]">
                         <SelectValue placeholder="Section" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value={'all'}>All</SelectItem>
+                            <SelectItem value={'all'} className="text-xs text-muted-foreground">Select Section</SelectItem>
                             {
                                 data?.find((classRoom) => classRoom.id === classRoomId)?.children?.map((section) => (
                                     <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>

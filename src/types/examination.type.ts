@@ -178,17 +178,26 @@ export type TExamReportBySubject = {
         percentage: number,
         gpa: number,
         grade: string,
-        fullMark: number,
-        passMark: number,
         studentId: string,
         rollNo: number,
-        subjectName: string,
         fullName: string,
-        classRoomName: string
+        classRoomName: string,
+        status: string,
     }[],
+    meta: TMeta,
+    examSubject: {
+        theoryFM: number,
+        theoryPM: number,
+        practicalFM: number,
+        practicalPM: number,
+        subjectName: string,
+    },
     count: {
         totalPassed: string,
         totalFailed: string,
-    },
-    meta: TMeta,
+        theoryPassed: string,
+        theoryFailed: string,
+        practicalPassed: string,
+        practicalFailed: string
+    }
 }

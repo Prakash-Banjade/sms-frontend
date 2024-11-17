@@ -16,16 +16,30 @@ export const subjectWiseReportColumns: ColumnDef<TExamReportBySubject['data'][0]
         accessorKey: "classRoomName",
     },
     {
-        header: "Obtained Mark",
-        accessorKey: "obtainedMarks",
+        header: "Theory Mark",
+        accessorKey: "theoryOM",
+    },
+    {
+        header: "Practical Mark",
+        accessorKey: "practicalOM",
     },
     {
         header: "Percentage",
         accessorKey: "percentage",
+        cell: ({ row }) => {
+            return typeof row.original.percentage
+                ? <span>{row.original.percentage} %</span>
+                : ''
+        }
     },
     {
         header: "GPA",
         accessorKey: "gpa",
+        cell: ({ row }) => {
+            return typeof row.original.gpa === 'number'
+                ? <span>{row.original.gpa.toFixed(2)}</span>
+                : ''
+        }
     },
     {
         header: "Grade",
@@ -33,12 +47,12 @@ export const subjectWiseReportColumns: ColumnDef<TExamReportBySubject['data'][0]
     },
     {
         header: "Status",
-        accessorKey: "isActive",
+        accessorKey: "status",
         cell: ({ row }) => {
             const report = row.original;
 
             return (
-                (report.theoryOM < report.passMark)
+                (report.status === 'FAIL')
                     ? <Badge variant={'destructive'}>Failed</Badge>
                     : <Badge variant={'success'}>Passed</Badge>
             )
