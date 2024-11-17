@@ -39,13 +39,13 @@ const examSubjectSchema = z.object({
         z.literal("").optional(),
         z.coerce.number()
             .int({ message: "Full mark must be a number" })
-            .min(1, { message: "Full mark must be greater than 0" })
+            .min(0, { message: "Full mark must be greater or equal to 0" })
     ]).optional(),
     practicalPM: z.union([
         z.literal("").optional(),
         z.coerce.number()
             .int({ message: "Pass mark must be a number" })
-            .min(1, { message: "Pass mark must be greater than 0" })
+            .min(0, { message: "Pass mark must be greater or equal to 0" })
     ]).optional(),
     venue: z.union([
         z.literal("").optional(),

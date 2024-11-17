@@ -279,7 +279,7 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
                                                             type="number"
                                                             {...field}
                                                             value={field.value ?? ''}
-                                                            min={1}
+                                                            min={0}
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
@@ -302,7 +302,7 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
                                                             type="number"
                                                             {...field}
                                                             value={field.value ?? ''}
-                                                            min={1}
+                                                            min={0}
                                                             required
                                                             pattern={NUMBER_REGEX_STRING}
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
