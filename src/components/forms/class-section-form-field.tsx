@@ -27,7 +27,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "../ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, X } from "lucide-react";
 
 
 type Props = ({
@@ -237,7 +237,19 @@ function MultiSection({ required, disabled, options, description, values, setVal
                                 <div className="flex gap-2 justify-start flex-wrap">
                                     {values?.length ?
                                         values.map((val, i) => (
-                                            <div key={i} className="px-2 py-0.5 rounded-xl border bg-secondary text-xs font-medium">{options.find((option) => option.value === val)?.label}</div>
+                                            <div role="button"
+                                                key={i}
+                                                className="px-2 py-0.5 rounded-xl border bg-secondary text-xs font-medium flex gap-1 items-center"
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                    handleSetValue(val);
+                                                }}
+                                            >
+                                                <span>
+                                                    {options.find((option) => option.value === val)?.label}
+                                                </span>
+                                                <X className="!size-3" />
+                                            </div>
                                         ))
                                         : 'Select sections'}
                                 </div>
