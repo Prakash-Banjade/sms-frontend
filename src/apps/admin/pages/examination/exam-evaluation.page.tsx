@@ -45,7 +45,7 @@ const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubject
         setSearchParams('optionalSubjectId', undefined); // Clear optional subject id on mount
     }, [])
 
-    const { data: students, isLoading } = useGetExamStudents({
+    const { data: students, isLoading } = useGetExamStudents({ // no pagination
         id: examId,
         queryString: createQueryString({
             optionalSubjectId: searchParams.get('optionalSubjectId'),

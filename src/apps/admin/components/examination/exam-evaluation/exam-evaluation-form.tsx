@@ -34,15 +34,15 @@ type Props = {
 
 export default function ExamEvaluationForm({ examSubjects, students }: Props) {
     const [selectAll, setSelectAll] = useState(false); // used to track the checked subjects
-    const [selectedSubjectId, setSelectedSubjectId] = useState<string | undefined>(examSubjects[0]?.id); // used to keep track of the selected subject, this is used to refetch the exam reports
+    const [selectedExamSubject, setSelectedExamSubject] = useState<TExamSubject | undefined>(examSubjects[0]); // used to keep track of the selected subject, this is used to refetch the exam reports
 
     // fetch exam reports based on the exam subject to keep the default values
     const { data: reports, isLoading } = useGetExamReports({
         queryString: createQueryString({
-            examSubjectId: selectedSubjectId,
+            examSubjectId: selectedExamSubject?.id,
             skipPagination: 'true',
         }),
-        options: { enabled: !!selectedSubjectId }
+        options: { enabled: !!selectedExamSubject?.id }
     });
 
     // dynamically creating the default values for the form based on the subjects
@@ -52,11 +52,11 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                 return ({
                     isChecked: false,
                     studentId: student.id,
-                    theoryOM: undefined,
-                    theoryPM: undefined,
+                    theoryOM: selectedExamSubject ? selectedExamSubject.theoryFM === 0 ? 0 : undefined : undefined, // this is done to default set the OM if the FM is = 0
+                    practicalOM: selectedExamSubject ? selectedExamSubject.practicalFM === 0 ? 0 : undefined : undefined, // this is done to default set the OM if the FM is = 0
                 })
             }),
-            examSubjectId: examSubjects[0]?.id,
+            examSubjectId: selectedExamSubject?.id,
         })
     }, [students]);
 
@@ -76,8 +76,8 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                         reportId: foundReport?.id,
                         isChecked: !!foundReport,
                         studentId: student.id,
-                        theoryOM: foundReport?.theoryOM,
-                        practicalOM: foundReport?.practicalOM,
+                        theoryOM: foundReport?.theoryOM ?? (selectedExamSubject?.theoryFM === 0 ? 0 : undefined),
+                        practicalOM: foundReport?.practicalOM ?? (selectedExamSubject?.practicalFM === 0 ? 0 : undefined),
                     }
                 })
 
@@ -129,7 +129,7 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                             <TableRow className='bg-tableheader/50'>
                                 <TableHead colSpan={3} className='min-w-36 text-center border-r text-base'>Students</TableHead>
                                 <TableHead colSpan={examSubjects?.length ?? 0} className='min-w-36 text-center text-base'>
-                                    <ExanSubjectSelect examSubjects={examSubjects} setSelectedSubjectId={setSelectedSubjectId} />
+                                    <ExanSubjectSelect examSubjects={examSubjects} setSelectedExamSubject={setSelectedExamSubject} />
                                 </TableHead>
                             </TableRow>
                             <TableRow className='bg-tableheader'>
@@ -199,11 +199,17 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                                             {...field}
                                                             pattern={NUMBER_REGEX_STRING}
                                                             type='number'
-                                                            min={1}
+                                                            min={0}
+                                                            max={selectedExamSubject?.theoryFM}
                                                             step={0.01}
                                                             required
                                                             value={field.value ?? ''}
-                                                            disabled={!form.getValues(`evaluations.${index}.isChecked`) || isPending || isLoading}
+                                                            disabled={
+                                                                !form.getValues(`evaluations.${index}.isChecked`)
+                                                                || isPending
+                                                                || isLoading
+                                                                || selectedExamSubject?.theoryFM === 0
+                                                            }
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -222,11 +228,17 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                                             {...field}
                                                             pattern={NUMBER_REGEX_STRING}
                                                             type='number'
-                                                            min={1}
+                                                            min={0}
+                                                            max={selectedExamSubject?.practicalFM}
                                                             step={0.01}
                                                             required
                                                             value={field.value ?? ''}
-                                                            disabled={!form.getValues(`evaluations.${index}.isChecked`) || isPending || isLoading}
+                                                            disabled={
+                                                                !form.getValues(`evaluations.${index}.isChecked`)
+                                                                || isPending
+                                                                || isLoading
+                                                                || selectedExamSubject?.practicalFM === 0
+                                                            }
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -266,10 +278,10 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
 
 function ExanSubjectSelect({
     examSubjects,
-    setSelectedSubjectId
+    setSelectedExamSubject
 }: {
     examSubjects: TExamSubject[],
-    setSelectedSubjectId: React.Dispatch<React.SetStateAction<string | undefined>>
+    setSelectedExamSubject: React.Dispatch<React.SetStateAction<TExamSubject | undefined>>
 }) {
     const { setSearchParams } = useCustomSearchParams();
     const form = useFormContext<TExamEvaluationsSchema>();
@@ -282,9 +294,10 @@ function ExanSubjectSelect({
                 <FormItem>
                     <Select
                         onValueChange={val => {
-                            const selectedSubject = examSubjects.find(subject => subject.id === val)?.subject;
+                            const foundExamSubject = examSubjects.find(subject => subject.id === val);
+                            const selectedSubject = foundExamSubject?.subject;
                             setSearchParams('optionalSubjectId', selectedSubject?.type === ESubjectType.Optional ? selectedSubject.id : undefined);
-                            setSelectedSubjectId(val)
+                            setSelectedExamSubject(foundExamSubject)
                             field.onChange(val)
 
                         }}
