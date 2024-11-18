@@ -43,7 +43,7 @@ export default function ClassRoomForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 classTeacherId: values.classTeacherId ?? null,
-                classType: EClassType.SECTION,
+                classType: EClassType.PRIMARY,
             },
             invalidateTags: [QueryKey.CLASSES],
         });
