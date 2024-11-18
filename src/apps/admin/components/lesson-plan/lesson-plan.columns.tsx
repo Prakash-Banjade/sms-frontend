@@ -124,7 +124,7 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
 
             async function handleDelete() {
                 await mutateAsync({
-                    method: "patch",
+                    method: "delete",
                     endpoint: `${QueryKey.LESSON_PLANS}/${lessonPlan.id}`,
                     invalidateTags: [QueryKey.LESSON_PLANS],
                 });
