@@ -44,4 +44,5 @@ export enum QueryKey {
     ATTENDANCES = 'attendances',
     OPTIONAL_SUBJECTS = 'optional-subjects',
     LESSON_PLANS = 'lesson-plans',
+    EVENTS = 'events',
 };

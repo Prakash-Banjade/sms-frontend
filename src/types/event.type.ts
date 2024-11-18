@@ -1,0 +1,17 @@
+import { TMeta } from "./global.type";
+
+export type TEvent = {
+    id: string,
+    createdAt: string,
+    title: string,
+    description: string | null,
+    dateFrom: string,
+    dateTo: string,
+    eventLocation: string,
+    members: string[] | null,
+}
+
+export type TEventsResponse = {
+    data: TEvent[],
+    meta: TMeta;
+}
