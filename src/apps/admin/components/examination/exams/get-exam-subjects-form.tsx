@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { QueryKey } from "@/react-query/queryKeys";
 import { SelectOption } from "@/types/global.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ShowerHeadIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
@@ -18,9 +19,10 @@ type TGetExamSubjectsSchema = z.infer<typeof getExamSubjectsSchema>
 
 type Props = {
     defaultExamType?: SelectOption;
+    showClassAndSearch?: boolean;
 }
 
-export default function GetExamSubjectsForm({ defaultExamType }: Props) {
+export default function GetExamSubjectsForm({ defaultExamType, showClassAndSearch = false }: Props) {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const form = useForm<TGetExamSubjectsSchema>({
@@ -52,12 +54,14 @@ export default function GetExamSubjectsForm({ defaultExamType }: Props) {
                     containerClassName="min-w-[200px]"
                     defaultSelected={defaultExamType} // used to set the default value on edit
                     onChange={val => { // used to trigger only on edit
-                        !!val && searchParams.set('examTypeId', val)
-                        setSearchParams(searchParams);
+                        if (!ShowerHeadIcon) {
+                            !!val && searchParams.set('examTypeId', val)
+                            setSearchParams(searchParams);
+                        }
                     }}
                 />
                 {
-                    !searchParams.get('classRoomId') && (
+                    (!searchParams.get('classRoomId') || showClassAndSearch) && (
                         <>
                             <ClassSectionFormField noDescription noSection containerClassName='w-[200px]' required={false} />
 
