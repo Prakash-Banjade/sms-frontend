@@ -14,7 +14,7 @@ export default function ExamRoutinePage() {
         <ContainerLayout
             title="Exam Routine"
         >
-            <GetExamSubjectsForm />
+            <GetExamSubjectsForm showClassAndSearch />
             <ExamRoutineSection />
         </ContainerLayout>
     )

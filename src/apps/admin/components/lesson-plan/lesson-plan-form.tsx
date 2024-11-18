@@ -6,10 +6,11 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGetClassRoomsOptions } from "../class-rooms/actions";
 import { lessonPlanDefaultValues, lessonPlanSchema, lessonPlanSchemaType } from "../../schemas/lesson-plan.schema";
 import { IFileUploadResponse } from "@/types/global.type";
+import LoadingButton from "@/components/forms/loading-button";
 
 type Props = ({
     lessonPlanId?: undefined;
@@ -23,6 +24,7 @@ type Props = ({
 
 export default function LessonPlanForm(props: Props) {
     const navigate = useNavigate();
+    const location = useLocation();
     const { payload } = useAuth();
 
     // fetching options outside to validate class room and sections
@@ -35,10 +37,9 @@ export default function LessonPlanForm(props: Props) {
         },
     })
 
-    const { mutateAsync } = useAppMutation<Partial<Omit<lessonPlanSchemaType, 'sectionIds'> & { classRoomIds: string[] }>, any>();
+    const { mutateAsync, isPending } = useAppMutation<Partial<Omit<lessonPlanSchemaType, 'sectionIds'> & { classRoomIds: string[] }>, any>();
 
     async function onSubmit(values: lessonPlanSchemaType) {
-        console.log(123)
         // check if section is selected or not
         if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionIds?.length) {
             form.setError("sectionIds", { type: "required", message: "Section is required" });
@@ -139,12 +140,17 @@ export default function LessonPlanForm(props: Props) {
                 </section>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={() => navigate(`/admin/lesson-plans`)}>Cancel</AppForm.Cancel>
-                    <AppForm.Submit className="capitalize">
+                    <AppForm.Cancel action={() => navigate(location.state?.from.pathname ?? `/admin/lesson-plans`, { replace: true })}>Cancel</AppForm.Cancel>
+                    <LoadingButton // IDK why usign AppForm.Submit don't work here, so used this
+                        isLoading={isPending}
+                        loadingText={!!props.lessonPlanId ? "Saving..." : "Creating..."}
+                        type="submit"
+                        onClick={form.handleSubmit(onSubmit)}
+                    >
                         {
-                            !!props.lessonPlanId ? "Save changes" : `Create Plan`
+                            !!props.lessonPlanId ? "Save changes" : "Create Plan"
                         }
-                    </AppForm.Submit>
+                    </LoadingButton>
                 </section>
             </form>
         </AppForm>

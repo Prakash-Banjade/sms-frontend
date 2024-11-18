@@ -1,70 +1,47 @@
-import { CalendarIcon, ClockIcon, FileIcon, UserIcon, BookOpenIcon, UsersIcon, PencilIcon, CheckCircleIcon } from 'lucide-react'
-import { format } from "date-fns"
-
+import { CalendarIcon, FileIcon, UserIcon, BookOpenIcon, UsersIcon, PencilIcon, CheckCircleIcon, CalendarCheck, TrendingUp } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import { ELessonPlanStatus } from '@/types/lesson-plan.type'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-const lessonPlan = {
-    "id": "9f67c97f-32f4-40c0-aefe-3b4c61037dc1",
-    "createdAt": "2024-11-17T07:13:49.700Z",
-    "startDate": "2024-11-17T18:15:00.000Z",
-    "endDate": "2024-11-17T18:15:00.000Z",
-    "title": "Lesson 1 complete",
-    "description": "Hello wthere",
-    "status": "not_started",
-    "subject": {
-        "id": "4a327369-030c-43b0-9617-3c8d3f3e0b4a",
-        "subjectName": "OPT Math"
-    },
-    "createdBy": {
-        "isVerified": false,
-        "firstName": "Prakash",
-        "lastName": "Banjade"
-    },
-    "attachments": [
-        {
-            "id": "eab6f24b-e4d4-4416-90a3-23ba8d4d254b",
-            "url": "http://localhost:8000/api/upload/files/get-file/gitika_resumepdf-bhMIKlBBgW.pdf",
-            "originalName": "gitika_resume.pdf"
-        }
-    ],
-    "classRooms": [
-        {
-            "id": "6f0ec48d-737a-4399-a47b-f53781c54a66",
-            "name": "A One",
-            "parent": {
-                "id": "682659d1-e679-49fd-ab82-10fcc0dd4e21",
-                "name": "Class XYZ"
-            }
-        },
-        {
-            "id": "e37ca76f-8753-4f20-898e-9be42b10f6a9",
-            "name": "B Positive",
-            "parent": {
-                "id": "682659d1-e679-49fd-ab82-10fcc0dd4e21",
-                "name": "Class XYZ"
-            }
-        }
-    ]
-}
+import LessonPlanSkeleton from '../../components/lesson-plan/single-lesson-plan-loading'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useGetLessonPlan } from '../../components/lesson-plan/data-access'
+import { formatDate } from '@/utils/format-date'
+import { useAppMutation } from '@/hooks/useAppMutation'
+import { QueryKey } from '@/react-query/queryKeys'
+import LoadingButton from '@/components/forms/loading-button'
 
 export default function SingleLessonPlanPage() {
-    const formatDate = (date: string) => format(new Date(date), "PPP")
-    const formatTime = (date: string) => format(new Date(date), "p")
+    const params = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    if (!lessonPlan) {
-        return <LessonPlanSkeleton />
+    const { data: lessonPlan, isLoading } = useGetLessonPlan({
+        id: params.id!,
+        options: { enabled: !!params.id }
+    });
+
+    const { mutateAsync, isPending } = useAppMutation();
+
+    const handleChangeStatus = async (status: ELessonPlanStatus) => {
+        await mutateAsync({
+            method: 'patch',
+            endpoint: `${QueryKey.LESSON_PLANS}/${lessonPlan?.id}/change-status`,
+            data: { status },
+            invalidateTags: [QueryKey.LESSON_PLANS, lessonPlan?.id!],
+        });
     }
+
+    if (isLoading) return <LessonPlanSkeleton />
+
+    if (!lessonPlan) return <Navigate to="/admin/lesson-plans" />;
 
     return (
         <div className="container mx-auto">
             <header className="flex gap-5 items-end">
                 <h1 className="text-3xl font-bold">{lessonPlan.title}</h1>
                 <Badge
-                    className='capitalize'
+                    className='capitalize text-base'
                     variant={
                         lessonPlan.status === ELessonPlanStatus.Completed
                             ? "success"
@@ -92,18 +69,22 @@ export default function SingleLessonPlanPage() {
                                     </div>
                                     <div className="flex items-center space-x-2 text-sm">
                                         <CalendarIcon className="w-5 h-5 text-gray-500" />
-                                        <span className="font-medium">Date:</span>
-                                        <span>{formatDate(lessonPlan.startDate)}</span>
+                                        <span className="font-medium">Start Date:</span>
+                                        <span>{formatDate({ date: new Date(lessonPlan.startDate) })}</span>
                                     </div>
                                     <div className="flex items-center space-x-2 text-sm">
-                                        <ClockIcon className="w-5 h-5 text-gray-500" />
-                                        <span className="font-medium">Time:</span>
-                                        <span>{formatTime(lessonPlan.startDate)} - {formatTime(lessonPlan.endDate)}</span>
+                                        <CalendarCheck className="w-5 h-5 text-gray-500" />
+                                        <span className="font-medium">End Date:</span>
+                                        <span>{formatDate({ date: new Date(lessonPlan.endDate) })}</span>
                                     </div>
                                     <div className="flex items-center space-x-2 text-sm">
                                         <UserIcon className="w-5 h-5 text-gray-500" />
                                         <span className="font-medium">Created by:</span>
-                                        <span>{lessonPlan.createdBy.firstName} {lessonPlan.createdBy.lastName}</span>
+                                        {
+                                            lessonPlan.createdBy
+                                                ? <span>{lessonPlan.createdBy.firstName} {lessonPlan.createdBy.lastName}</span>
+                                                : <span className="text-muted-foreground">N/A</span>
+                                        }
                                     </div>
                                 </div>
                             </CardContent>
@@ -146,70 +127,73 @@ export default function SingleLessonPlanPage() {
                     <div className='space-y-6'>
                         <Card>
                             <CardHeader>
-                                <CardTitle>Class Rooms</CardTitle>
+                                <CardTitle className='flex flex-row gap-5 items-end'>
+                                    Class Rooms
+                                    <Badge variant="outline" className="capitalize text-base">
+                                        {
+                                            (!!lessonPlan.classRooms?.length && lessonPlan.classRooms[0].parent?.name)
+                                                ? lessonPlan.classRooms[0].parent?.name
+                                                : lessonPlan.classRooms[0].name
+                                        }
+                                    </Badge>
+                                </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-2">
-                                    {lessonPlan.classRooms.map((classroom) => (
-                                        <div key={classroom.id} className="flex items-center space-x-2">
-                                            <UsersIcon className="w-5 h-5 text-muted-foreground" />
-                                            <span>{classroom.name}</span>
-                                            <span className="text-muted-foreground">({classroom.parent.name})</span>
-                                        </div>
-                                    ))}
+                                    {lessonPlan.classRooms?.length && lessonPlan.classRooms[0].parent?.name &&
+                                        lessonPlan.classRooms.map((classroom) => (
+                                            <div key={classroom.id} className="flex items-center space-x-2">
+                                                <UsersIcon className="w-5 h-5 text-muted-foreground" />
+                                                <span>{classroom.name}</span>
+                                            </div>
+                                        ))}
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Actions</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    <Button className="w-full" variant="outline">
-                                        <PencilIcon className="w-4 h-4 mr-2" />
-                                        Edit Lesson Plan
-                                    </Button>
-                                    <Button className="w-full">
-                                        <CheckCircleIcon className="w-4 h-4 mr-2" />
-                                        Mark as Complete
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        {lessonPlan.status !== ELessonPlanStatus.Completed &&
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Actions</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="flex flex-col gap-4">
+                                        <Button className="w-full" variant="outline" onClick={() => navigate(`/admin/lesson-plans/${lessonPlan.id}/edit`, { state: { from: location } })}>
+                                            <PencilIcon className="w-4 h-4 mr-2" />
+                                            Edit Lesson Plan
+                                        </Button>
+                                        {
+                                            lessonPlan?.status === ELessonPlanStatus.In_Progress && (
+                                                <LoadingButton
+                                                    type="button"
+                                                    isLoading={isPending}
+                                                    loadingText='Saving...'
+                                                    onClick={() => handleChangeStatus(ELessonPlanStatus.Completed)}
+                                                >
+                                                    <CheckCircleIcon className="w-4 h-4 mr-2" />
+                                                    Mark as Complete
+                                                </LoadingButton>
+                                            )
+                                        }
+                                        {
+                                            lessonPlan?.status === ELessonPlanStatus.Not_Started && (
+                                                <LoadingButton
+                                                    type="button"
+                                                    isLoading={isPending}
+                                                    loadingText='Saving...'
+                                                    onClick={() => handleChangeStatus(ELessonPlanStatus.In_Progress)}
+                                                >
+                                                    <TrendingUp className="w-4 h-4 mr-2" />
+                                                    Set In Progress
+                                                </LoadingButton>
+                                            )
+                                        }
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        }
                     </div>
                 </div>
             </div>
-        </div>
-    )
-}
-
-function LessonPlanSkeleton() {
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <header className="bg-secondary/20 shadow">
-                <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center">
-                        <Skeleton className="h-9 w-64" />
-                        <Skeleton className="h-6 w-24" />
-                    </div>
-                </div>
-            </header>
-            <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="px-4 py-6 sm:px-0">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="md:col-span-2">
-                            <Skeleton className="h-64 w-full mb-6" />
-                            <Skeleton className="h-40 w-full mb-6" />
-                            <Skeleton className="h-32 w-full" />
-                        </div>
-                        <div>
-                            <Skeleton className="h-48 w-full mb-6" />
-                            <Skeleton className="h-32 w-full" />
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
+        </div >
     )
 }

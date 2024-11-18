@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge"
 import { useQueryClient } from "@tanstack/react-query"
 import { ELessonPlanStatus, TLessonPlan } from "@/types/lesson-plan.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
     {
@@ -118,6 +118,7 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
             const queryclient = useQueryClient();
             const navigate = useNavigate();
+            const location = useLocation();
 
             const { mutateAsync, isPending } = useAppMutation();
 
@@ -155,7 +156,7 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
                             <DropdownMenuButtonItem onClick={() => navigate(lessonPlan.id)}>
                                 <span>View Details</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => navigate(lessonPlan.id + '/edit')}>
+                            <DropdownMenuButtonItem onClick={() => navigate(lessonPlan.id + '/edit', { state: { from: location } })}>
                                 <span>Edit </span>
                             </DropdownMenuButtonItem>
                             <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>

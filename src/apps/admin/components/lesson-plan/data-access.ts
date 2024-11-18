@@ -10,7 +10,7 @@ export const useGetLessonPlan = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<TSingleLessonPlan>
+    options?: Partial<UseQueryOptions<TSingleLessonPlan>>
 }) => {
     const response = useFetchData<TSingleLessonPlan>({
         queryKey: [QueryKey.LESSON_PLANS, id],

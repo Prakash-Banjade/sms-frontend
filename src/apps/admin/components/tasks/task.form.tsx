@@ -92,7 +92,7 @@ export default function TaskForm(props: Props) {
         });
 
         if (response?.data?.message) {
-            navigate(`/${payload?.role}/tasks`);
+            navigate(`/${payload?.role}/tasks/${props.taskType}s`);
         }
     }
 

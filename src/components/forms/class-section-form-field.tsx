@@ -112,13 +112,15 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                 )}
             />
 
-
             {
                 (multipleSections && !noSection)
                     ? (
                         <MultiSection
                             values={sectionIds}
-                            setValues={setSectionIds}
+                            setValues={val => {
+                                setSectionIds(val);
+                                form.setValue("sectionIds", val);
+                            }}
                             required={!!selectedClassRoom?.children?.length}
                             disabled={
                                 !form.getValues('classRoomId')
@@ -286,7 +288,9 @@ function MultiSection({ required, disabled, options, description, values, setVal
                                         <CommandSeparator />
                                         <CommandGroup>
                                             <CommandItem
-                                                onSelect={() => setValues([])}
+                                                onSelect={() => {
+                                                    setValues([])
+                                                }}
                                                 className="justify-center text-center"
                                             >
                                                 Clear Selection
