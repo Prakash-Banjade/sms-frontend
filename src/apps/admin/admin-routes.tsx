@@ -61,6 +61,10 @@ import ExaminationReport_SubjectWise from './pages/reports/examination-report/su
 import ExaminationReport_StudentWise from './pages/reports/examination-report/student-wise-report.page';
 import SingleTeacherPage from './pages/teachers/single-teacher.page';
 import SubjectSelectionPage from './pages/students-management/subject-selection.page';
+import LessonPlansListPage from './pages/lesson-plan/lesson-plans-list.page';
+import AddLessonPlanPage from './pages/lesson-plan/add-lesson-plan.page';
+import EditLessonPlanPage from './pages/lesson-plan/edit-lesson-plan.page';
+import SingleLessonPlanPage from './pages/lesson-plan/single-lesson-plan.page';
 
 const AdminRoutes = () => {
     return (
@@ -86,6 +90,14 @@ const AdminRoutes = () => {
                     <Route path="class-routines">
                         <Route index element={<ClassRoutineListPage />} />
                         <Route path="new" element={<AddClassRoutinePage />} />
+                    </Route>
+                    <Route path="lesson-plans">
+                        <Route index element={<LessonPlansListPage />} />
+                        <Route path="new" element={<AddLessonPlanPage />} />
+                        <Route path=":id">
+                            <Route index element={<SingleLessonPlanPage />} />
+                            <Route path="edit" element={<EditLessonPlanPage />} />
+                        </Route>
                     </Route>
                     <Route path="examination">
                         <Route index element={<Navigate to="exam-setup" />} />

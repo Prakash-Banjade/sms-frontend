@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BellRing, BookOpenCheck, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
+import { BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -78,6 +78,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "class-routines",
                     }
                 ]
+            },
+            {
+                title: "Lesson Plan",
+                url: "lesson-plans",
+                icon: BookCheck,
             },
             {
                 title: "Examination",

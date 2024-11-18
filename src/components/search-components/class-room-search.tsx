@@ -10,18 +10,30 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Label } from '../ui/label';
+import { useGetSubjectOptions } from '@/apps/admin/components/subjects/data-access';
+import { createQueryString } from '@/utils/create-query-string';
 
 type Props = {
     onlyClassRoom?: boolean;
     classRoomKey?: string;
+    withSubjet?: boolean;
 }
 
-export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, classRoomKey = "classRoomId" }: Props) {
+export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, classRoomKey = "classRoomId", withSubjet = false }: Props) {
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetClassRoomsOptions({
         queryString: 'page=1&take=50',
     });
+
+    const { data: subjects, isLoading: isLoadingSubjects } = useGetSubjectOptions({
+        queryString: createQueryString({
+            classRoomId: searchParams.get(classRoomKey),
+        }),
+        options: {
+            enabled: (!!searchParams.get(classRoomKey) && withSubjet),
+        }
+    })
 
     useEffect(() => {
         setSearchParams("sectionId", undefined)
@@ -104,6 +116,41 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                                 {
                                     data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
                                         <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </section>
+            }
+
+            {
+                withSubjet && <section className='relative space-y-2'>
+                    <div className="">
+                        <Label className="">
+                            Subject
+                        </Label>
+                    </div>
+                    <Select
+                        value={searchParams.get("subjectId") ?? ''}
+                        onValueChange={val => {
+                            val === 'reset' ? setSearchParams('subjectId', undefined) : setSearchParams('subjectId', val)
+                        }}
+                        disabled={
+                            !searchParams.get(classRoomKey)
+                            || !subjects?.length
+                            || isLoadingSubjects
+                        }
+                    >
+                        <SelectTrigger className="w-[200px]">
+                            <SelectValue placeholder="Select subject" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="reset" className='text-xs text-muted-foreground'>Select Section</SelectItem>
+                                {
+                                    subjects?.map((subject) => (
+                                        <SelectItem value={subject.id} key={subject.id}>{subject.subjectName}</SelectItem>
                                     ))
                                 }
                             </SelectGroup>

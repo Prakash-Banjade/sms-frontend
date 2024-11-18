@@ -56,3 +56,20 @@ export const useGetSubjectChapters = ({
 
     return response;
 }
+
+export const useGetSubjectOptions = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<Pick<TSubject, 'id' | 'subjectName'>[]>>
+}) => {
+    const response = useFetchData<Pick<TSubject, 'id' | 'subjectName'>[]>({
+        endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+        queryKey: queryString ? [QueryKey.SUBJECTS, queryString] : [QueryKey.SUBJECTS],
+        queryString,
+        options,
+    })
+
+    return response;
+}

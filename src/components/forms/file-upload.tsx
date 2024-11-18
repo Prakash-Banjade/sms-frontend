@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import { truncateFilename } from "@/utils/truncate-file-name";
 import { LoaderCircle, Trash } from "lucide-react";
+import { TooltipWrapper } from "../ui/tooltip";
 
 interface AppFormFileUploadProps<T> extends TFormFieldProps<T>, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> {
     initialUpload?: IFileUploadResponse['files'],
@@ -39,7 +40,7 @@ export function FileUpload<T>({
         const formData = new FormData();
 
         if (files instanceof FileList) {
-            if (files.length > maxLimit || uploaded.length > maxLimit) {
+            if (files.length > maxLimit || uploaded.length > maxLimit || ((files.length + uploaded.length) > maxLimit)) {
                 setError(name as string, {
                     type: "manual",
                     message: `You can only upload a maximum of ${maxLimit} files`,
@@ -126,17 +127,19 @@ export function FileUpload<T>({
                         uploaded.length > 0 && (
                             <div>
                                 <span className="text-xs text-muted-foreground">Uploaded files:</span>
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col">
                                     {
                                         uploaded.map((file) => (
-                                            <div className="flex items-center gap-2 justify-between" key={file.id}>
+                                            <div className="flex items-center gap-2 justify-between hover:bg-secondary/50 p-2 rounded-md transition-all" key={file.id}>
                                                 <a href={file.url} key={file.id} className="text-blue-500 hover:underline text-sm break-words w-fit">
                                                     {truncateFilename(file.originalName, 40)}
                                                 </a>
 
-                                                <button type="button" onClick={() => handleRemoveFile(file.id)} aria-label="Remove file" title="Remove file">
-                                                    <Trash className="h-4 w-4 text-destructive" />
-                                                </button>
+                                                <TooltipWrapper label="Remove file">
+                                                    <button type="button" onClick={() => handleRemoveFile(file.id)} aria-label="Remove file">
+                                                        <Trash className="h-4 w-4 text-destructive" />
+                                                    </button>
+                                                </TooltipWrapper>
                                             </div>
                                         ))
                                     }
