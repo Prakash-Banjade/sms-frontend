@@ -15,8 +15,11 @@ type Props = {
 const changeClassSchema = z.object({
     classRoomId: z.string({ required_error: 'Class room is required' }).uuid({ message: 'Invalid class room' }),
     sectionId: z.string()
-        .uuid({ message: 'Invalid class section. Must be a valid UUID' })
-        .optional(),
+        .transform((val) => (val === '' ? undefined : val))
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid section ID',
+        })
+        .nullish(),
 })
 
 const defaultValues: Partial<changeClassSchemaType> = {
