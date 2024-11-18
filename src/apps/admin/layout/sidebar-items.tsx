@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
+import { BadgeIndianRupee, Banknote, BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -296,6 +296,31 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 url: "library/issues-and-returns",
                 icon: Calendar,
             },
+        ]
+    },
+    {
+        groupLabel: "Finance",
+        menuItems: [
+            {
+                title: "Charge Heads",
+                url: "finance/charge-heads",
+                icon: BadgeIndianRupee,
+            },
+            {
+                title: "Collect Fee",
+                url: "finance/collect-fee",
+                icon: Banknote,
+                items: [
+                    {
+                        title: "Student Wise",
+                        url: "finance/collect-fee/student-wise",
+                    },
+                    {
+                        title: "Class Wise",
+                        url: "finance/collect-fee/class-wise",
+                    }
+                ]
+            }
         ]
     },
     {
