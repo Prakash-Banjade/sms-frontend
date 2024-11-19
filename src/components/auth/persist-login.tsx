@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import usePersist from "@/hooks/usePersist";
 import AppLoadingSkeleton from "../app-sidebar-layout/app-loading-skeleton";
+import LoginExpireView from "./login-expire-view";
 
 const PersistLogin = () => {
     const { persist } = usePersist();
@@ -54,7 +55,7 @@ const PersistLogin = () => {
 
         content = (
             // <>Something went wrong</>
-            error?.status === 401 || error?.status === 403 ? <Outlet /> : <h1>Your login has expired</h1> // there is no message from the backend
+            error?.status === 401 || error?.status === 403 ? <Outlet /> : <LoginExpireView /> // there is no message from the backend
         );
     } else if (isSuccess && success) {
         //persist: yes, token: yes
