@@ -5,19 +5,43 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './academic-events-calendar.style.css'
 import { ResponsiveDialog } from '@/components/ui/responsive-dialog';
-import EventForm from '../events/events-form';
-import { EventInput } from '@fullcalendar/core/index.js';
+import EventForm, { eventFormDefaultValues } from '../events/events-form';
+import { EventContentArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import { useGetEvents } from '../events/data-access';
 import { TEvent } from '@/types/event.type';
+import { DateRange } from '@fullcalendar/core/internal';
+import { createQueryString } from '@/utils/create-query-string';
+import { useAppMutation } from '@/hooks/useAppMutation';
+import { QueryKey } from '@/react-query/queryKeys';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { data: events, isLoading } = useGetEvents({});
   const [selectedEvent, setSelectedEvent] = useState<TEvent | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<{ startDate: string, endDate: string } | undefined>(undefined);
+  const [visibleRange, setVisibleRange] = useState<{ start: Date, end: Date } | null>(null);
+
+  const { data: events, isLoading } = useGetEvents({
+    queryString: createQueryString({
+      dateFrom: visibleRange?.start.toISOString(),
+      dateTo: visibleRange?.end.toISOString(),
+      skipPagination: true,
+    }),
+    options: {
+      enabled: visibleRange !== null,
+    }
+  });
+  const { mutateAsync } = useAppMutation<{ dateFrom: string, dateTo: string }, { success: boolean }>();
 
   const handleDateSelect = (selectInfo: EventInput) => {
-    console.log(selectInfo)
+    const { start, end } = selectInfo;
+    if (!start || !end) return;
+
+    setSelectedDate({
+      startDate: start.toString(),
+      endDate: end.toString(),
+    });
+
     setIsAddOpen(true);
   };
 
@@ -36,6 +60,34 @@ export function AcademicYearCalendar() {
     });
   };
 
+  const handleDatesSet = (dateInfo: DateRange) => {
+    setVisibleRange({
+      start: dateInfo.start,
+      end: dateInfo.end
+    });
+  };
+
+  const handleEventDrop = async (dropInfo: EventDropArg) => {
+    if (!dropInfo.event || !dropInfo.event.start || !dropInfo.event.end) return;
+
+    const eventId = dropInfo.event.id;
+    const { start, end } = dropInfo.event;
+
+    const response = await mutateAsync({
+      method: 'patch',
+      id: eventId,
+      endpoint: QueryKey.EVENTS,
+      data: {
+        dateFrom: start.toISOString(),
+        dateTo: end.toISOString(),
+      },
+      invalidateTags: [QueryKey.EVENTS],
+      toastOnSuccess: false,
+    })
+
+    if (!response.data?.success) dropInfo.revert(); // revert the event if the mutation fails
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -43,10 +95,10 @@ export function AcademicYearCalendar() {
       <ResponsiveDialog
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
-        title="Create New Event"
+        title={`Create New Event ${(selectedDate?.startDate === selectedDate?.endDate).toString()}`}
         className="w-[97%] max-w-[800px]"
       >
-        <EventForm setIsOpen={setIsAddOpen} />
+        <EventForm setIsOpen={setIsAddOpen} defaultValues={{ ...eventFormDefaultValues, dateFrom: selectedDate?.startDate, dateTo: selectedDate?.endDate }} />
       </ResponsiveDialog>
 
       <ResponsiveDialog
@@ -91,8 +143,20 @@ export function AcademicYearCalendar() {
           select={handleDateSelect}
           eventClick={handleEventClick}
           height="auto"
+          datesSet={handleDatesSet}
+          eventContent={renderEventContent}
+          eventDrop={handleEventDrop}
         />
       </div>
     </>
+  );
+}
+
+function renderEventContent(eventContent: EventContentArg) {
+  return (
+    <div className="space-x-1 !line-clamp-1">
+      <span className='!text-primary-foreground'>{eventContent.timeText}</span>
+      <strong className='!text-primary-foreground'>{eventContent.event.title}</strong>
+    </div>
   );
 }

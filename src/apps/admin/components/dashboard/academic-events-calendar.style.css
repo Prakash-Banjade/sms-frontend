@@ -1,3 +1,7 @@
+.fc {
+  @apply font-sans bg-background text-foreground !important;
+}
+
 /* Toolbar Styles */
 .fc .fc-toolbar {
   @apply mb-6 !important;
@@ -65,21 +69,34 @@
   @apply py-3 uppercase text-sm font-semibold text-foreground border-b-2 border-border !important;
 }
 
-/* Event Styles */
-.fc .fc-event {
-  @apply bg-primary hover:bg-primary border-none overflow-hidden cursor-pointer rounded-lg shadow-sm !important;
+/* Event Styles - Unified for all event types */
+.fc-daygrid-event,
+.fc-daygrid-dot-event {
+  @apply bg-primary text-primary-foreground !important;
+  @apply border-none rounded-md shadow-sm !important;
+  @apply py-1 px-2 mx-2 cursor-pointer !important;
+  @apply transition-transform hover:scale-[1.02] !important;
 }
 
-.fc .fc-event-main {
-  @apply p-1 bg-primary text-primary-foreground !important;
+.fc-daygrid-event .fc-event-title,
+.fc-daygrid-dot-event .fc-event-title {
+  @apply text-primary-foreground font-medium !important;
 }
 
-.fc .fc-event-time {
-  @apply font-semibold text-sm !important;
+.fc-daygrid-event .fc-event-time,
+.fc-daygrid-dot-event .fc-event-time {
+  @apply text-primary-foreground font-semibold !important;
 }
 
-.fc .fc-event-title {
-  @apply font-medium text-sm !important;
+/* Remove dot from dot events */
+.fc .fc-daygrid-event-dot {
+  @apply hidden !important;
+}
+
+/* Event spacing */
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-ltr .fc-daygrid-event.fc-event-start {
+  @apply mx-2 !important;
 }
 
 /* Selected Date Style */
@@ -152,5 +169,11 @@
 
 .dark .fc-button-primary:not(:disabled).fc-button-active,
 .dark .fc-button-primary:not(:disabled):active {
+  @apply bg-primary text-primary-foreground !important;
+}
+
+/* Dark mode event styles */
+.dark .fc-daygrid-event,
+.dark .fc-daygrid-dot-event {
   @apply bg-primary text-primary-foreground !important;
 }

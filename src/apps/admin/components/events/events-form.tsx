@@ -14,7 +14,7 @@ type Props = ({
     eventId?: undefined;
     defaultValues?: undefined;
 } | {
-    eventId: string;
+    eventId?: string;
     defaultValues: Partial<eventSchemaType>;
 }) & {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,8 +26,7 @@ export const eventSchema = z.object({
     description: z.string().nullish(),
     dateFrom: z.string({ required_error: 'Date from is required' }).refine(val => !isNaN(Date.parse(val))),
     dateTo: z.string({ required_error: 'Date to is required' }).refine(val => !isNaN(Date.parse(val))),
-    eventLocation: z.string({ required_error: 'Location is required' })
-        .min(1, { message: "Event location is required" }),
+    eventLocation: z.string(),
     members: z.array(z.string()).nullish(),
 }).superRefine((data, ctx) => {
     if (new Date(data.dateFrom) > new Date(data.dateTo)) {
@@ -67,7 +66,11 @@ export default function EventForm(props: Props) {
             method: props.eventId ? "patch" : "post",
             endpoint: QueryKey.EVENTS,
             id,
-            data: getDirtyValues(values, form),
+            data: {
+                ...getDirtyValues(values, form),
+                dateFrom: new Date(values.dateFrom).toISOString(),
+                dateTo: new Date(values.dateTo).toISOString(),
+            },
             invalidateTags: [QueryKey.EVENTS],
         });
 
@@ -111,7 +114,6 @@ export default function EventForm(props: Props) {
                         label="Event Location"
                         placeholder="eg. Main Hall"
                         description="Enter the location of the event"
-                        required
                     />
 
                     <AppForm.MultiSelect
@@ -127,7 +129,6 @@ export default function EventForm(props: Props) {
                             { value: 'staffs', label: 'Staffs' },
                             { value: 'guardians', label: 'Guardians' },
                         ]}
-                        required
                     />
 
                 </section>
@@ -141,14 +142,14 @@ export default function EventForm(props: Props) {
                     description="Any description for the event?"
                 />
 
-                <section className="flex gap-4 justify-between">
+                <section className="flex gap-4">
                     {
                         !!id && <Button variant={'destructive'} type="button" onClick={() => setIsDeleteOpen(true)}>
                             <Trash />
                             Delete
                         </Button>
                     }
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 ml-auto">
                         <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
                         <AppForm.Submit>
                             {
