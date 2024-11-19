@@ -3,44 +3,44 @@ import { TVehicle } from "@/types/vehicle.type"
 import { Calendar, Clipboard, Phone, Truck, User } from "lucide-react"
 
 type Props = {
-    vechicle: TVehicle
+    vehicle: TVehicle
 }
-const VechicleCard = ({ vechicle }: Props) => {
+const VechicleCard = ({ vehicle }: Props) => {
     return (
-        <Card className="w-full max-w-md mx-auto border shadow-lg">
+        <Card className="min-h-fit">
             <CardHeader>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                    <Truck className="text-muted-foreground" /> {vechicle.vehicleModel} - {vechicle.vehicleNumber}
+                    <Truck className="text-muted-foreground  size-4" /> {vehicle.vehicleModel} - {vehicle.vehicleNumber}
                 </CardTitle>
                 <CardDescription className="text-sm text-muted-foreground">
-                    Year Made: {vechicle.yearMade}
+                    Year Made: {vehicle.yearMade}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
                 <div className="flex items-center gap-2">
-                    <Clipboard className="text-muted-foreground" />
-                    <span className="font-medium">Type:</span> {vechicle.type}
+                    <Clipboard className="text-muted-foreground size-4" />
+                    <span className="font-medium">Type:</span> {vehicle.type}
                 </div>
                 <div className="flex items-center gap-2">
-                    <Calendar className="text-muted-foreground" />
-                    <span className="font-medium">Capacity:</span> {vechicle.capacity}
+                    <Calendar className="text-muted-foreground size-4" />
+                    <span className="font-medium">Capacity:</span> {vehicle.capacity}
                 </div>
-                {vechicle.note && (
+                {vehicle.note && (
                     <div className="flex items-center gap-2">
-                        <Clipboard className="text-muted-foreground" />
-                        <span className="font-medium">Note:</span> {vechicle.note}
+                        <Clipboard className="text-muted-foreground size-4" />
+                        <span className="font-medium">Note:</span> {vehicle.note}
                     </div>
                 )}
-                {vechicle.driver ? (
-                    <div>
+                {vehicle.driver ? (
+                    <div className="space-y-2">
                         <h3 className="text-lg font-semibold mt-4">Driver Information</h3>
                         <div className="flex items-center gap-2">
-                            <User className="text-muted-foreground" />
-                            <span className="font-medium">Name:</span> {vechicle.driver.firstName} {vechicle.driver.lastName}
+                            <User className="text-muted-foreground size-4" />
+                            <span className="font-medium">Name:</span> {vehicle.driver.firstName} {vehicle.driver.lastName}
                         </div>
                         <div className="flex items-center gap-2">
-                            <Phone className="text-muted-foreground" />
-                            <span className="font-medium">Phone:</span> {vechicle.driver.phone}
+                            <Phone className="text-muted-foreground size-4" />
+                            <span className="font-medium">Phone:</span> {vehicle.driver.phone}
                         </div>
                     </div>
                 ) : (

@@ -1,46 +1,48 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { TRouteStop } from "@/types/route-stop.type"
-import { Clock, MapPin, MapPinHouse } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TRouteStop } from "@/types/route-stop.type";
 
 type Props = {
-    routes: TRouteStop[]
-}
-const VechicleRoutes = ({ routes }: Props) => {
+    routes: TRouteStop[];
+};
+
+const VehicleRoutes = ({ routes }: Props) => {
     return (
-        <Card>
+        <Card className="">
             <CardHeader>
                 <CardTitle>Bus Route</CardTitle>
             </CardHeader>
-            <CardContent>
-                <Table>
+            <CardContent className="w-full">
+                <Table className="w-full">
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Stop Name</TableHead>
-                            <TableHead>Stop Location</TableHead>
-                            <TableHead>PickUp Time</TableHead>
-                            <TableHead> DropOff Time</TableHead>
+                            <TableHead className="text-center">Stop Name</TableHead>
+                            <TableHead className="text-center">Stop Location</TableHead>
+                            <TableHead className="text-center">PickUp Time</TableHead>
+                            <TableHead className="text-center">DropOff Time</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {routes.map((stop, index) => (
-                            <TableRow key={index}>
-                                <TableCell className="flex items-center">
-                                    <MapPinHouse className="mr-2 h-4 w-4" />
+                            <TableRow key={index} className="text-md">
+                                {/* Stop Name */}
+                                <TableCell className="text-center">
                                     {stop.name}
                                 </TableCell>
-                                <TableCell className="flex items-center">
-                                    <MapPin className="mr-2 h-4 w-4" />
+
+                                {/* Stop Location */}
+                                <TableCell className="text-center">
                                     {stop.location}
                                 </TableCell>
-                                <TableCell>
-                                    <Clock className="mr-2 h-4 w-4 inline" />
-                                    {stop.pickUpTime}
+
+                                {/* Pickup Time */}
+                                <TableCell className="text-center">
+                                    {stop.pickUpTime || "N/A"}
                                 </TableCell>
-                                <TableCell>
-                                    <Clock className="mr-2 h-4 w-4 inline" />
-                                    {stop.dropOffTime}
+
+                                {/* Dropoff Time */}
+                                <TableCell className="text-center">
+                                    {stop.dropOffTime || "N/A"}
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -48,7 +50,7 @@ const VechicleRoutes = ({ routes }: Props) => {
                 </Table>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
 
-export default VechicleRoutes
+export default VehicleRoutes;

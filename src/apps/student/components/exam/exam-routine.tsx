@@ -1,21 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { BookOpen, Calendar, Clock } from 'lucide-react'
+import { TExamSubject_Raw } from '@/types/examination.type'
+import { format, parse } from "date-fns";
 
-const selectedExamType = [
-    {
-        id: "midterm",
-        name: "Midterm Exams",
-        exams: [
-            { subject: "Mathematics", date: "2023-06-10", time: "09:00 AM", duration: "2 hours" },
-            { subject: "English", date: "2023-06-12", time: "10:00 AM", duration: "1.5 hours" },
-            { subject: "Science", date: "2023-06-14", time: "09:30 AM", duration: "2 hours" },
-            { subject: "History", date: "2023-06-16", time: "11:00 AM", duration: "1.5 hours" },
-        ]
-    },
-]
+type Props = {
+    data: TExamSubject_Raw[]
+}
 
-const ExamRoutine = () => {
+const ExamRoutine = ({ data }: Props) => {
     return (
         <Card>
             <CardHeader>
@@ -29,30 +21,21 @@ const ExamRoutine = () => {
                             <TableHead>Date</TableHead>
                             <TableHead>Time</TableHead>
                             <TableHead>Duration</TableHead>
+                            <TableHead>Full Mark</TableHead>
+                            <TableHead>Pass Mark</TableHead>
+                            <TableHead>Venue</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {selectedExamType[0].exams.map((exam, index) => (
+                        {data.map((examSubject, index) => (
                             <TableRow key={index}>
-                                <TableCell className="font-medium">
-                                    <div className="flex items-center">
-                                        <BookOpen className="mr-2 h-4 w-4" />
-                                        {exam.subject}
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex items-center">
-                                        <Calendar className="mr-2 h-4 w-4" />
-                                        {exam.date}
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex items-center">
-                                        <Clock className="mr-2 h-4 w-4" />
-                                        {exam.time}
-                                    </div>
-                                </TableCell>
-                                <TableCell>{exam.duration}</TableCell>
+                                <TableCell className="font-medium">{examSubject?.subjectName}</TableCell>
+                                <TableCell>{new Date(examSubject.examDate).toDateString()}</TableCell>
+                                <TableCell>{format(parse(examSubject.startTime, "HH:mm", new Date()), "hh:mm a")}</TableCell>
+                                <TableCell>{examSubject.duration} Minutes</TableCell>
+                                <TableCell>{examSubject.fullMark}</TableCell>
+                                <TableCell>{examSubject.passMark}</TableCell>
+                                <TableCell>{examSubject.venue}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

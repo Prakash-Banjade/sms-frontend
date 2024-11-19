@@ -15,14 +15,14 @@ export default function LeaveRequestConfirmation() {
                     <CardTitle className="text-2xl font-bold text-center">Leave Request Submitted</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-center text-gray-600 mb-4">
+                    <p className="text-center text-muted-foreground mb-4">
                         Your leave request has been successfully submitted. You will be notified once it has been approved.
                     </p>
-                    <div className="bg-blue-50 border-l-4 border-muted-foreground    p-4 mb-4">
+                    <div className="bg-muted-foreground/10 border-l-4    p-4 mb-4">
                         <p className="text-sm text-muted-foreground">
                             <strong>Next steps:</strong>
                         </p>
-                        <ul className="list-disc list-inside text-sm text-muted-foreground mt-2">
+                        <ul className="list-disc list-inside text-sm  space-y-2 text-muted-foreground mt-2">
                             <li>Your request will be reviewed by the administration</li>
                             <li>You'll receive a notification about the approval status</li>
                             <li>Check your student portal for updates</li>

@@ -45,4 +45,6 @@ export enum QueryKey {
     OPTIONAL_SUBJECTS = 'optional-subjects',
     LESSON_PLANS = 'lesson-plans',
     EVENTS = 'events',
+    DORMITORY_ME = 'dormitory-system/dormitory-rooms/me',
+    STUDENT_ME = 'students/me'
 };

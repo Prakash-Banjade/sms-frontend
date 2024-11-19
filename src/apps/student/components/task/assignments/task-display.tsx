@@ -2,6 +2,7 @@
 import { useGetTasks } from "@/apps/admin/components/tasks/action";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ETask, ETaskSubmissionStatus } from "@/types/global.type"
 import { createQueryString } from "@/utils/create-query-string";
 import { formatDate } from "@/utils/format-date";
@@ -23,7 +24,7 @@ const TaskDisplay = ({ type }: Props) => {
         }),
     });
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <Skeleton className="h-40 w-full" />
     if (!data) { return <div>No task available</div> }
     else if (data?.data.length === 0) {
         return (

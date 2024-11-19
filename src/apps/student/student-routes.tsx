@@ -16,6 +16,8 @@ import LeaveRequestPage from "./pages/academics/leave-request.page";
 import LeaveRequestConfirmation from "./components/leave-request/leave-request-confirmation";
 import StudentDormitoryPage from "./pages/academics/stu-dormitory.page";
 import StudentExamRoutinePage from "./pages/academics/st-exam-routine.page";
+import StudentExamReportPage from "./pages/academics/stu-exam-report.page";
+import StudentDashboardPage from "./pages/student-dashboard.page";
 
 
 
@@ -25,7 +27,7 @@ const StudentRoutes = () => {
     <Routes>
       <Route element={<RequireAuth authorizedRoles={[Role.STUDENT]} />}>
         <Route element={<AppRootLayout menuItems={studentSidebarMenuItems} />}>
-          <Route path="dashboard" element={<div>Dashboard xa</div>} />
+          <Route path="dashboard" element={<StudentDashboardPage />} />
           <Route path="tasks">
             <Route index element={<Navigate to="homeworks" />} />
             <Route path="homeworks">
@@ -55,6 +57,7 @@ const StudentRoutes = () => {
           <Route path='library' element={<StudentLibraryDetailsPage />} />
           <Route path='dormitory' element={<StudentDormitoryPage />} />
           <Route path='exam-routine' element={<StudentExamRoutinePage />} />
+          <Route path='exam-report' element={<StudentExamReportPage />} />
           <Route path="leave-request">
             <Route index element={<LeaveRequestPage />} />
             <Route path="confirm" element={<LeaveRequestConfirmation />} />
