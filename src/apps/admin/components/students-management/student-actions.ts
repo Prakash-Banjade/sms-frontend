@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TLibraryStudent, TSingleStudent, TStudentsResponse, TStudentsWithAttendenceResponse } from "@/types/student.type";
+import { TLibraryStudent, TSingleStudent, TStudent_BasicInfoResponse, TStudentsResponse, TStudentsWithAttendenceResponse } from "@/types/student.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetStudent = ({
@@ -33,6 +33,23 @@ export const useGetStudents = <T = TStudentsResponse>({
     const response = useFetchData<T>({
         endpoint: QueryKey.STUDENTS,
         queryKey: queryString ? [QueryKey.STUDENTS, queryString] : [QueryKey.STUDENTS],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetPastStudents = <T = TStudent_BasicInfoResponse>({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<T>>
+}) => {
+    const response = useFetchData<T>({
+        endpoint: QueryKey.STUDENTS + '/' + 'past',
+        queryKey: queryString ? [QueryKey.STUDENTS, 'past', queryString] : [QueryKey.STUDENTS, 'past'],
         queryString,
         options,
     })

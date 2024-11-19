@@ -2,10 +2,10 @@ import { IStudenIdtWithRoll } from "@/apps/admin/pages/students-management/stude
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { TStudent } from "@/types/student.type"
+import { TStudent_BasicInfo } from "@/types/student.type"
 
 type Props = {
-    students: TStudent[];
+    students: TStudent_BasicInfo[];
     studentsWithRoll: IStudenIdtWithRoll[]
     setStudentsWithRoll: React.Dispatch<React.SetStateAction<IStudenIdtWithRoll[]>>;
 }
@@ -62,11 +62,7 @@ export default function PromotionStudentsTable({ setStudentsWithRoll, students, 
                             </TableCell>
                             <TableCell>{student.fullName}</TableCell>
                             <TableCell>{student.studentId}</TableCell>
-                            <TableCell>
-                                {
-                                    student.parentClass ? `${student.parentClass} - ${student.classRoom}` : `${student.classRoom}`
-                                }
-                            </TableCell>
+                            <TableCell>{student.classRoomName}</TableCell>
                             <TableCell>{student.rollNo}</TableCell>
                             <TableCell>
                                 <Input

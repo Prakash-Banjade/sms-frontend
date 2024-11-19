@@ -25,7 +25,6 @@ const studentPromotionSchema = z.object({
             message: 'Invalid section ID',
         })
         .nullish(),
-    academicYearId: z.string().uuid({ message: 'Invalid academic year' }),
 })
 
 const defaultValues: Partial<studentPromotionSchemaType> = {
@@ -72,21 +71,7 @@ export default function StudentPromotionForm({ selectedStudentsWithRoll, setIsOp
     return (
         <AppForm schema={studentPromotionSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ClassSectionFormField options={data ?? []} isLoading={isLoading} />
-
-                <AppForm.DynamicSelect<studentPromotionSchemaType>
-                    name="academicYearId"
-                    label="Promote Year"
-                    placeholder="Select academic year"
-                    description="Select the academic year"
-                    required
-                    fetchOptions={{
-                        endpoint: QueryKey.ACADEMIC_YEARS + '/' + QueryKey.OPTIONS,
-                        queryKey: [QueryKey.ACADEMIC_YEARS, QueryKey.OPTIONS],
-                        queryString: 'page=1&take=50&onlyFuture=true',
-                    }}
-                    labelKey="label"
-                />
+                <ClassSectionFormField options={data ?? []} isLoading={isLoading} required={false} />
 
                 <AppForm.DatePicker<studentPromotionSchemaType>
                     name="enrollmentDate"

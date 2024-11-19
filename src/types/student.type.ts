@@ -6,6 +6,7 @@ export type TStudent_BasicInfo = {
     fullName: string,
     rollNo: number,
     studentId: number,
+    classRoomName: string;
 }
 
 export type TStudent_BasicInfoResponse = {
@@ -19,6 +20,7 @@ export type TStudent = TStudent_BasicInfo & {
     dob: string,
     gender: Gender,
     profileImageUrl: string | null,
+    classRoomName: string,
     classRoomId: string,
     classRoom: string,
     parentClassId: string,

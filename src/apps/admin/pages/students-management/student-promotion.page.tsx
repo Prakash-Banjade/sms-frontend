@@ -1,12 +1,12 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import { useEffect, useMemo, useState } from "react";
-import GetstudentsForm from "../../components/students-management/change-class/get-students-form";
-import { useGetStudents } from "../../components/students-management/student-actions";
+import { useGetPastStudents } from "../../components/students-management/student-actions";
 import PromotionStudentsTable from "../../components/students-management/promotion/promotion-students-table";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import StudentPromotionForm from "../../components/students-management/promotion/promotion-form";
+import GetPastStudents from "../../components/students-management/promotion/get-past-students";
 
 
 export default function StudentPromotionPage() {
@@ -16,7 +16,7 @@ export default function StudentPromotionPage() {
         <ContainerLayout
             title="Student Promotion"
         >
-            <GetstudentsForm setSearchQuery={setSearchQuery} />
+            <GetPastStudents setSearchQuery={setSearchQuery} />
             <StudentsTable searchQuery={searchQuery} />
         </ContainerLayout>
     )
@@ -35,7 +35,7 @@ function StudentsTable({ searchQuery }: { searchQuery: string }) {
         return !studentsWithRoll.some(student => (student.newRollNo === 0 || !student.newRollNo))
     }, [studentsWithRoll]);
 
-    const { data, isLoading } = useGetStudents({
+    const { data, isLoading } = useGetPastStudents({
         queryString: searchQuery,
         options: {
             enabled: !!searchQuery,
