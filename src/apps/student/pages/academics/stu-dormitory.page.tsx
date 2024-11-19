@@ -1,16 +1,16 @@
-import { useGetMyDormitory } from "@/apps/admin/components/dormitory/actions";
+import { useGetMyDormitory } from "../../components/dormitory/data-access";
 import DormitoryCard from "../../components/dormitory/dormitory-card";
 
 
 const StudentDormitoryPage = () => {
+    const { data, isLoading } = useGetMyDormitory({});
 
-    const { data, isLoading } = useGetMyDormitory({
-    });
     if (isLoading) return <div>Loading...</div>;
+
     if (!data) {
         return (
             <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">
-                No library record available!!
+                You have not joined any dormitory yet.
             </div>
         );
     }

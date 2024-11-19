@@ -1,4 +1,4 @@
-import { useGetStudent_Me, } from "@/apps/admin/components/students-management/student-actions";
+import { useGetStudent_Me } from "../components/dashboard/data-access";
 import StudentProfile from "../components/dashboard/student-profile";
 import { Skeleton } from "@/components/ui/skeleton";
 

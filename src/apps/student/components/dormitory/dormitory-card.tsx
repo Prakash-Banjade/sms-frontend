@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, } from "@/components/ui/card";
 import { Home, Users, Bed, Banknote, School, BookUser } from "lucide-react";
-import { TMyDormitory } from "@/types/dormitory.type";
+import { TMyDormitory } from "./data-access";
 
 type Props = {
     dormitory: TMyDormitory;
