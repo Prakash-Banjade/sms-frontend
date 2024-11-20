@@ -14,7 +14,9 @@ type Props = {
 const feeStructureSchema = z.object({
     chargeHeadId: z.string({ required_error: "Charge head is required" }).uuid({ message: "Invalid charge head id" }),
     classRoomId: z.string({ required_error: "Class room is required" }).uuid({ message: "Invalid class room id" }),
-    amount: z.coerce.number({ required_error: "Amount is required" }).min(1, { message: "Amount is required" }),
+    amount: z.coerce.number().nonnegative({ message: 'Amount must be a positive number' }).refine(value => value >= 0, {
+        message: 'Amount is required',
+    }),
 })
 
 const defaultValues: Partial<feeStructureSchemaType> = {
@@ -74,6 +76,7 @@ export default function FeeStructureFrom(props: Props) {
                     label="Amount"
                     placeholder={`e.g. 1000`}
                     description="Enter the amount for the charge head."
+                    min={0}
                     required
                 />
 

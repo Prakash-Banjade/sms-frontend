@@ -17,6 +17,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import FeeStructureFrom from "@/apps/admin/components/finance-system/fee-structures/fee-structure-form";
 import { QueryKey } from "@/react-query/queryKeys";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { NUMBER_REGEX_STRING } from "@/CONSTANTS";
 
 export default function FeeStructuresPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -145,11 +146,12 @@ const FeeStructureRow = ({ feeStructure, ind }: { feeStructure: TFeeStructure, i
                         type="number"
                         id={feeStructure.id}
                         value={amount}
-                        pattern="[0-9]*"
+                        pattern={NUMBER_REGEX_STRING}
                         onChange={(e) => {
                             setAmount(isNaN(Number(e.target.value)) ? feeStructure.amount : Number(e.target.value));
                         }}
                         className="max-w-[200px]"
+                        min={0}
                     />
                     <section className={cn(amount === feeStructure.amount && "pointer-events-none invisible", "space-x-2")}>
                         <TooltipWrapper label="Cancel changes" contentClassName="text-xs">
