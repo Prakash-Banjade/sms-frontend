@@ -88,6 +88,11 @@
   @apply text-primary-foreground font-semibold !important;
 }
 
+/* past event content background */
+.fc-event-end.fc-event-past {
+  @apply bg-muted-foreground/50 !important;
+}
+
 /* Remove dot from dot events */
 .fc .fc-daygrid-event-dot {
   @apply hidden !important;
@@ -175,5 +180,5 @@
 /* Dark mode event styles */
 .dark .fc-daygrid-event,
 .dark .fc-daygrid-dot-event {
-  @apply bg-primary text-primary-foreground !important;
+  @apply bg-primary text-primary-foreground;
 }

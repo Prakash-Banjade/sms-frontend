@@ -20,10 +20,10 @@ export function AdminDashboard() {
             <div className="grid @7xl:grid-cols-3 grid-cols-1 gap-6">
                 <section className='@7xl:col-span-2'>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                        <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} />
-                        <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} />
-                        <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} />
-                        <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} />
+                        <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} navigateTo='/admin/students' />
+                        <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} navigateTo='/admin/teachers' />
+                        <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} footer='Including sections' navigateTo='/admin/classes' />
+                        <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} navigateTo='/admin/staffs' />
                     </div>
 
                     {/* Income vs Expense Chart */}
