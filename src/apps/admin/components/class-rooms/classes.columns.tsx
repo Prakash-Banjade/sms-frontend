@@ -88,16 +88,6 @@ export const classesColumns: ColumnDef<TClass>[] = [
         },
     },
     {
-        header: "Admission fee",
-        accessorKey: "admissionFee",
-        cell: ({ row }) => row.original.admissionFee?.toLocaleString()
-    },
-    {
-        header: "Monthly fee",
-        accessorKey: "monthlyFee",
-        cell: ({ row }) => row.original.monthlyFee?.toLocaleString()
-    },
-    {
         header: "Location",
         accessorKey: "location",
         cell: ({ row }) => {
