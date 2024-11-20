@@ -28,3 +28,13 @@ export type TFeeStructuresResponse = {
     data: TFeeStructure[],
     meta: TMeta;
 }
+
+export type TFeeStudent = {
+    id: string,
+    name: string,
+    rollNo: number,
+    phone: string,
+    email: string,
+    profileImageUrl: string | null,
+    classRoomName: string
+}

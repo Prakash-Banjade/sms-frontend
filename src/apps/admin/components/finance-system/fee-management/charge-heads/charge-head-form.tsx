@@ -97,7 +97,7 @@ export default function ChargeHeadFrom(props: Props) {
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
-                            !!id ? "Save changes" : "Add Academic Year"
+                            !!id ? "Save changes" : "Create charge head"
                         }
                     </AppForm.Submit>
                 </section>

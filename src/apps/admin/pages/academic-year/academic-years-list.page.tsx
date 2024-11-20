@@ -1,13 +1,15 @@
-import AsideLinksLayout from "@/components/aside-layout.tsx/aside-links-layout"
 import { DataTable } from "@/components/data-table/data-table"
 import { academicYearColumns } from "../../components/academic-year/academic-years.columns"
-import { academicYearAsideQuickLinks_viewAll, academicYearAsideRelatedActions } from "../../components/academic-year/academic-year-aside"
 import { useSearchParams } from "react-router-dom"
 import { useGetAcademicYears } from "../../components/academic-year/actions"
-type Props = {}
+import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import { useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
-export default function AcademicYearsListPage({ }: Props) {
+export default function AcademicYearsListPage() {
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     const { data, isLoading } = useGetAcademicYears({
         queryString: searchParams.toString(),
@@ -16,11 +18,15 @@ export default function AcademicYearsListPage({ }: Props) {
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <AsideLinksLayout
+        <ContainerLayout
             title="Academic Years"
             description="View all academic years in your school management system."
-            quickLinks={academicYearAsideQuickLinks_viewAll}
-            relatedActions={academicYearAsideRelatedActions}
+            actionTrigger={
+                <Button onClick={() => navigate('new')}>
+                    <Plus />
+                    New Academic Year
+                </Button>
+            }
         >
             <DataTable
                 columns={academicYearColumns}
@@ -28,6 +34,6 @@ export default function AcademicYearsListPage({ }: Props) {
                 meta={data?.meta}
             />
 
-        </AsideLinksLayout>
+        </ContainerLayout>
     )
 }

@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/ui/tooltip";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
-import FeeStructureFrom from "@/apps/admin/components/finance-system/fee-structures/fee-structure-form";
+import FeeStructureFrom from "@/apps/admin/components/finance-system/fee-management/fee-structures/fee-structure-form";
 import { QueryKey } from "@/react-query/queryKeys";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { NUMBER_REGEX_STRING } from "@/CONSTANTS";

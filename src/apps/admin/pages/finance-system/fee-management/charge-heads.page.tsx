@@ -1,15 +1,15 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useGetChargeHeads } from "../../components/finance-system/data-access";
+import { useGetChargeHeads } from "../../../components/finance-system/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { useSearchParams } from "react-router-dom";
 import { DataTable } from "@/components/data-table/data-table";
 import SearchInput from "@/components/search-components/search-input";
-import { chargeHeadColumns } from "../../components/finance-system/charge-heads/charge-head-columns";
+import { chargeHeadColumns } from "../../../components/finance-system/fee-management/charge-heads/charge-head-columns";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { useState } from "react";
-import ChargeHeadFrom from "../../components/finance-system/charge-heads/charge-head-form";
+import ChargeHeadFrom from "../../../components/finance-system/fee-management/charge-heads/charge-head-form";
 
 export default function ChargeHeadsPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);

@@ -28,7 +28,7 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
             ?.menuItems?.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
 
         const item = menuItem?.items?.length
-            ? menuItem.items.find(item => location.pathname === `/${payload?.role}/${item.url}`)
+            ? menuItem.items.find(item => location.pathname === `/${payload?.role}/${menuItem.url}/${item.url}`)
             : undefined;
 
         return { menuItem, item };
