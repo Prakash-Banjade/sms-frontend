@@ -42,7 +42,7 @@ export default function ClassDetailsCard({ classRoom }: { classRoom: TSingleClas
                     </div>
                     <div className="flex items-center">
                         <DollarSign className="mr-2 h-5 w-5 text-muted-foreground" />
-                        <span>Monthly Tuition Fee: {classRoom.monthlyTutionFee}</span>
+                        <span>Admission Fee: {classRoom.admissionFee}</span>
                     </div>
                     <div className="flex items-center col-span-full">
                         <MapPin className="mr-2 h-5 w-5 text-muted-foreground" />

@@ -97,7 +97,7 @@ function TableActionCell({ section }: { section: TClass }) {
                     defaultValues={{
                         name: section.name,
                         monthlyFee: section.monthlyFee,
-                        monthlyTutionFee: section.monthlyTutionFee,
+                        admissionFee: section.admissionFee,
                         location: section.location,
                         classTeacherId: section.classTeacherId,
                     }}

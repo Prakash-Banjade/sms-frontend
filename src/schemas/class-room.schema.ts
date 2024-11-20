@@ -3,13 +3,13 @@ import { z } from "zod";
 
 export const classRoomFormSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
-    description: z.string().nullish(),
-    monthlyTutionFee: z.coerce.number().nonnegative({ message: 'Monthly tuition fee must be a positive number' }).refine(value => value >= 0, {
-        message: 'Monthly tuition fee is required',
-    }).optional(),
+    description: z.string().max(500, { message: "Description is too long. Max 500 characters." }).nullish(),
+    admissionFee: z.coerce.number().nonnegative({ message: 'Admission fee must be a positive number' }).refine(value => value >= 0, {
+        message: 'Admission fee is required',
+    }),
     monthlyFee: z.coerce.number().nonnegative({ message: 'Monthly fee must be a positive number' }).refine(value => value >= 0, {
         message: 'Monthly fee is required',
-    }).optional(),
+    }),
     location: z.string().optional(),
     classType: z.nativeEnum(EClassType).default(EClassType.PRIMARY).optional(),
     classTeacherId: z.string()

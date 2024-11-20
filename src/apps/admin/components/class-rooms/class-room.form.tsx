@@ -71,21 +71,29 @@ export default function ClassRoomForm(props: Props) {
                         required
                     />
 
-                    <AppForm.Number<classRoomFormSchemaType>
-                        name="monthlyTutionFee"
-                        label="Monthly tution fee"
-                        placeholder="eg. 1000"
-                        description="Enter the monthly tution fee"
-                        required
-                    />
+                    {
+                        !id && (
+                            <>
+                                <AppForm.Number<classRoomFormSchemaType>
+                                    name="admissionFee"
+                                    label="Admission fee"
+                                    placeholder="eg. 1000"
+                                    description="Enter the admission fee"
+                                    required
+                                    min={0}
+                                />
 
-                    <AppForm.Number<classRoomFormSchemaType>
-                        name="monthlyFee"
-                        label="Monthly fee"
-                        placeholder="eg. 1000"
-                        description="Enter the monthly fee"
-                        required
-                    />
+                                <AppForm.Number<classRoomFormSchemaType>
+                                    name="monthlyFee"
+                                    label="Monthly fee"
+                                    placeholder="eg. 1000"
+                                    description="Enter the monthly fee"
+                                    required
+                                    min={0}
+                                />
+                            </>
+                        )
+                    }
 
                     <AppForm.Text<classRoomFormSchemaType>
                         name="location"

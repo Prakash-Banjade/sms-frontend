@@ -60,7 +60,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
         }
     },
     {
-        header: "Class Teacher",
+        header: "Class Teachers",
         accessorKey: "classTeacherName",
         cell: ({ row }) => {
             const teachersArrayParsed = typeof row.original.childClassTeachers === 'string'
@@ -88,14 +88,14 @@ export const classesColumns: ColumnDef<TClass>[] = [
         },
     },
     {
+        header: "Admission fee",
+        accessorKey: "admissionFee",
+        cell: ({ row }) => row.original.admissionFee?.toLocaleString()
+    },
+    {
         header: "Monthly fee",
         accessorKey: "monthlyFee",
         cell: ({ row }) => row.original.monthlyFee?.toLocaleString()
-    },
-    {
-        header: "Monthly tution fee",
-        accessorKey: "monthlyTutionFee",
-        cell: ({ row }) => row.original.monthlyTutionFee?.toLocaleString()
     },
     {
         header: "Location",

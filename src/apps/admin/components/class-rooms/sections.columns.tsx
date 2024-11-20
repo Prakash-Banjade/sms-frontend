@@ -93,7 +93,7 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                             defaultValues={{
                                 name: row.original.name,
                                 monthlyFee: row.original.monthlyFee,
-                                monthlyTutionFee: row.original.monthlyTutionFee,
+                                admissionFee: row.original.admissionFee,
                                 location: row.original.location,
                                 classTeacherId: row.original.classTeacherId
                             }}
