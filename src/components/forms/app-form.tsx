@@ -20,6 +20,7 @@ import { FileUpload } from './file-upload';
 import ImageUpload from './image-upload';
 import { DynamicSelect_V2 } from './dynamic-select-v2';
 import { NUMBER_REGEX_STRING } from '@/CONSTANTS';
+import { AppFormRadioGroup } from './app-form-radio-group';
 
 type SchemaContextType<T> = ZodType<T>;
 
@@ -283,4 +284,6 @@ AppForm.MultiSelect = MultiSelect;
 AppForm.DynamicMultiSelect = DynamicMultiSelect;
 
 AppForm.DynamicCombobox = DynamicCombobox;
+
+AppForm.RadioGroup = AppFormRadioGroup;
 export default AppForm;

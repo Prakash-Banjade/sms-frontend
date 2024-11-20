@@ -28,14 +28,16 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName
 const TooltipWrapper = ({
   children,
   label,
+  contentClassName
 }: {
   children: React.ReactNode,
   label: React.ReactNode,
+  contentClassName?: string,
 }) => {
   return <TooltipProvider delayDuration={100} disableHoverableContent>
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent>
+      <TooltipContent className={contentClassName}>
         {label}
       </TooltipContent>
     </Tooltip>

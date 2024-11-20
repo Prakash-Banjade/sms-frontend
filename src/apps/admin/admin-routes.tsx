@@ -65,6 +65,8 @@ import LessonPlansListPage from './pages/lesson-plan/lesson-plans-list.page';
 import AddLessonPlanPage from './pages/lesson-plan/add-lesson-plan.page';
 import EditLessonPlanPage from './pages/lesson-plan/edit-lesson-plan.page';
 import SingleLessonPlanPage from './pages/lesson-plan/single-lesson-plan.page';
+import ChargeHeadsPage from './pages/finance-system/charge-heads.page';
+import FeeStructuresPage from './pages/finance-system/fee-structure/fee-structures.page';
 
 const AdminRoutes = () => {
     return (
@@ -195,6 +197,10 @@ const AdminRoutes = () => {
                         </Route>
                         <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
                         <Route path="members" element={<LibraryMembersPage />} />
+                    </Route>
+                    <Route path='finance'>
+                        <Route path="charge-heads" element={<ChargeHeadsPage />} />
+                        <Route path="fee-structures" element={<FeeStructuresPage />} />
                     </Route>
                     <Route path="reports">
                         <Route path="examination-report">
