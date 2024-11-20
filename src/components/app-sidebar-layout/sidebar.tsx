@@ -104,12 +104,12 @@ export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
                 <CollapsibleContent>
                     <SidebarMenuSub>
                         {item.items?.map((subItem) => {
-                            const isActive = `/${payload?.role}/${subItem.url}` === location.pathname
-                            
+                            const isActive = `/${payload?.role}/${item.url}/${subItem.url}` === location.pathname
+
                             return (
                                 <SidebarMenuSubItem key={subItem.title}>
                                     <SidebarMenuSubButton asChild isActive={isActive}>
-                                        <Link to={subItem.url} className={cn(isActive && "font-medium")}>
+                                        <Link to={item.url + (!!subItem.url ? ('/' + subItem.url) : '')} className={cn(isActive && "font-medium")}>
                                             <span>{subItem.title}</span>
                                         </Link>
                                     </SidebarMenuSubButton>

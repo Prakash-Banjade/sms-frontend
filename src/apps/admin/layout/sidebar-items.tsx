@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { BadgeIndianRupee, Banknote, BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, Coins, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
+import { Banknote, BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, HandCoins, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -21,12 +21,12 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: Calendar,
                 items: [
                     {
-                        title: "Add Academic Year",
-                        url: "academic-years/new",
+                        title: "Academic Years",
+                        url: "",
                     },
                     {
-                        title: "Academic Years",
-                        url: "academic-years",
+                        title: "Add Academic Year",
+                        url: "new",
                     },
                 ]
             },
@@ -36,16 +36,16 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: Building,
                 items: [
                     {
-                        title: "Add Class",
-                        url: "classes/new",
+                        title: "Classes List",
+                        url: "",
                     },
                     {
-                        title: "Classes List",
-                        url: "classes",
+                        title: "Add Class",
+                        url: "new",
                     },
                     {
                         title: "Sections List",
-                        url: "classes/sections",
+                        url: "sections",
                     }
                 ]
             },
@@ -55,13 +55,13 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: BookOpenText,
                 items: [
                     {
-                        title: "Add Subject",
-                        url: "subjects/new",
+                        title: "Subjects List",
+                        url: "",
                     },
                     {
-                        title: "Subjects List",
-                        url: "subjects",
-                    }
+                        title: "Add Subject",
+                        url: "new",
+                    },
                 ]
             },
             {
@@ -70,13 +70,13 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: Shapes,
                 items: [
                     {
-                        title: "Add Class Routine",
-                        url: "class-routines/new",
+                        title: "Class Routines",
+                        url: "",
                     },
                     {
-                        title: "Class Routine List",
-                        url: "class-routines",
-                    }
+                        title: "Add Class Routine",
+                        url: "new",
+                    },
                 ]
             },
             {
@@ -91,19 +91,19 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Marks Grade",
-                        url: "examination/marks-grade",
+                        url: "marks-grade",
                     },
                     {
                         title: "Exam Type",
-                        url: "examination/exam-type",
+                        url: "exam-type",
                     },
                     {
                         title: "Exam Setup & Evaluation",
-                        url: "examination/exam-setup",
+                        url: "exam-setup",
                     },
                     {
                         title: "Exam Routine",
-                        url: "examination/exam-routines",
+                        url: "exam-routines",
                     }
                 ]
             },
@@ -124,27 +124,27 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Students",
-                        url: "students",
+                        url: "",
                     },
                     {
                         title: "New Registration",
-                        url: "students/new-registration",
+                        url: "new-registration",
                     },
                     {
                         title: "Enrollments",
-                        url: "students/enrollments",
+                        url: "enrollments",
                     },
                     {
                         title: "Optional Subject Selection",
-                        url: "students/subject-selection",
+                        url: "subject-selection",
                     },
                     {
                         title: "Change Class",
-                        url: "students/change-class",
+                        url: "change-class",
                     },
                     {
                         title: "Promotion",
-                        url: "students/promote",
+                        url: "promote",
                     },
                 ]
             },
@@ -155,11 +155,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "View Attendance",
-                        url: "students/attendance",
+                        url: "",
                     },
                     {
                         title: "Leave Requests",
-                        url: "students/attendance/leave-requests",
+                        url: "leave-requests",
                     }
                 ]
             },
@@ -170,11 +170,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Homeworks",
-                        url: "tasks/homeworks",
+                        url: "homeworks",
                     },
                     {
                         title: "Assignments",
-                        url: "tasks/assignments",
+                        url: "assignments",
                     }
                 ]
             },
@@ -185,11 +185,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Vehicles",
-                        url: "transportation/vehicles",
+                        url: "vehicles",
                     },
                     {
                         title: "Route Stops",
-                        url: "transportation/route-stops",
+                        url: "route-stops",
                     },
                 ]
             },
@@ -200,15 +200,15 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Room Type",
-                        url: "dormitory/room-types",
+                        url: "room-types",
                     },
                     {
                         title: "Dormitory",
-                        url: "dormitory",
+                        url: "",
                     },
                     {
                         title: "Dormitory Rooms",
-                        url: "dormitory/dormitory-rooms",
+                        url: "dormitory-rooms",
                     }
                 ]
             },
@@ -223,13 +223,13 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: UsersRound,
                 items: [
                     {
-                        title: "Add Teacher",
-                        url: "teachers/new",
+                        title: "Teacher List",
+                        url: "",
                     },
                     {
-                        title: "Teacher List",
-                        url: "teachers",
-                    }
+                        title: "Add Teacher",
+                        url: "new",
+                    },
                 ]
             },
             {
@@ -238,27 +238,27 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: Users,
                 items: [
                     {
-                        title: "Add Staff",
-                        url: "staffs/new",
+                        title: "Staffs List",
+                        url: "",
                     },
                     {
-                        title: "Staffs List",
-                        url: "staffs",
-                    }
+                        title: "Add Staff",
+                        url: "new",
+                    },
                 ]
             },
             {
                 title: "Attendance",
-                url: "employees/attendance",
+                url: "employees",
                 icon: Calendar,
                 items: [
                     {
                         title: "View Attendance",
-                        url: "employees/attendance",
+                        url: "attendance",
                     },
                     {
                         title: "Leave Requests",
-                        url: "employees/leave-requests",
+                        url: "leave-requests",
                     },
                 ]
             },
@@ -279,15 +279,15 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Add New Book",
-                        url: "library/books/new",
+                        url: "new",
                     },
                     {
                         title: "Books Catalog",
-                        url: "library/books",
+                        url: "",
                     },
                     {
                         title: "Book Categories",
-                        url: "library/books/categories",
+                        url: "categories",
                     }
                 ]
             },
@@ -302,29 +302,28 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         groupLabel: "Finance",
         menuItems: [
             {
-                title: "Charge Heads",
-                url: "finance/charge-heads",
-                icon: BadgeIndianRupee,
-            },
-            {
-                title: "Fee Structures",
-                url: "finance/fee-structures",
-                icon: Coins,
-            },
-            {
-                title: "Collect Fee",
-                url: "finance/collect-fee",
+                title: "Fee Management",
+                url: "finance/fee-management",
                 icon: Banknote,
                 items: [
                     {
-                        title: "Student Wise",
-                        url: "finance/collect-fee/student-wise",
+                        title: "Charge Heads",
+                        url: "charge-heads",
                     },
                     {
-                        title: "Class Wise",
-                        url: "finance/collect-fee/class-wise",
+                        title: "Fee Structures",
+                        url: "fee-structures",
+                    },
+                    {
+                        title: "Billing and Payments",
+                        url: "billing-and-payments",
                     }
                 ]
+            },
+            {
+                title: "Salary Management",
+                url: "finance/salary-management",
+                icon: HandCoins
             }
         ]
     },
