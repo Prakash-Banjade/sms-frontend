@@ -337,11 +337,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Task Evaluation Report",
-                        url: "reports/student-report/task-evaluation",
+                        url: "task-evaluation",
                     },
                     {
                         title: "Attendance Report",
-                        url: "reports/student-report/attendance",
+                        url: "attendance",
                     },
                 ]
             },
@@ -352,7 +352,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Attendance Report",
-                        url: "reports/teacher-report/attendance",
+                        url: "attendance",
                     },
                 ]
             },
@@ -363,7 +363,7 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Attendance Report",
-                        url: "reports/staff-report/attendance",
+                        url: "attendance",
                     },
                 ]
             },
@@ -379,11 +379,11 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Student Wise Report",
-                        url: "reports/examination-report/student-wise",
+                        url: "student-wise",
                     },
                     {
                         title: "Subject Wise Report",
-                        url: "reports/examination-report/subject-wise",
+                        url: "subject-wise",
                     }
                 ]
             }
