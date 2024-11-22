@@ -1,6 +1,7 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
+import { EChargeHeadPeriod } from "@/types/finance-system/finance.types";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,12 +21,14 @@ const chargeHeadSchema = z.object({
     name: z.string().min(3, { message: "Name is required" }),
     description: z.string().max(200, { message: "Description is too long. Max 200 characters." }).nullish(),
     isMandatory: z.string().min(1, { message: "Is mandatory is required" }),
+    period: z.nativeEnum(EChargeHeadPeriod),
 })
 
 const defaultValues: Partial<chargeHeadSchemaType> = {
     name: "",
     description: "",
     isMandatory: "false",
+    period: EChargeHeadPeriod.Monthly,
 }
 
 export type chargeHeadSchemaType = z.infer<typeof chargeHeadSchema>;
@@ -48,6 +51,7 @@ export default function ChargeHeadFrom(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 isMandatory: String(values.isMandatory) === 'true',
+                period: values.period,
             },
             invalidateTags: [QueryKey.CHARGE_HEADS],
         });
@@ -77,6 +81,18 @@ export default function ChargeHeadFrom(props: Props) {
                     label="Description"
                     placeholder={`e.g. Admission Fee for the new admission year.`}
                     description="Any additional information about the charge head."
+                />
+
+                <AppForm.Select<chargeHeadSchemaType>
+                    name="period"
+                    label="Period"
+                    placeholder="Select period"
+                    description="Select the period for the charge head."
+                    options={[
+                        { label: "Monthly", value: EChargeHeadPeriod.Monthly },
+                        { label: "One Time", value: EChargeHeadPeriod.One_Time },
+                        { label: "None", value: EChargeHeadPeriod.None },
+                    ]}
                 />
 
                 {

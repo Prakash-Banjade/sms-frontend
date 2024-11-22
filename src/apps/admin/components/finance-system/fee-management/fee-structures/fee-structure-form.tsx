@@ -68,6 +68,7 @@ export default function FeeStructureFrom(props: Props) {
                     description="Select the charge head for this fee structure."
                     required
                     queryKey={QueryKey.CHARGE_HEADS}
+                    queryString="defaults=false"
                     // endPoint={`${QueryKey.CHARGE_HEADS}/${QueryKey.OPTIONS}?classRoomId=${props.classRoomId}&onlyAvailable=true`}
                 />
 

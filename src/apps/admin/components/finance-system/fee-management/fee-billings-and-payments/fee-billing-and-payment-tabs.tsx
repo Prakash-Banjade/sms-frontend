@@ -6,13 +6,14 @@ import { ProfileAvatar } from "@/components/ui/avatar";
 import { getImageUrl } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HandCoins, NotebookText, ReceiptText } from "lucide-react";
+import FeeInvoiceForm from "./fee-invoice-form";
 
 const tabs = [
     {
         value: 'invoice',
         label: 'Invoice',
         icon: ReceiptText,
-        tabContent: () => <></>
+        tabContent: FeeInvoiceForm
     },
     {
         value: 'payment',
@@ -42,11 +43,11 @@ export default function FeeBillingAndPaymentTabs() {
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!!searchParams.get('studentID') && !isLoading && !data) return <div className="h-[400px] grid place-items-center text-muted-foreground">No data found.</div>;
+    if (!data) return <div className="h-[400px] grid place-items-center text-muted-foreground">No student found.</div>;
 
     return (
-        <section className="space-y-6 mt-6">
-            <StudentDetails feeStudent={data} />
+        <section className="space-y-6 mt-6 mb-40">
+            <StudentDetails feeStudent={data.student} />
             <Tabs
                 defaultValue={searchParams.get('tab') || tabs[0].value}
                 onValueChange={tab => setSearchParams('tab', tab)}
@@ -59,18 +60,16 @@ export default function FeeBillingAndPaymentTabs() {
                         </TabsTrigger>
                     ))}
                 </TabsList>
-                {tabs.map((tab) => (
-                    <TabsContent key={tab.value} value={tab.value}>
-                        <tab.tabContent />
-                    </TabsContent>
-                ))}
+                <TabsContent value={tabs[0].value}>
+                    <FeeInvoiceForm feeStudent={data} />
+                </TabsContent>
             </Tabs>
 
         </section>
     )
 }
 
-function StudentDetails({ feeStudent }: { feeStudent: TFeeStudent | undefined }) {
+function StudentDetails({ feeStudent }: { feeStudent: TFeeStudent['student'] | undefined }) {
     const { searchParams } = useCustomSearchParams();
 
     if (!feeStudent) return null;

@@ -26,6 +26,11 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
         accessorKey: "name",
     },
     {
+        header: "Period",
+        accessorKey: "period",
+        cell: ({ row }) => <p className="capitalize">{row.original.period}</p>,
+    },
+    {
         header: "Is Mandatory",
         accessorKey: "isMandatory",
         cell: ({ row }) => <p> {row.original.isMandatory ? "Yes" : "No"} </p>,
@@ -65,6 +70,7 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
                                 name: row.original.name,
                                 description: row.original.description,
                                 isMandatory: String(row.original.isMandatory),
+                                period: row.original.period,
                             }}
                             setIsOpen={setIsEditOpen}
                         />

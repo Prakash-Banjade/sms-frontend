@@ -1,11 +1,18 @@
 import { TMeta } from "../global.type";
 
+export enum EChargeHeadPeriod {
+    Monthly = 'monthly',
+    One_Time = 'one_time',
+    None = 'none'
+}
+
 export type TChargeHead = {
     id: string;
     createdAt: string;
     name: string;
     description: string | null;
-    isMandatory: boolean
+    isMandatory: boolean;
+    period: EChargeHeadPeriod
 }
 
 export type TChargeHeadsResponse = {
@@ -30,11 +37,27 @@ export type TFeeStructuresResponse = {
 }
 
 export type TFeeStudent = {
-    id: string,
-    name: string,
-    rollNo: number,
-    phone: string,
-    email: string,
-    profileImageUrl: string | null,
-    classRoomName: string
+    student: {
+        id: string,
+        name: string,
+        rollNo: number,
+        phone: string,
+        email: string,
+        profileImageUrl: string | null,
+        classRoomName: string,
+        classRoomId: string,
+        lastMonth: string,
+        previousDue: number,
+        studentId: number,
+    },
+    feeStructures: {
+        amount: number,
+        chargeHeadId: string
+    }[],
+    chargeHeads: {
+        id: string
+        name: string
+        required: string
+        period: EChargeHeadPeriod
+    }[],
 }

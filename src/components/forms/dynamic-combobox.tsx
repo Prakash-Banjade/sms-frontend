@@ -33,6 +33,7 @@ interface AppFormDynamicComboboxProps<T> extends TFormFieldProps<T> {
     disabled?: boolean;
     defaultSelected?: SelectOption | null;
     onChange?: (value: string) => void;
+    queryString?: string;
 }
 
 
@@ -48,6 +49,7 @@ export function DynamicCombobox<T extends FieldValues>({
     containerClassName = '',
     defaultSelected = null,
     onChange: onChangeProp,
+    queryString
 }: AppFormDynamicComboboxProps<T>) {
     const { control } = useFormContext();
     const [selectedValue, setSelectedValue] = useState<SelectOption | null>(defaultSelected);
@@ -62,7 +64,7 @@ export function DynamicCombobox<T extends FieldValues>({
         endpoint: queryKey + '/' + QueryKey.OPTIONS,
         queryString: createQueryString({
             search: debouncedValue,
-        }),
+        }) + (!!queryString ? `&${queryString}` : ''),
     });
 
     return (

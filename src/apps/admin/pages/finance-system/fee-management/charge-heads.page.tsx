@@ -47,6 +47,7 @@ function ChargeHeadsList() {
             search: searchParams.get("search"),
             page: searchParams.get("page"),
             take: searchParams.get("take"),
+            order: 'ASC'
         })
     });
 
