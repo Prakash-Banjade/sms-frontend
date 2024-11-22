@@ -83,7 +83,7 @@ export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
     const { payload } = useAuth();
 
     const defaultOpen = useMemo<boolean>(() => {
-        return !!item.items?.some((subItem) => `/${payload?.role}/${subItem.url}` === location.pathname)
+        return !!item.items?.some((subItem) => `/${payload?.role}/${item.url}/${subItem.url}` === location.pathname)
     }, [location, payload])
 
     return (
