@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
 import { IFileUploadResponse } from '@/types/global.type'
-import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import { useFormContext } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
+import { useAxios } from '@/services/api'
 
 export const IMAGE_QUERY = "w=200&q=80";
 
@@ -31,14 +32,43 @@ export default function ImageUpload<T>({
     uploadedImageUrl = null,
     imageQuery = IMAGE_QUERY,
 }: ImageUploaderProps<T>) {
+    const axios = useAxios();
+
     const [isDragging, setIsDragging] = useState(false)
     const [uploadProgress, setUploadProgress] = useState(0)
-    const [imageUrl, setImageUrl] = useState<string | null>(uploadedImageUrl)
+    const [imageUrl, setImageUrl] = useState<string | null>(uploadedImageUrl + '?' + imageQuery)
     const [error, setError] = useState<string | null>(null)
-    const [isUploading, setIsUploading] = useState(false)
     const form = useFormContext();
 
-    const { mutateAsync, isPending } = useAppMutation<FormData, IFileUploadResponse>();
+    const { mutateAsync, isPending } = useMutation<IFileUploadResponse, Error, FormData>({
+        mutationFn: async (data) => {
+            const response = await axios.post(
+                `/${QueryKey.IMAGES}`,
+                data,
+                {
+                    onUploadProgress(progressEvent) {
+                        const progress = progressEvent.total ? Math.round((progressEvent.loaded / progressEvent.total) * 100) : 0;
+                        setUploadProgress(progress);
+                    },
+                }
+            );
+            return response.data;
+        },
+        onSuccess: (data) => {
+            if (data && data?.files && !!data?.files.length) {
+                const file = data.files[0];
+                setImageUrl(file.url + '?' + imageQuery);
+                form.setValue(name as string, file.id);
+                setUploadProgress(100);
+            } else {
+                setUploadProgress(0);
+            }
+        },
+        onError: (error) => {
+            setUploadProgress(0);
+            setError(error.message);
+        },
+    });
 
     const handleDragOver = useCallback((e: React.DragEvent) => {
         e.preventDefault()
@@ -61,45 +91,19 @@ export default function ImageUpload<T>({
             }
 
             setError(null)
-            setIsUploading(true)
             setUploadProgress(0)
 
-            // Simulate upload progress
-            const progressInterval = setInterval(() => {
-                setUploadProgress(prev => {
-                    if (prev >= 90) {
-                        clearInterval(progressInterval)
-                        return prev
-                    }
-                    return prev + 10
-                })
-            }, 500)
-
-            // upload image to server
             const formData = new FormData();
             formData.append('images', file);
 
-            const { data } = await mutateAsync({
-                data: formData,
-                endpoint: QueryKey.IMAGES,
-                method: 'post',
-                toastOnSuccess: false,
-            });
-
-            if (data && data?.files && !!data?.files.length) {
-                const file = data.files[0];
-                setImageUrl(file.url + '?' + imageQuery);
-                form.setValue(name as string, file.id);
-            }
+            await mutateAsync(formData);
 
             setUploadProgress(100)
-            clearInterval(progressInterval)
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message)
             }
         } finally {
-            setIsUploading(false)
             setIsDragging(false)
         }
     }, [maxSize, onUpload])
@@ -126,12 +130,12 @@ export default function ImageUpload<T>({
         form.setValue(name as string, null); // remove from form
     }, [])
 
-    if (isUploading) {
+    if (isPending) {
         return (
             <div className="p-8 border rounded-lg">
                 <div className="text-center space-y-4">
                     <Progress value={uploadProgress} className="w-full" />
-                    <h3 className="font-semibold">Uploading Image</h3>
+                    <h3 className="font-semibold">Uploading Image: {uploadProgress}%</h3>
                     <p className="text-sm text-muted-foreground">
                         Do not refresh or perform any other action while the image is being uploaded
                     </p>

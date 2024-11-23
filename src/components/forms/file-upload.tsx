@@ -1,7 +1,6 @@
 import { ChangeEvent, InputHTMLAttributes, useState } from "react";
 import { TFormFieldProps } from "./app-form";
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { useAppMutation } from "@/hooks/useAppMutation";
 import { useFormContext } from "react-hook-form";
 import { QueryKey } from "@/react-query/queryKeys";
 import { IFileUploadResponse } from "@/types/global.type";
@@ -10,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { truncateFilename } from "@/utils/truncate-file-name";
 import { LoaderCircle, Trash } from "lucide-react";
 import { TooltipWrapper } from "../ui/tooltip";
+import { useMutation } from "@tanstack/react-query";
+import { useAxios } from "@/services/api";
 
 interface AppFormFileUploadProps<T> extends TFormFieldProps<T>, Omit<InputHTMLAttributes<HTMLInputElement>, 'name'> {
     initialUpload?: IFileUploadResponse['files'],
@@ -29,10 +30,45 @@ export function FileUpload<T>({
     maxLimit = 10,
     ...props
 }: AppFormFileUploadProps<T>) {
+    const axios = useAxios();
+    const [uploadProgress, setUploadProgress] = useState(0)
+
     const { control, setValue, setError, clearErrors, getValues } = useFormContext();
     const [uploaded, setUploaded] = useState<IFileUploadResponse['files']>(initialUpload);
 
-    const { mutateAsync, isPending } = useAppMutation<FormData, IFileUploadResponse>();
+    const { mutateAsync, isPending } = useMutation<IFileUploadResponse, Error, FormData>({
+        mutationFn: async (data) => {
+            const response = await axios.post(
+                `/${QueryKey.FILES}`,
+                data,
+                {
+                    onUploadProgress(progressEvent) {
+                        const progress = progressEvent.total ? Math.round((progressEvent.loaded / progressEvent.total) * 100) : 0;
+                        setUploadProgress(progress);
+                    },
+                }
+            );
+            return response.data;
+        },
+        onSuccess: (data) => {
+            if (data && data?.files && !!data?.files.length) {
+                setValue(name as string, (
+                    multiple ? [...getValues(name as string), ...data.files.map(file => file.id)] : [...getValues(name as string), data.files[0].id] // handling single and multiple uploads
+                ));
+                setUploaded(prev => [...prev, ...data.files]);
+            } else {
+                setUploadProgress(0);
+            }
+        },
+        onError: (error) => {
+            setUploadProgress(0);
+            setError(name as string, {
+                type: "manual",
+                message: error.message,
+            });
+        },
+    });
+
 
     const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -54,19 +90,7 @@ export function FileUpload<T>({
                 formData.append('files', file);
             }
 
-            const { data } = await mutateAsync({
-                data: formData,
-                endpoint: QueryKey.FILES,
-                method: 'post',
-                toastOnSuccess: false,
-            });
-
-            if (data && data?.files && !!data?.files.length) {
-                setValue(name as string, (
-                    multiple ? [...getValues(name as string), ...data.files.map(file => file.id)] : [...getValues(name as string), data.files[0].id] // handling single and multiple uploads
-                ));
-                setUploaded(prev => [...prev, ...data.files]);
-            }
+            await mutateAsync(formData);
         }
     };
 
@@ -94,7 +118,7 @@ export function FileUpload<T>({
                         role="button"
                         className={cn(
                             "text-sm p-3 py-2 border rounded-md w-full inline-block",
-                            (isPending || uploaded.length >= maxLimit) && "!cursor-not-allowed pointer-events-none opacity-90 flex items-center gap-2"
+                            (isPending || uploaded.length >= maxLimit) && "!cursor-not-allowed pointer-events-none opacity-80 flex items-center gap-2"
                         )}
                         aria-disabled={isPending}
                     >
@@ -103,6 +127,7 @@ export function FileUpload<T>({
                                 ? <>
                                     <LoaderCircle className="h-4 w-4 animate-spin" />
                                     Uploading...
+                                    <span className="ml-auto">{uploadProgress}%</span>
                                 </>
                                 : "Click to upload file"
                         }
