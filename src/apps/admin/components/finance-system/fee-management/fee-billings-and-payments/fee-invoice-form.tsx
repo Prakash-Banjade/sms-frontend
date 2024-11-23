@@ -14,11 +14,12 @@ import { useMemo, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod"
-import InvoiceTemplate from "./fee-invoice-template";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import LoadingButton from "@/components/forms/loading-button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Printer, ScrollText } from "lucide-react";
+import { InvoiceTemplate } from "./fee-invoice-template";
+import { useReactToPrint } from "react-to-print";
 
 export enum EMonth {
     January = 1,
@@ -70,6 +71,8 @@ const formDefaultValues: Partial<feeInvoiceSchemaType> = {
 export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructures, student } }: Props) {
     const [invoiceNo, setInvoiceNo] = useState<string | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const invoiceTemplateRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({ contentRef: invoiceTemplateRef });
 
     const initialInvoiceItems = useRef<feeInvoiceSchemaType["invoiceItems"]>(chargeHeads.map(ch => ({
         amount: feeStructures.find(fs => fs.chargeHeadId === ch.id)?.amount ?? 0,
@@ -347,20 +350,36 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                     >
                         <ScrollArea className="max-h-[85vh] overflow-auto relative">
                             <InvoiceTemplate
+                                ref={invoiceTemplateRef}
                                 grandTotal={grandTotal}
                                 invoice={form.getValues()}
                                 invoiceNo={invoiceNo}
                                 feeStudent={{ chargeHeads, feeStructures, student }}
                             />
                             <div className="fixed left-1/2 top-[95%] -translate-x-1/2 -translate-y-1/2 z-10">
-                                <LoadingButton
-                                    isLoading={isPending}
-                                    disabled={isPending}
-                                    loadingText="Generating..."
-                                    type="button"
-                                >
-                                    Generate Invoice
-                                </LoadingButton>
+                                {
+                                    !invoiceNo ? (
+                                        <LoadingButton
+                                            isLoading={isPending}
+                                            disabled={isPending}
+                                            loadingText="Generating..."
+                                            type="button"
+                                            className="bg-black text-white hover:bg-black/85"
+                                        >
+                                            <ScrollText />
+                                            Generate Invoice
+                                        </LoadingButton>
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            className="bg-black text-white hover:bg-black/85"
+                                            onClick={() => handlePrint()}
+                                        >
+                                            <Printer />
+                                            Print
+                                        </Button>
+                                    )
+                                }
                             </div>
                         </ScrollArea>
                     </ResponsiveDialog>
