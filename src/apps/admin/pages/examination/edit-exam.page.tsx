@@ -4,7 +4,6 @@ import { Navigate, useParams } from "react-router-dom";
 import { useGetExam } from "../../components/examination/data-access";
 import { useGetSubjects } from "../../components/subjects/data-access";
 import { createQueryString } from "@/utils/create-query-string";
-import { useEffect, useState } from "react";
 import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form";
 import { formatDateNumeric } from "@/utils/format-date";
 import { TSingleExam } from "@/types/examination.type";
@@ -38,22 +37,14 @@ export default function EditExamPage() {
 }
 
 function EditExamTable({ exam }: { exam: TSingleExam }) {
-    const [searchQuery, setSearchQuery] = useState<string>('');
-
-    // creating the querstring which is required in gettng the subject and exam setup form
-    useEffect(() => {
-        if (exam) {
-            setSearchQuery(createQueryString({
-                classRoomId: exam?.classRoom.id,
-                examTypeId: exam?.examType.id,
-            }))
-        }
-    }, [exam]);
-
-    // fetching the classroom subjects
+    // fetching the classroom all subjects
     const { data: subjects, isLoading } = useGetSubjects({
-        queryString: searchQuery,
-        options: { enabled: (!!exam && !!searchQuery) }
+        queryString: createQueryString({
+            classRoomId: exam?.classRoom.id,
+            examTypeId: exam?.examType.id,
+            skipPagination: 'true',
+        }),
+        options: { enabled: !!exam }
     })
 
     if (isLoading) return <div>Loading...</div>;
