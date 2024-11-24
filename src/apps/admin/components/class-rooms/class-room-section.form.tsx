@@ -3,7 +3,6 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
 import { SelectOption, EClassType } from "@/types/global.type";
-import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -24,7 +23,11 @@ type Props = {
 export default function ClassSectionForm(props: Props) {
     const form = useForm<classRoomFormSchemaType>({
         resolver: zodResolver(classRoomFormSchema),
-        defaultValues: props?.defaultValues ?? classRoomFormDefaultValues,
+        defaultValues: {
+            ...(props?.defaultValues ?? classRoomFormDefaultValues),
+            admissionFee: 0,
+            monthlyFee: 0,
+        },
     })
 
     const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType & { parentClassId: string }>, any>();
@@ -37,7 +40,9 @@ export default function ClassSectionForm(props: Props) {
             endpoint: QueryKey.CLASSES,
             id: props.classRoomId,
             data: {
-                ...getDirtyValues(values, form),
+                ...values,
+                admissionFee: 0,
+                monthlyFee: 0,
                 classType: EClassType.SECTION,
                 parentClassId: props.parentClassId,
                 classTeacherId: values.classTeacherId ?? null,
@@ -49,6 +54,8 @@ export default function ClassSectionForm(props: Props) {
             props.setIsOpen(false);
         }
     }
+
+    console.log(form.formState.errors)
 
     return (
         <AppForm schema={classRoomFormSchema} form={form}>
