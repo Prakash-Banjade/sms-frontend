@@ -118,7 +118,7 @@ function ReportSection() {
                 failedSubjects={data?.failedSubjectsCount}
                 gpa={data?.gpa}
                 percentage={data?.percentage}
-                weakestSubject={data?.weakestSubject}
+                weakSubjects={data?.weakSubjects}
             />
 
             {/* bar chart: subject wise performance */}

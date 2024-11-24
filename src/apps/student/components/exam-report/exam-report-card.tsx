@@ -9,7 +9,7 @@ import { StudentDetailedMarksTable } from "@/apps/admin/components/report/examin
 import { InfoRow } from "../dashboard/student-profile"
 
 export default function ExamReportCard({ report }: { report: TExamReportByStudent }) {
-    const { student, examReport, percentage, gpa, grade, failedSubjectsCount, weakestSubject } = report
+    const { student, examReport, percentage, gpa, grade, failedSubjectsCount, weakSubjects } = report
 
     return (
         <Card className="w-full  mx-auto">
@@ -69,7 +69,7 @@ export default function ExamReportCard({ report }: { report: TExamReportByStuden
                             )}
                             <div className="flex items-center text-red-600">
                                 <TrendingDown className="mr-2" />
-                                <span>Weakest Subject: {weakestSubject}</span>
+                                <span>Weak Subjects: {weakSubjects.join(', ')}</span>
                             </div>
                         </div>
                         {/* detailed marks */}

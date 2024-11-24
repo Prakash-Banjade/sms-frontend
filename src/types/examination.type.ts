@@ -165,7 +165,7 @@ export type TExamReportByStudent = {
     gpa: number,
     grade: string,
     failedSubjectsCount: number,
-    weakestSubject: string
+    weakSubjects: string[],
 }
 
 export type TExamReportBySubject = {
