@@ -13,6 +13,9 @@ import { EMonth } from "../fee-invoice/fee-invoice-form";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { StudentLedgerFilters } from "./student-ledger-filters";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
+import { Button } from "@/components/ui/button";
+import { RefreshCcw } from "lucide-react";
+import { cn } from "@/lib/utils";
 type Props = {
     studentId: string;
 }
@@ -20,7 +23,7 @@ type Props = {
 export default function StudentLedgerView({ studentId }: Props) {
     const { searchParams } = useCustomSearchParams();
 
-    const { data, isLoading } = useGetStudentLedger({
+    const { data, isLoading, refetch, isRefetching } = useGetStudentLedger({
         queryString: createQueryString({
             studentId,
             dateFrom: searchParams.get('dateFrom'),
@@ -37,13 +40,24 @@ export default function StudentLedgerView({ studentId }: Props) {
 
     return (
         <section className="space-y-4 mt-10">
-            <header className="flex justify-between items-center gap-10">
+            <header className="flex justify-between items-end gap-10">
                 <section>
                     <StudentLedgerFilters />
                 </section>
 
-                <section className="text-right">
-                    <span>Current Due: <strong>Rs. {data?.ledgerAmount?.toLocaleString()}</strong></span>
+                <section className="flex flex-col gap-2">
+                    <div>Current Due: <strong>Rs. {data?.ledgerAmount?.toLocaleString()}</strong></div>
+                    <Button
+                        type="button"
+                        variant={'outline'}
+                        size={'sm'}
+                        onClick={() => refetch()}
+                        className="ml-auto"
+                        disabled={isRefetching}
+                    >
+                        <RefreshCcw className={cn(isRefetching && 'animate-spin')} />
+                        Refresh
+                    </Button>
                 </section>
             </header>
 
