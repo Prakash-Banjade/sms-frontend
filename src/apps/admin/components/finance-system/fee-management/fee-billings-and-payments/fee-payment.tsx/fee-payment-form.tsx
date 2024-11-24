@@ -6,7 +6,7 @@ import { NUMBER_REGEX_STRING } from "@/CONSTANTS";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { EPaymentMethod } from "@/types/global.type";
@@ -32,6 +32,7 @@ const paymentSchema = z.object({
 });
 type paymentSchemaType = z.infer<typeof paymentSchema>;
 export default function FeePaymentForm({ studentId }: Props) {
+    const [receiptNo, setReceiptNo] = useState<string | null>(null);
     const { data, isLoading } = useGetLastInvoice({
         studentId,
         options: { enabled: !!studentId }
@@ -40,7 +41,7 @@ export default function FeePaymentForm({ studentId }: Props) {
     const form = useForm<paymentSchemaType>({
         resolver: zodResolver(paymentSchema),
         defaultValues: {
-            paidAmount: data?.studentLedger?.amount ?? 0,
+            paidAmount: 0,
             feeInvoiceId: undefined,
             remark: '',
             paymentMethod: undefined
@@ -51,15 +52,21 @@ export default function FeePaymentForm({ studentId }: Props) {
         if (data?.id) form.setValue('feeInvoiceId', data.id);
     }, [data])
 
-    const { mutateAsync, isPending } = useAppMutation<paymentSchemaType, any>();
+    const { mutateAsync, isPending } = useAppMutation<paymentSchemaType, { receiptNo: string }>();
 
     async function onSubmit(values: paymentSchemaType) {
-        await mutateAsync({
+        if (receiptNo) return; // don't perform submission until there is receipt no
+
+        const response = await mutateAsync({
             method: "post",
             endpoint: QueryKey.FEE_PAYMENTS,
             data: values,
-            invalidateTags: [QueryKey.FEE_PAYMENTS],
+            invalidateTags: [[QueryKey.STUDENT_LEDGERS], ['feeStudent']],
         });
+
+        if (response?.data?.receiptNo) {
+            setReceiptNo(response.data.receiptNo);
+        }
     }
 
 
@@ -110,23 +117,47 @@ export default function FeePaymentForm({ studentId }: Props) {
                                 ))
                             }
                             {
-                                (data.studentLedger?.amount - data?.totalAmount) > 0 && <TableRow>
+                                (data?.ledgerItem?.studentLedger?.amount - data?.totalAmount) > 0 && <TableRow>
                                     <TableCell>
                                         {data?.items?.length + 1}
                                     </TableCell>
                                     <TableCell>Previous Due</TableCell>
-                                    <TableCell>{(data.studentLedger?.amount - data?.totalAmount).toLocaleString()}</TableCell>
+                                    <TableCell>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount).toLocaleString()}</TableCell>
                                     <TableCell>-</TableCell>
-                                    <TableCell colSpan={2}>{(data.studentLedger?.amount - data?.totalAmount).toLocaleString()}</TableCell>
+                                    <TableCell colSpan={2}>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount).toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             <TableRow className="hover:bg-transparent border-none">
                                 <TableCell colSpan={4} className="text-right">
-                                    Receivable Amount:
+                                    Total Amount:
                                 </TableCell>
                                 <TableCell>
                                     {
-                                        (data.studentLedger?.amount).toLocaleString()
+                                        (data?.totalAmount).toLocaleString()
+                                    }
+                                </TableCell>
+                            </TableRow>
+                            {
+                                data?.feePayments?.length > 0 && (
+                                    <TableRow className="hover:bg-transparent border-none">
+                                        <TableCell colSpan={4} className="text-right">
+                                            Prior Payments:
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                (data?.feePayments?.reduce((acc, item) => acc + item.amount, 0)).toLocaleString()
+                                            }
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            }
+                            <TableRow className="hover:bg-transparent border-none">
+                                <TableCell colSpan={4} className="text-right">
+                                    Outstanding Balance:
+                                </TableCell>
+                                <TableCell colSpan={2} className="max-w-40">
+                                    {
+                                        (data?.ledgerItem?.studentLedger?.amount).toLocaleString()
                                     }
                                 </TableCell>
                             </TableRow>
@@ -145,7 +176,7 @@ export default function FeePaymentForm({ studentId }: Props) {
                                                         type="number"
                                                         pattern={NUMBER_REGEX_STRING}
                                                         min={1}
-                                                        max={data.studentLedger?.amount}
+                                                        max={data?.ledgerItem?.studentLedger?.amount}
                                                         required className="max-w-[200px]"
                                                         {...field}
                                                         disabled={isPending}
@@ -163,7 +194,7 @@ export default function FeePaymentForm({ studentId }: Props) {
                                 </TableCell>
                                 <TableCell colSpan={2} className="max-w-40">
                                     {
-                                        (data.studentLedger?.amount - form.watch('paidAmount')).toLocaleString()
+                                        (data?.ledgerItem?.studentLedger?.amount - form.watch('paidAmount')).toLocaleString()
                                     }
                                 </TableCell>
                             </TableRow>

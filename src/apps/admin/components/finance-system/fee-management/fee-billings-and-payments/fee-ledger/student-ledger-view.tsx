@@ -25,6 +25,8 @@ export default function StudentLedgerView({ studentId }: Props) {
             studentId,
             dateFrom: searchParams.get('dateFrom'),
             dateTo: searchParams.get('dateTo'),
+            page: searchParams.get('page'),
+            take: searchParams.get('take'),
         }),
         options: { enabled: !!studentId }
     });
@@ -41,7 +43,7 @@ export default function StudentLedgerView({ studentId }: Props) {
                 </section>
 
                 <section className="text-right">
-                    <span>Previous Due: <strong>Rs. {data?.ledgerAmount?.toLocaleString()}</strong></span>
+                    <span>Current Due: <strong>Rs. {data?.ledgerAmount?.toLocaleString()}</strong></span>
                 </section>
             </header>
 
@@ -57,22 +59,29 @@ export default function StudentLedgerView({ studentId }: Props) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data?.data?.map((item, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{format(new Date(item.date), 'dd/MM/yyyy')}</TableCell>
-                            <TableCell>
-                                {Object.entries(EMonth).find(([_, monthInd]) => +item.month === +monthInd)?.[0]}
-                            </TableCell>
-                            <TableCell>
-                                {item.feeInvoiceId ? 'Invoice' : 'Payment'}
-                            </TableCell>
-                            <TableCell>
-                                {item.invoiceNo || '-'}
-                            </TableCell>
-                            <TableCell>Rs. {item.totalAmount.toLocaleString()}</TableCell>
-                            <TableCell>Rs. {item.ledgerAmount.toLocaleString()}</TableCell>
-                        </TableRow>
-                    ))}
+                    {data?.data?.map((item, index) => {
+                        const feeInvoice = typeof item.feeInvoice === 'string' ? JSON.parse(item.feeInvoice) : item.feeInvoice;
+                        const feePayment = typeof item.feePayment === 'string' ? JSON.parse(item.feePayment) : item.feePayment;
+
+                        return (
+                            <TableRow key={index}>
+                                <TableCell>{format(new Date(item.date), 'dd/MM/yyyy')}</TableCell>
+                                <TableCell>
+                                    {
+                                        feeInvoice?.month && Object.entries(EMonth).find(([_, monthInd]) => +feeInvoice.month === +monthInd)?.[0]
+                                    }
+                                </TableCell>
+                                <TableCell>
+                                    {!!feeInvoice?.id ? 'Invoice' : 'Payment'}
+                                </TableCell>
+                                <TableCell>
+                                    {feeInvoice?.rcvNo || feePayment?.rcvNo || '-'}
+                                </TableCell>
+                                <TableCell>Rs. {(feePayment?.amount ?? feeInvoice?.amount)?.toLocaleString()}</TableCell>
+                                <TableCell>Rs. {item.ledgerAmount?.toLocaleString()}</TableCell>
+                            </TableRow>
+                        )
+                    })}
                     {
                         data?.data?.length === 0 && <TableRow className="hover:bg-transparent">
                             <TableCell colSpan={6} className="text-center text-muted-foreground py-10">No ledger items found.</TableCell>

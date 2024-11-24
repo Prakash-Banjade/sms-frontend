@@ -63,18 +63,23 @@ export type TFeeStudent = {
     }[],
 }
 
-export type TLedgerItem = {
-    id: string,
-    date: string,
-    ledgerAmount: number,
-    feeInvoiceId: string,
-    invoiceNo: string,
-    totalAmount: number,
-    month: EMonth
-};
-
 export type TStudentLedgerResponse = {
-    data: TLedgerItem[],
+    data: {
+        id: string,
+        date: string,
+        ledgerAmount: number,
+        feeInvoice: {
+            id: string,
+            month: EMonth,
+            rcvNo: string,
+            amount: number
+        } | string | null,
+        feePayment: {
+            id: string,
+            rcvNo: string,
+            amount: number
+        } | string | null,
+    }[],
     ledgerAmount: number,
     meta: TMeta;
 }
@@ -85,8 +90,14 @@ export type TLastInvoice = {
     totalAmount: number,
     dueDate: string,
     month: number,
-    studentLedger: {
+    feePayments: {
         amount: number
+    }[],
+    ledgerItem: {
+        id: string;
+        studentLedger: {
+            amount: number
+        },
     },
     items: {
         id: string;

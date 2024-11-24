@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 interface MutationParams<TData> {
     endpoint: string;
-    invalidateTags?: string[];
+    invalidateTags?: string[] | string[][];
     id?: string;
     method: 'post' | 'patch' | 'delete';
     data?: TData;
@@ -51,9 +51,17 @@ export const useAppMutation = <TData, TResponse>(): UseMutationResult<
         },
         onSuccess(data, variables) {
             if (variables.invalidateTags) {
-                queryClient.invalidateQueries({
-                    queryKey: variables.invalidateTags,
-                })
+                if (variables.invalidateTags[0] instanceof Array) {
+                    for (const tag of variables.invalidateTags) {
+                        queryClient.invalidateQueries({
+                            queryKey: tag as string[],
+                        })
+                    }
+                } else {
+                    queryClient.invalidateQueries({
+                        queryKey: variables.invalidateTags as string[],
+                    })
+                }
             }
 
             (variables.toastOnSuccess ?? true) && toast.success(data.data.message ?? 'Success!');

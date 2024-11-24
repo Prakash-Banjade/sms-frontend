@@ -112,6 +112,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
     const { mutateAsync, isPending } = useAppMutation<feeInvoiceSchemaType, { invoiceNo: string }>();
 
     const onSubmit = async (values: feeInvoiceSchemaType) => {
+        if (invoiceNo) return; // don't perform submission until there is invoice no
         const checkedInvoices = values.invoiceItems.filter(item => item.isChecked);
         if (checkedInvoices.length === 0) return toast.error('No fees selected');
 
@@ -132,7 +133,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
 
     const handleMonthChange = (val: string) => {
         if (val !== undefined) {
-            form.setValue('month', val as unknown as EMonth);
+            form.setValue('month', +val as unknown as EMonth);
             form.setValue('invoiceItems', [
                 ...form.getValues('invoiceItems').map((item, ind) => item.period === EChargeHeadPeriod.Monthly
                     ? {
