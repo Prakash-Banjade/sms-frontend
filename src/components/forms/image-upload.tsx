@@ -36,7 +36,7 @@ export default function ImageUpload<T>({
 
     const [isDragging, setIsDragging] = useState(false)
     const [uploadProgress, setUploadProgress] = useState(0)
-    const [imageUrl, setImageUrl] = useState<string | null>(uploadedImageUrl + '?' + imageQuery)
+    const [imageUrl, setImageUrl] = useState<string | null>(uploadedImageUrl ? uploadedImageUrl + '?' + imageQuery : null)
     const [error, setError] = useState<string | null>(null)
     const form = useFormContext();
 
