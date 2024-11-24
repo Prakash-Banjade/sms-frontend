@@ -24,6 +24,8 @@ export const classRoomFormDefaultValues: Partial<classRoomFormSchemaType> = {
     name: "",
     location: "",
     description: "",
+    monthlyFee: 0,
+    admissionFee: 0,
 }
 
 export type classRoomFormSchemaType = z.infer<typeof classRoomFormSchema>;
