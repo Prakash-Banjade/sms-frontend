@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HandCoins, NotebookText, ReceiptText } from "lucide-react";
 import FeeInvoiceForm from "./fee-invoice/fee-invoice-form";
 import StudentLedgerView from "./fee-ledger/student-ledger-view";
+import FeePaymentForm from "./fee-payment.tsx/fee-payment-form";
 
 const tabs = [
     {
@@ -63,6 +64,9 @@ export default function FeeBillingAndPaymentTabs() {
                 </TabsList>
                 <TabsContent value={tabs[0].value}>
                     <FeeInvoiceForm feeStudent={data} />
+                </TabsContent>
+                <TabsContent value={tabs[1].value}>
+                    <FeePaymentForm studentId={data.student?.id} />
                 </TabsContent>
                 <TabsContent value={tabs[2].value}>
                     <StudentLedgerView studentId={data.student?.id} />

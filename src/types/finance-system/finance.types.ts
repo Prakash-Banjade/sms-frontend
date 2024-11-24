@@ -78,3 +78,24 @@ export type TStudentLedgerResponse = {
     ledgerAmount: number,
     meta: TMeta;
 }
+
+export type TLastInvoice = {
+    id: string;
+    invoiceNo: string;
+    totalAmount: number,
+    dueDate: string,
+    month: number,
+    studentLedger: {
+        amount: number
+    },
+    items: {
+        id: string;
+        amount: number,
+        discount: number,
+        remark: string,
+        chargeHead: {
+            id: string;
+            name: string
+        }
+    }[]
+}

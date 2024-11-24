@@ -48,7 +48,7 @@ const invoiceItems = z.object({
         .max(100, { message: "Discount must be 100 or less" })
         .optional(),
     chargeHeadId: z.string().uuid(),
-    remarks: z.string().max(100, { message: "Max 100 characters" }).nullish(),
+    remark: z.string().max(100, { message: "Max 100 characters" }).nullish(),
     required: z.boolean(),
     period: z.nativeEnum(EChargeHeadPeriod),
 });
@@ -79,7 +79,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
         chargeHeadId: ch.id,
         discount: 0,
         isChecked: ch.required === 'true',
-        remarks: '',
+        remark: '',
         required: ch.required === 'true',
         period: ch.period,
     })));
@@ -188,7 +188,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                 <TableHead>Amount</TableHead>
                                 <TableHead className="w-40">Discount (%)</TableHead>
                                 <TableHead className="min-w-[100px]">Total</TableHead>
-                                <TableHead>Remarks</TableHead>
+                                <TableHead>Remark</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -287,7 +287,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                         <TableCell>
                                             <FormField
                                                 control={form.control}
-                                                name={`invoiceItems.${index}.remarks`}
+                                                name={`invoiceItems.${index}.remark`}
                                                 render={({ field }) => (
                                                     <FormItem>
                                                         <FormControl>

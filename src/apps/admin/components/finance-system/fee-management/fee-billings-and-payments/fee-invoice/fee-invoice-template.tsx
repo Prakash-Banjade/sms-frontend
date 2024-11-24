@@ -89,7 +89,7 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                                 <th className="py-2 text-right">Amount</th>
                                 <th className="py-2 text-right">Discount (%)</th>
                                 <th className="py-2 pr-4 text-right">Total</th>
-                                {/* <th className="py-2 text-left">Remarks</th> */}
+                                {/* <th className="py-2 text-left">Remark</th> */}
                             </tr>
                         </thead>
                         <tbody className="">
@@ -131,17 +131,17 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                     </div>
                 </div>
 
-                {/* Remarks */}
+                {/* Remark */}
                 {
-                    invoice.invoiceItems?.some(item => !!item.remarks) && <div className="mt-6">
-                        <h2 className="font-semibold mb-2">Remarks</h2>
+                    invoice.invoiceItems?.some(item => !!item.remark) && <div className="mt-6">
+                        <h2 className="font-semibold mb-2">Remark</h2>
                         <ul className="rounded-md border border-gray-300 p-4 list-inside list-disc">
                             {
                                 invoice.invoiceItems.map((item) => {
-                                    if (!item.isChecked || !item.remarks) return null;
+                                    if (!item.isChecked || !item.remark) return null;
                                     return <li key={item.chargeHeadId} className="text-sm">
                                         <strong>{chargeHeads.find(chargeHead => chargeHead.id === item.chargeHeadId)?.name}: </strong>
-                                        {item.remarks}
+                                        {item.remark}
                                     </li>
                                 })
                             }

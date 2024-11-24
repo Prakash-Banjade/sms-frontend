@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TStudentLedgerResponse } from "@/types/finance-system/finance.types";
+import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TLastInvoice, TStudentLedgerResponse } from "@/types/finance-system/finance.types";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetChargeHeads = ({
@@ -67,6 +67,25 @@ export const useGetStudentLedger = ({
     const response = useFetchData<TStudentLedgerResponse>({
         queryKey: queryString ? [QueryKey.STUDENT_LEDGERS, queryString] : [QueryKey.STUDENT_LEDGERS],
         endpoint: QueryKey.STUDENT_LEDGERS,
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetLastInvoice = ({
+    queryString,
+    options,
+    studentId,
+}: {
+    studentId: string;
+    queryString?: string;
+    options?: Partial<UseQueryOptions<TLastInvoice>>
+}) => {
+    const response = useFetchData<TLastInvoice>({
+        queryKey: queryString ? [QueryKey.FEE_INVOICES, 'last-invoice', queryString] : [QueryKey.FEE_INVOICES, 'last-invoice'],
+        endpoint: QueryKey.FEE_INVOICES + '/last-invoice/' + studentId,
         queryString,
         options,
     })

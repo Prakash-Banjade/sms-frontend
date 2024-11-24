@@ -160,8 +160,7 @@ export enum ELeaveRequestStatus {
 
 export enum EPaymentMethod {
     CASH = 'cash',
-    CREDIT = 'credit',
-    DEBIT = 'debit',
+    CHEQUE = 'cheque',
     BANK = 'bank',
 }
 
