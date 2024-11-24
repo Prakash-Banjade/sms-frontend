@@ -51,9 +51,9 @@ export default function Dashboard_LeaveRequests() {
 
                                             const leaveDaysString = difference > 0
                                                 ? isSameMonth(leaveRequest.leaveTo, leaveRequest.leaveFrom)
-                                                    ? `${difference + 1} days (${leaveFromDate}-${format(leaveRequest.leaveTo, 'dd')})`
-                                                    : `${difference + 1} days (${leaveFromDate} - ${leaveToDate})`
-                                                : `${difference + 1} day (${leaveFromDate})`;
+                                                    ? `${difference + 1} days leave (${leaveFromDate}-${format(leaveRequest.leaveTo, 'dd')})`
+                                                    : `${difference + 1} days leave (${leaveFromDate} - ${leaveToDate})`
+                                                : `${difference + 1} day leave (${leaveFromDate})`;
 
                                             return (
                                                 <div className="flex gap-4 rounded-lg p-4 bg-secondary/20" key={leaveRequest.id}>
