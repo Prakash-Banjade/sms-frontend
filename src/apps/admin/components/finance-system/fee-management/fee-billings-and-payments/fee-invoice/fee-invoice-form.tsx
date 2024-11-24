@@ -122,6 +122,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                 ...values,
                 invoiceItems: checkedInvoices,
             },
+            invalidateTags: [QueryKey.STUDENT_LEDGERS]
         });
 
         if (res.data?.invoiceNo) {
@@ -363,7 +364,8 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                             isLoading={isPending}
                                             disabled={isPending}
                                             loadingText="Generating..."
-                                            type="button"
+                                            type="submit"
+                                            onClick={form.handleSubmit(onSubmit)}
                                             className="bg-black text-white hover:bg-black/85"
                                         >
                                             <ScrollText />

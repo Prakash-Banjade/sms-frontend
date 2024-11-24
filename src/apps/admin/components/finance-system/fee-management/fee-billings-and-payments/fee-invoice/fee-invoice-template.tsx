@@ -44,15 +44,15 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                 <div className="mb-6 grid grid-cols-2 gap-4">
                     <div>
                         <div>
-                            <span className="font-semibold">Student Name: </span>
-                            <span>{student.name}</span>
-                        </div>
-                        <div>
                             <span className="font-semibold">Student ID: </span>
                             <span>{student.studentId}</span>
                         </div>
+                        <div>
+                            <span className="font-semibold">Student Name: </span>
+                            <span>{student.name}</span>
+                        </div>
                     </div>
-                    <div>
+                    <div className="text-right">
                         <span className="font-semibold">Class: </span>
                         <span>{student.classRoomName}</span>
                     </div>
@@ -68,7 +68,7 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                             <span>{format(new Date(invoice.dueDate), 'dd/MM/yyyy')}</span>
                         </div>
                     </section>
-                    <section>
+                    <section className="text-right">
                         <div>
                             <span className="font-semibold">Month Upto: </span>
                             <span>{Object.entries(EMonth).find(([_, monthInd]) => +invoice.month === +monthInd)?.[0]}</span>
@@ -130,6 +130,25 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                         </span>
                     </div>
                 </div>
+
+                {/* Remarks */}
+                {
+                    invoice.invoiceItems?.some(item => !!item.remarks) && <div className="mt-6">
+                        <h2 className="font-semibold mb-2">Remarks</h2>
+                        <ul className="rounded-md border border-gray-300 p-4 list-inside list-disc">
+                            {
+                                invoice.invoiceItems.map((item) => {
+                                    if (!item.isChecked || !item.remarks) return null;
+                                    return <li key={item.chargeHeadId} className="text-sm">
+                                        <strong>{chargeHeads.find(chargeHead => chargeHead.id === item.chargeHeadId)?.name}: </strong>
+                                        {item.remarks}
+                                    </li>
+                                })
+                            }
+                        </ul>
+                    </div>
+                }
+
 
                 {/* Footer */}
                 <div className="mt-16 flex justify-between">

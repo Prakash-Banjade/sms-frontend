@@ -1,3 +1,4 @@
+import { EMonth } from "@/apps/admin/components/finance-system/fee-management/fee-billings-and-payments/fee-invoice/fee-invoice-form";
 import { TMeta } from "../global.type";
 
 export enum EChargeHeadPeriod {
@@ -60,4 +61,20 @@ export type TFeeStudent = {
         required: string
         period: EChargeHeadPeriod
     }[],
+}
+
+export type TLedgerItem = {
+    id: string,
+    date: string,
+    ledgerAmount: number,
+    feeInvoiceId: string,
+    invoiceNo: string,
+    totalAmount: number,
+    month: EMonth
+};
+
+export type TStudentLedgerResponse = {
+    data: TLedgerItem[],
+    ledgerAmount: number,
+    meta: TMeta;
 }

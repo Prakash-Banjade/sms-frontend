@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent } from "@/types/finance-system/finance.types";
+import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TStudentLedgerResponse } from "@/types/finance-system/finance.types";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetChargeHeads = ({
@@ -50,6 +50,23 @@ export const useGetFeeStudent = ({
         queryKey: [QueryKey.STUDENTS, id],
         endpoint: QueryKey.STUDENTS + '/fee',
         id,
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetStudentLedger = ({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<TStudentLedgerResponse>>
+}) => {
+    const response = useFetchData<TStudentLedgerResponse>({
+        queryKey: queryString ? [QueryKey.STUDENT_LEDGERS, queryString] : [QueryKey.STUDENT_LEDGERS],
+        endpoint: QueryKey.STUDENT_LEDGERS,
         queryString,
         options,
     })
