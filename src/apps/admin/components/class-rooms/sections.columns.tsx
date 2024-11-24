@@ -61,6 +61,23 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         }
     },
     {
+        header: "Total Others",
+        accessorKey: "totalOthersCount",
+        cell: ({ row }) => {
+            const othersCount = +row.original.totalStudentsCount - +row.original.totalMaleStudentsCount - +row.original.totalFemaleStudentsCount;
+
+            const percentage = +row.original.totalStudentsCount === 0
+                ? 0
+                : (othersCount / +row.original.totalStudentsCount) * 100;
+            return !percentage ?
+                <span>{othersCount}</span>
+                : <span>
+                    {othersCount}{" "}
+                    <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
+                </span>
+        }
+    },
+    {
         header: "Class Teacher",
         accessorKey: "classTeacherName",
         cell: ({ row }) => <span>{row.original.classTeacherName || <span className="text-muted-foreground">"N/A"</span>}</span>,

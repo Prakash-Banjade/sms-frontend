@@ -40,8 +40,6 @@ export type TSingleClassRoom = {
     id: string,
     name: string,
     description: string,
-    admissionFee: number,
-    monthlyFee: number,
     location: string,
     classType: EClassType,
     createdAt: string,

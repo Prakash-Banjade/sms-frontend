@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Users, User, UserCircle2, DollarSign, MapPin } from "lucide-react"
+import { Users, User, UserCircle2, MapPin } from "lucide-react"
 import { TSingleClassRoom } from "@/types/class.type";
 
 export default function ClassDetailsCard({ classRoom }: { classRoom: TSingleClassRoom | undefined }) {
@@ -33,16 +33,12 @@ export default function ClassDetailsCard({ classRoom }: { classRoom: TSingleClas
                         <span>Female: {classRoom.totalFemaleStudentsCount}</span>
                     </div>
                     <div className="flex items-center">
+                        <User className="mr-2 h-5 w-5 text-green-500" />
+                        <span>Other: {classRoom.totalStudentsCount - classRoom.totalMaleStudentsCount - classRoom.totalFemaleStudentsCount}</span>
+                    </div>
+                    <div className="flex items-center">
                         <UserCircle2 className="mr-2 h-5 w-5 text-muted-foreground" />
                         <span>Teacher: {classRoom.classTeacherName ?? <span className="text-muted-foreground">N/A</span>}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <DollarSign className="mr-2 h-5 w-5 text-muted-foreground" />
-                        <span>Monthly Fee: {classRoom.monthlyFee}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <DollarSign className="mr-2 h-5 w-5 text-muted-foreground" />
-                        <span>Admission Fee: {classRoom.admissionFee}</span>
                     </div>
                     <div className="flex items-center col-span-full">
                         <MapPin className="mr-2 h-5 w-5 text-muted-foreground" />
