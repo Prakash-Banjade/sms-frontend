@@ -66,7 +66,7 @@ export default function FeeBillingAndPaymentTabs() {
                     <FeeInvoiceForm feeStudent={data} />
                 </TabsContent>
                 <TabsContent value={tabs[1].value}>
-                    <FeePaymentForm studentId={data.student?.id} />
+                    <FeePaymentForm feeStudent={data.student} />
                 </TabsContent>
                 <TabsContent value={tabs[2].value}>
                     <StudentLedgerView studentId={data.student?.id} />

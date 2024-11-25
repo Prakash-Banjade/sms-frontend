@@ -1,21 +1,19 @@
 import { createQueryString } from "@/utils/create-query-string";
 import { useGetStudentLedger } from "../../../data-access";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { format } from "date-fns";
 import { EMonth } from "../fee-invoice/fee-invoice-form";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { StudentLedgerFilters } from "./student-ledger-filters";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { Button } from "@/components/ui/button";
-import { RefreshCcw } from "lucide-react";
+import { MoreHorizontal, Printer, RefreshCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
+import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import RePrintInvoice from "./re-print-invoice";
+import RePrintPayment from "./re-print-payment";
 type Props = {
     studentId: string;
 }
@@ -70,6 +68,7 @@ export default function StudentLedgerView({ studentId }: Props) {
                         <TableHead>Rcv.No</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead>Balance</TableHead>
+                        <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -93,6 +92,9 @@ export default function StudentLedgerView({ studentId }: Props) {
                                 </TableCell>
                                 <TableCell>Rs. {(feePayment?.amount ?? feeInvoice?.amount)?.toLocaleString()}</TableCell>
                                 <TableCell>Rs. {item.ledgerAmount?.toLocaleString()}</TableCell>
+                                <TableCell>
+                                    <LedgerActionColumn feeInvoice={feeInvoice} feePayment={feePayment} />
+                                </TableCell>
                             </TableRow>
                         )
                     })}
@@ -109,4 +111,40 @@ export default function StudentLedgerView({ studentId }: Props) {
         </section>
 
     )
+}
+
+function LedgerActionColumn({ feeInvoice, feePayment }: { feeInvoice: any, feePayment: any }) {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    return <>
+        <ResponsiveDialog
+            isOpen={isDialogOpen}
+            setIsOpen={setIsDialogOpen}
+            title="Print Invoice"
+            className="max-w-max"
+        >
+            {
+                feeInvoice?.id ? (
+                    <RePrintInvoice invoiceId={feeInvoice.id} />
+                ) : (
+                    <RePrintPayment paymentId={feePayment?.id} />
+                )
+            }
+        </ResponsiveDialog>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuButtonItem onClick={() => setIsDialogOpen(true)}>
+                    <Printer />
+                    <span>Print</span>
+                </DropdownMenuButtonItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </>
 }

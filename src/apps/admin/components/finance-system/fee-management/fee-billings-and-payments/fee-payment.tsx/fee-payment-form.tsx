@@ -6,7 +6,7 @@ import { NUMBER_REGEX_STRING } from "@/CONSTANTS";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { EPaymentMethod } from "@/types/global.type";
@@ -19,9 +19,16 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import LoadingButton from "@/components/forms/loading-button";
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useReactToPrint } from "react-to-print";
+import { ArrowRight, Banknote, Printer } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ReceiptTemplate } from "./fee-receipt-template";
+import { TFeeStudent } from "@/types/finance-system/finance.types";
 
 type Props = {
-    studentId: string;
+    feeStudent: TFeeStudent['student'];
 }
 
 const paymentSchema = z.object({
@@ -30,12 +37,16 @@ const paymentSchema = z.object({
     remark: z.string(),
     paymentMethod: z.nativeEnum(EPaymentMethod, { message: 'Payment method is required' }),
 });
-type paymentSchemaType = z.infer<typeof paymentSchema>;
-export default function FeePaymentForm({ studentId }: Props) {
+export type paymentSchemaType = z.infer<typeof paymentSchema>;
+export default function FeePaymentForm({ feeStudent }: Props) {
     const [receiptNo, setReceiptNo] = useState<string | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const receiptTemplateRef = useRef<HTMLDivElement>(null);
+    const handlePrint = useReactToPrint({ contentRef: receiptTemplateRef });
+
     const { data, isLoading } = useGetLastInvoice({
-        studentId,
-        options: { enabled: !!studentId }
+        studentId: feeStudent.id,
+        options: { enabled: !!feeStudent.id }
     });
 
     const form = useForm<paymentSchemaType>({
@@ -66,9 +77,9 @@ export default function FeePaymentForm({ studentId }: Props) {
 
         if (response?.data?.receiptNo) {
             setReceiptNo(response.data.receiptNo);
+            form.reset();
         }
     }
-
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -103,14 +114,14 @@ export default function FeePaymentForm({ studentId }: Props) {
                                             {item.chargeHead?.name}
                                         </TableCell>
                                         <TableCell>
-                                            {item.amount.toLocaleString()}
+                                            {item.amount?.toLocaleString()}
                                         </TableCell>
                                         <TableCell>
                                             {item.discount} %
                                         </TableCell>
                                         <TableCell>
                                             {
-                                                (item.amount - (item.amount * (item.discount ?? 0) / 100)).toLocaleString()
+                                                (item.amount - (item.amount * (item.discount ?? 0) / 100))?.toLocaleString()
                                             }
                                         </TableCell>
                                     </TableRow>
@@ -122,9 +133,9 @@ export default function FeePaymentForm({ studentId }: Props) {
                                         {data?.items?.length + 1}
                                     </TableCell>
                                     <TableCell>Previous Due</TableCell>
-                                    <TableCell>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount).toLocaleString()}</TableCell>
+                                    <TableCell>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount)?.toLocaleString()}</TableCell>
                                     <TableCell>-</TableCell>
-                                    <TableCell colSpan={2}>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount).toLocaleString()}</TableCell>
+                                    <TableCell colSpan={2}>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount)?.toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             <TableRow className="hover:bg-transparent border-none">
@@ -133,21 +144,17 @@ export default function FeePaymentForm({ studentId }: Props) {
                                 </TableCell>
                                 <TableCell>
                                     {
-                                        (data?.totalAmount).toLocaleString()
+                                        (data?.ledgerItem?.ledgerAmount)?.toLocaleString()
                                     }
                                 </TableCell>
                             </TableRow>
                             {
-                                data?.feePayments?.length > 0 && (
+                                data?.totalFeesPaid !== null && (
                                     <TableRow className="hover:bg-transparent border-none">
                                         <TableCell colSpan={4} className="text-right">
                                             Prior Payments:
                                         </TableCell>
-                                        <TableCell>
-                                            {
-                                                (data?.feePayments?.reduce((acc, item) => acc + item.amount, 0)).toLocaleString()
-                                            }
-                                        </TableCell>
+                                        <TableCell>{data.totalFeesPaid?.toLocaleString()}</TableCell>
                                     </TableRow>
                                 )
                             }
@@ -157,7 +164,7 @@ export default function FeePaymentForm({ studentId }: Props) {
                                 </TableCell>
                                 <TableCell colSpan={2} className="max-w-40">
                                     {
-                                        (data?.ledgerItem?.studentLedger?.amount).toLocaleString()
+                                        (data?.ledgerItem?.studentLedger?.amount)?.toLocaleString()
                                     }
                                 </TableCell>
                             </TableRow>
@@ -194,7 +201,7 @@ export default function FeePaymentForm({ studentId }: Props) {
                                 </TableCell>
                                 <TableCell colSpan={2} className="max-w-40">
                                     {
-                                        (data?.ledgerItem?.studentLedger?.amount - form.watch('paidAmount')).toLocaleString()
+                                        (data?.ledgerItem?.studentLedger?.amount - form.watch('paidAmount'))?.toLocaleString()
                                     }
                                 </TableCell>
                             </TableRow>
@@ -248,9 +255,67 @@ export default function FeePaymentForm({ studentId }: Props) {
                     </Table>
 
                     <section className="flex justify-center mt-10">
-                        <LoadingButton isLoading={isPending} disabled={isPending} loadingText="Submitting..." type="submit">
-                            Submit Payment
-                        </LoadingButton>
+                        <ResponsiveDialog
+                            isOpen={isDialogOpen}
+                            setIsOpen={setIsDialogOpen}
+                            title="Review Invoice"
+                            className="max-w-max"
+                        >
+                            <ScrollArea className="max-h-[85vh] overflow-auto">
+                                <ReceiptTemplate
+                                    student={{
+                                        ...feeStudent,
+                                        previousDue: (data?.ledgerItem?.studentLedger?.amount - data?.totalAmount)
+                                    }}
+                                    invoice={{
+                                        month: data.month?.toString(),
+                                        totalAmount: data?.ledgerItem.ledgerAmount, // this is the amount including the previous due
+                                        invoiceItems: data.items?.map(item => ({
+                                            amount: item.amount,
+                                            chargeHead: item.chargeHead?.name,
+                                            discount: item.discount,
+                                        })) ?? []
+                                    }}
+                                    receipt={{
+                                        paidAmount: form.getValues('paidAmount'),
+                                        paymentDate: new Date().toISOString(),
+                                        receiptNo: receiptNo,
+                                        paymentMethod: form.getValues('paymentMethod'),
+                                        remark: form.getValues('remark'),
+                                        outStandingBalance: data?.ledgerItem?.studentLedger?.amount
+                                    }}
+                                />
+                                <div className="fixed left-1/2 top-[95%] -translate-x-1/2 -translate-y-1/2 z-10">
+                                    {
+                                        !receiptNo ? (
+                                            <LoadingButton
+                                                isLoading={isPending}
+                                                disabled={isPending}
+                                                loadingText="Generating..."
+                                                type="submit"
+                                                onClick={form.handleSubmit(onSubmit)}
+                                                className="bg-black text-white hover:bg-black/85"
+                                            >
+                                                <Banknote />
+                                                Submit Payment
+                                            </LoadingButton>
+                                        ) : (
+                                            <Button
+                                                type="button"
+                                                className="bg-black text-white hover:bg-black/85"
+                                                onClick={() => handlePrint()}
+                                            >
+                                                <Printer />
+                                                Print
+                                            </Button>
+                                        )
+                                    }
+                                </div>
+                            </ScrollArea>
+                        </ResponsiveDialog>
+                        <Button onClick={() => setIsDialogOpen(true)} type="button" disabled={Object.keys(form.formState.errors).length > 0 || !form.formState.isValid}>
+                            Continue <ArrowRight />
+                        </Button>
                     </section>
                 </form>
             </Form>

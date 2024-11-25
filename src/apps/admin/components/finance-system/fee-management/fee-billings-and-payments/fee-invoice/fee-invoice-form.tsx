@@ -15,11 +15,11 @@ import { useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod"
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import LoadingButton from "@/components/forms/loading-button";
 import { ArrowRight, Printer, ScrollText } from "lucide-react";
 import { InvoiceTemplate } from "./fee-invoice-template";
 import { useReactToPrint } from "react-to-print";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export enum EMonth {
     January = 1,
@@ -350,13 +350,24 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                         title="Review Invoice"
                         className="max-w-max"
                     >
-                        <ScrollArea className="max-h-[85vh] overflow-auto relative">
+                        <ScrollArea className="max-h-[85vh] overflow-auto">
                             <InvoiceTemplate
                                 ref={invoiceTemplateRef}
-                                grandTotal={grandTotal}
-                                invoice={form.getValues()}
-                                invoiceNo={invoiceNo}
-                                feeStudent={{ chargeHeads, feeStructures, student }}
+                                invoice={{
+                                    invoiceDate: form.getValues('invoiceDate'),
+                                    dueDate: form.getValues('dueDate'),
+                                    month: form.getValues('month'),
+                                    invoiceItems: form.getValues('invoiceItems')?.map(item => ({
+                                        amount: item.amount,
+                                        discount: item.discount,
+                                        isChecked: item.isChecked,
+                                        remark: item.remark,
+                                        chargeHead: chargeHeads.find(chargeHead => chargeHead.id === item.chargeHeadId)?.name,
+                                    })),
+                                    totalAmount: grandTotal,
+                                    invoiceNo,
+                                }}
+                                student={student}
                             />
                             <div className="fixed left-1/2 top-[95%] -translate-x-1/2 -translate-y-1/2 z-10">
                                 {

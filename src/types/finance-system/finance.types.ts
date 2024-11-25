@@ -1,5 +1,5 @@
 import { EMonth } from "@/apps/admin/components/finance-system/fee-management/fee-billings-and-payments/fee-invoice/fee-invoice-form";
-import { TMeta } from "../global.type";
+import { EPaymentMethod, TMeta } from "../global.type";
 
 export enum EChargeHeadPeriod {
     Monthly = 'monthly',
@@ -90,11 +90,10 @@ export type TLastInvoice = {
     totalAmount: number,
     dueDate: string,
     month: number,
-    feePayments: {
-        amount: number
-    }[],
+    totalFeesPaid: number | null;
     ledgerItem: {
         id: string;
+        ledgerAmount: number;
         studentLedger: {
             amount: number
         },
@@ -110,3 +109,76 @@ export type TLastInvoice = {
         }
     }[]
 }
+
+export type TSingleInvoice_Student = {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    rollNo: number;
+    studentId: number;
+    classRoomName: string;
+}
+
+export type TSingleInvoice = {
+    id: string;
+    totalAmount: number;
+    month: number;
+    invoiceDate: string,
+    dueDate: string,
+    invoiceNo: string,
+    ledgerItem: {
+        id: string;
+        ledgerAmount: number;
+    };
+    items: {
+        id: string;
+        amount: number;
+        discount: number;
+        remark: string | null;
+        chargeHead: {
+            id: string;
+            name: string;
+        };
+    }[];
+    totalFeesPaid: number;
+    student: TSingleInvoice_Student | string | null;
+};
+
+export type TSinglePayment = {
+    id: string;
+    receiptNo: string;
+    amount: number;
+    remark: string | null;
+    createdAt: string;
+    paymentMethod: EPaymentMethod;
+    totalFeesPaid: number | null;
+    feeInvoice: {
+        id: string;
+        totalAmount: number;
+        month: number;
+        ledgerItem: {
+            id: string;
+            ledgerAmount: number;
+        };
+        items: {
+            id: string;
+            amount: number;
+            discount: number;
+            remark: string | null;
+            chargeHead: {
+                id: string;
+                name: string;
+            };
+        }[];
+    };
+    student: {
+        id: string;
+        name: string;
+        email: string;
+        phone: string;
+        rollNo: number;
+        studentId: number;
+        classRoomName: string;
+    } | string | null;
+};
