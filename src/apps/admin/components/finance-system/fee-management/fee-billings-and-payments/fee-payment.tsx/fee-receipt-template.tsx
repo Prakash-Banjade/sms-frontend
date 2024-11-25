@@ -14,6 +14,7 @@ type Props = {
     invoice: {
         month: string,
         totalAmount: number, // this is the amount including the previous due
+        totalFeesPaid: number | null;
         invoiceItems: {
             amount: number;
             discount?: number;
@@ -131,17 +132,23 @@ export const ReceiptTemplate = React.forwardRef<HTMLDivElement, Props>(
                                 <td className="text-right pt-3" colSpan={4}>Total:</td>
                                 <td className="text-right pr-4">{(invoice.totalAmount)?.toLocaleString()}</td>
                             </tr>
+                            {
+                                invoice.totalFeesPaid !== null && <tr>
+                                    <td className="text-right" colSpan={4}>Prior Payments:</td>
+                                    <td className="text-right pr-4">{(invoice.totalFeesPaid ?? 0)?.toLocaleString()}</td>
+                                </tr>
+                            }
                             <tr>
                                 <td className="text-right" colSpan={4}>Outstanding Balance:</td>
                                 <td className="text-right pr-4">{(receipt.outStandingBalance)?.toLocaleString()}</td>
                             </tr>
                             <tr>
                                 <td className="text-right" colSpan={4}>Paid Amount:</td>
-                                <td className="text-right pr-4">{(receipt.paidAmount)?.toLocaleString()}</td>
+                                <td className="text-right pr-4">{(+receipt.paidAmount)?.toLocaleString()}</td>
                             </tr>
                             <tr>
                                 <td className="text-right" colSpan={4}>Remaining Due:</td>
-                                <td className="text-right pr-4">{(invoice.totalAmount - receipt.paidAmount)?.toLocaleString()}</td>
+                                <td className="text-right pr-4">{(receipt.outStandingBalance - receipt.paidAmount)?.toLocaleString()}</td>
                             </tr>
                         </tbody>
                     </table>

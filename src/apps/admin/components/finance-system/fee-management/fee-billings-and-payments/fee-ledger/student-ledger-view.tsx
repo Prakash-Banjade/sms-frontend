@@ -44,7 +44,7 @@ export default function StudentLedgerView({ studentId }: Props) {
                 </section>
 
                 <section className="flex flex-col gap-2">
-                    <div>Current Due: <strong>Rs. {data?.ledgerAmount?.toLocaleString()}</strong></div>
+                    <div>Current Due: <strong>Rs. {(data?.ledgerAmount ?? 0)?.toLocaleString()}</strong></div>
                     <Button
                         type="button"
                         variant={'outline'}

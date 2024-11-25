@@ -77,7 +77,6 @@ export default function FeePaymentForm({ feeStudent }: Props) {
 
         if (response?.data?.receiptNo) {
             setReceiptNo(response.data.receiptNo);
-            form.reset();
         }
     }
 
@@ -128,14 +127,14 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                 ))
                             }
                             {
-                                (data?.ledgerItem?.studentLedger?.amount - data?.totalAmount) > 0 && <TableRow>
+                                (data?.ledgerItem?.studentLedger?.amount) > 0 && <TableRow>
                                     <TableCell>
                                         {data?.items?.length + 1}
                                     </TableCell>
                                     <TableCell>Previous Due</TableCell>
-                                    <TableCell>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount)?.toLocaleString()}</TableCell>
+                                    <TableCell>{(data?.ledgerItem?.studentLedger?.amount)?.toLocaleString()}</TableCell>
                                     <TableCell>-</TableCell>
-                                    <TableCell colSpan={2}>{(data?.ledgerItem?.studentLedger?.amount - data?.totalAmount)?.toLocaleString()}</TableCell>
+                                    <TableCell colSpan={2}>{(data?.ledgerItem?.studentLedger?.amount)?.toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             <TableRow className="hover:bg-transparent border-none">
@@ -265,7 +264,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                 <ReceiptTemplate
                                     student={{
                                         ...feeStudent,
-                                        previousDue: (data?.ledgerItem?.studentLedger?.amount - data?.totalAmount)
+                                        previousDue: (data?.ledgerItem?.studentLedger?.amount)
                                     }}
                                     invoice={{
                                         month: data.month?.toString(),
@@ -274,7 +273,8 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                             amount: item.amount,
                                             chargeHead: item.chargeHead?.name,
                                             discount: item.discount,
-                                        })) ?? []
+                                        })) ?? [],
+                                        totalFeesPaid: data?.totalFeesPaid,
                                     }}
                                     receipt={{
                                         paidAmount: form.getValues('paidAmount'),
