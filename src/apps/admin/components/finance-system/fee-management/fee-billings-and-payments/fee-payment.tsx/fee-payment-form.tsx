@@ -56,7 +56,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
             paidAmount: 0,
             feeInvoiceId: undefined,
             remark: '',
-            paymentMethod: undefined
+            paymentMethod: EPaymentMethod.CASH
         },
     });
 
@@ -104,6 +104,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                         variant={'outline'}
                         disabled={isRefetching}
                     >
+
                         <RefreshCcw className={cn(isRefetching && 'animate-spin')} />
                         Refresh
                     </Button>
