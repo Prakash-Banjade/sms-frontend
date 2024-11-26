@@ -12,6 +12,7 @@ const guardianSchema = z.object({
     address: z.string().min(1, { message: 'Address is required' }).max(80, { message: 'Address seems too long. Max 80 characters.' }).optional(),
     occupation: z.string().min(1, { message: 'Occupation is required' }),
     profileImageId: z.string().uuid({ message: 'Invalid image ID or URL' }).nullish(),
+    receiveNotification: z.boolean().optional(),
 });
 
 export const studentSchema = z.object({
@@ -103,6 +104,7 @@ export const guardianFormFieldsDefaultValues: studentSchemaType["guardians"][0] 
     address: "",
     occupation: "",
     profileImageId: undefined,
+    receiveNotification: false,
 }
 
 export const studentFormDefaultValues: Partial<studentSchemaType> = {

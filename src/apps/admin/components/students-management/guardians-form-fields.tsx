@@ -8,6 +8,7 @@ import { GuardianRelationMappings } from '@/utils/labelToValueMappings'
 import { AppFormText } from '@/components/forms/app-form-text'
 import { AppFormPhone } from '@/components/forms/app-form-phone'
 import { AppFormEmail } from '@/components/forms/app-form-email'
+import { AppCheckbox } from '@/components/forms/app-form-checkbox'
 
 export default function GuardiansFields() {
     const form = useFormContext<studentSchemaType>();
@@ -73,6 +74,11 @@ export default function GuardiansFields() {
                                     placeholder="eg. Teacher"
                                     required
                                     description="Occupation of the guardian"
+                                />
+                                <AppCheckbox
+                                    name={`guardians.${index}.receiveNotification`}
+                                    label="Receive Notification"
+                                    description="Receive notifications for the student"
                                 />
                             </section>
 

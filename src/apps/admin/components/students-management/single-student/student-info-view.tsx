@@ -94,18 +94,21 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
                 <section>
                     <h3 className="font-semibold text-lg mb-2">Guardian Information</h3>
                     {student.guardians.map((guardian, index) => (
-                        <div key={guardian.id} className="grid lg:grid-cols-2 gap-4 mb-4">
-                            <InfoItem label="Name" value={`${guardian.firstName} ${guardian.lastName}`} className="capitalize" />
-                            <InfoItem label="Relation" value={guardian.relation} className="capitalize" />
-                            <InfoItem label="Phone" value={guardian.phone} />
-                            {guardian.email && <InfoItem label="Email" value={guardian.email} />}
-                            <InfoItem label="Address" value={guardian.address} className="capitalize" />
-                            <InfoItem label="Occupation" value={guardian.occupation} className="capitalize" />
+                        <>
+                            <div key={guardian.id} className="grid lg:grid-cols-2 gap-4 mb-4">
+                                <InfoItem label="Name" value={`${guardian.firstName} ${guardian.lastName}`} className="capitalize" />
+                                <InfoItem label="Relation" value={guardian.relation} className="capitalize" />
+                                <InfoItem label="Phone" value={guardian.phone} />
+                                {guardian.email && <InfoItem label="Email" value={guardian.email} />}
+                                <InfoItem label="Address" value={guardian.address} className="capitalize" />
+                                <InfoItem label="Occupation" value={guardian.occupation} className="capitalize" />
+                                <InfoItem label="Receives Notification" value={guardian.receiveNotification ? 'Yes' : 'No'} className="capitalize" />
 
+                            </div>
                             {index !== student.guardians.length - 1 && (
                                 <Separator className="my-4" />
                             )}
-                        </div>
+                        </>
                     ))}
                 </section>
 
