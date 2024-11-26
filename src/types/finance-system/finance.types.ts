@@ -108,7 +108,7 @@ export type TLastInvoice = {
             name: string
         }
     }[]
-}
+} | null;
 
 export type TSingleInvoice_Student = {
     id: string;

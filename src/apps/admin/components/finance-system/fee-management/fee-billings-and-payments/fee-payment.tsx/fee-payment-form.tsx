@@ -22,10 +22,11 @@ import LoadingButton from "@/components/forms/loading-button";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useReactToPrint } from "react-to-print";
-import { ArrowRight, Banknote, Printer } from "lucide-react";
+import { ArrowRight, Banknote, Printer, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ReceiptTemplate } from "./fee-receipt-template";
 import { TFeeStudent } from "@/types/finance-system/finance.types";
+import { cn } from "@/lib/utils";
 
 type Props = {
     feeStudent: TFeeStudent['student'];
@@ -44,7 +45,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
     const receiptTemplateRef = useRef<HTMLDivElement>(null);
     const handlePrint = useReactToPrint({ contentRef: receiptTemplateRef });
 
-    const { data, isLoading } = useGetLastInvoice({
+    const { data, isLoading, refetch, isRefetching } = useGetLastInvoice({
         studentId: feeStudent.id,
         options: { enabled: !!feeStudent.id }
     });
@@ -86,9 +87,24 @@ export default function FeePaymentForm({ feeStudent }: Props) {
 
     return (
         <section className="mt-6">
-            <div>
-                Month Upto: <strong>{Object.entries(EMonth).find(([_, monthInd]) => +monthInd === +data.month)?.[0]}</strong>
-            </div>
+            <header className="flex justify-between gap-10">
+                <section>
+                    Month Upto: <strong>{Object.entries(EMonth).find(([_, monthInd]) => +monthInd === +data.month)?.[0]}</strong>
+                </section>
+
+                <section>
+                    <Button
+                        onClick={() => refetch()}
+                        type="button"
+                        size={'sm'}
+                        variant={'outline'}
+                        disabled={isRefetching}
+                    >
+                        <RefreshCcw className={cn(isRefetching && 'animate-spin')} />
+                        Refresh
+                    </Button>
+                </section>
+            </header>
 
             <Form {...form}>
                 <form className="mt-5" onSubmit={form.handleSubmit(onSubmit)} aria-disabled={isPending}>
@@ -127,14 +143,14 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                 ))
                             }
                             {
-                                (data?.ledgerItem?.studentLedger?.amount) > 0 && <TableRow>
+                                (data?.ledgerItem?.ledgerAmount - data.totalAmount) > 0 && <TableRow>
                                     <TableCell>
                                         {data?.items?.length + 1}
                                     </TableCell>
                                     <TableCell>Previous Due</TableCell>
-                                    <TableCell>{(data?.ledgerItem?.studentLedger?.amount)?.toLocaleString()}</TableCell>
+                                    <TableCell>{(data?.ledgerItem?.ledgerAmount - data.totalAmount)?.toLocaleString()}</TableCell>
                                     <TableCell>-</TableCell>
-                                    <TableCell colSpan={2}>{(data?.ledgerItem?.studentLedger?.amount)?.toLocaleString()}</TableCell>
+                                    <TableCell colSpan={2}>{(data?.ledgerItem?.ledgerAmount - data.totalAmount)?.toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             <TableRow className="hover:bg-transparent border-none">
@@ -185,7 +201,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                                         max={data?.ledgerItem?.studentLedger?.amount}
                                                         required className="max-w-[200px]"
                                                         {...field}
-                                                        disabled={isPending}
+                                                        disabled={isPending || !!receiptNo}
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -232,7 +248,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                         name="paymentMethod"
                                         render={({ field }) => (
                                             <FormItem className="max-w-[250px]" aria-disabled={isPending}>
-                                                <Select onValueChange={field.onChange} disabled={isPending}>
+                                                <Select onValueChange={field.onChange} disabled={isPending || !!receiptNo}>
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select payment method" />
@@ -262,9 +278,10 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                         >
                             <ScrollArea className="max-h-[85vh] overflow-auto">
                                 <ReceiptTemplate
+                                    ref={receiptTemplateRef}
                                     student={{
                                         ...feeStudent,
-                                        previousDue: (data?.ledgerItem?.studentLedger?.amount)
+                                        previousDue: (data?.ledgerItem?.ledgerAmount - data.totalAmount)
                                     }}
                                     invoice={{
                                         month: data.month?.toString(),
@@ -291,7 +308,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                             <LoadingButton
                                                 isLoading={isPending}
                                                 disabled={isPending}
-                                                loadingText="Generating..."
+                                                loadingText="Submitting..."
                                                 type="submit"
                                                 onClick={form.handleSubmit(onSubmit)}
                                                 className="bg-black text-white hover:bg-black/85"
@@ -314,7 +331,13 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                             </ScrollArea>
                         </ResponsiveDialog>
                         <Button onClick={() => setIsDialogOpen(true)} type="button" disabled={Object.keys(form.formState.errors).length > 0 || !form.formState.isValid}>
-                            Continue <ArrowRight />
+                            {
+                                !receiptNo ? <>
+                                    Continue <ArrowRight />
+                                </> : <>
+                                    <Printer /> Print
+                                </>
+                            }
                         </Button>
                     </section>
                 </form>

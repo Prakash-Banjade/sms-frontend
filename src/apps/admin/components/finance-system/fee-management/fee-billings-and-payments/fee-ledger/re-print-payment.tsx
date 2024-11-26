@@ -49,8 +49,8 @@ export default function RePrintPayment({ paymentId }: Props) {
                         chargeHead: item.chargeHead?.name,
                         discount: item.discount,
                         isChecked: true,
-                    })) ?? []
-
+                    })) ?? [],
+                    totalFeesPaid: data?.totalFeesPaid,
                 }}
                 receipt={{
                     paidAmount: data.amount,
@@ -58,7 +58,7 @@ export default function RePrintPayment({ paymentId }: Props) {
                     receiptNo: data.receiptNo,
                     paymentMethod: data.paymentMethod,
                     remark: data.remark ?? '',
-                    outStandingBalance: data.feeInvoice?.ledgerItem?.ledgerAmount,
+                    outStandingBalance: data.feeInvoice?.ledgerItem?.ledgerAmount - (data?.totalFeesPaid ?? 0),
                 }}
             />
 

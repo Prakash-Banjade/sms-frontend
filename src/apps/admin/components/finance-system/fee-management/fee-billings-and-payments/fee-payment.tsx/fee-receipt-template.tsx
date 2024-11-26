@@ -26,7 +26,6 @@ type Props = {
 
 export const ReceiptTemplate = React.forwardRef<HTMLDivElement, Props>(
     ({ receipt, student, invoice }, ref) => {
-        console.log(invoice.totalAmount)
 
         if (!student) return null;
 
@@ -133,7 +132,7 @@ export const ReceiptTemplate = React.forwardRef<HTMLDivElement, Props>(
                                 <td className="text-right pr-4">{(invoice.totalAmount)?.toLocaleString()}</td>
                             </tr>
                             {
-                                invoice.totalFeesPaid !== null && <tr>
+                                !!invoice.totalFeesPaid && <tr>
                                     <td className="text-right" colSpan={4}>Prior Payments:</td>
                                     <td className="text-right pr-4">{(invoice.totalFeesPaid ?? 0)?.toLocaleString()}</td>
                                 </tr>
