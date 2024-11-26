@@ -397,7 +397,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                             </div>
                         </ScrollArea>
                     </ResponsiveDialog>
-                    <Button onClick={() => setIsDialogOpen(true)} type="button" disabled={Object.keys(form.formState.errors).length > 0}>
+                    <Button onClick={() => setIsDialogOpen(true)} type="button" disabled={Object.keys(form.formState.errors).length > 0 || !form.formState.isValid}>
                         Continue <ArrowRight />
                     </Button>
                 </section>

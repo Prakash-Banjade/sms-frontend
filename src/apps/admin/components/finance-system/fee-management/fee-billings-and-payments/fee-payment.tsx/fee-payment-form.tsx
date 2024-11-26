@@ -94,7 +94,10 @@ export default function FeePaymentForm({ feeStudent }: Props) {
 
                 <section>
                     <Button
-                        onClick={() => refetch()}
+                        onClick={() => {
+                            refetch()
+                            setReceiptNo(null)
+                        }}
                         type="button"
                         size={'sm'}
                         variant={'outline'}
