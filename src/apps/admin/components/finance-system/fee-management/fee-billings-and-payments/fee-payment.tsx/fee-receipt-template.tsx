@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { TFeeStudent } from "@/types/finance-system/finance.types";
+import { TFeeStudent } from "@/types/finance-system/fee-management.types";
 import { School } from "lucide-react";
 import React from "react";
 import { paymentSchemaType } from "./fee-payment-form";

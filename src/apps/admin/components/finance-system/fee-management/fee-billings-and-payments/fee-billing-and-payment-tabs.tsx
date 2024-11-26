@@ -1,6 +1,6 @@
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
-import { useGetFeeStudent } from "../../data-access";
-import { TFeeStudent } from "@/types/finance-system/finance.types";
+import { useGetFeeStudent } from "../data-access";
+import { TFeeStudent } from "@/types/finance-system/fee-management.types";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { ProfileAvatar } from "@/components/ui/avatar";
 import { getImageUrl } from "@/lib/utils";

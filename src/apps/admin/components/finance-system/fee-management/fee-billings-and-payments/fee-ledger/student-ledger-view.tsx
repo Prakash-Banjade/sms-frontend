@@ -1,5 +1,5 @@
 import { createQueryString } from "@/utils/create-query-string";
-import { useGetStudentLedger } from "../../../data-access";
+import { useGetStudentLedger } from "../../data-access";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { format } from "date-fns";
 import { EMonth } from "../fee-invoice/fee-invoice-form";

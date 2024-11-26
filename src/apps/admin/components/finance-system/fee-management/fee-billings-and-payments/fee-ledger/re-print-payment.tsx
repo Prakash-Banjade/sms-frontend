@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useGetPayment } from "../../../data-access";
+import { useGetPayment } from "../../data-access";
 import { Loader, Printer } from "lucide-react";
 import { ReceiptTemplate } from "../fee-payment.tsx/fee-receipt-template";
 import { ScrollArea } from "@/components/ui/scroll-area";

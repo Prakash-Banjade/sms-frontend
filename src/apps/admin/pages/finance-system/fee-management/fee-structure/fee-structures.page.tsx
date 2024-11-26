@@ -1,4 +1,4 @@
-import { useGetFeeStructures } from "@/apps/admin/components/finance-system/data-access";
+import { useGetFeeStructures } from "@/apps/admin/components/finance-system/fee-management/data-access";
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search";
 import { createQueryString } from "@/utils/create-query-string";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Check, LoaderCircle, Plus, Trash, X } from "lucide-react";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { Input } from "@/components/ui/input";
-import { TFeeStructure } from "@/types/finance-system/finance.types";
+import { TFeeStructure } from "@/types/finance-system/fee-management.types";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/ui/tooltip";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";

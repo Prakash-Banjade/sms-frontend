@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { useGetLastInvoice } from "../../../data-access";
+import { useGetLastInvoice } from "../../data-access";
 import { EMonth } from "../fee-invoice/fee-invoice-form";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { NUMBER_REGEX_STRING } from "@/CONSTANTS";
@@ -25,7 +25,7 @@ import { useReactToPrint } from "react-to-print";
 import { ArrowRight, Banknote, Printer, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ReceiptTemplate } from "./fee-receipt-template";
-import { TFeeStudent } from "@/types/finance-system/finance.types";
+import { TFeeStudent } from "@/types/finance-system/fee-management.types";
 import { cn } from "@/lib/utils";
 
 type Props = {

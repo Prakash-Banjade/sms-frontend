@@ -1,7 +1,7 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useGetChargeHeads } from "../../../components/finance-system/data-access";
+import { useGetChargeHeads } from "../../../components/finance-system/fee-management/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { useSearchParams } from "react-router-dom";
 import { DataTable } from "@/components/data-table/data-table";

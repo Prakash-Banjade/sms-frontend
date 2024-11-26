@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useGetInvoice } from "../../../data-access"
+import { useGetInvoice } from "../../data-access"
 import { InvoiceTemplate } from "../fee-invoice/fee-invoice-template";
 import { Loader, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
