@@ -97,6 +97,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                         onClick={() => {
                             refetch()
                             setReceiptNo(null)
+                            form.reset()
                         }}
                         type="button"
                         size={'sm'}
