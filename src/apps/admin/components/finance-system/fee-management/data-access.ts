@@ -47,7 +47,7 @@ export const useGetFeeStudent = ({
     options?: Partial<UseQueryOptions<TFeeStudent>>
 }) => {
     const response = useFetchData<TFeeStudent>({
-        queryKey: ['feeStudent'],
+        queryKey: [QueryKey.STUDENTS, id, 'feeStudent'],
         endpoint: QueryKey.STUDENTS + '/fee',
         id,
         queryString,

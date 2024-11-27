@@ -73,7 +73,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
             method: "post",
             endpoint: QueryKey.FEE_PAYMENTS,
             data: values,
-            invalidateTags: [[QueryKey.STUDENT_LEDGERS], ['feeStudent']],
+            invalidateTags: [QueryKey.STUDENT_LEDGERS],
         });
 
         if (response?.data?.receiptNo) {
