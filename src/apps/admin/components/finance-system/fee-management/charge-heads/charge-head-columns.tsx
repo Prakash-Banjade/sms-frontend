@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {
-    DestructiveDropdownMenuButtonItem,
     DropdownMenu,
     DropdownMenuButtonItem,
     DropdownMenuContent,
@@ -11,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TChargeHead } from "@/types/finance-system/fee-management.types"
+import { EChargeHeadType, TChargeHead } from "@/types/finance-system/fee-management.types"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import ChargeHeadFrom from "./charge-head-form"
@@ -36,6 +35,15 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
         cell: ({ row }) => <p> {row.original.isMandatory ? "Yes" : "No"} </p>,
     },
     {
+        header: "Type",
+        accessorKey: "type",
+        cell: ({ row }) => <p>
+            {
+                row.original.type === EChargeHeadType.Ad_Hoc ? "Ad Hoc" : "Regular"
+            }
+        </p>,
+    },
+    {
         header: "Description",
         accessorKey: "description",
         cell: ({ row }) => <p className="max-w-[60ch]">{row.original.description}</p>,
@@ -49,6 +57,8 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
 
             const { isPending } = useAppMutation();
 
+            // TODO: implement delete
+            
             const handleDelete = async () => {
                 // await mutateAsync({
                 //     method: "delete",
@@ -71,6 +81,7 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
                                 description: row.original.description,
                                 isMandatory: String(row.original.isMandatory),
                                 period: row.original.period,
+                                type: row.original.type,
                             }}
                             setIsOpen={setIsEditOpen}
                         />
@@ -98,11 +109,11 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
-                            {
+                            {/* {
                                 !row.original.isMandatory && <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                     <span>Delete</span>
                                 </DestructiveDropdownMenuButtonItem>
-                            }
+                            } */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

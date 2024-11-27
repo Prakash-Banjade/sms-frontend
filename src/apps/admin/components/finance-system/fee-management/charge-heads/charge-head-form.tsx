@@ -1,7 +1,7 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
-import { EChargeHeadPeriod } from "@/types/finance-system/fee-management.types";
+import { EChargeHeadPeriod, EChargeHeadType } from "@/types/finance-system/fee-management.types";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,7 @@ const chargeHeadSchema = z.object({
     description: z.string().max(200, { message: "Description is too long. Max 200 characters." }).nullish(),
     isMandatory: z.string().min(1, { message: "Is mandatory is required" }),
     period: z.nativeEnum(EChargeHeadPeriod),
+    type: z.nativeEnum(EChargeHeadType),
 })
 
 const defaultValues: Partial<chargeHeadSchemaType> = {
@@ -29,6 +30,7 @@ const defaultValues: Partial<chargeHeadSchemaType> = {
     description: "",
     isMandatory: "false",
     period: EChargeHeadPeriod.Monthly,
+    type: EChargeHeadType.Regular,
 }
 
 export type chargeHeadSchemaType = z.infer<typeof chargeHeadSchema>;
@@ -93,6 +95,19 @@ export default function ChargeHeadFrom(props: Props) {
                         { label: "One Time", value: EChargeHeadPeriod.One_Time },
                         { label: "None", value: EChargeHeadPeriod.None },
                     ]}
+                    required
+                />
+
+                <AppForm.Select<chargeHeadSchemaType>
+                    name="type"
+                    label="Type"
+                    placeholder="Select type"
+                    description="Select the charge head type."
+                    options={[
+                        { label: "Regular", value: EChargeHeadType.Regular },
+                        { label: "Ad Hoc", value: EChargeHeadType.Ad_Hoc },
+                    ]}
+                    required
                 />
 
                 {

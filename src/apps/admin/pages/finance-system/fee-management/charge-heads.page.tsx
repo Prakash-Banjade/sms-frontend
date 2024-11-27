@@ -10,6 +10,8 @@ import { chargeHeadColumns } from "../../../components/finance-system/fee-manage
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { useState } from "react";
 import ChargeHeadFrom from "../../../components/finance-system/fee-management/charge-heads/charge-head-form";
+import { FacetedFilter } from "@/components/data-table/faceted-filter";
+import { EChargeHeadType } from "@/types/finance-system/fee-management.types";
 
 export default function ChargeHeadsPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -47,7 +49,8 @@ function ChargeHeadsList() {
             search: searchParams.get("search"),
             page: searchParams.get("page"),
             take: searchParams.get("take"),
-            order: 'ASC'
+            order: 'ASC',
+            types: searchParams.get("types"),
         })
     });
 
@@ -58,7 +61,10 @@ function ChargeHeadsList() {
             columns={chargeHeadColumns}
             data={data?.data || []}
             meta={data?.meta}
-            filters={<SearchInput label="Search" placeholder="Search by name" />}
+            filters={<section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
+                <SearchInput label="Search" placeholder="Search by name" />
+                <FacetedFilter searchKey="types" title="Type" options={[{ label: "Regular", value: EChargeHeadType.Regular }, { label: "Ad Hoc", value: EChargeHeadType.Ad_Hoc }]} />
+            </section>}
         />
     )
 }

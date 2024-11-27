@@ -7,13 +7,19 @@ export enum EChargeHeadPeriod {
     None = 'none'
 }
 
+export enum EChargeHeadType {
+    Regular = 'regular',
+    Ad_Hoc = 'ad_hoc',
+}
+
 export type TChargeHead = {
     id: string;
     createdAt: string;
     name: string;
     description: string | null;
     isMandatory: boolean;
-    period: EChargeHeadPeriod
+    period: EChargeHeadPeriod;
+    type: EChargeHeadType;
 }
 
 export type TChargeHeadsResponse = {
