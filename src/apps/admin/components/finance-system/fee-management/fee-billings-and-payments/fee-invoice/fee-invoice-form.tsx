@@ -194,8 +194,8 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                         </TableHeader>
                         <TableBody>
                             {
-                                fields.map((field, index) => (
-                                    <TableRow key={field.id} className={cn('border-b', !form.getValues(`invoiceItems.${index}`).isChecked && 'opacity-50')}>
+                                fields.map((arrField, index) => (
+                                    <TableRow key={arrField.id} className={cn('border-b', !form.getValues(`invoiceItems.${index}`).isChecked && 'opacity-50')}>
                                         <TableCell>
                                             <FormField
                                                 control={form.control}
@@ -219,7 +219,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            {chargeHeads.find(chargeHead => chargeHead.id === field.chargeHeadId)?.name}
+                                            {chargeHeads.find(chargeHead => chargeHead.id === arrField.chargeHeadId)?.name}
                                         </TableCell>
                                         <TableCell>
                                             <FormField
@@ -236,9 +236,13 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                                                 step={0.01}
                                                                 required
                                                                 value={field.value ?? ''}
+                                                                className="read-only:cursor-not-allowed"
+                                                                readOnly={
+                                                                    feeStructures.some(fs => fs.chargeHeadId === arrField.chargeHeadId)
+                                                                    || form.getValues(`invoiceItems.${index}`).required
+                                                                }
                                                                 disabled={
                                                                     !form.getValues(`invoiceItems.${index}.isChecked`)
-                                                                    || form.getValues(`invoiceItems.${index}`).required
                                                                     || isPending
                                                                 }
                                                             />
