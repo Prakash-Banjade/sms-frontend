@@ -121,3 +121,8 @@ export type TLibraryStudent = {
     classRoomName: string,
     transactionCount: string;
 }
+
+export type TStudentsWithLedgerResponse = {
+    data: (TStudent_BasicInfo & { ledgerAmount: number })[],
+    meta: TMeta;
+}

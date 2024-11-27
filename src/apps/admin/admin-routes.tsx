@@ -68,6 +68,7 @@ import SingleLessonPlanPage from './pages/lesson-plan/single-lesson-plan.page';
 import ChargeHeadsPage from './pages/finance-system/fee-management/charge-heads.page';
 import FeeStructuresPage from './pages/finance-system/fee-management/fee-structure/fee-structures.page';
 import FeeBillingAndPaymentsPage from './pages/finance-system/fee-management/billings-and-payments/fee-billing-and-payment.page';
+import SingleStudentFeeDetailsPage from './pages/finance-system/fee-management/billings-and-payments/single-student-fee-details.page';
 
 const AdminRoutes = () => {
     return (
@@ -204,7 +205,10 @@ const AdminRoutes = () => {
                             <Route index element={<Navigate to="charge-heads" />} />
                             <Route path="charge-heads" element={<ChargeHeadsPage />} />
                             <Route path="fee-structures" element={<FeeStructuresPage />} />
-                            <Route path="billing-and-payments" element={<FeeBillingAndPaymentsPage />} />
+                            <Route path="billing-and-payments" >
+                                <Route index element={<FeeBillingAndPaymentsPage />} />
+                                <Route path="student" element={<SingleStudentFeeDetailsPage />} />
+                            </Route>
                         </Route>
                     </Route>
                     <Route path="reports">

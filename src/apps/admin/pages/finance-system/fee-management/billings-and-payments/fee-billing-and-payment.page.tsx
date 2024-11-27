@@ -1,42 +1,58 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useState } from "react"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
-import { Card, CardContent } from "@/components/ui/card"
-import FeeBillingAndPaymentTabs from "@/apps/admin/components/finance-system/fee-management/fee-billings-and-payments/fee-billing-and-payment-tabs"
+import { useGetStudents } from "@/apps/admin/components/students-management/student-actions"
+import { createQueryString } from "@/utils/create-query-string"
+import { TStudentsWithLedgerResponse } from "@/types/student.type"
+import { DataTable } from "@/components/data-table/data-table"
+import SearchInput from "@/components/search-components/search-input"
+import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
+import { feeStudentsColumns } from "@/apps/admin/components/finance-system/fee-management/fee-billings-and-payments/fee-students-columns"
+import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 
 export default function FeeBillingAndPaymentsPage() {
-    const { searchParams, setSearchParams } = useCustomSearchParams()
+    return (
+        <ContainerLayout
+            title="Students with Fees"
+            description="Click on student to view further details."
+        >
+            <StudentsList />
+        </ContainerLayout>
+    )
+}
 
-    const [studentId, setStudentId] = useState(searchParams.get('studentID') || '')
+function StudentsList() {
+    const { searchParams } = useCustomSearchParams();
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        setSearchParams('studentID', studentId)
-    }
+    const { data, isLoading } = useGetStudents<TStudentsWithLedgerResponse>({
+        queryString: createQueryString({
+            search: searchParams.get("search"),
+            page: searchParams.get("page"),
+            take: searchParams.get("take"),
+            order: searchParams.get("order"),
+            sortBy: searchParams.get("sortBy"),
+            classRoomId: searchParams.get("classRoomId"),
+            sectionId: searchParams.get("sectionId"),
+            onlyBasicInfo: true,
+            includeLedgerAmount: true,
+        })
+    });
+
+    if (isLoading) return <div>Loading...</div>;
 
     return (
-        <div className="container mx-auto @container">
+        <DataTable
+            columns={feeStudentsColumns}
+            data={data?.data ?? []}
+            meta={data?.meta}
+            filters={<StudentsListFilters />}
+        />
+    )
+}
 
-            <Card>
-                <CardContent className="p-6">
-                    <form className="flex gap-4 items-end" onSubmit={handleSubmit}>
-                        <section className="space-y-2">
-                            <Label htmlFor="studentID">Student ID</Label>
-                            <Input
-                                name="studentID"
-                                value={studentId}
-                                onChange={(e) => setStudentId(e.target.value)}
-                                placeholder="Enter student ID" className="w-80"
-                            />
-                        </section>
-                        <Button type="submit">Search</Button>
-                    </form>
-                </CardContent>
-            </Card>
-
-            <FeeBillingAndPaymentTabs />
-        </div>
+function StudentsListFilters() {
+    return (
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full">
+            <SearchInput placeholder="Search by name or email" label="Name or Email" />
+            <ClassRoomSearchFilterInputs />
+        </section>
     )
 }
