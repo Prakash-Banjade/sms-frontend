@@ -3,14 +3,14 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TLastInvoice, TSingleInvoice, TSinglePayment, TStudentLedgerResponse } from "@/types/finance-system/fee-management.types";
 import { UseQueryOptions } from "@tanstack/react-query";
 
-export const useGetChargeHeads = ({
+export const useGetChargeHeads = <T = TChargeHeadsResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: Partial<UseQueryOptions<TChargeHeadsResponse>>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
-    const response = useFetchData<TChargeHeadsResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.CHARGE_HEADS,
         queryKey: queryString ? [QueryKey.CHARGE_HEADS, queryString] : [QueryKey.CHARGE_HEADS],
         queryString,

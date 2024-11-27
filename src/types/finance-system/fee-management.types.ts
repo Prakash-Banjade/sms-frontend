@@ -35,6 +35,8 @@ export type TFeeStructure = {
         id: string;
         name: string;
         isMandatory: boolean;
+        period: EChargeHeadPeriod,
+        type: EChargeHeadType,
     }
 }
 

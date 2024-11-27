@@ -20,6 +20,7 @@ import { ArrowRight, Printer, ScrollText } from "lucide-react";
 import { InvoiceTemplate } from "./fee-invoice-template";
 import { useReactToPrint } from "react-to-print";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import AdHocChargeIncludeBtn from "./ad-hoc-charge-include-btn";
 
 export enum EMonth {
     January = 1,
@@ -51,6 +52,7 @@ const invoiceItems = z.object({
     remark: z.string().max(100, { message: "Max 100 characters" }).nullish(),
     required: z.boolean(),
     period: z.nativeEnum(EChargeHeadPeriod),
+    chargeHeadName: z.string().optional(),
 });
 
 const invoiceSchema = z.object({
@@ -77,6 +79,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
     const initialInvoiceItems = useRef<feeInvoiceSchemaType["invoiceItems"]>(chargeHeads.map(ch => ({
         amount: feeStructures.find(fs => fs.chargeHeadId === ch.id)?.amount ?? 0,
         chargeHeadId: ch.id,
+        chargeHeadName: ch.name,
         discount: 0,
         isChecked: ch.required === 'true',
         remark: '',
@@ -143,6 +146,16 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                 )
             ])
         }
+    }
+
+    const includeAdHocCharge = (fs: feeInvoiceSchemaType['invoiceItems'][0]) => {
+        form.reset({
+            ...form.getValues(),
+            invoiceItems: [
+                ...form.getValues('invoiceItems'),
+                fs
+            ]
+        })
     }
 
     return (
@@ -219,7 +232,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            {chargeHeads.find(chargeHead => chargeHead.id === arrField.chargeHeadId)?.name}
+                                            {arrField.chargeHeadName}
                                         </TableCell>
                                         <TableCell>
                                             <FormField
@@ -326,7 +339,14 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                 </TableRow>
                             }
                             <TableRow className="hover:bg-transparent border-none">
-                                <TableCell colSpan={4} className="text-right">
+                                <TableCell>
+                                    <AdHocChargeIncludeBtn
+                                        classRoomId={student.classRoomId}
+                                        setValue={includeAdHocCharge}
+                                        chargeHeadIds={form.getValues('invoiceItems')?.map(i => i.chargeHeadId)}
+                                    />
+                                </TableCell>
+                                <TableCell colSpan={3} className="text-right">
                                     Grand Total :
                                 </TableCell>
                                 <TableCell>
@@ -366,7 +386,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                                         discount: item.discount,
                                         isChecked: item.isChecked,
                                         remark: item.remark,
-                                        chargeHead: chargeHeads.find(chargeHead => chargeHead.id === item.chargeHeadId)?.name,
+                                        chargeHead: item.chargeHeadName
                                     })),
                                     totalAmount: grandTotal,
                                     invoiceNo,
