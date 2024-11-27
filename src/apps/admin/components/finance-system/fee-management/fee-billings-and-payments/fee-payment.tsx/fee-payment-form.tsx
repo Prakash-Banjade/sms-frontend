@@ -253,7 +253,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                         name="paymentMethod"
                                         render={({ field }) => (
                                             <FormItem className="max-w-[250px]" aria-disabled={isPending}>
-                                                <Select onValueChange={field.onChange} disabled={isPending || !!receiptNo}>
+                                                <Select onValueChange={field.onChange} value={field.value} disabled={isPending || !!receiptNo}>
                                                     <FormControl>
                                                         <SelectTrigger>
                                                             <SelectValue placeholder="Select payment method" />
