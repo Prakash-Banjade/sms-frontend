@@ -56,16 +56,25 @@ export default function SingleClassSectionsList({ classRoomId }: Props) {
             <CardContent>
                 {data?.data?.length ? <Table>
                     <TableHeader>
-                        <TableHeadings headings={['Section Name', 'Total Students', 'Total Male Students', 'Total Female Students', 'Class Teacher', 'Location']} />
+                        <TableHeadings headings={['Section Name', 'Total Students', 'Class Teacher', 'Location', '']} />
                     </TableHeader>
                     <TableBody>
                         {data?.data?.map((section) => {
                             return (
                                 <TableRow key={section.id}>
                                     <TableCell>{section.name}</TableCell>
-                                    <TableCell>{section.totalStudentsCount}</TableCell>
-                                    <TableCell>{section.totalMaleStudentsCount}</TableCell>
-                                    <TableCell>{section.totalFemaleStudentsCount}</TableCell>
+                                    <TableCell>
+                                        <div className="space-y-1">
+                                            <div className="text-sm text-muted-foreground">
+                                                Males: {section.totalMaleStudentsCount} •
+                                                Females: {section.totalFemaleStudentsCount} •
+                                                Others: {+section.totalStudentsCount - +section.totalMaleStudentsCount - +section.totalFemaleStudentsCount} 
+                                            </div>
+                                            <div className="font-medium">
+                                                Total: {section.totalStudentsCount}
+                                            </div>
+                                        </div>
+                                    </TableCell>
                                     <TableCell>{section.classTeacherName || <span className="text-muted-foreground">N/A</span>}</TableCell>
                                     <TableCell>{section.location || <span className="text-muted-foreground">N/A</span>}</TableCell>
                                     <TableCell>

@@ -11,10 +11,12 @@ import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import BookRenewForm from './book-renew-form'
 import { getImageUrl } from '@/lib/utils'
+import { TStudentTransaction } from '@/types/library-book.type'
+import { differenceInDays, startOfDay } from 'date-fns'
 
 type Props = {
     student: TLibraryStudent | undefined;
-    selectedTransactions: string[];
+    selectedTransactions: TStudentTransaction[];
     resetSelectedTransactions: () => void;
 }
 
@@ -32,7 +34,7 @@ export default function Library_StudentBasicInfo({ student, selectedTransactions
             method: "patch",
             endpoint: QueryKey.BOOK_TRANSACTIONS + '/return',
             data: {
-                transactionIds: selectedTransactions,
+                transactionIds: selectedTransactions?.map(t => t.id),
             },
             invalidateTags: [QueryKey.BOOK_TRANSACTIONS],
         })
@@ -74,10 +76,19 @@ export default function Library_StudentBasicInfo({ student, selectedTransactions
                         setIsOpen={setIsRenewOpen}
                         title="New Renewal"
                     >
-                        <BookRenewForm setIsOpen={setIsRenewOpen} resetSelectedTransactions={resetSelectedTransactions} transactionIds={selectedTransactions} />
+                        <BookRenewForm setIsOpen={setIsRenewOpen} resetSelectedTransactions={resetSelectedTransactions} selectedTransactions={selectedTransactions} />
                     </ResponsiveDialog>
 
-                    <Button className='grow' variant="outline" size="lg" onClick={() => setIsRenewOpen(true)} disabled={!selectedTransactions.length}>
+                    <Button
+                        className='grow'
+                        variant="outline"
+                        size="lg"
+                        onClick={() => setIsRenewOpen(true)}
+                        disabled={
+                            !selectedTransactions.length
+                            || selectedTransactions.some(t => differenceInDays(startOfDay(new Date()), startOfDay(new Date(t.dueDate))) > 0)
+                        }
+                    >
                         <RotateCcw /> Renew
                     </Button>
 

@@ -6,10 +6,11 @@ import { createQueryString } from "@/utils/create-query-string";
 import { formatDate } from "@/utils/format-date";
 import { differenceInDays, startOfDay } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TStudentTransaction } from "@/types/library-book.type";
 
 type Props = {
-    selectedTransactions: string[];
-    setSelectedTransactions: React.Dispatch<React.SetStateAction<string[]>>;
+    selectedTransactions: TStudentTransaction[];
+    setSelectedTransactions: React.Dispatch<React.SetStateAction<TStudentTransaction[]>>;
 }
 
 export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTransactions }: Props) {
@@ -24,16 +25,19 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
     });
 
     const handleCheckboxChange = (bookId: string) => {
-        setSelectedTransactions(prev =>
-            prev.includes(bookId)
-                ? prev.filter(id => id !== bookId)
-                : [...prev, bookId]
+        const foundTransaction = data?.data.find(transaction => transaction.id === bookId);
+
+        if (!foundTransaction) return;
+
+        setSelectedTransactions(prev => prev.find(transaction => transaction.id === bookId)
+            ? prev.filter(transaction => transaction.id !== bookId)
+            : [...prev, foundTransaction]
         )
     }
 
     const handleSelectAll = (checked: boolean) => {
         if (checked && data?.data?.length) {
-            setSelectedTransactions(data.data.map(transaction => transaction.id))
+            setSelectedTransactions(data.data)
         } else {
             setSelectedTransactions([])
         }
@@ -65,12 +69,13 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
             <TableBody>
                 {data?.data?.map((transaction) => {
                     const renewals = transaction.renewals?.split(',').filter(renewal => renewal !== '');
-                    
+                    const overDueDays = differenceInDays(startOfDay(new Date()), startOfDay(new Date(transaction.dueDate)));
+
                     return (
                         <TableRow key={transaction.id}>
                             <TableCell>
                                 <Checkbox
-                                    checked={selectedTransactions.includes(transaction.id)}
+                                    checked={selectedTransactions.some(t => t.id === transaction.id)}
                                     onCheckedChange={() => handleCheckboxChange(transaction.id)}
                                     aria-label={`Select ${transaction.bookName}`}
                                 />
@@ -79,7 +84,7 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
                             <TableCell>{transaction.bookName}</TableCell>
                             <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                             <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
-                            <TableCell>{Math.abs(differenceInDays(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())))} days</TableCell>
+                            <TableCell>{overDueDays > 0 ? `${overDueDays} days` : '-'}</TableCell>
                             <TableCell>Rs. {transaction.fine?.toLocaleString()}</TableCell>
                             <TableCell>{renewals?.length}</TableCell>
                             <TableCell>
@@ -88,7 +93,7 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
                                         ? formatDate({ date: new Date(renewals[renewals.length - 1]) })
                                         : '-'
                                 }
-                                </TableCell>
+                            </TableCell>
                         </TableRow>
                     )
                 })}

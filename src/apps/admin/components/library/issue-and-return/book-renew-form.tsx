@@ -1,14 +1,17 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
+import { TStudentTransaction } from "@/types/library-book.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { differenceInDays, startOfDay } from "date-fns";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod"
 
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     resetSelectedTransactions: () => void;
-    transactionIds: string[];
+    selectedTransactions: TStudentTransaction[];
 }
 
 const bookRenewFormSchema = z.object({
@@ -21,18 +24,17 @@ const bookRenewFormSchema = z.object({
 })
 
 const defaultValues: Partial<bookRenewFormSchemaType> = {
-    transactionIds: undefined,
     dueDate: new Date().toISOString(),
 }
 
 export type bookRenewFormSchemaType = z.infer<typeof bookRenewFormSchema>;
 
-export default function BookRenewForm({ setIsOpen, transactionIds, resetSelectedTransactions }: Props) {
+export default function BookRenewForm({ setIsOpen, selectedTransactions, resetSelectedTransactions }: Props) {
     const form = useForm<bookRenewFormSchemaType>({
         resolver: zodResolver(bookRenewFormSchema),
         defaultValues: {
             ...defaultValues,
-            transactionIds,
+            transactionIds: selectedTransactions?.map(t => t.id),
         },
     })
 
@@ -40,6 +42,12 @@ export default function BookRenewForm({ setIsOpen, transactionIds, resetSelected
 
     async function onSubmit(values: bookRenewFormSchemaType) {
         if (!values.transactionIds.length) return;
+        // check if any transaction is overdue, if yes don't allow
+        const overdueTransactions = selectedTransactions?.filter(t => differenceInDays(startOfDay(new Date()), startOfDay(new Date(t.dueDate))) > 0);
+        if (overdueTransactions?.length) {
+            toast.error(`Cannot renew overdue transactions: ${overdueTransactions.map(t => t.bookName).join(', ')}`);
+            return;
+        }
 
         const response = await mutateAsync({
             method: "patch",

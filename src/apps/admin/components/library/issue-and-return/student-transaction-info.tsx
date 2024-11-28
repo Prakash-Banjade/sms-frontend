@@ -3,12 +3,11 @@ import { useGetLibraryStudent } from "../../students-management/student-actions"
 import Library_StudentBasicInfo from "./student-basic-info"
 import Library_StudentTransactionTable from "./student-transaction-table"
 import { useState } from "react"
+import { TStudentTransaction } from "@/types/library-book.type"
 
-type Props = {}
-
-export default function Library_StudentTransactionInfo({ }: Props) {
+export default function Library_StudentTransactionInfo() {
     const { searchParams } = useCustomSearchParams();
-    const [selectedTransactions, setSelectedTransactions] = useState<string[]>([]); // used to keep track of selected current issues in side table
+    const [selectedTransactions, setSelectedTransactions] = useState<TStudentTransaction[]>([]); // used to keep track of selected current issues in side table
 
     const { data, isLoading } = useGetLibraryStudent({
         id: searchParams.get('studentID')!,

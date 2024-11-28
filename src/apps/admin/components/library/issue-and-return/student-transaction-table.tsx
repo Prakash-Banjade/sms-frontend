@@ -10,10 +10,11 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { Badge } from "@/components/ui/badge"
 import { DataTablePagination } from "@/components/data-table/data-table-pagination"
 import { Library_CurrentIssueTable } from "./current-issues-table"
+import { TStudentTransaction } from "@/types/library-book.type"
 
 type Props = {
-    selectedTransactions: string[];
-    setSelectedTransactions: React.Dispatch<React.SetStateAction<string[]>>;
+    selectedTransactions: TStudentTransaction[];
+    setSelectedTransactions: React.Dispatch<React.SetStateAction<TStudentTransaction[]>>;
 }
 
 export default function Library_StudentTransactionTable({ selectedTransactions, setSelectedTransactions }: Props) {

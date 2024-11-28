@@ -6,9 +6,7 @@ import { useState } from "react"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { Card, CardContent } from "@/components/ui/card"
 
-type Props = {}
-
-export default function BookIssuesAndReturnPage({ }: Props) {
+export default function BookIssuesAndReturnPage() {
   const { searchParams, setSearchParams } = useCustomSearchParams()
 
   const [studentId, setStudentId] = useState(searchParams.get('studentID') || '')
