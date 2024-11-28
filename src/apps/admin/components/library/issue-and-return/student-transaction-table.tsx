@@ -5,7 +5,7 @@ import { createQueryString } from "@/utils/create-query-string"
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
 import TableHeadings from "@/components/data-table/table-headings"
 import { formatDate } from "@/utils/format-date"
-import { differenceInDays } from "date-fns"
+import { differenceInDays, startOfDay } from "date-fns"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { Badge } from "@/components/ui/badge"
 import { DataTablePagination } from "@/components/data-table/data-table-pagination"
@@ -60,7 +60,7 @@ function AllHistoryTable() {
                 <TableBody>
                     {data?.data?.map((transaction) => {
                         const renewals = transaction.renewals?.split(',').filter(renewal => renewal !== '');
-                        
+
                         return (
                             <TableRow key={transaction.id}>
                                 <TableCell>{transaction.bookCode}</TableCell>
@@ -70,8 +70,8 @@ function AllHistoryTable() {
                                 <TableCell>{
                                     transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
                                 }</TableCell>
-                                <TableCell>{differenceInDays(new Date(), new Date(transaction.createdAt))} days</TableCell>
-                                <TableCell>-</TableCell>
+                                <TableCell>{Math.abs(differenceInDays(startOfDay(new Date(transaction.createdAt)), startOfDay(new Date())))} days</TableCell>
+                                <TableCell>{transaction.fine?.toLocaleString()}</TableCell>
                                 <TableCell>{renewals?.length}</TableCell>
                                 <TableCell>
                                     <Badge variant={transaction.returnedAt ? 'success' : 'warning'} className="text-sm">

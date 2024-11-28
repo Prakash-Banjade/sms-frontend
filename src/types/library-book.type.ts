@@ -57,7 +57,8 @@ export type TStudentTransaction = {
     renewals: string,
     createdAt: string,
     bookName: string,
-    bookCode: string
+    bookCode: string,
+    fine: number,
 }
 
 export type TStudentTransactionsResponse = {

@@ -4,7 +4,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useGetStudentTransactions } from "../actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { formatDate } from "@/utils/format-date";
-import { differenceInDays } from "date-fns";
+import { differenceInDays, startOfDay } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
@@ -57,7 +57,7 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
                     <TableHead>Issued Date</TableHead>
                     <TableHead>Due Date</TableHead>
                     <TableHead>Issue Days</TableHead>
-                    <TableHead>Fine</TableHead>
+                    <TableHead className="w-20">Fine</TableHead>
                     <TableHead>Renewals</TableHead>
                     <TableHead>Last Renewal</TableHead>
                 </TableRow>
@@ -79,8 +79,8 @@ export function Library_CurrentIssueTable({ selectedTransactions, setSelectedTra
                             <TableCell>{transaction.bookName}</TableCell>
                             <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                             <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
-                            <TableCell>{Math.abs(differenceInDays(new Date(transaction.createdAt), new Date()))} days</TableCell>
-                            <TableCell>-</TableCell>
+                            <TableCell>{Math.abs(differenceInDays(startOfDay(new Date(transaction.createdAt)), startOfDay(new Date())))} days</TableCell>
+                            <TableCell>Rs. {transaction.fine?.toLocaleString()}</TableCell>
                             <TableCell>{renewals?.length}</TableCell>
                             <TableCell>
                                 {
