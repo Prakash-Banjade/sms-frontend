@@ -5,29 +5,32 @@ import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/c
 import { ProfileAvatar } from "@/components/ui/avatar";
 import { getImageUrl } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { HandCoins, NotebookText, ReceiptText } from "lucide-react";
+import { HandCoins, LibraryBig, NotebookText, ReceiptText } from "lucide-react";
 import FeeInvoiceForm from "./fee-invoice/fee-invoice-form";
 import StudentLedgerView from "./fee-ledger/student-ledger-view";
 import FeePaymentForm from "./fee-payment.tsx/fee-payment-form";
+import LibraryFinePayment from "./library-fine-payment";
 
 const tabs = [
     {
         value: 'invoice',
         label: 'Invoice',
         icon: ReceiptText,
-        tabContent: FeeInvoiceForm
     },
     {
         value: 'payment',
         label: 'Payment',
         icon: HandCoins,
-        tabContent: () => <></>
+    },
+    {
+        value: 'library-fine',
+        label: 'Library Fine',
+        icon: LibraryBig,
     },
     {
         value: 'ledger',
         label: 'Ledger',
         icon: NotebookText,
-        tabContent: () => <></>
     }
 ]
 
@@ -69,6 +72,9 @@ export default function FeeBillingAndPaymentTabs() {
                     <FeePaymentForm feeStudent={data.student} />
                 </TabsContent>
                 <TabsContent value={tabs[2].value}>
+                    <LibraryFinePayment feeStudent={data.student} />
+                </TabsContent>
+                <TabsContent value={tabs[3].value}>
                     <StudentLedgerView studentId={data.student?.id} />
                 </TabsContent>
             </Tabs>
