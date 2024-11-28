@@ -55,7 +55,7 @@ function AllHistoryTable() {
         <>
             <Table>
                 <TableHeader>
-                    <TableHeadings headings={['Book Code', 'Title', 'Issued At', 'Due At', 'Returned At', 'Issued Days', 'Fine', 'Renewals', 'Status']} />
+                    <TableHeadings headings={['Book Code', 'Title', 'Issued At', 'Due At', 'Returned At', 'Overdue Days', 'Fine', 'Renewals', 'Status']} />
                 </TableHeader>
                 <TableBody>
                     {data?.data?.map((transaction) => {
@@ -70,7 +70,7 @@ function AllHistoryTable() {
                                 <TableCell>{
                                     transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
                                 }</TableCell>
-                                <TableCell>{Math.abs(differenceInDays(startOfDay(new Date(transaction.createdAt)), startOfDay(new Date())))} days</TableCell>
+                                <TableCell>{Math.abs(differenceInDays(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())))} days</TableCell>
                                 <TableCell>{transaction.fine?.toLocaleString()}</TableCell>
                                 <TableCell>{renewals?.length}</TableCell>
                                 <TableCell>
