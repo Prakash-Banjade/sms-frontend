@@ -69,6 +69,7 @@ import ChargeHeadsPage from './pages/finance-system/fee-management/charge-heads.
 import FeeStructuresPage from './pages/finance-system/fee-management/fee-structure/fee-structures.page';
 import FeeBillingAndPaymentsPage from './pages/finance-system/fee-management/billings-and-payments/fee-billing-and-payment.page';
 import SingleStudentFeeDetailsPage from './pages/finance-system/fee-management/billings-and-payments/single-student-fee-details.page';
+import GeneralSettingsPage from './pages/settings/general-settings.page';
 
 const AdminRoutes = () => {
     return (
@@ -217,6 +218,9 @@ const AdminRoutes = () => {
                             <Route path="student-wise" element={<ExaminationReport_StudentWise />} />
                             <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
                         </Route>
+                    </Route>
+                    <Route path="settings">
+                        <Route path="general-settings" element={<GeneralSettingsPage />} />
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>

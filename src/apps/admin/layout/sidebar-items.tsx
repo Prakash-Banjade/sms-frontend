@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar"
-import { Banknote, BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, HandCoins, LayoutDashboard, Library, Shapes, Users, Users2, UsersRound } from "lucide-react"
+import { Banknote, BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, HandCoins, LayoutDashboard, Library, Settings, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const adminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -386,6 +386,16 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "subject-wise",
                     }
                 ]
+            }
+        ]
+    },
+    {
+        groupLabel: "Settings",
+        menuItems: [
+            {
+                title: "General Settings",
+                url: "settings/general-settings",
+                icon: Settings,
             }
         ]
     }
