@@ -38,7 +38,7 @@ export default function AdHocChargeIncludeBtn({ classRoomId, setValue, chargeHea
     const { data, isLoading } = useGetChargeHeads<TAdHocChargesResponse>({
         queryString: createQueryString({
             classRoomId,
-            chargeHeadType: EChargeHeadType.Ad_Hoc,
+            types: EChargeHeadType.Ad_Hoc,
             skipPagination: true,
             defaults: false,
         }),
