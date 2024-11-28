@@ -18,7 +18,7 @@ export const feeStudentsColumns: ColumnDef<TStudentsWithLedgerResponse['data'][0
         }
     },
     {
-        accessorKey: "fullName",
+        accessorKey: "name",
         header: ({ column }) => {
             return <DataTableColumnHeader column={column} title="Name" />
         },
