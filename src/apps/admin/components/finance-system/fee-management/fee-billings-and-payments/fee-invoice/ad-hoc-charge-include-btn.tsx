@@ -39,8 +39,8 @@ export default function AdHocChargeIncludeBtn({ classRoomId, setValue, chargeHea
         queryString: createQueryString({
             classRoomId,
             types: EChargeHeadType.Ad_Hoc,
-            skipPagination: true,
-            defaults: false,
+            skipPagination: 'true',
+            defaults: 'false',
         }),
         options: { enabled: isOpen }
     })
