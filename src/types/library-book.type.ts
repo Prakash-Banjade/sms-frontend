@@ -79,6 +79,16 @@ export type TLibraryOverviewCount = {
         transactionCount: string
     }[]
 }
+
+export type TUnpaidTransaction = {
+    id: string,
+    bookName: string,
+    fine: number,
+    dueDate: string,
+    returnedAt: string
+    createdAt: string
+}
+
 /**
 |--------------------------------------------------
 | student view type

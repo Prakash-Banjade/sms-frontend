@@ -11,22 +11,16 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { EPaymentMethod } from "@/types/global.type";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import LoadingButton from "@/components/forms/loading-button";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useReactToPrint } from "react-to-print";
-import { ArrowRight, Banknote, Printer, RefreshCcw } from "lucide-react";
+import { ArrowRight, Banknote, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ReceiptTemplate } from "./fee-receipt-template";
 import { TFeeStudent } from "@/types/finance-system/fee-management.types";
-import { cn } from "@/lib/utils";
+import RefreshBtn from "../refresh-btn";
 
 type Props = {
     feeStudent: TFeeStudent['student'];
@@ -93,21 +87,14 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                 </section>
 
                 <section>
-                    <Button
-                        onClick={() => {
-                            refetch()
+                    <RefreshBtn
+                        isRefetching={isRefetching}
+                        refetch={refetch}
+                        onRefetch={() => {
                             setReceiptNo(null)
                             form.reset()
                         }}
-                        type="button"
-                        size={'sm'}
-                        variant={'outline'}
-                        disabled={isRefetching}
-                    >
-
-                        <RefreshCcw className={cn(isRefetching && 'animate-spin')} />
-                        Refresh
-                    </Button>
+                    />
                 </section>
             </header>
 

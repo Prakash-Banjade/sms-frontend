@@ -7,13 +7,15 @@ import { DataTablePagination } from "@/components/data-table/data-table-paginati
 import { StudentLedgerFilters } from "./student-ledger-filters";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Printer, RefreshCcw } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { MoreHorizontal, Printer } from "lucide-react";
 import { useState } from "react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import RePrintInvoice from "./re-print-invoice";
 import RePrintPayment from "./re-print-payment";
+import { ELedgerItemType, TLedger_FeeInvoice, TLedger_FeePayment } from "@/types/finance-system/fee-management.types";
+import RePrintLibraryFinePayment from "./re-print-library-fine-payment";
+import RefreshBtn from "../refresh-btn";
 type Props = {
     studentId: string;
 }
@@ -43,19 +45,9 @@ export default function StudentLedgerView({ studentId }: Props) {
                     <StudentLedgerFilters />
                 </section>
 
-                <section className="flex flex-col gap-2">
+                <section className="flex flex-col gap-2 items-end">
                     <div>Current Due: <strong>Rs. {(data?.ledgerAmount ?? 0)?.toLocaleString()}</strong></div>
-                    <Button
-                        type="button"
-                        variant={'outline'}
-                        size={'sm'}
-                        onClick={() => refetch()}
-                        className="ml-auto"
-                        disabled={isRefetching}
-                    >
-                        <RefreshCcw className={cn(isRefetching && 'animate-spin')} />
-                        Refresh
-                    </Button>
+                    <RefreshBtn refetch={refetch} isRefetching={isRefetching} />
                 </section>
             </header>
 
@@ -68,13 +60,14 @@ export default function StudentLedgerView({ studentId }: Props) {
                         <TableHead>Rcv.No</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead>Balance</TableHead>
+                        <TableHead>Remark</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data?.data?.map((item, index) => {
-                        const feeInvoice = typeof item.feeInvoice === 'string' ? JSON.parse(item.feeInvoice) : item.feeInvoice;
-                        const feePayment = typeof item.feePayment === 'string' ? JSON.parse(item.feePayment) : item.feePayment;
+                        const feeInvoice = typeof item.feeInvoice === 'string' ? JSON.parse(item.feeInvoice) as TLedger_FeeInvoice : item.feeInvoice;
+                        const feePayment = typeof item.feePayment === 'string' ? JSON.parse(item.feePayment) as TLedger_FeePayment : item.feePayment;
 
                         return (
                             <TableRow key={index}>
@@ -92,8 +85,9 @@ export default function StudentLedgerView({ studentId }: Props) {
                                 </TableCell>
                                 <TableCell>Rs. {(feePayment?.amount ?? feeInvoice?.amount)?.toLocaleString()}</TableCell>
                                 <TableCell>Rs. {item.ledgerAmount?.toLocaleString()}</TableCell>
+                                <TableCell>{item.remark}</TableCell>
                                 <TableCell>
-                                    <LedgerActionColumn feeInvoice={feeInvoice} feePayment={feePayment} />
+                                    <LedgerActionColumn feeInvoice={feeInvoice} feePayment={feePayment} type={item.type} />
                                 </TableCell>
                             </TableRow>
                         )
@@ -113,7 +107,15 @@ export default function StudentLedgerView({ studentId }: Props) {
     )
 }
 
-function LedgerActionColumn({ feeInvoice, feePayment }: { feeInvoice: any, feePayment: any }) {
+function LedgerActionColumn({
+    feeInvoice,
+    feePayment,
+    type
+}: {
+    feeInvoice: TLedger_FeeInvoice | null,
+    feePayment: TLedger_FeePayment | null,
+    type: ELedgerItemType
+}) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return <>
@@ -124,27 +126,32 @@ function LedgerActionColumn({ feeInvoice, feePayment }: { feeInvoice: any, feePa
             className="max-w-max"
         >
             {
-                feeInvoice?.id ? (
+                !!feeInvoice && type === ELedgerItemType.Invoice ? (
                     <RePrintInvoice invoiceId={feeInvoice.id} />
-                ) : (
+                ) : !!feePayment && type === ELedgerItemType.Payment ? (
                     <RePrintPayment paymentId={feePayment?.id} />
+                ) : !!feePayment && type === ELedgerItemType.LibraryFine && (
+                    <RePrintLibraryFinePayment paymentId={feePayment?.id} />
                 )
             }
         </ResponsiveDialog>
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Open menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuButtonItem onClick={() => setIsDialogOpen(true)}>
-                    <Printer />
-                    <span>Print</span>
-                </DropdownMenuButtonItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        {/* library fine invoice is not printable */}
+        {
+            !(!!feeInvoice && type === ELedgerItemType.LibraryFine) && <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuButtonItem onClick={() => setIsDialogOpen(true)}>
+                        <Printer />
+                        <span>Print</span>
+                    </DropdownMenuButtonItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        }
     </>
 }

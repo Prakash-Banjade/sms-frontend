@@ -15,6 +15,13 @@ import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import ChargeHeadFrom from "./charge-head-form"
 
+export const DEFAULT_CHARGE_HEADS = {
+    admissionFee: "Admission Fee",
+    monthlyFee: "Monthly Fee",
+    transportationFee: "Transportation Fee",
+    libraryFine: "Library Fine",
+}
+
 export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
     {
         header: "S.N",
@@ -58,7 +65,7 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
             const { isPending } = useAppMutation();
 
             // TODO: implement delete
-            
+
             const handleDelete = async () => {
                 // await mutateAsync({
                 //     method: "delete",
@@ -97,25 +104,24 @@ export const chargeHeadColumns: ColumnDef<TChargeHead>[] = [
                         isLoading={isPending}
                     />
 
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                <span>Edit</span>
-                            </DropdownMenuButtonItem>
-                            {/* {
-                                !row.original.isMandatory && <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
-                                    <span>Delete</span>
-                                </DestructiveDropdownMenuButtonItem>
-                            } */}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    {
+                        !Object.values(DEFAULT_CHARGE_HEADS).includes(row.original.name) && ( // actions only for non-default charge heads
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                        <span className="sr-only">Open menu</span>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                    <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
+                                        <span>Edit</span>
+                                    </DropdownMenuButtonItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )
+                    }
                 </>
             )
         },

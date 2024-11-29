@@ -9,7 +9,7 @@ import { HandCoins, LibraryBig, NotebookText, ReceiptText } from "lucide-react";
 import FeeInvoiceForm from "./fee-invoice/fee-invoice-form";
 import StudentLedgerView from "./fee-ledger/student-ledger-view";
 import FeePaymentForm from "./fee-payment.tsx/fee-payment-form";
-import LibraryFinePayment from "./library-fine-payment";
+import LibraryFinePayment from "./library-fine/library-fine-payment";
 
 const tabs = [
     {

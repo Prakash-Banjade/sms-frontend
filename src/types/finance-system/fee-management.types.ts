@@ -71,22 +71,34 @@ export type TFeeStudent = {
     }[],
 }
 
+export enum ELedgerItemType {
+    Invoice = 'invoice',
+    Payment = 'payment',
+    LibraryFine = 'library_fine'
+}
+
+export type TLedger_FeeInvoice = {
+    id: string,
+    month: EMonth,
+    rcvNo: string,
+    amount: number
+}
+
+export type TLedger_FeePayment = {
+    id: string,
+    rcvNo: string,
+    amount: number
+}
+
 export type TStudentLedgerResponse = {
     data: {
         id: string,
         date: string,
         ledgerAmount: number,
-        feeInvoice: {
-            id: string,
-            month: EMonth,
-            rcvNo: string,
-            amount: number
-        } | string | null,
-        feePayment: {
-            id: string,
-            rcvNo: string,
-            amount: number
-        } | string | null,
+        type: ELedgerItemType,
+        remark: string | null,
+        feeInvoice: TLedger_FeeInvoice | string | null,
+        feePayment: TLedger_FeePayment | string | null,
     }[],
     ledgerAmount: number,
     meta: TMeta;
@@ -189,4 +201,9 @@ export type TSinglePayment = {
         studentId: number;
         classRoomName: string;
     } | string | null;
+    bookTransactions: {
+        fine: number;
+        bookName: string;
+        overdueDays: string;
+    }[];
 };

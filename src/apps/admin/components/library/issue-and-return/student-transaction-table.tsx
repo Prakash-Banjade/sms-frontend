@@ -61,6 +61,7 @@ function AllHistoryTable() {
                 <TableBody>
                     {data?.data?.map((transaction) => {
                         const renewals = transaction.renewals?.split(',').filter(renewal => renewal !== '');
+                        const overDueDays = differenceInDays(startOfDay(new Date()), startOfDay(new Date(transaction.dueDate)));
 
                         return (
                             <TableRow key={transaction.id}>
@@ -71,7 +72,7 @@ function AllHistoryTable() {
                                 <TableCell>{
                                     transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
                                 }</TableCell>
-                                <TableCell>{Math.abs(differenceInDays(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())))} days</TableCell>
+                                <TableCell>{overDueDays > 0 ? `${overDueDays} days` : '-'}</TableCell>
                                 <TableCell>{transaction.fine?.toLocaleString()}</TableCell>
                                 <TableCell>{renewals?.length}</TableCell>
                                 <TableCell>
