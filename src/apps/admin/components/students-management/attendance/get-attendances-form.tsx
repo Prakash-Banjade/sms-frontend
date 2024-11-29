@@ -46,7 +46,7 @@ export default function GetAttendancesForm({ setSearchQuery }: Props) {
     return (
         <AppForm schema={getAttendancesSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
-                <ClassSectionFormField noDescription containerClassName='w-[200px]' />
+                <ClassSectionFormField noDescription containerClassName='w-[200px]' required={false} />
 
                 <section className="space-y-2">
                     <Label className="text-sm font-normal">Date</Label>
