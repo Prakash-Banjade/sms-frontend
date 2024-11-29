@@ -43,6 +43,9 @@ export type TLibraryBookTransaction = {
     studentName: string,
     parentClassName: string | null,
     classRoomName: string,
+    fine: number;
+    paidAt: string | null;
+    renewals: string;
 }
 
 export type TLibraryBookTransactionsResponse = {

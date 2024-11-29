@@ -13,7 +13,7 @@ import TableHeadings from "@/components/data-table/table-headings"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useState } from "react"
 import SearchInput from "@/components/search-components/search-input"
-import { isBefore, startOfDay } from "date-fns"
+import { differenceInDays, isBefore, startOfDay } from "date-fns"
 
 const nonResetFilters = ['take', 'page', 'search']
 
@@ -22,6 +22,7 @@ export default function DetailedLibraryBookTransactions() {
     const [searchFilters, setSearchFilters] = useState({
         status: searchParams.get('status') ?? '',
         period: searchParams.get('period') ?? '',
+        paid: searchParams.get('paid') ?? '',
     })
 
     const { data, isLoading } = useGetBookTransactions({
@@ -31,6 +32,7 @@ export default function DetailedLibraryBookTransactions() {
             search: searchParams.get('search'),
             status: searchParams.get('status'),
             period: searchParams.get('period'),
+            paid: searchParams.get('paid'),
         }),
     });
 
@@ -59,13 +61,10 @@ export default function DetailedLibraryBookTransactions() {
                                 <SelectValue placeholder="Filter by status" />
                             </SelectTrigger>
                             <SelectContent>
-                                {
-                                    Object.entries(EBookTransactionStatus).map(([key, value]) => (
-                                        <SelectItem key={key} value={value}>
-                                            {key}
-                                        </SelectItem>
-                                    ))
-                                }
+                                <SelectItem value={EBookTransactionStatus.Issued}>Issued</SelectItem>
+                                <SelectItem value={EBookTransactionStatus.Returned}>Returned</SelectItem>
+                                <SelectItem value="paid">Overdue <span className="text-xs text-muted-foreground">(Paid)</span></SelectItem>
+                                <SelectItem value="unpaid">Overdue <span className="text-xs text-muted-foreground">(Unpaid)</span></SelectItem>
                             </SelectContent>
                         </Select>
                         <Select
@@ -86,7 +85,7 @@ export default function DetailedLibraryBookTransactions() {
                             <Button
                                 variant='ghost'
                                 onClick={() => {
-                                    setSearchFilters({ status: '', period: '' })
+                                    setSearchFilters({ status: '', period: '', paid: '' })
                                     setSearchParams('status', '')
                                     setSearchParams('period', '')
                                 }}
@@ -101,11 +100,14 @@ export default function DetailedLibraryBookTransactions() {
 
                 <Table>
                     <TableHeader>
-                        <TableHeadings headings={['S.N', 'Book Code', 'Book Name', 'Student Name', 'Student ID', 'Class', 'Issue Date', 'Due Date', 'Return Date', 'Status']} />
+                        <TableHeadings headings={['S.N', 'Book Code', 'Book Name', 'Student Name', 'Student ID', 'Class', 'Issue Date', 'Due Date', 'Returned At', 'Renewals', 'Status', 'Overdue days', 'Fine', 'Paid At']} />
                     </TableHeader>
                     <TableBody>
                         {data?.data?.map((transaction, index) => {
                             const isOverDue = isBefore(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())) && !transaction.returnedAt;
+                            const overDueDays = !transaction.returnedAt
+                                ? differenceInDays(startOfDay(new Date()), startOfDay(new Date(transaction.dueDate)))
+                                : differenceInDays(startOfDay(transaction.returnedAt), startOfDay(new Date(transaction.dueDate)))
 
                             return (
                                 <TableRow key={transaction.id}>
@@ -124,11 +126,15 @@ export default function DetailedLibraryBookTransactions() {
                                     <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                                     <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
                                     <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>
+                                    <TableCell>{transaction.renewals?.split(',').filter(renewal => renewal !== '').length}</TableCell>
                                     <TableCell>
                                         <Badge variant={isOverDue ? 'destructiveOutline' : transaction.returnedAt ? 'success' : 'info'} className="text-sm">
                                             {isOverDue ? 'Overdue' : transaction.returnedAt ? 'Returned' : 'Issued'}
                                         </Badge>
                                     </TableCell>
+                                    <TableCell>{(overDueDays > 0) ? `${overDueDays} days` : '-'}</TableCell>
+                                    <TableCell>Rs. {transaction.fine?.toLocaleString()}</TableCell>
+                                    <TableCell>{transaction.paidAt ? formatDate({ date: new Date(transaction.paidAt) }) : '-'}</TableCell>
                                 </TableRow>
                             )
                         })}
