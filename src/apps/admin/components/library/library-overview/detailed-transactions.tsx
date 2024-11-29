@@ -140,7 +140,7 @@ export default function DetailedLibraryBookTransactions() {
                         })}
                         {
                             data?.data?.length === 0 && <TableRow>
-                                <TableCell colSpan={10} className="h-24 text-center">
+                                <TableCell colSpan={14} className="h-24 text-center text-muted-foreground">
                                     No results found.
                                 </TableCell>
                             </TableRow>

@@ -56,12 +56,14 @@ function AllHistoryTable() {
         <>
             <Table>
                 <TableHeader>
-                    <TableHeadings headings={['Book Code', 'Title', 'Issued At', 'Due At', 'Returned At', 'Overdue Days', 'Fine', 'Renewals', 'Status']} />
+                    <TableHeadings headings={['Book Code', 'Title', 'Issued At', 'Due Date', 'Returned At', 'Overdue Days', 'Fine', 'Renewals', 'Status']} />
                 </TableHeader>
                 <TableBody>
                     {data?.data?.map((transaction) => {
                         const renewals = transaction.renewals?.split(',').filter(renewal => renewal !== '');
-                        const overDueDays = differenceInDays(startOfDay(new Date()), startOfDay(new Date(transaction.dueDate)));
+                        const overDueDays = !transaction.returnedAt
+                            ? differenceInDays(startOfDay(new Date()), startOfDay(new Date(transaction.dueDate)))
+                            : differenceInDays(startOfDay(transaction.returnedAt), startOfDay(new Date(transaction.dueDate)))
 
                         return (
                             <TableRow key={transaction.id}>
@@ -73,7 +75,7 @@ function AllHistoryTable() {
                                     transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'
                                 }</TableCell>
                                 <TableCell>{overDueDays > 0 ? `${overDueDays} days` : '-'}</TableCell>
-                                <TableCell>{transaction.fine?.toLocaleString()}</TableCell>
+                                <TableCell className="w-24">Rs. {transaction.fine?.toLocaleString()}</TableCell>
                                 <TableCell>{renewals?.length}</TableCell>
                                 <TableCell>
                                     <Badge variant={transaction.returnedAt ? 'success' : 'warning'} className="text-sm">
