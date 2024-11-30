@@ -1,4 +1,4 @@
-import { CalendarIcon, FileIcon, UserIcon, BookOpenIcon, UsersIcon, PencilIcon, CheckCircleIcon, CalendarCheck, TrendingUp } from 'lucide-react'
+import { CalendarIcon, FileIcon, UserIcon, BookOpenIcon, UsersIcon, PencilIcon, CheckCircleIcon, CalendarCheck, TrendingUp, ListRestart } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ELessonPlanStatus } from '@/types/lesson-plan.type'
@@ -150,47 +150,58 @@ export default function SingleLessonPlanPage() {
                                 </div>
                             </CardContent>
                         </Card>
-                        {lessonPlan.status !== ELessonPlanStatus.Completed &&
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Actions</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-col gap-4">
-                                        <Button className="w-full" variant="outline" onClick={() => navigate(`/admin/lesson-plans/${lessonPlan.id}/edit`, { state: { from: location } })}>
-                                            <PencilIcon className="w-4 h-4 mr-2" />
-                                            Edit Lesson Plan
-                                        </Button>
-                                        {
-                                            lessonPlan?.status === ELessonPlanStatus.In_Progress && (
-                                                <LoadingButton
-                                                    type="button"
-                                                    isLoading={isPending}
-                                                    loadingText='Saving...'
-                                                    onClick={() => handleChangeStatus(ELessonPlanStatus.Completed)}
-                                                >
-                                                    <CheckCircleIcon className="w-4 h-4 mr-2" />
-                                                    Mark as Complete
-                                                </LoadingButton>
-                                            )
-                                        }
-                                        {
-                                            lessonPlan?.status === ELessonPlanStatus.Not_Started && (
-                                                <LoadingButton
-                                                    type="button"
-                                                    isLoading={isPending}
-                                                    loadingText='Saving...'
-                                                    onClick={() => handleChangeStatus(ELessonPlanStatus.In_Progress)}
-                                                >
-                                                    <TrendingUp className="w-4 h-4 mr-2" />
-                                                    Set In Progress
-                                                </LoadingButton>
-                                            )
-                                        }
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        }
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Actions</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex flex-col gap-4">
+                                    <Button className="w-full" variant="outline" onClick={() => navigate(`/admin/lesson-plans/${lessonPlan.id}/edit`, { state: { from: location } })}>
+                                        <PencilIcon className="w-4 h-4 mr-2" />
+                                        Edit Lesson Plan
+                                    </Button>
+                                    {
+                                        lessonPlan?.status === ELessonPlanStatus.In_Progress && ( 
+                                            <LoadingButton
+                                                type="button"
+                                                isLoading={isPending}
+                                                loadingText='Saving...'
+                                                onClick={() => handleChangeStatus(ELessonPlanStatus.Completed)}
+                                            >
+                                                <CheckCircleIcon className="w-4 h-4 mr-2" />
+                                                Mark as Complete
+                                            </LoadingButton>
+                                        )
+                                    }
+                                    {
+                                        lessonPlan?.status === ELessonPlanStatus.Not_Started && (
+                                            <LoadingButton
+                                                type="button"
+                                                isLoading={isPending}
+                                                loadingText='Saving...'
+                                                onClick={() => handleChangeStatus(ELessonPlanStatus.In_Progress)}
+                                            >
+                                                <TrendingUp className="w-4 h-4 mr-2" />
+                                                Set In Progress
+                                            </LoadingButton>
+                                        )
+                                    }
+                                    {
+                                        lessonPlan?.status === ELessonPlanStatus.Completed && (
+                                            <LoadingButton
+                                                type="button"
+                                                isLoading={isPending}
+                                                loadingText='Saving...'
+                                                onClick={() => handleChangeStatus(ELessonPlanStatus.Not_Started)}
+                                            >
+                                                <ListRestart className="w-4 h-4 mr-2" />
+                                                Mark as Not Started
+                                            </LoadingButton>
+                                        )
+                                    }
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </div>
