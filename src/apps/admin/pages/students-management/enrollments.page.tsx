@@ -5,6 +5,8 @@ import { useGetEnrollments } from "../../components/students-management/enrollme
 import { enrollmentsColumns } from "../../components/students-management/enrollments/enrollments.columns"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
+import SearchInput from "@/components/search-components/search-input"
+import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
 
 type Props = {}
 
@@ -41,6 +43,16 @@ export const EnrollmentsList = () => {
             columns={enrollmentsColumns}
             data={data?.data ?? []}
             meta={data?.meta}
+            filters={<SearchFilters />}
         />
+    )
+}
+
+function SearchFilters() {
+    return (
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full">
+            <SearchInput placeholder="Search by reg no or student name" label="Reg No. or student name" />
+            <ClassRoomSearchFilterInputs />
+        </section>
     )
 }
