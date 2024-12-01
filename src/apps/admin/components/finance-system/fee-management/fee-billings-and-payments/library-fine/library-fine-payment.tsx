@@ -82,7 +82,7 @@ export default function LibraryFinePayment({ feeStudent }: Props) {
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!data?.length) return <div className="h-[400px] grid place-items-center text-muted-foreground">No unpaid transactions found</div>;
+    if (!data?.length) return <div className="h-[400px] grid place-items-center text-muted-foreground">No unpaid transactions found or the book is not returned.</div>;
 
     return (
         <section className="mt-6">
@@ -194,7 +194,7 @@ export default function LibraryFinePayment({ feeStudent }: Props) {
                                     transactions={data?.map(t => ({
                                         fine: t.fine,
                                         bookName: t.bookName,
-                                        overdueDays: differenceInDays(startOfDay(new Date()), startOfDay(new Date(t.returnedAt))),
+                                        overdueDays: differenceInDays(startOfDay(new Date(t.returnedAt)), startOfDay(new Date(t.dueDate))),
                                     }))}
                                     receipt={{
                                         receiptNo: receiptNo,
