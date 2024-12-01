@@ -28,9 +28,9 @@ export default function DashboardCountCard({ count, title, icon: Icon, navigateT
                 {
                     isLoading ? (
                         <>
-                            <Skeleton className='h-10 w-20' />
+                            <Skeleton className='h-8 w-20' />
                             {
-                                footer && <Skeleton className='h-6 w-28' />
+                                footer && <Skeleton className='mt-1 h-5 w-28' />
                             }
                         </>
                     ) : (
