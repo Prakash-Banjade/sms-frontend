@@ -94,8 +94,8 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
                 <section>
                     <h3 className="font-semibold text-lg mb-2">Guardian Information</h3>
                     {student.guardians.map((guardian, index) => (
-                        <>
-                            <div key={guardian.id} className="grid lg:grid-cols-2 gap-4 mb-4">
+                        <div key={guardian.id}>
+                            <div className="grid lg:grid-cols-2 gap-4 mb-4">
                                 <InfoItem label="Name" value={`${guardian.firstName} ${guardian.lastName}`} className="capitalize" />
                                 <InfoItem label="Relation" value={guardian.relation} className="capitalize" />
                                 <InfoItem label="Phone" value={guardian.phone} />
@@ -108,7 +108,7 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
                             {index !== student.guardians.length - 1 && (
                                 <Separator className="my-4" />
                             )}
-                        </>
+                        </div>
                     ))}
                 </section>
 
