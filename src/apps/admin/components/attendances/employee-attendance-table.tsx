@@ -1,47 +1,35 @@
-import { Button } from "@/components/ui/button"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { TEntityWithAttendanceUpdate } from "@/types/attendence.type"
 import { EAttendanceStatus } from "@/types/global.type"
-import { CalendarX, CheckCircle2, Clock, XCircle } from "lucide-react"
+import { format } from "date-fns"
+import React from "react"
 
 type Props<T> = {
     attendances: T[]
     setAttendances: React.Dispatch<React.SetStateAction<T[]>>
 }
 
-const statusConfig: Record<EAttendanceStatus, { icon: any; variant: "success" | "destructive" | "info" | "warning" }> = {
-    [EAttendanceStatus.PRESENT]: { icon: CheckCircle2, variant: "success" },
-    [EAttendanceStatus.ABSENT]: { icon: XCircle, variant: "destructive" },
-    [EAttendanceStatus.LATE]: { icon: Clock, variant: "info" },
-    [EAttendanceStatus.LEAVE]: { icon: CalendarX, variant: "warning" },
-}
-
 export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceUpdate>({ attendances, setAttendances }: Props<T>) {
 
-    const handleStatusChange = (accountId: string, status: EAttendanceStatus) => {
+    const updateTime = (e: React.ChangeEvent<HTMLInputElement>, accountId: string) => {
+        const { name, value } = e.target;
+
         const updatedAttendances: T[] = attendances.map(employee => {
             if (employee.account?.id === accountId && employee.attendance) {
                 return {
                     ...employee,
                     attendance: {
                         ...employee.attendance,
-                        status,
+                        [name]: value,
                     }
                 }
             } else if (employee.account?.id === accountId && !employee.attendance) {
                 return {
                     ...employee,
                     attendance: {
-                        status,
-                        date: new Date().toISOString(),
+                        [name]: value,
+                        date: format(new Date(), 'yyyy-MM-dd'),
                     }
                 }
             }
@@ -60,7 +48,8 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
                     <TableRow className="bg-tableheader">
                         <TableHead className="w-[100px]">ID</TableHead>
                         <TableHead>Employee Name</TableHead>
-                        <TableHead className="text-right">Attendance</TableHead>
+                        <TableHead>In Time</TableHead>
+                        <TableHead>Out Time</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -68,31 +57,38 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
                         <TableRow key={employee.id}>
                             <TableCell>{employee.staffId ?? employee.teacherId}</TableCell>
                             <TableCell>{employee.firstName} {employee.lastName}</TableCell>
-                            <TableCell>
-                                <div className="flex justify-end gap-2">
-                                    {Object.values(EAttendanceStatus).map((status) => {
-                                        const { icon: Icon, variant } = statusConfig[status as EAttendanceStatus]
-                                        return (
-                                            <Button
-                                                key={status}
-                                                variant={
-                                                    employee.attendance?.status === status
-                                                        ? variant
-                                                        : "outline"
-                                                }
-                                                size="sm"
-                                                onClick={() => handleStatusChange(employee.account?.id, status)}
-                                                aria-pressed={employee.attendance?.status === status}
-                                            >
-                                                <Icon className={cn("w-4 h-4")} />
-                                                <span className="sr-only md:not-sr-only md:inline-block capitalize">
-                                                    {status}
-                                                </span>
-                                            </Button>
-                                        )
-                                    })}
-                                </div>
-                            </TableCell>
+                            {
+                                employee.attendance?.status === EAttendanceStatus.LEAVE ? (
+                                    <TableCell key={employee.account?.id} colSpan={2} className="text-center text-warning">
+                                        The Employee has taken leave.
+                                    </TableCell>
+                                ) : (
+                                    <React.Fragment key={employee.account?.id}>
+                                        <TableCell>
+                                            <Input
+                                                type="time"
+                                                className="w-28"
+                                                placeholder="In Time"
+                                                name="inTime"
+                                                value={employee.attendance?.inTime ?? ''}
+                                                onChange={e => updateTime(e, employee.account?.id ?? '')}
+                                            />
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <Input
+                                                type="time"
+                                                className="w-28"
+                                                name="outTime"
+                                                placeholder="Out Time"
+                                                value={employee.attendance?.outTime ?? ''}
+                                                onChange={e => updateTime(e, employee.account?.id ?? '')}
+                                                disabled={!employee.attendance}
+                                            />
+                                        </TableCell>
+                                    </React.Fragment>
+                                )
+                            }
                         </TableRow>
                     ))}
                 </TableBody>

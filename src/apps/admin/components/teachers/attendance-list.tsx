@@ -52,16 +52,18 @@ function AttendanceList({ searchQuery, attendances, setAttendances }: IAttendanc
             if (teacher.attendance?.id) { // existing attendance's status is modified
                 return {
                     id: teacher.attendance.id,
-                    status: teacher.attendance.status,
+                    inTime: teacher.attendance.inTime,
+                    outTime: teacher.attendance.outTime,
                 }
             } else if (teacher.attendance) { // new attendance is taken
                 return {
-                    status: teacher.attendance.status,
                     date: selectedDate,
+                    inTime: teacher.attendance.inTime,
+                    outTime: teacher.attendance.outTime,
                     accountId: teacher.account.id,
                 }
             }
-        })
+        });
 
         await mutateAsync({
             endpoint: QueryKey.ATTENDANCES + '/batch',

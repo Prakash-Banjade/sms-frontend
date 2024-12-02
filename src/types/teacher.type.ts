@@ -38,15 +38,9 @@ export type TSingleTeacher = Omit<Teacher, 'teacherFullName'> & {
     accountNumber: string,
 }
 
-export type TeacherWithAttendanceResponse = (TEntityWithAttendance & {
-    inTime: string | null,
-    outTime: string | null
-})[]
+export type TeacherWithAttendanceResponse = (TEntityWithAttendance & {})[]
 
-export type TeacherWithAttendanceUpdate = (TEntityWithAttendanceUpdate & {
-    inTime: string | null,
-    outTime: string | null
-})[]
+export type TeacherWithAttendanceUpdate = (TEntityWithAttendanceUpdate & {})[]
 
 export type TSingleTeacherDetail = {
     id: string;

@@ -63,6 +63,8 @@ export type TEntityWithAttendance = {
         id: string
         status: EAttendanceStatus,
         date: string,
+        inTime?: string | null,
+        outTime?: string | null
     } | null;
 }
 
@@ -79,5 +81,7 @@ export type TEntityWithAttendanceUpdate = {
         id?: string
         status: EAttendanceStatus | null,
         date: string,
+        inTime?: string | null;
+        outTime?: string | null;
     } | null;
 }
