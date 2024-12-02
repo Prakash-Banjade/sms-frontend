@@ -19,7 +19,7 @@ import { DynamicCombobox } from './dynamic-combobox';
 import { FileUpload } from './file-upload';
 import ImageUpload from './image-upload';
 import { DynamicSelect_V2 } from './dynamic-select-v2';
-import { NUMBER_REGEX_STRING } from '@/CONSTANTS';
+import { ISO_TIME, NUMBER_REGEX_STRING } from '@/CONSTANTS';
 import { AppFormRadioGroup } from './app-form-radio-group';
 
 type SchemaContextType<T> = ZodType<T>;
@@ -159,7 +159,7 @@ AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, p
                                 const val = e.target.value;
 
                                 if (val) {
-                                    field.onChange(val + 'T00:00:00Z');
+                                    field.onChange(val + ISO_TIME);
                                 } else {
                                     field.onChange('');
                                 }
