@@ -11,6 +11,7 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { ELeaveRequestStatus } from "@/types/global.type"
 import { QueryKey } from "@/react-query/queryKeys"
 import LeaveRequestsLoadingSkeleton from "./leave-request-skeleton"
+
 export default function Dashboard_LeaveRequests() {
     const { data: leaveRequests, isLoading } = useGetAdminDashboardLeaveRequests({});
 
@@ -69,7 +70,7 @@ export default function Dashboard_LeaveRequests() {
                                                         </div>
                                                         <div className="flex items-center gap-2">
                                                             <Clock className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(getCreatedAt(new Date(leaveRequest.createdAt)))} ago</p>
+                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(leaveRequest.createdAt)} ago</p>
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-1 flex-col">
