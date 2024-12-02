@@ -4,7 +4,7 @@ import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/f
 import { Input } from "@/components/ui/input";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { NUMBER_REGEX_STRING } from "@/CONSTANTS";
+import { ISO_TIME, NUMBER_REGEX_STRING } from "@/CONSTANTS";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { cn, toWords } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
@@ -21,6 +21,7 @@ import { InvoiceTemplate } from "./fee-invoice-template";
 import { useReactToPrint } from "react-to-print";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AdHocChargeIncludeBtn from "./ad-hoc-charge-include-btn";
+import { format } from "date-fns";
 
 export enum EMonth {
     January = 1,
@@ -84,8 +85,8 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
 
     const formDefaultValues: feeInvoiceSchemaType = useMemo(() => {
         return ({
-            dueDate: new Date().toISOString().split("T")[0],
-            invoiceDate: new Date().toISOString().split("T")[0],
+            dueDate: format(new Date(), 'yyyy-MM-dd') + ISO_TIME,
+            invoiceDate: format(new Date(), 'yyyy-MM-dd') + ISO_TIME,
             studentId: student.id,
             month: (+student.lastMonth + 1),
             invoiceItems: initialInvoiceItems.current,
@@ -160,7 +161,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
 
     useEffect(() => {
         form.reset(formDefaultValues);
-    }, [student])
+    }, [formDefaultValues])
 
     return (
         <AppForm schema={invoiceSchema} form={form}>
