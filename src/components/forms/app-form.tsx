@@ -155,15 +155,15 @@ AppForm.DatePicker = function DatePicker<T extends FieldValues>({ name, label, p
                             {...field}
                             value={!!field.value ? formatDateNumeric({ date: new Date(field.value) }) : ''}
                             required={required}
-                            onChange={e => {
-                                const val = e.target.value;
+                            // onChange={e => {
+                            //     const val = e.target.value;
 
-                                if (val) {
-                                    field.onChange(val + 'T00:00:00');
-                                } else {
-                                    field.onChange('');
-                                }
-                            }}
+                            //     if (val) {
+                            //         field.onChange(val + 'T00:00:00');
+                            //     } else {
+                            //         field.onChange('');
+                            //     }
+                            // }}
                             {...props}
                         />
                     </FormControl>
