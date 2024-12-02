@@ -94,7 +94,7 @@ export default function StudentLedgerView({ studentId }: Props) {
                     })}
                     {
                         data?.data?.length === 0 && <TableRow className="hover:bg-transparent">
-                            <TableCell colSpan={6} className="text-center text-muted-foreground py-10">No ledger items found.</TableCell>
+                            <TableCell colSpan={7} className="text-center text-muted-foreground py-10">No ledger items found.</TableCell>
                         </TableRow>
                     }
                 </TableBody>

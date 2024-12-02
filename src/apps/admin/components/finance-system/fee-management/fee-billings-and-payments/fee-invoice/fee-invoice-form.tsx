@@ -10,7 +10,7 @@ import { cn, toWords } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { EChargeHeadPeriod, TFeeStudent } from "@/types/finance-system/fee-management.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod"
@@ -65,11 +65,6 @@ const invoiceSchema = z.object({
 
 export type feeInvoiceSchemaType = z.infer<typeof invoiceSchema>;
 
-const formDefaultValues: Partial<feeInvoiceSchemaType> = {
-    dueDate: new Date().toISOString().split("T")[0],
-    invoiceDate: new Date().toISOString().split("T")[0],
-}
-
 export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructures, student } }: Props) {
     const [invoiceNo, setInvoiceNo] = useState<string | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -87,15 +82,20 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
         period: ch.period,
     })));
 
-    const form = useForm<feeInvoiceSchemaType>({
-        resolver: zodResolver(invoiceSchema),
-        mode: "onChange",
-        defaultValues: {
-            ...formDefaultValues,
+    const formDefaultValues: feeInvoiceSchemaType = useMemo(() => {
+        return ({
+            dueDate: new Date().toISOString().split("T")[0],
+            invoiceDate: new Date().toISOString().split("T")[0],
             studentId: student.id,
             month: (+student.lastMonth + 1),
             invoiceItems: initialInvoiceItems.current,
-        },
+        })
+    }, [student, chargeHeads, feeStructures])
+
+    const form = useForm<feeInvoiceSchemaType>({
+        resolver: zodResolver(invoiceSchema),
+        mode: "onChange",
+        defaultValues: formDefaultValues,
     });
 
     const grandTotal = useMemo(() => {
@@ -157,6 +157,10 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
             ]
         })
     }
+
+    useEffect(() => {
+        form.reset(formDefaultValues);
+    }, [student])
 
     return (
         <AppForm schema={invoiceSchema} form={form}>
