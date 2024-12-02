@@ -5,7 +5,7 @@ import { CalendarOff, Clock } from 'lucide-react'
 import { useGetAdminDashboardLeaveRequests } from "../../data-access/dashboard-data-access"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { differenceInDays, format, formatDistanceToNow, isSameMonth } from "date-fns"
-import { getImageUrl } from "@/lib/utils"
+import { getCreatedAt, getImageUrl } from "@/lib/utils"
 import { Link } from "react-router-dom"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { ELeaveRequestStatus } from "@/types/global.type"
@@ -69,7 +69,7 @@ export default function Dashboard_LeaveRequests() {
                                                         </div>
                                                         <div className="flex items-center gap-2">
                                                             <Clock className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(leaveRequest.createdAt)} ago</p>
+                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(getCreatedAt(new Date(leaveRequest.createdAt)))} ago</p>
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-1 flex-col">
@@ -109,7 +109,7 @@ export default function Dashboard_LeaveRequests() {
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                         <Clock className="size-4 text-muted-foreground" />
-                                                        <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(leaveRequest.createdAt)} ago</p>
+                                                        <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(getCreatedAt(new Date(leaveRequest.createdAt)))} ago</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-1 flex-col">

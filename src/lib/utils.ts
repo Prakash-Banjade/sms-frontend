@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
+import { add } from "date-fns";
 import { twMerge } from "tailwind-merge"
 import { ToWords } from 'to-words';
 
@@ -12,3 +13,12 @@ export function getImageUrl(url: string | undefined | null, query: string) {
 }
 
 export const toWords = new ToWords();
+
+export const getCreatedAt = (date: Date): Date => {
+  const timeToAdd = { hours: 5, minutes: 45 };
+
+  const newDate = add(date, timeToAdd)
+
+  console.log(newDate)
+  return newDate;
+}

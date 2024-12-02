@@ -58,6 +58,7 @@ export default function LeaveRequestForm() {
                         label="Leave From"
                         description="From which date you  want leave"
                         required
+                        min={new Date().toISOString().split("T")[0]}
                     />
                     <AppForm.DatePicker<leaveRequestSchemaType>
                         containerClassName="grow"
@@ -65,6 +66,7 @@ export default function LeaveRequestForm() {
                         label="Leave To"
                         description="Till which date you want leave"
                         required
+                        min={new Date().toISOString().split("T")[0]}
                     />
                 </section>
 
