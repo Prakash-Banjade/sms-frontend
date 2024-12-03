@@ -9,7 +9,8 @@ interface AppFormSelectProps<T> extends TFormFieldProps<T> {
         label: React.ReactNode;
         value: string;
     }[],
-    direction?: 'row' | 'column'
+    direction?: 'row' | 'column',
+    disabled?: boolean;
 }
 
 export function AppFormRadioGroup<T extends FieldValues>({
@@ -20,6 +21,7 @@ export function AppFormRadioGroup<T extends FieldValues>({
     options = [],
     containerClassName = '',
     direction = 'row',
+    disabled = false
 }: AppFormSelectProps<T>) {
     const { control } = useFormContext();
 
@@ -37,8 +39,9 @@ export function AppFormRadioGroup<T extends FieldValues>({
                     <FormControl>
                         <RadioGroup
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
+                            value={field.value}
                             className={cn("flex gap-5", direction === 'column' && "flex-col")}
+                            disabled={disabled}
                         >
                             {
                                 options.map((option, ind) => (

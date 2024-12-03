@@ -4,6 +4,7 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { EChargeHeadPeriod, EChargeHeadType } from "@/types/finance-system/fee-management.types";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod"
 
@@ -63,6 +64,15 @@ export default function ChargeHeadFrom(props: Props) {
         }
     }
 
+    useEffect(() => {
+        if (form.getValues('type') === EChargeHeadType.Ad_Hoc) {
+            form.setValue('period', EChargeHeadPeriod.None)
+            form.setValue('isMandatory', "false")
+        } else {
+            form.setValue('period', EChargeHeadPeriod.Monthly)
+        }
+    }, [form.watch('type')])
+
     const onDialogClose = () => {
         form.reset();
         props.setIsOpen(false);
@@ -86,19 +96,6 @@ export default function ChargeHeadFrom(props: Props) {
                 />
 
                 <AppForm.Select<chargeHeadSchemaType>
-                    name="period"
-                    label="Period"
-                    placeholder="Select period"
-                    description="Select the period for the charge head."
-                    options={[
-                        { label: "Monthly", value: EChargeHeadPeriod.Monthly },
-                        { label: "One Time", value: EChargeHeadPeriod.One_Time },
-                        { label: "None", value: EChargeHeadPeriod.None },
-                    ]}
-                    required
-                />
-
-                <AppForm.Select<chargeHeadSchemaType>
                     name="type"
                     label="Type"
                     placeholder="Select type"
@@ -110,6 +107,24 @@ export default function ChargeHeadFrom(props: Props) {
                     required
                 />
 
+                <AppForm.Select<chargeHeadSchemaType>
+                    name="period"
+                    label="Period"
+                    placeholder="Select period"
+                    description="Select the period for the charge head."
+                    options={
+                        form.watch('type') === EChargeHeadType.Regular
+                            ? [
+                                { label: "Monthly", value: EChargeHeadPeriod.Monthly },
+                                { label: "One Time", value: EChargeHeadPeriod.One_Time },
+                            ] : [
+                                { label: "None", value: EChargeHeadPeriod.None },
+                            ]
+                    }
+                    required
+                    disabled={!form.watch('type')}
+                />
+
                 {
                     (props.defaultValues?.isMandatory === 'false' || !props.defaultValues) && <div>
                         <AppForm.RadioGroup<chargeHeadSchemaType>
@@ -119,8 +134,13 @@ export default function ChargeHeadFrom(props: Props) {
                                 { label: "Yes", value: 'true' },
                                 { label: "No", value: 'false' },
                             ]}
+                            disabled={form.watch('type') === EChargeHeadType.Ad_Hoc}
                         />
-                        <p className="mt-2 text-sm bg-info/10 text-info p-2 rounded-md">Mandatory heads cannot be deleted.</p>
+                        <p className="mt-2 text-sm bg-info/10 text-info p-2 rounded-md">
+                            Mandatory heads cannot be modified later.
+                            <br />
+                            If yes, this will create fee-structure for all classes.
+                        </p>
                     </div>
                 }
 
