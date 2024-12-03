@@ -2,6 +2,7 @@ import AppForm from "@/components/forms/app-form"
 import { Button } from "@/components/ui/button";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { useAppMutation } from "@/hooks/useAppMutation";
+import { startOfDayString } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -68,8 +69,8 @@ export default function EventForm(props: Props) {
             id,
             data: {
                 ...getDirtyValues(values, form),
-                dateFrom: new Date(values.dateFrom).toISOString(),
-                dateTo: new Date(values.dateTo).toISOString(),
+                dateFrom: startOfDayString(new Date(values.dateFrom)),
+                dateTo: startOfDayString(new Date(values.dateFrom)),
             },
             invalidateTags: [QueryKey.EVENTS],
         });

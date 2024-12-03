@@ -20,7 +20,6 @@ export const getCreatedAt = (date: Date): Date => {
 
   const newDate = add(date, timeToAdd)
 
-  console.log(newDate)
   return newDate;
 }
 

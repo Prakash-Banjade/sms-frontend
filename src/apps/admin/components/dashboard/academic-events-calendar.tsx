@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import './academic-events-calendar.style.css'
 import { ResponsiveDialog } from '@/components/ui/responsive-dialog';
@@ -13,6 +12,7 @@ import { DateRange } from '@fullcalendar/core/internal';
 import { createQueryString } from '@/utils/create-query-string';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
+import { startOfDayString } from '@/lib/utils';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -68,6 +68,7 @@ export function AcademicYearCalendar() {
   };
 
   const handleEventDrop = async (dropInfo: EventDropArg) => {
+    console.log(dropInfo)
     if (!dropInfo.event || !dropInfo.event.start || !dropInfo.event.end) return;
 
     const eventId = dropInfo.event.id;
@@ -78,8 +79,8 @@ export function AcademicYearCalendar() {
       id: eventId,
       endpoint: QueryKey.EVENTS,
       data: {
-        dateFrom: start.toISOString(),
-        dateTo: end.toISOString(),
+        dateFrom: startOfDayString(start),
+        dateTo: startOfDayString(end),
       },
       invalidateTags: [QueryKey.EVENTS],
       toastOnSuccess: false,
@@ -116,11 +117,10 @@ export function AcademicYearCalendar() {
 
       <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          plugins={[dayGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            right: 'title',
           }}
           initialView="dayGridMonth"
           editable={true}
@@ -132,7 +132,7 @@ export function AcademicYearCalendar() {
             id: event.id,
             title: event.title,
             start: event.dateFrom,
-            end: event.dateTo,
+            end: new Date(event.dateTo),
             description: event.description,
             eventLocation: event.eventLocation,
             members: event.members,
@@ -155,7 +155,6 @@ export function AcademicYearCalendar() {
 function renderEventContent(eventContent: EventContentArg) {
   return (
     <div className="space-x-1 !line-clamp-1">
-      <span className='!text-primary-foreground'>{eventContent.timeText}</span>
       <strong className='!text-primary-foreground'>{eventContent.event.title}</strong>
     </div>
   );
