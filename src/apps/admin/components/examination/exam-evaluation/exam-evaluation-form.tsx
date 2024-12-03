@@ -83,7 +83,7 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
 
             });
 
-            if (reports.data.length === students.length) setSelectAll(true);
+            setSelectAll(reports.data?.length === students.length); 
         }
 
     }, [students, reports])
