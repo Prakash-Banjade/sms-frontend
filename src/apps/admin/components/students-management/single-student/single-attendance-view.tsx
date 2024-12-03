@@ -23,6 +23,9 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
             take: 32,
             accountId,
         }),
+        options: {
+            enabled: !!accountId
+        }
     })
 
     const getAttendanceStatus = (date: Date) => {
