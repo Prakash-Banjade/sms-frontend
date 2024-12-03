@@ -72,7 +72,7 @@ export default function GetAttendancesForm({ setSearchQuery }: Props) {
                                         form.setValue("date", val ?? new Date())
                                     }}
                                     initialFocus
-                                    // disabled={(date) => date > new Date() || date < new Date(new Date().getFullYear(), 0, 1)}
+                                    // disabled={(date) => date > new Date() || date < new Date(new Date().getFullYear(), 0, 1)} // TODO: enable this
                                 />
                             </PopoverContent>
                         </Popover>

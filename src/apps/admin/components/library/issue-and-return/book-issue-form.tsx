@@ -1,8 +1,11 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
+import { startOfDayString } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 import { z } from "zod"
 
 type Props = {
@@ -20,12 +23,15 @@ const bookIssueFormSchema = z.object({
 
 const defaultValues: Partial<bookIssueFormSchemaType> = {
     bookId: undefined,
-    dueDate: new Date().toISOString(),
+    dueDate: startOfDayString(new Date()),
 }
 
 export type bookIssueFormSchemaType = z.infer<typeof bookIssueFormSchema>;
 
 export default function BookIssueForm({ setIsOpen, studentId }: Props) {
+    const [searchParams] = useSearchParams();
+    const queryClient = useQueryClient();
+
     const form = useForm<bookIssueFormSchemaType>({
         resolver: zodResolver(bookIssueFormSchema),
         defaultValues: {
@@ -46,6 +52,7 @@ export default function BookIssueForm({ setIsOpen, studentId }: Props) {
         });
 
         if (response?.data?.message) {
+            queryClient.invalidateQueries({ queryKey: [QueryKey.STUDENTS, QueryKey.LIBRARY, searchParams.get('studentID')] })
             onDialogClose();
         }
     }

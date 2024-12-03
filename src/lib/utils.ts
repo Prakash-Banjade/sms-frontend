@@ -1,5 +1,6 @@
+import { ISO_TIME } from "@/CONSTANTS";
 import { clsx, type ClassValue } from "clsx"
-import { add } from "date-fns";
+import { add, format } from "date-fns";
 import { twMerge } from "tailwind-merge"
 import { ToWords } from 'to-words';
 
@@ -21,4 +22,8 @@ export const getCreatedAt = (date: Date): Date => {
 
   console.log(newDate)
   return newDate;
+}
+
+export function startOfDayString(date: Date) {
+  return format(date, 'yyyy-MM-dd') + ISO_TIME;
 }
