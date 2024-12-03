@@ -72,7 +72,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
     const invoiceTemplateRef = useRef<HTMLDivElement>(null);
     const handlePrint = useReactToPrint({ contentRef: invoiceTemplateRef });
 
-    const initialInvoiceItems = useRef<feeInvoiceSchemaType["invoiceItems"]>(chargeHeads.map(ch => ({
+    const initialInvoiceItems: feeInvoiceSchemaType["invoiceItems"] = useMemo(() => (chargeHeads.map(ch => ({
         amount: feeStructures.find(fs => fs.chargeHeadId === ch.id)?.amount ?? 0,
         chargeHeadId: ch.id,
         chargeHeadName: ch.name,
@@ -81,7 +81,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
         remark: '',
         required: ch.required === 'true',
         period: ch.period,
-    })));
+    }))), [chargeHeads, feeStructures])
 
     const formDefaultValues: feeInvoiceSchemaType = useMemo(() => {
         return ({
@@ -89,7 +89,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
             invoiceDate: format(new Date(), 'yyyy-MM-dd') + ISO_TIME,
             studentId: student.id,
             month: (+student.lastMonth + 1),
-            invoiceItems: initialInvoiceItems.current,
+            invoiceItems: initialInvoiceItems,
         })
     }, [student, chargeHeads, feeStructures])
 
@@ -142,7 +142,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
                 ...form.getValues('invoiceItems').map((item, ind) => item.period === EChargeHeadPeriod.Monthly
                     ? {
                         ...item,
-                        amount: initialInvoiceItems?.current[ind]?.amount * (+val - +student.lastMonth),
+                        amount: initialInvoiceItems[ind]?.amount * (+val - +student.lastMonth),
                     } : item,
                 )
             ])
