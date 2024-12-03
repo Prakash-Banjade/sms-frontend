@@ -40,15 +40,21 @@ export const AppSidebarFooter = () => {
                                 <span>Billing</span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="p-0">
-                                <button type="button" onClick={handleLogout} disabled={isPending} className="text-left flex items-center w-full px-2 py-1.5">
-                                    {
-                                        isPending
-                                            ? <LoaderCircle className="h-4 w-4 animate-spin" />
-                                            : <span>Sign out <LogOut className="inline-block h-4 w-4 ml-2" /></span>
-                                    }
-                                </button>
-                            </DropdownMenuItem>
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                disabled={isPending}
+                                className="text-left flex gap-2 items-center w-full px-2 py-1.5 text-sm hover:bg-secondary transition-colors select-none rounded-sm disabled:opacity-70"
+                            >
+                                {
+                                    isPending
+                                        ? <>
+                                            <LoaderCircle className="h-4 w-4 animate-spin" />
+                                            <span>Signing out...</span>
+                                        </>
+                                        : <span>Sign out <LogOut className="inline-block h-4 w-4 ml-2" /></span>
+                                }
+                            </button>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </SidebarMenuItem>
