@@ -16,8 +16,6 @@ import { Suspense, useMemo } from "react";
 import { useGetActiveAcademicYear } from "@/apps/admin/components/academic-year/actions";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
-import { Loader } from "lucide-react";
-
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
     const { payload } = useAuth();
