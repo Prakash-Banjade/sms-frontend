@@ -12,10 +12,11 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { useAuth } from "@/contexts/auth-provider";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useGetActiveAcademicYear } from "@/apps/admin/components/academic-year/actions";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
+import { Loader } from "lucide-react";
 
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
@@ -72,8 +73,10 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                         <ThemeToggleBtn />
                     </div>
                 </header>
-                <main className="p-6">
-                    <Outlet />
+                <main className="p-6 h-full">
+                    <Suspense fallback={<Skeleton className="h-full"></Skeleton>}>
+                        <Outlet />
+                    </Suspense>
                 </main>
             </SidebarInset>
         </SidebarProvider>

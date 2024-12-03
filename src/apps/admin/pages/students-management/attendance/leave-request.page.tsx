@@ -6,9 +6,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { createQueryString } from "@/utils/create-query-string"
 import { useSearchParams } from "react-router-dom"
 
-type Props = {}
-
-export function StudentsLeaveRequestsPage({ }: Props) {
+export default function StudentsLeaveRequestsPage() {
     return (
         <ContainerLayout
             title="Leave Requests"

@@ -6,9 +6,7 @@ import { employeeLeaveRequestsColumns } from "../../components/attendances/emplo
 import EmployeeLeaveRequestSearchFilters from "../../components/attendances/leave-request-search-filters"
 import { useGetEmployeesLeaveRequests } from "../../components/leave-requests/actions"
 
-type Props = {}
-
-export function EmployeesLeaveRequestsPage({ }: Props) {
+export default function EmployeesLeaveRequestsPage() {
     return (
         <ContainerLayout
             title="Employees Leave Requests"

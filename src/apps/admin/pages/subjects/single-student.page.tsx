@@ -3,7 +3,7 @@ import { StudentInfoView } from "../../components/students-management/single-stu
 import SingleAttendanceView from "../../components/students-management/single-student/single-attendance-view";
 import { useState } from "react";
 
-export const SingleStudentPage = () => {
+export default function SingleStudentPage() {
   const params = useParams();
   const [accountId, setAccountId] = useState<string | undefined>(undefined); // used to fetch attendance data
 
