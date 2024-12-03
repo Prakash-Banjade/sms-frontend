@@ -1,5 +1,4 @@
 import AppForm from "@/components/forms/app-form"
-import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
@@ -8,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings, StaffTypeMappings } from "@/utils/labelToValueMappings";
 import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../schemas/staff.schema";
+import { useEffect } from "react";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;
@@ -17,14 +17,13 @@ export default function StaffForm(props: Props) {
     const params = useParams();
 
     const navigate = useNavigate();
-    const { payload } = useAuth();
 
     const form = useForm<staffSchemaType>({
         resolver: zodResolver(staffSchema),
         defaultValues: props?.defaultValues ?? staffFormDefaultValues,
     });
 
-    const { mutateAsync } = useAppMutation<Partial<staffSchemaType>, any>();
+    const { mutateAsync, error } = useAppMutation<Partial<staffSchemaType>, any>();
 
     async function onSubmit(values: staffSchemaType) {
         const method = !!params.id ? "patch" : "post";
@@ -35,15 +34,23 @@ export default function StaffForm(props: Props) {
             id: params.id,
             data: {
                 ...getDirtyValues(values, form),
-                profileImageId: values.profileImageId ?? null, 
+                profileImageId: values.profileImageId ?? null,
             },
             invalidateTags: [QueryKey.STAFFS],
         });
 
         if (response?.data?.message) {
-            navigate(`/${payload?.role}/staffs`);
+            navigate(`/admin/staffs`);
         }
     }
+
+    useEffect(() => {
+        const errObj = (error as any)?.response?.data?.message;
+        if (!!errObj?.field) {
+            form.setError(errObj.field, { message: errObj?.message });
+            form.setFocus(errObj.field);
+        }
+    }, [error])
 
     return (
         <AppForm schema={staffSchema} form={form}>
@@ -137,14 +144,6 @@ export default function StaffForm(props: Props) {
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Professional Info</legend>
                     <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Number<staffSchemaType>
-                            name="staffId"
-                            label="Staff ID"
-                            placeholder="eg. 123456"
-                            description="Assign a unique ID to the staff. It will be auto generated if left blank."
-                            min={1}
-                        />
-
                         <AppForm.Select<staffSchemaType>
                             name="type"
                             label="Staff Type"

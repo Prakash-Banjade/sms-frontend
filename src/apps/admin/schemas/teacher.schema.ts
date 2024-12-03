@@ -3,8 +3,6 @@ import { EBloodGroup, EMaritalStatus, Gender } from "@/types/global.type";
 import { z } from "zod";
 
 export const teacherSchema = z.object({
-    teacherId: z.coerce.number().optional(),
-
     firstName: z.string()
         .min(1, { message: 'First name is required' })
         .regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),
@@ -52,7 +50,6 @@ export const teacherSchema = z.object({
 export type teacherSchemaType = z.infer<typeof teacherSchema>;
 
 export const teacherFormDefaultValues: Partial<teacherSchemaType> = {
-    teacherId: undefined,
     firstName: '',
     lastName: '',
     gender: undefined,

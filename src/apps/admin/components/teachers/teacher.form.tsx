@@ -137,14 +137,6 @@ export default function TeacherForm(props: Props) {
                 <fieldset className="border border-border rounded-md p-8">
                     <legend className="px-2 text-sm">Professional Info</legend>
                     <section className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
-                        <AppForm.Number<teacherSchemaType>
-                            name="teacherId"
-                            label="Teacher ID"
-                            placeholder="eg. 123456"
-                            description="Assign a unique ID to the teacher. It will be auto generated if left blank."
-                            min={1}
-                        />
-
                         <AppForm.Text<teacherSchemaType>
                             name="qualification"
                             label="Qualification"
