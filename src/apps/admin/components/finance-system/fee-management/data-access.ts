@@ -84,7 +84,7 @@ export const useGetLastInvoice = ({
     options?: Partial<UseQueryOptions<TLastInvoice>>
 }) => {
     const response = useFetchData<TLastInvoice>({
-        queryKey: queryString ? [QueryKey.FEE_INVOICES, 'last-invoice', queryString] : [QueryKey.FEE_INVOICES, 'last-invoice'],
+        queryKey: queryString ? [QueryKey.FEE_INVOICES, 'last-invoice', studentId, queryString] : [QueryKey.FEE_INVOICES, 'last-invoice', studentId],
         endpoint: QueryKey.FEE_INVOICES + '/last-invoice/' + studentId,
         queryString,
         options,
