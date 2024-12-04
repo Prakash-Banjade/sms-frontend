@@ -13,7 +13,7 @@ import YearlyAttendanceCount from './yearly-attendance-count'
 export default function SingleAttendanceView({ accountId }: { accountId: string | undefined }) {
     const currentDate = new Date();
     const { searchParams, setSearchParams } = useCustomSearchParams()
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
     // fetch attendance data
     const { data: attendances, isLoading } = useGetAttendances({
@@ -24,15 +24,14 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
             accountId,
         }),
         options: {
-            enabled: !!accountId
+            enabled: !!accountId && (!searchParams.get('tab') || searchParams.get('tab') === 'daily'), // fetch this data only when tab is daily
         }
     })
 
     const getAttendanceStatus = (date: Date) => {
         const attendance = attendances?.data?.find(a => {
             return new Date(a.date).toDateString() === date.toDateString()
-        }
-        )
+        });
         return attendance ? attendance.status : undefined
     }
 
@@ -42,7 +41,8 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
         setSearchParams("year", val.getFullYear().toString())
     }
 
-    const handleTabChange = () => { // reset month and year when switching tabs
+    const handleTabChange = (val: string) => { // reset month and year when switching tabs
+        setSearchParams("tab", val)
         setSelectedDate(new Date())
         setSearchParams("month", undefined)
         setSearchParams("year", undefined)
@@ -56,7 +56,7 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
                 <CardTitle>Attendance</CardTitle>
             </CardHeader>
             <CardContent>
-                <Tabs defaultValue="daily" className="w-full" onValueChange={handleTabChange}>
+                <Tabs value={searchParams.get("tab") ?? "daily"} className="w-full" onValueChange={handleTabChange}>
                     <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger value="daily">Daily</TabsTrigger>
                         <TabsTrigger value="monthly">Monthly</TabsTrigger>

@@ -57,7 +57,7 @@ function AttendanceList({ searchQuery, attendances, setAttendances }: IAttendanc
                 }
             } else if (teacher.attendance) { // new attendance is taken
                 return {
-                    date: selectedDate,
+                    date: selectedDate, // this date is in iso format
                     inTime: teacher.attendance.inTime,
                     outTime: teacher.attendance.outTime,
                     accountId: teacher.account.id,

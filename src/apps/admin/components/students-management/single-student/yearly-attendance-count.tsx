@@ -20,7 +20,7 @@ export default function YearlyAttendanceCount({accountId }: { accountId: string 
             year: searchParams.get('year'),
             accountId,
         }),
-        options: { enabled: !!accountId }
+        options: { enabled: !!accountId && searchParams.get('tab') === 'yearly' } // fetch this data only when tab is yearly
     })
 
     const getPercentage = (count: number, total: number) => {

@@ -2,9 +2,9 @@ import AppForm from "@/components/forms/app-form";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ISO_TIME } from "@/CONSTANTS";
 import { cn } from "@/lib/utils";
 import { createQueryString } from "@/utils/create-query-string";
-import { formatDateNumeric } from "@/utils/format-date";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -31,7 +31,7 @@ export default function GetEmployeesAttendancesForm({ setSearchQuery }: Props) {
 
     const onSubmit = (values: TGetAttendancesSchema) => {
         setSearchQuery(createQueryString({
-            date: formatDateNumeric({ date: values.date, format: 'yyyy-mm-dd' }),
+            date: format(values.date, 'yyyy-MM-dd') + ISO_TIME,
         }))
     }
     return (

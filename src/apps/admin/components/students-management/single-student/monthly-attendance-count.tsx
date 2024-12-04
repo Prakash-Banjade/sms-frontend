@@ -36,7 +36,7 @@ export default function MonthlyAttendanceCount({ accountId }: { accountId: strin
             year: searchParams.get('year'),
             accountId
         }),
-        options: { enabled: !!accountId }
+        options: { enabled: !!accountId && searchParams.get('tab') === 'monthly' } // fetch this data only when tab is monthly
     })
 
     const getPercentage = (count: number, total: number) => {
