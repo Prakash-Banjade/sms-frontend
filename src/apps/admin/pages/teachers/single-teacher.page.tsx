@@ -57,7 +57,7 @@ export default function SingleTeacherPage() {
                     <FinancialInfoCard teacher={teacher} />
                 </section>
                 <section className="space-y-6">
-                    <SingleAttendanceView accountId={teacher.accountId} />
+                    <SingleAttendanceView accountId={teacher.accountId} employee />
                     <Card>
                         <CardHeader>
                             <CardTitle>Assigned Classes</CardTitle>

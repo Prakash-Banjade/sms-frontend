@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Calendar } from "@/components/ui/calendar"
@@ -10,7 +10,7 @@ import { useCustomSearchParams } from '@/hooks/useCustomSearchParams'
 import { createQueryString } from '@/utils/create-query-string'
 import YearlyAttendanceCount from './yearly-attendance-count'
 
-export default function SingleAttendanceView({ accountId }: { accountId: string | undefined }) {
+export default function SingleAttendanceView({ accountId, employee = false }: { accountId: string | undefined, employee?: boolean }) {
     const currentDate = new Date();
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -28,12 +28,17 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
         }
     })
 
-    const getAttendanceStatus = (date: Date) => {
+    const getAttendanceStatus = useCallback((date: Date) => {
         const attendance = attendances?.data?.find(a => {
             return new Date(a.date).toDateString() === date.toDateString()
         });
-        return attendance ? attendance.status : undefined
-    }
+
+        return {
+            status: attendance?.status,
+            inTime: attendance?.inTime,
+            outTime: attendance?.outTime
+        }
+    }, [attendances]);
 
     const handleMonthChange = (val: Date) => { // setting the search params and refetching the data for the new month
         const month = val.getMonth() + 1
@@ -67,14 +72,14 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
                             <Calendar
                                 mode="single"
                                 selected={selectedDate}
-                                onSelect={setSelectedDate}
+                                onSelect={date => date && setSelectedDate(date)}
                                 onMonthChange={handleMonthChange}
                                 className="rounded-md border"
                                 modifiers={{
-                                    [EAttendanceStatus.PRESENT]: (date) => getAttendanceStatus(date) === EAttendanceStatus.PRESENT,
-                                    [EAttendanceStatus.ABSENT]: (date) => getAttendanceStatus(date) === EAttendanceStatus.ABSENT,
-                                    [EAttendanceStatus.LATE]: (date) => getAttendanceStatus(date) === EAttendanceStatus.LATE,
-                                    [EAttendanceStatus.LEAVE]: (date) => getAttendanceStatus(date) === EAttendanceStatus.LEAVE,
+                                    [EAttendanceStatus.PRESENT]: (date) => getAttendanceStatus(date)?.status === EAttendanceStatus.PRESENT,
+                                    [EAttendanceStatus.ABSENT]: (date) => getAttendanceStatus(date)?.status === EAttendanceStatus.ABSENT,
+                                    [EAttendanceStatus.LATE]: (date) => getAttendanceStatus(date)?.status === EAttendanceStatus.LATE,
+                                    [EAttendanceStatus.LEAVE]: (date) => getAttendanceStatus(date)?.status === EAttendanceStatus.LEAVE,
                                 }}
                                 modifiersStyles={{
                                     [EAttendanceStatus.PRESENT]: { backgroundColor: 'hsl(var(--success))', color: 'hsl(var(--success-foreground))' },
@@ -89,10 +94,22 @@ export default function SingleAttendanceView({ accountId }: { accountId: string 
                             <div className="mt-4 text-center">
                                 <AttendanceStatusIndicators />
                                 {selectedDate && (
-                                    <p className="font-semibold mt-2">
-                                        Status on {selectedDate.toDateString()}: {' '}
-                                        <span className='capitalize'>{getAttendanceStatus(selectedDate) || 'No data'}</span>
-                                    </p>
+                                    <>
+                                        <p className="font-semibold mt-2">
+                                            Status on {selectedDate.toDateString()}: {' '}
+                                            <span className='capitalize'>{getAttendanceStatus(selectedDate)?.status || 'No data'}</span>
+                                        </p>
+                                        {employee &&
+                                            <div className='text-sm flex gap-6 mt-2 justify-center'>
+                                                <span>
+                                                    In Time: {getAttendanceStatus(selectedDate)?.inTime || 'No data'}
+                                                </span>
+                                                <span>
+                                                    Out Time: {getAttendanceStatus(selectedDate)?.outTime || 'No data'}
+                                                </span>
+                                            </div>
+                                        }
+                                    </>
                                 )}
                             </div>
                         </div>
