@@ -22,7 +22,12 @@ export const teacherSchema = z.object({
 
     dob: z.string().refine(val => !isNaN(Date.parse(val)), { message: 'Invalid date of birth' }),
 
-    wage: z.coerce.number().min(0, { message: 'Wage must be a positive number' }),
+    basicSalary: z.coerce.number().min(0, { message: 'Wage is required' }).optional(),
+
+    allowances: z.array(z.object({
+        amount: z.coerce.number().min(0, { message: 'Amount must be greater than 0' }),
+        title: z.string({ required_error: 'Title is required' }).min(1, { message: 'Title is required' })
+    })).optional(),
 
     profileImageId: z.string().nullish(),
 
@@ -55,7 +60,8 @@ export const teacherFormDefaultValues: Partial<teacherSchemaType> = {
     gender: undefined,
     email: '',
     dob: '',
-    wage: undefined,
+    basicSalary: undefined,
+    allowances: [],
     profileImageId: undefined,
     qualification: '',
     shortDescription: '',

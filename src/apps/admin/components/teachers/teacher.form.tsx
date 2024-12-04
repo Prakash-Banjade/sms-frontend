@@ -4,10 +4,13 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { teacherFormDefaultValues, teacherSchema, teacherSchemaType } from "../../schemas/teacher.schema";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Plus, Trash } from "lucide-react";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
@@ -27,6 +30,12 @@ export default function TeacherForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<teacherSchemaType>, any>();
 
     async function onSubmit(values: teacherSchemaType) {
+        // validating basic salary manually because, it is not required in update but required in create
+        if (!params.id && !values.basicSalary) {
+            form.setError("basicSalary", { message: "Basic salary is required" });
+            form.setFocus("basicSalary");
+        }
+
         const method = !!params.id ? "patch" : "post";
 
         const response = await mutateAsync({
@@ -145,15 +154,6 @@ export default function TeacherForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Number<teacherSchemaType>
-                            name="wage"
-                            label="Wage"
-                            placeholder="eg. 55000"
-                            description="Wage for the teacher"
-                            min={1}
-                            required
-                        />
-
                         <AppForm.DatePicker<teacherSchemaType>
                             name="joinedDate"
                             label="Joined Date"
@@ -163,14 +163,23 @@ export default function TeacherForm(props: Props) {
                             max={new Date().toISOString().split('T')[0]}
                         />
 
-                        <div>
-                            <AppForm.Textarea<teacherSchemaType>
-                                name="shortDescription"
-                                label="Short Description"
-                                placeholder="eg. An efficient, experienced teacher"
-                                description="Describe something about the teacher or leave blank."
-                            />
-                        </div>
+                        {
+                            !params.id && (
+                                <>
+                                    <AppForm.Number<teacherSchemaType>
+                                        name="basicSalary"
+                                        label="Basic Salary"
+                                        placeholder="eg. 55000"
+                                        description="Basic salary of the teacher"
+                                        min={1}
+                                        required
+                                    />
+
+                                    <EmployeeAllowanceFormFields />
+                                </>
+                            )
+                        }
+
                     </section>
                 </fieldset>
 
@@ -203,6 +212,15 @@ export default function TeacherForm(props: Props) {
                     </section>
                 </fieldset>
 
+                <div>
+                    <AppForm.Textarea<teacherSchemaType>
+                        name="shortDescription"
+                        label="Short Description"
+                        placeholder="eg. An efficient, experienced teacher"
+                        description="Describe something about the teacher or leave blank."
+                    />
+                </div>
+
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={() => navigate('/admin/teachers')}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
@@ -214,4 +232,63 @@ export default function TeacherForm(props: Props) {
             </form>
         </AppForm>
     )
+};
+
+export function EmployeeAllowanceFormFields() {
+    const form = useFormContext();
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: 'allowances',
+    });
+
+    return <section className="space-y-2">
+        <Label>Allowances</Label>
+        {
+            fields.map((field, index) => (
+                <section className="flex gap-4 items-end" key={field.id}>
+                    <AppForm.Text
+                        name={`allowances.${index}.title`}
+                        placeholder="Name (eg. Meal)"
+                        required
+                    />
+
+                    <AppForm.Number
+                        name={`allowances.${index}.amount`}
+                        placeholder="Amount (eg. 2000)"
+                        required
+                        min={0}
+                    />
+                    <Button
+                        size={'icon'}
+                        variant={'destructive'}
+                        type="button"
+                        onClick={() => remove(index)}
+                        title="Remove"
+                    >
+                        <Trash />
+                    </Button>
+                </section>
+            ))
+        }
+
+        {
+            fields.length < 3 && (
+                <div className="">
+                    <Button
+                        variant={'secondary'}
+                        type="button"
+                        onClick={() => append({ title: '', amount: '' })}
+                        title="Click to add new"
+                    >
+                        <Plus />
+                        {
+                            fields?.length === 0 ? 'Add allowance' : 'Add another'
+                        }
+                    </Button>
+                </div>
+            )
+        }
+    </section>
+
 }

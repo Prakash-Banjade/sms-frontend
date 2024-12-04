@@ -27,7 +27,6 @@ export type TeachersResponse = {
 }
 
 export type TSingleTeacher = Omit<Teacher, 'teacherFullName'> & {
-    wage: number,
     shortDescription: string | null,
     maritalStatus: EMaritalStatus,
     qualification: string,
@@ -49,7 +48,6 @@ export type TSingleTeacherDetail = {
     email: string;
     phone: string;
     dob: string;
-    wage: number;
     gender: Gender
     qualification: string;
     maritalStatus: EMaritalStatus

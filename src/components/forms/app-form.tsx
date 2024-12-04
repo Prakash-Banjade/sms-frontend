@@ -28,7 +28,7 @@ const SchemaContext = createContext<SchemaContextType<any> | null>(null);
 
 export type TFormFieldProps<T> = {
     name: keyof T;
-    label: string;
+    label?: string;
     placeholder?: string;
     description?: string;
     required?: boolean;
@@ -250,10 +250,12 @@ AppForm.Number = function Number<T extends FieldValues>({
             name={name as string}
             render={({ field }) => (
                 <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
+                    {
+                        !!label && <FormLabel>
+                            {label}
+                            {required && <span className="text-red-500">*</span>}
+                        </FormLabel>
+                    }
                     <FormControl>
                         <Input
                             type="number"

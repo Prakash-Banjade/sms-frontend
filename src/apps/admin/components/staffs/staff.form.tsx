@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings, StaffTypeMappings } from "@/utils/labelToValueMappings";
 import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../schemas/staff.schema";
 import { useEffect } from "react";
+import { EmployeeAllowanceFormFields } from "../teachers/teacher.form";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;
@@ -26,6 +27,12 @@ export default function StaffForm(props: Props) {
     const { mutateAsync, error } = useAppMutation<Partial<staffSchemaType>, any>();
 
     async function onSubmit(values: staffSchemaType) {
+        // validating basic salary manually because, it is not required in update but required in create
+        if (!params.id && !values.basicSalary) {
+            form.setError("basicSalary", { message: "Basic salary is required" });
+            form.setFocus("basicSalary");
+        }
+        
         const method = !!params.id ? "patch" : "post";
 
         const response = await mutateAsync({
@@ -161,15 +168,6 @@ export default function StaffForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Number<staffSchemaType>
-                            name="wage"
-                            label="Wage"
-                            placeholder="eg. 55000"
-                            description="Wage for the staff"
-                            min={1}
-                            required
-                        />
-
                         <AppForm.DatePicker<staffSchemaType>
                             name="joinedDate"
                             label="Joined Date"
@@ -179,14 +177,22 @@ export default function StaffForm(props: Props) {
                             max={new Date().toISOString().split('T')[0]}
                         />
 
-                        <div>
-                            <AppForm.Textarea<staffSchemaType>
-                                name="shortDescription"
-                                label="Short Description"
-                                placeholder="eg. An efficient, experienced staff"
-                                description="Describe something about the staff or leave blank."
-                            />
-                        </div>
+                        {
+                            !params.id && (
+                                <>
+                                    <AppForm.Number<staffSchemaType>
+                                        name="basicSalary"
+                                        label="Basic Salary"
+                                        placeholder="eg. 55000"
+                                        description="Basic salary of the staff"
+                                        min={1}
+                                        required
+                                    />
+
+                                    <EmployeeAllowanceFormFields />
+                                </>
+                            )
+                        }
                     </section>
                 </fieldset>
 
@@ -218,6 +224,15 @@ export default function StaffForm(props: Props) {
                         />
                     </section>
                 </fieldset>
+
+                <div>
+                    <AppForm.Textarea<staffSchemaType>
+                        name="shortDescription"
+                        label="Short Description"
+                        placeholder="eg. An efficient, experienced staff"
+                        description="Describe something about the staff or leave blank."
+                    />
+                </div>
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={() => navigate('/admin/staffs')}>Cancel</AppForm.Cancel>

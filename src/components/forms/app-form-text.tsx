@@ -21,10 +21,12 @@ export function AppFormText<T extends FieldValues>({
             name={name as string}
             render={({ field }) => (
                 <FormItem className={containerClassName}>
-                    <FormLabel>
-                        {label}
-                        {required && <span className="text-red-500">*</span>}
-                    </FormLabel>
+                    {
+                        !!label && <FormLabel>
+                            {label}
+                            {required && <span className="text-red-500">*</span>}
+                        </FormLabel>
+                    }
                     <FormControl>
                         <Input type="text" className={inputClassName} placeholder={placeholder} {...field} required={required} {...props} />
                     </FormControl>
