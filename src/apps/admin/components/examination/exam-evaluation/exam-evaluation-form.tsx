@@ -69,7 +69,7 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
         if (reports?.data && students.length) {
             form.reset({
                 ...form.getValues(),
-                evaluations: students.map(student => {
+                evaluations: students?.map(student => {
                     const foundReport = reports.data.find(report => report.student?.id === student.id);
 
                     return {
@@ -83,7 +83,12 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
 
             });
 
-            setSelectAll(reports.data?.length === students.length); 
+            setSelectAll(reports.data?.length === students.length);
+        } else if (!students?.length) {
+            form.reset({
+                ...form.getValues(),
+                evaluations: []
+            });
         }
 
     }, [students, reports])
@@ -138,6 +143,7 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                         checked={selectAll}
                                         onCheckedChange={handleSelectAll}
                                         aria-label="Select all exam subjects"
+                                        disabled={!fields.length}
                                     />
                                 </TableHead>
                                 <TableHead className='min-w-36'>Roll No</TableHead>
@@ -248,6 +254,13 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
                                     </TableCell>
                                 </TableRow>
                             ))}
+                            {
+                                fields?.length === 0 && <TableRow>
+                                    <TableCell colSpan={5} className='text-muted-foreground py-10 text-center'>
+                                        No student assigned to this subject
+                                    </TableCell>
+                                </TableRow>
+                            }
                         </TableBody>
                     </Table>
                 </div>
