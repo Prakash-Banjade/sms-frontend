@@ -51,7 +51,7 @@ export default function StaffForm(props: Props) {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => { // show error directly in form field if send by server
         const errObj = (error as any)?.response?.data?.message;
         if (!!errObj?.field) {
             form.setError(errObj.field, { message: errObj?.message });

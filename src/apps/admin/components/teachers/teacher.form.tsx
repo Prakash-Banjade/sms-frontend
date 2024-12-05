@@ -1,5 +1,4 @@
 import AppForm from "@/components/forms/app-form"
-import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
@@ -11,6 +10,7 @@ import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/uti
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash } from "lucide-react";
+import { useEffect } from "react";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
@@ -20,14 +20,13 @@ export default function TeacherForm(props: Props) {
     const params = useParams();
 
     const navigate = useNavigate();
-    const { payload } = useAuth();
 
     const form = useForm<teacherSchemaType>({
         resolver: zodResolver(teacherSchema),
         defaultValues: props?.defaultValues ?? teacherFormDefaultValues,
     });
 
-    const { mutateAsync } = useAppMutation<Partial<teacherSchemaType>, any>();
+    const { mutateAsync, error } = useAppMutation<Partial<teacherSchemaType>, any>();
 
     async function onSubmit(values: teacherSchemaType) {
         // validating basic salary manually because, it is not required in update but required in create
@@ -50,9 +49,17 @@ export default function TeacherForm(props: Props) {
         });
 
         if (response?.data?.message) {
-            navigate(`/${payload?.role}/teachers`);
+            navigate(`/admin/teachers`);
         }
     }
+
+    useEffect(() => { // show error directly in form field if send by server
+        const errObj = (error as any)?.response?.data?.message;
+        if (!!errObj?.field) {
+            form.setError(errObj.field, { message: errObj?.message });
+            form.setFocus(errObj.field);
+        }
+    }, [error])
 
     return (
         <AppForm schema={teacherSchema} form={form}>
