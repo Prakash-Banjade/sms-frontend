@@ -5,6 +5,7 @@ import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import { lazy } from 'react';
+import SalaryStructuresPage from './pages/finance-system/salary-management/salary-structures/salary-structures.page';
 const AddAcademicYear = lazy(() => import('./pages/academic-year/add-academic-year.page'));
 const AcademicYearsListPage = lazy(() => import('./pages/academic-year/academic-years-list.page'));
 const ClassesListPage = lazy(() => import('./pages/classes/classes-list.page'));
@@ -212,6 +213,11 @@ const AdminRoutes = () => {
                                 <Route index element={<FeeBillingAndPaymentsPage />} />
                                 <Route path="student" element={<SingleStudentFeeDetailsPage />} />
                             </Route>
+                        </Route>
+                        <Route path="salary-management">
+                            <Route index element={<Navigate to="salary-structures" />} />
+                            <Route path="salary-structures" element={<SalaryStructuresPage />} />
+                            {/* <Route path="salary-adjustments" element={<SalaryAdjustmentsPage />} /> */}
                         </Route>
                     </Route>
                     <Route path="reports">

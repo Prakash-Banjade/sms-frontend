@@ -3,14 +3,12 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { teacherFormDefaultValues, teacherSchema, teacherSchemaType } from "../../schemas/teacher.schema";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Plus, Trash } from "lucide-react";
 import { useEffect } from "react";
+import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
@@ -240,62 +238,3 @@ export default function TeacherForm(props: Props) {
         </AppForm>
     )
 };
-
-export function EmployeeAllowanceFormFields() {
-    const form = useFormContext();
-
-    const { fields, append, remove } = useFieldArray({
-        control: form.control,
-        name: 'allowances',
-    });
-
-    return <section className="space-y-2">
-        <Label>Allowances</Label>
-        {
-            fields.map((field, index) => (
-                <section className="flex gap-4 items-end" key={field.id}>
-                    <AppForm.Text
-                        name={`allowances.${index}.title`}
-                        placeholder="Name (eg. Meal)"
-                        required
-                    />
-
-                    <AppForm.Number
-                        name={`allowances.${index}.amount`}
-                        placeholder="Amount (eg. 2000)"
-                        required
-                        min={0}
-                    />
-                    <Button
-                        size={'icon'}
-                        variant={'destructive'}
-                        type="button"
-                        onClick={() => remove(index)}
-                        title="Remove"
-                    >
-                        <Trash />
-                    </Button>
-                </section>
-            ))
-        }
-
-        {
-            fields.length < 3 && (
-                <div className="">
-                    <Button
-                        variant={'secondary'}
-                        type="button"
-                        onClick={() => append({ title: '', amount: '' })}
-                        title="Click to add new"
-                    >
-                        <Plus />
-                        {
-                            fields?.length === 0 ? 'Add allowance' : 'Add another'
-                        }
-                    </Button>
-                </div>
-            )
-        }
-    </section>
-
-}

@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings, StaffTypeMappings } from "@/utils/labelToValueMappings";
 import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../schemas/staff.schema";
 import { useEffect } from "react";
-import { EmployeeAllowanceFormFields } from "../teachers/teacher.form";
+import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;

@@ -323,7 +323,21 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
             {
                 title: "Salary Management",
                 url: "finance/salary-management",
-                icon: HandCoins
+                icon: HandCoins,
+                items: [
+                    {
+                        title: "Salary Structure",
+                        url: "salary-structures",
+                    },
+                    {
+                        title: "Salary Adjustment",
+                        url: "salary-adjustments",
+                    },
+                    {
+                        title: "Payroll",
+                        url: "payrolls",
+                    }
+                ]
             }
         ]
     },
