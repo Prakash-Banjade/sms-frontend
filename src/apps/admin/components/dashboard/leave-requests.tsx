@@ -133,7 +133,7 @@ export default function Dashboard_LeaveRequests() {
                                         })
                                     }
                                     <div className="flex justify-between gap-5 items-center text-sm text-muted-foreground">
-                                        <span>Total: {leaveRequests?.studentsLeaveRequests?.total}</span>
+                                        <span>Total: {leaveRequests?.teachersLeaveRequests?.total}</span>
                                         <Link
                                             to="/admin/employees/leave-requests?status=pending"
                                             className="hover:underline text-foreground"
