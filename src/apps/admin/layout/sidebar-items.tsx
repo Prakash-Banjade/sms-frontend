@@ -330,13 +330,9 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                         url: "salary-structures",
                     },
                     {
-                        title: "Salary Adjustment",
-                        url: "salary-adjustments",
+                        title: "Payroll & Payments",
+                        url: "payroll-and-payments",
                     },
-                    {
-                        title: "Payroll",
-                        url: "payrolls",
-                    }
                 ]
             }
         ]

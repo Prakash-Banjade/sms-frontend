@@ -21,3 +21,14 @@ export type TSalaryStructureResponse = {
     data: TSalaryStructure[],
     meta: TMeta
 }
+
+export type TEmployees = {
+    data: {
+        id: string,
+        payAmount: number,
+        fullName: string,
+        employeeId: number,
+        designation: Role
+    }[],
+    meta: TMeta
+}

@@ -39,12 +39,12 @@ function SalaryStructuresTable() {
       columns={salaryStructureColumns}
       data={data?.data ?? []}
       meta={data?.meta}
-      filters={<SearchFilters />}
+      filters={<SalaryStructureSearchFilters />}
     />
   )
 }
 
-function SearchFilters() {
+export function SalaryStructureSearchFilters() {
   return (
     <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
       <SearchInput label="Search" placeholder="Search by name" />
