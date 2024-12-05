@@ -41,6 +41,11 @@ export const salaryStructureColumns: ColumnDef<TSalaryStructure>[] = [
         }
     },
     {
+        header: "Designation",
+        accessorKey: "designation",
+        cell: ({ row }) => <p className="capitalize">{row.original.designation}</p>
+    },
+    {
         accessorKey: "basicSalary",
         header: ({ column }) => {
             return <DataTableColumnHeader column={column} title="Basic Salary" />

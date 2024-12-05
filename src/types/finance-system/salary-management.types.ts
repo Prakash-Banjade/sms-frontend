@@ -1,4 +1,4 @@
-import { TMeta } from "../global.type";
+import { Role, TMeta } from "../global.type";
 
 export type TAllowance = {
     title: string;
@@ -14,6 +14,7 @@ export type TSalaryStructure = {
     employeeId: number,
     teacherId: string | null,
     staffId: string | null,
+    designation: Role
 };
 
 export type TSalaryStructureResponse = {
