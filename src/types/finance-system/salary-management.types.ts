@@ -1,12 +1,14 @@
 import { TMeta } from "../global.type";
 
+export type TAllowance = {
+    title: string;
+    amount: number;
+}
+
 export type TSalaryStructure = {
     id: string;
     basicSalary: number;
-    allowances: {
-        title: string;
-        amount: number;
-    }[];
+    allowances: TAllowance[] | string;
     grossSalary: number;
     fullName: string;
     employeeId: number,

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TSalaryStructure } from "@/types/finance-system/salary-management.types"
+import { TAllowance, TSalaryStructure } from "@/types/finance-system/salary-management.types"
 import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { TooltipWrapper } from "@/components/ui/tooltip"
@@ -51,7 +51,9 @@ export const salaryStructureColumns: ColumnDef<TSalaryStructure>[] = [
         accessorKey: "allowances",
         header: "Allowances",
         cell: ({ row }) => {
-            const allowances = row.original.allowances;
+            const allowances = typeof row.original.allowances === 'string'
+                ? JSON.parse(row.original.allowances) as TAllowance[]
+                : row.original.allowances;
 
             return (
                 <ul>
@@ -88,7 +90,9 @@ export const salaryStructureColumns: ColumnDef<TSalaryStructure>[] = [
                             salaryStructureId={row.original.id}
                             defaultValues={{
                                 basicSalary: row.original.basicSalary,
-                                allowances: row.original.allowances
+                                allowances: typeof row.original.allowances === 'string'
+                                    ? JSON.parse(row.original.allowances)
+                                    : row.original.allowances
                             }}
                         />
                     </ResponsiveDialog>
