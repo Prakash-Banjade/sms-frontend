@@ -1,7 +1,7 @@
 import { TSingleTeacherDetail } from '@/types/teacher.type'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
-import { Cake, Calendar as CalendarIcon, GraduationCap, Heart, Droplet, CreditCard, DollarSign } from "lucide-react"
+import { Cake, Calendar as CalendarIcon, GraduationCap, Heart, Droplet, CreditCard } from "lucide-react"
 import { formatDate } from '@/utils/format-date'
 
 type Props = {
