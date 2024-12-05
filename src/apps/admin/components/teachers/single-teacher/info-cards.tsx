@@ -65,10 +65,6 @@ export function FinancialInfoCard({ teacher }: Props) {
                             <TableCell className="font-medium">Account Name</TableCell>
                             <TableCell>{teacher.accountName}</TableCell>
                         </TableRow>
-                        <TableRow>
-                            <TableCell className="font-medium"><DollarSign className="w-4 h-4 inline mr-2" />Wage</TableCell>
-                            <TableCell>{teacher.wage}</TableCell>
-                        </TableRow>
                     </TableBody>
                 </Table>
             </CardContent>
