@@ -7,6 +7,7 @@ import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import { lazy } from 'react';
 import SalaryStructuresPage from './pages/finance-system/salary-management/salary-structures/salary-structures.page';
 import PayrollAndPaymentsPage from './pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page';
+import SingleEmployeeSalaryDetailsPage from './pages/finance-system/salary-management/payroll-and-payments/single-employee-salary-details.page';
 const AddAcademicYear = lazy(() => import('./pages/academic-year/add-academic-year.page'));
 const AcademicYearsListPage = lazy(() => import('./pages/academic-year/academic-years-list.page'));
 const ClassesListPage = lazy(() => import('./pages/classes/classes-list.page'));
@@ -218,7 +219,10 @@ const AdminRoutes = () => {
                         <Route path="salary-management">
                             <Route index element={<Navigate to="salary-structures" />} />
                             <Route path="salary-structures" element={<SalaryStructuresPage />} />
-                            <Route path="payroll-and-payments" element={<PayrollAndPaymentsPage />} />
+                            <Route path="payroll-and-payments">
+                                <Route index element={<PayrollAndPaymentsPage />} />
+                                <Route path="employee" element={<SingleEmployeeSalaryDetailsPage />} />
+                            </Route>
                         </Route>
                     </Route>
                     <Route path="reports">

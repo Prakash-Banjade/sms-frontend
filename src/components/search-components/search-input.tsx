@@ -17,7 +17,7 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
 
     useEffect(() => {
         const handler = setTimeout(() => {
-            setSearchParams(searchKey, searchTerm);
+            setSearchParams(searchKey, searchTerm?.trim());
         }, 500);
 
         return () => clearTimeout(handler);

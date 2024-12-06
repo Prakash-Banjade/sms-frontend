@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { TEmployees } from "@/types/finance-system/salary-management.types"
+import { Link } from "react-router-dom"
 
 export const employeesColumns: ColumnDef<TEmployees['data'][0]>[] = [
     {
@@ -10,10 +11,24 @@ export const employeesColumns: ColumnDef<TEmployees['data'][0]>[] = [
     {
         header: "Employee ID",
         accessorKey: "employeeId",
+        cell: ({ row }) => {
+            return (
+                <Link to={`employee?employeeID=${row.original.employeeId}`} className="hover:underline">
+                    {row.original.employeeId}
+                </Link>
+            )
+        }
     },
     {
         header: "Employee Name",
         accessorKey: "fullName",
+        cell: ({ row }) => {
+            return (
+                <Link to={`employee?employeeID=${row.original.employeeId}`} className="hover:underline">
+                    {row.original.fullName}
+                </Link>
+            )
+        }
     },
     {
         header: "Designation",

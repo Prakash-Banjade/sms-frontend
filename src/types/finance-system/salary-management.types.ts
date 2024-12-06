@@ -1,5 +1,12 @@
 import { Role, TMeta } from "../global.type";
 
+export enum ESalaryAdjustmentType {
+    Bonus = 'bonus',
+    Deduction = 'deduction',
+    Advance = 'advance',
+    Allowance = 'allowance',
+}
+
 export type TAllowance = {
     title: string;
     amount: number;
@@ -31,4 +38,25 @@ export type TEmployees = {
         designation: Role
     }[],
     meta: TMeta
+};
+
+export type TSalaryEmployee = {
+    employee: {
+        id: string,
+        payAmount: number,
+        fullName: string,
+        employeeId: number,
+        designation: Role,
+        profileImageUrl: string | null;
+        phone: string;
+        email: string;
+    },
+    basicSalary: number,
+    grossSalary: number,
+    allowances: {
+        title: string,
+        amount: number
+    }[],
+    lastPayrollDate: string | null;
+    lastAdvanceAmount: number | null;
 }

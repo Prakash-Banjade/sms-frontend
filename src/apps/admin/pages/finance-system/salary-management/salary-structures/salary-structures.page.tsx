@@ -47,7 +47,7 @@ function SalaryStructuresTable() {
 export function SalaryStructureSearchFilters() {
   return (
     <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
-      <SearchInput label="Search" placeholder="Search by name" />
+      <SearchInput label="Search" placeholder="By name or ID" />
       <FacetedFilter
         options={[
           { label: "Teacher", value: Role.TEACHER },
