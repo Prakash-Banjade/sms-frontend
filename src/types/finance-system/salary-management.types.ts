@@ -5,6 +5,7 @@ export enum ESalaryAdjustmentType {
     Deduction = 'deduction',
     Advance = 'advance',
     Allowance = 'allowance',
+    Unpaid = 'unpaid',
 }
 
 export type TAllowance = {
@@ -60,3 +61,24 @@ export type TSalaryEmployee = {
     lastPayrollDate: string | null;
     lastAdvanceAmount: number | null;
 }
+
+export type TLastPayroll = {
+    id: string,
+    date: string,
+    netSalary: number,
+    grossSalary: number,
+    employee: {
+        id: string,
+        email: string,
+        phone: string,
+        fullName: string,
+        employeeId: number,
+        designation: string
+    },
+    salaryAdjustments: {
+        id: string,
+        type: ESalaryAdjustmentType,
+        amount: number,
+        description: string
+    }[],
+} | null;

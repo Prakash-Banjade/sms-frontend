@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TEmployees, TSalaryEmployee, TSalaryStructureResponse } from "@/types/finance-system/salary-management.types";
+import { TEmployees, TLastPayroll, TSalaryEmployee, TSalaryStructureResponse } from "@/types/finance-system/salary-management.types";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSalaryStructures = <T = TSalaryStructureResponse>({
@@ -47,6 +47,22 @@ export const useGetSalaryEmployee = <T = TSalaryEmployee>({
     const response = useFetchData<T>({
         endpoint: QueryKey.PAYROLLS + '/employees/' + id,
         queryKey: [QueryKey.PAYROLLS, 'employees', id],
+        options,
+    })
+
+    return response;
+};
+
+export const useGetLastPayroll = <T = TLastPayroll>({
+    options,
+    id,
+}: {
+    id: string;
+    options?: Partial<UseQueryOptions<T>>;
+}) => {
+    const response = useFetchData<T>({
+        endpoint: QueryKey.PAYROLLS + '/employees/' + id + '/last-payroll',
+        queryKey: [QueryKey.PAYROLLS, 'employees', id, 'last-payroll'],
         options,
     })
 
