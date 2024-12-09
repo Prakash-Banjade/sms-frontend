@@ -54,5 +54,6 @@ export enum QueryKey {
     STUDENT_LEDGERS = "student-ledgers",
     SALARY_STRUCTURES = "salary-structures",
     PAYROLLS = "payrolls",
+    SALARY_PAYMENTS = "salary-payments",
     GENERAL_SETTINGS = "general-settings",
 };

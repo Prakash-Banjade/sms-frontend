@@ -10,13 +10,14 @@ import { startOfDayString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useMemo } from "react"
-import { Minus, Plus, Printer } from "lucide-react"
+import { Minus, Plus } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useQueryClient } from "@tanstack/react-query"
-import { useSearchParams } from "react-router-dom"
 import LoadingButton from "@/components/forms/loading-button"
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
+import PayrollPrintBtn from "./payroll-print-btn"
 
 
 type Props = {
@@ -48,11 +49,10 @@ type PayrollFormSchemaType = z.infer<typeof payrollSchema>;
 
 export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }: Props) {
     const queryClient = useQueryClient();
-    const [searchParams] = useSearchParams();
+    const { searchParams, setSearchParams } = useCustomSearchParams();
 
-    const form = useForm<PayrollFormSchemaType>({
-        resolver: zodResolver(payrollSchema),
-        defaultValues: defaultValues ?? {
+    const formDefaultValues = useMemo(() => {
+        return defaultValues ?? {
             employeeId: salaryEmployee.employee?.id,
             date: salaryEmployee.lastPayrollDate
                 ? startOfDayString(addMonths(salaryEmployee.lastPayrollDate, 1))
@@ -60,6 +60,11 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }
             salaryAdjustments: [],
             advance: 0,
         }
+    }, [defaultValues, salaryEmployee])
+
+    const form = useForm<PayrollFormSchemaType>({
+        resolver: zodResolver(payrollSchema),
+        defaultValues: formDefaultValues,
     });
 
     const totalAdjustments = useMemo(() => {
@@ -89,19 +94,22 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }
                         }
                     ] : values.salaryAdjustments
             },
+            invalidateTags: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.employeeId?.toString()]
         });
 
-        if (res.data?.message) {
+        if (res.data?.message && !payrollId) { // when new payroll is created
             queryClient.invalidateQueries({
                 queryKey: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.id],
-            })
+            });
+            setSearchParams('sub-tab', 'last');
+            // form.reset(formDefaultValues);
         };
     };
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: 'salaryAdjustments',
-    })
+    });
 
     return (
         <AppForm schema={payrollSchema} form={form}>
@@ -132,7 +140,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }
                         )}
                     />
                     {
-                        searchParams.get('sub-tab') === 'last' && <Button variant={'outline'} type="button"><Printer /> Print</Button>
+                        searchParams.get('sub-tab') === 'last' && <PayrollPrintBtn salaryEmployee={salaryEmployee} />
                     }
                 </section>
 
@@ -169,7 +177,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }
                                 }
                                 {
                                     !!salaryEmployee.lastAdvanceAmount && <TableRow>
-                                        <TableCell>Advance Salary</TableCell>
+                                        <TableCell>Previous Advance</TableCell>
                                         <TableCell className="text-right font-semibold">
                                             - Rs. {salaryEmployee.lastAdvanceAmount?.toLocaleString()}
                                         </TableCell>

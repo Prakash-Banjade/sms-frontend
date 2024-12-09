@@ -6,6 +6,7 @@ export enum ESalaryAdjustmentType {
     Advance = 'advance',
     Allowance = 'allowance',
     Unpaid = 'unpaid',
+    Past_Advance = 'past_advance', // used to track last month advance amount
 }
 
 export type TAllowance = {
@@ -81,4 +82,5 @@ export type TLastPayroll = {
         amount: number,
         description: string
     }[],
+    paidSalary: number,
 } | null;

@@ -7,7 +7,8 @@ import { HandCoins, NotebookText, ReceiptText } from "lucide-react";
 import { TSalaryEmployee } from "@/types/finance-system/salary-management.types";
 import { useGetSalaryEmployee } from "../data-access";
 import { Badge } from "@/components/ui/badge";
-import PayrollTabContent from "./payroll/payroll-tabl-content";
+import PayrollTabContent from "./payroll/payroll-tab-content";
+import SalaryPayment from "./payment/salary-payment";
 
 const tabs = [
     {
@@ -60,6 +61,9 @@ export default function SalaryPayrollAndPaymentTabs() {
                 </TabsList>
                 <TabsContent value={tabs[0].value}>
                     <PayrollTabContent salaryEmployee={data} />
+                </TabsContent>
+                <TabsContent value={tabs[1].value}>
+                    <SalaryPayment employeeId={data.employee?.id} />
                 </TabsContent>
             </Tabs>
 
