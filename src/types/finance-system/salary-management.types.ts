@@ -1,4 +1,4 @@
-import { Role, TMeta } from "../global.type";
+import { EPaymentMethod, Role, TMeta } from "../global.type";
 
 export enum ESalaryAdjustmentType {
     Bonus = 'bonus',
@@ -84,3 +84,14 @@ export type TLastPayroll = {
     }[],
     paidSalary: number,
 } | null;
+
+export type TSalaryPaymentResponse = {
+    data: {
+        id: string,
+        paymentDate: string,
+        paymentMethod: EPaymentMethod,
+        remark: string,
+        amount: number
+    }[],
+    meta: TMeta,
+}
