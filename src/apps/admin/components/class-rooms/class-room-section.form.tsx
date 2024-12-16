@@ -55,8 +55,6 @@ export default function ClassSectionForm(props: Props) {
         }
     }
 
-    console.log(form.formState.errors)
-
     return (
         <AppForm schema={classRoomFormSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

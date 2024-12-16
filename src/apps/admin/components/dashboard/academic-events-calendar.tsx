@@ -68,7 +68,6 @@ export function AcademicYearCalendar() {
   };
 
   const handleEventDrop = async (dropInfo: EventDropArg) => {
-    console.log(dropInfo)
     if (!dropInfo.event || !dropInfo.event.start || !dropInfo.event.end) return;
 
     const eventId = dropInfo.event.id;

@@ -10,7 +10,7 @@ import { startOfDayString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useMemo } from "react"
-import { Minus, Plus } from "lucide-react"
+import { Minus, Plus, TriangleAlert } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
@@ -23,11 +23,13 @@ import PayrollPrintBtn from "./payroll-print-btn"
 type Props = {
     salaryEmployee: TSalaryEmployee,
     defaultValues?: undefined
-    payrollId?: undefined
+    payrollId?: undefined,
+    paidSalary?: undefined,
 } | {
     salaryEmployee: TSalaryEmployee,
     defaultValues: PayrollFormSchemaType
-    payrollId: string
+    payrollId: string,
+    paidSalary?: number
 }
 
 const payrollSchema = z.object({
@@ -47,7 +49,7 @@ const payrollSchema = z.object({
 
 type PayrollFormSchemaType = z.infer<typeof payrollSchema>;
 
-export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }: Props) {
+export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, paidSalary }: Props) {
     const queryClient = useQueryClient();
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
@@ -97,12 +99,12 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }
             invalidateTags: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.employeeId?.toString()]
         });
 
+        queryClient.invalidateQueries({
+            queryKey: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.id], // invalidate last payroll
+        });
+
         if (res.data?.message && !payrollId) { // when new payroll is created
-            queryClient.invalidateQueries({
-                queryKey: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.id],
-            });
             setSearchParams('sub-tab', 'last');
-            // form.reset(formDefaultValues);
         };
     };
 
@@ -289,16 +291,25 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId }
                     Net Salary:&nbsp;
                     <strong>Rs. {(grossEarnings + totalAdjustments + +form.watch('advance')).toLocaleString()}</strong>
                 </section>
-                <section className="flex justify-center">
-                    <LoadingButton
-                        isLoading={isPending}
-                        loadingText={payrollId ? 'Updating...' : 'Generating...'}
-                        type="submit"
-                        disabled={isPending}
-                    >
-                        {payrollId ? 'Update Payroll' : 'Generate Payroll'}
-                    </LoadingButton>
-                </section>
+                {
+                    (!paidSalary || paidSalary === 0) && <section className="flex justify-center">
+                        <LoadingButton
+                            isLoading={isPending}
+                            loadingText={payrollId ? 'Updating...' : 'Generating...'}
+                            type="submit"
+                            disabled={isPending}
+                        >
+                            {payrollId ? 'Update Payroll' : 'Generate Payroll'}
+                        </LoadingButton>
+                    </section>
+                }
+                {
+                    payrollId && (!paidSalary || paidSalary === 0) && (
+                        <div className="bg-info/10 text-info text-sm rounded-md p-2 mt-2 mx-auto w-fit flex items-center">
+                            <TriangleAlert size={16} className="mr-2" /> Once a payment is made, the payroll can't be update anymore.
+                        </div>
+                    )
+                }
             </form>
         </AppForm>
     )

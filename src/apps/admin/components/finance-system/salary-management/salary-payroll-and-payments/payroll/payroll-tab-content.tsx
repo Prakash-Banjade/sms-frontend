@@ -75,6 +75,7 @@ function UpdatePayroll({ data, salaryEmployee }: { data: TLastPayroll, salaryEmp
                 employeeId: salaryEmployee.employee?.id,
                 salaryAdjustments: data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction || sa.type === ESalaryAdjustmentType.Bonus),
             }}
+            paidSalary={data.paidSalary}
         />
     )
 }

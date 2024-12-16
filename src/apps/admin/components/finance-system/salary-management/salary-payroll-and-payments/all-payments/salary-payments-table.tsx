@@ -60,7 +60,7 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                                 <TableCell>{item.remark}</TableCell>
                                 {
                                     index === 0 && <TableCell>
-                                        <SalaryPaymentActionColumn item={item} />
+                                        <SalaryPaymentActionColumn />
                                     </TableCell>
                                 }
                             </TableRow>
@@ -79,9 +79,8 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
     )
 }
 
-function SalaryPaymentActionColumn({ item }: { item: any }) {
+function SalaryPaymentActionColumn() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    console.log(item)
 
     return (
         <>

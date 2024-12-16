@@ -70,12 +70,7 @@ function SalaryPaymentForm({ payroll }: { payroll: TLastPayroll }) {
             invalidateTags: [QueryKey.PAYROLLS, 'employees', values.employeeId]
         });
 
-        console.log(payroll?.employee?.employeeId?.toString())
-
-        console.log(res)
-
         if (res.data?.message) {
-            console.log('submitted')
             queryclient.invalidateQueries({
                 queryKey: [QueryKey.PAYROLLS, 'employees', payroll?.employee?.employeeId?.toString()],
             });
