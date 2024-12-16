@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format } from "date-fns";
 import { EMonth } from "../fee-invoice/fee-invoice-form";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-import { StudentLedgerFilters } from "./student-ledger-filters";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Printer } from "lucide-react";
@@ -16,6 +15,7 @@ import RePrintPayment from "./re-print-payment";
 import { ELedgerItemType, TLedger_FeeInvoice, TLedger_FeePayment } from "@/types/finance-system/fee-management.types";
 import RePrintLibraryFinePayment from "./re-print-library-fine-payment";
 import RefreshBtn from "../refresh-btn";
+import { DateRangeFilter } from "@/components/search-components/date-range-filter";
 type Props = {
     studentId: string;
 }
@@ -42,7 +42,7 @@ export default function StudentLedgerView({ studentId }: Props) {
         <section className="space-y-4 mt-10">
             <header className="flex justify-between items-end gap-10">
                 <section>
-                    <StudentLedgerFilters />
+                    <DateRangeFilter />
                 </section>
 
                 <section className="flex flex-col gap-2 items-end">

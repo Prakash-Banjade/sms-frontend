@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/popover"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 
-export function StudentLedgerFilters({
+export function DateRangeFilter({
     className,
 }: React.HTMLAttributes<HTMLDivElement>) {
     const { searchParams, setSearchParams } = useCustomSearchParams();

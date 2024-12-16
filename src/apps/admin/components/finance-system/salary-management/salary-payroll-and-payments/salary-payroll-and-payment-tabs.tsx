@@ -9,6 +9,7 @@ import { useGetSalaryEmployee } from "../data-access";
 import { Badge } from "@/components/ui/badge";
 import PayrollTabContent from "./payroll/payroll-tab-content";
 import SalaryPayment from "./payment/salary-payment";
+import SalaryPaymentsTable from "./all-payments/salary-payments-table";
 
 const tabs = [
     {
@@ -64,6 +65,9 @@ export default function SalaryPayrollAndPaymentTabs() {
                 </TabsContent>
                 <TabsContent value={tabs[1].value}>
                     <SalaryPayment employeeId={data.employee?.id} />
+                </TabsContent>
+                <TabsContent value={tabs[2].value}>
+                    <SalaryPaymentsTable employeeId={data.employee?.id} />
                 </TabsContent>
             </Tabs>
 
