@@ -15,8 +15,6 @@ type PayrollTemplateProps = {
 export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateProps>(({ data, salaryEmployee }, ref) => {
     if (!data) return null;
 
-    console.log('hi there')
-
     const deductions = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction);
 
     const allowanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Allowance)?.amount ?? 0;
@@ -84,10 +82,12 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                                 <TableCell>Allowances</TableCell>
                                 <TableCell className="text-right">Rs. {allowanceAmount?.toLocaleString()}</TableCell>
                             </TableRow>
-                            <TableRow>
-                                <TableCell>Unpaid Salary</TableCell>
-                                <TableCell className="text-right">Rs. {unpaidAmount?.toLocaleString()}</TableCell>
-                            </TableRow>
+                            {
+                                unpaidAmount > 0 && <TableRow>
+                                    <TableCell>Unpaid Salary</TableCell>
+                                    <TableCell className="text-right">Rs. {unpaidAmount?.toLocaleString()}</TableCell>
+                                </TableRow>
+                            }
                             {
                                 advanceAmount > 0 && <TableRow>
                                     <TableCell>Advance Amount this month</TableCell>

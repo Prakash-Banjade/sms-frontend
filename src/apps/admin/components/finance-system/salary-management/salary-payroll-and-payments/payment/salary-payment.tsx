@@ -25,7 +25,7 @@ export default function SalaryPayment({ employeeId }: { employeeId: string }) {
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!data) return <div className="text-muted-foreground my-20 text-center">Nothing to pay!</div>;
+    if (!data || (data?.netSalary === data?.paidSalary)) return <div className="text-muted-foreground my-20 text-center">Nothing to pay!</div>;
 
     return (
         <SalaryPaymentForm payroll={data} />

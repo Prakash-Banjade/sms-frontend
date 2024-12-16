@@ -78,6 +78,7 @@ export const useGetSalaryPayments = <T = TSalaryPaymentResponse>({
 }) => {
     const response = useFetchData<T>({
         endpoint: QueryKey.SALARY_PAYMENTS,
+        queryString,
         queryKey: queryString ? [QueryKey.SALARY_PAYMENTS, queryString] : [QueryKey.SALARY_PAYMENTS],
         options,
     })

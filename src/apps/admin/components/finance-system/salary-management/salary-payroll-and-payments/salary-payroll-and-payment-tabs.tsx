@@ -92,7 +92,7 @@ function EmployeeDetails({ employee }: { employee: TSalaryEmployee['employee'] |
                     <section className="flex gap-24">
                         <div className="space-y-1">
                             <p>Employee ID: {employee?.employeeId}</p>
-                            <p>Pay Amount: Rs. {employee?.payAmount}</p>
+                            <p>Pay Amount: Rs. {employee?.payAmount?.toLocaleString()}</p>
                         </div>
 
                         <div className="space-y-1">
