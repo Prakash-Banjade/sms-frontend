@@ -32,6 +32,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
     labelKey = 'label',
     disableOnNoOption = false,
     clearQueryFilter = false, // this is used in filter components to clear the query params, when clicked on clear button
+    disabled = false,
     ...props
 }: AppFormDynamicSelectProps<T, F>) {
     const { control, setValue } = useFormContext();
@@ -39,7 +40,7 @@ export function DynamicSelect<T extends FieldValues, F = any>({
 
     const { data, isLoading } = useFetchData<PaginatedResponse<F>>(fetchOptions);
 
-    const isDisabled = disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length));
+    const isDisabled = (disableOnNoOption && ((Array.isArray(data) ? !data?.length : !data?.data?.length))) || disabled;
 
     const handleOnClear = () => {
         setValue(name as string, '')

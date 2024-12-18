@@ -12,7 +12,7 @@ export type Task = {
     classRooms: {
         id: string,
         name: string
-    }[],
+    }[] | string,
     parentClassId: string | null,
     parentClassName: string | null,
     submission: {

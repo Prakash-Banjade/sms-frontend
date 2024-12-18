@@ -27,13 +27,14 @@ export const taskColumns: ColumnDef<Task>[] = [
         accessorKey: "class",
         cell: ({ row }) => {
             const task = row.original;
+            const classRooms = typeof task.classRooms === 'string' ? JSON.parse(task.classRooms) : task.classRooms
 
             return (
                 <span>
                     {
                         task.parentClassName
                             ? task.parentClassName
-                            : task.classRooms?.[0]?.name
+                            : classRooms?.[0]?.name
                     }
                 </span>
             )
@@ -44,11 +45,14 @@ export const taskColumns: ColumnDef<Task>[] = [
         accessorKey: "sections",
         cell: ({ row }) => {
             const task = row.original;
+            const classRooms = typeof task.classRooms === 'string'
+                ? JSON.parse(task.classRooms) as { id: string, name: string }[]
+                : task.classRooms
 
             return (
                 <span className="flex gap-2 max-w-[300px] flex-wrap">
                     {
-                        (!!task.classRooms?.length && task.parentClassId) ? task.classRooms?.map(classRoom => (
+                        (!!classRooms?.length && task.parentClassId) ? classRooms?.map(classRoom => (
                             <Badge variant={'secondary'} key={classRoom.id}>{classRoom.name}</Badge>
                         )) : '-'
                     }

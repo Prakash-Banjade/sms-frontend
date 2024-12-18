@@ -10,7 +10,7 @@ export default function NewExamPage() {
 
     return (
         <ContainerLayout title="Set Up A New Exam">
-            <GetExamSubjectsForm />
+            <GetExamSubjectsForm showClassAndSearch />
             <ExamSubjectsTable />
         </ContainerLayout>
     )

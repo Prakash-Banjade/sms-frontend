@@ -15,7 +15,7 @@ export default function ExamEvaluationPage() {
         id: params.id!,
         queryString: createQueryString({
             // onlyPast: true,
-            includeExamSubjects: true, // TODO: remove this
+            // includeExamSubjects: true, // TODO: remove this
         }),
         options: { enabled: !!params.id }
     });

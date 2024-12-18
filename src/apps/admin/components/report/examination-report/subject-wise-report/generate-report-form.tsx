@@ -56,11 +56,12 @@ export default function GetExamReportBySubjectForm() {
                         placeholder="Select subject"
                         disableOnNoOption
                         containerClassName="w-[200px]"
+                        disabled={!form.watch('examTypeId')}
                         fetchOptions={{
                             endpoint: QueryKey.EXAM_SUBJECTS + '/' + QueryKey.OPTIONS,
-                            queryKey: [QueryKey.EXAM_SUBJECTS, QueryKey.OPTIONS, form.watch("classRoomId")],
-                            options: { enabled: !!form.watch("classRoomId") },
-                            queryString: `classRoomId=${form.watch("classRoomId")}`,
+                            queryKey: [QueryKey.EXAM_SUBJECTS, QueryKey.OPTIONS, form.watch("classRoomId"), form.watch("examTypeId")],
+                            options: { enabled: !!form.watch("classRoomId") && !!form.watch("examTypeId") },
+                            queryString: `classRoomId=${form.watch("classRoomId")}&examTypeId=${form.watch("examTypeId")}`,
                         }}
                         required
                     />
