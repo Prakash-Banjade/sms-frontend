@@ -1,26 +1,24 @@
+import { lazy } from "react";
 import AppRootLayout from "@/components/app-sidebar-layout/root-layout";
 import RequireAuth from "@/components/auth/require-auth";
 import { ETask, Role } from "@/types/global.type";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { studentSidebarMenuItems } from "./layout/sidebar-items";
-import StudentTaskPage from "./pages/academics/assigment.page";
-import StudentAttendenceListPage from "./pages/academics/attendence.page";
-import ClassRoutineListPage from "../admin/pages/class-routine/class-routine-list.page";
-import NoticeViewPage from "../admin/pages/notices/notice-view.page";
-import NoticePage from "./pages/notice.page";
-import SingleStudentTask from "./components/task/assignments/single-assignment";
-import StudentTeacherListPage from "./pages/student-teacher-list.page";
-import StudentVechicleDetailsPage from "./pages/student-vechicle-details.page";
-import StudentLibraryDetailsPage from "./pages/student-library-details.page";
-import LeaveRequestPage from "./pages/academics/leave-request.page";
-import LeaveRequestConfirmation from "./components/leave-request/leave-request-confirmation";
-import StudentDormitoryPage from "./pages/academics/stu-dormitory.page";
-import StudentExamRoutinePage from "./pages/academics/st-exam-routine.page";
-import StudentExamReportPage from "./pages/academics/stu-exam-report.page";
-import StudentDashboardPage from "./pages/student-dashboard.page";
-
-
-
+const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
+const StudentAttendenceListPage = lazy(() => import("./pages/academics/attendence.page"));
+const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
+const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
+const NoticePage = lazy(() => import("./pages/notice.page"));
+const SingleStudentTask = lazy(() => import("./components/task/assignments/single-assignment"));
+const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
+const StudentVechicleDetailsPage = lazy(() => import("./pages/student-vechicle-details.page"));
+const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
+const LeaveRequestPage = lazy(() => import("./pages/academics/leave-request.page"));
+const LeaveRequestConfirmation = lazy(() => import("./components/leave-request/leave-request-confirmation"));
+const StudentDormitoryPage = lazy(() => import("./pages/academics/stu-dormitory.page"));
+const StudentExamRoutinePage = lazy(() => import("./pages/academics/st-exam-routine.page"));
+const StudentExamReportPage = lazy(() => import("./pages/academics/stu-exam-report.page"));
+const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
 
 const StudentRoutes = () => {
   return (
@@ -31,20 +29,13 @@ const StudentRoutes = () => {
           <Route path="tasks">
             <Route index element={<Navigate to="homeworks" />} />
             <Route path="homeworks">
-              <Route
-                index
-                element={<StudentTaskPage type={ETask.HOMEWORK} />}
-              />
+              <Route index element={<StudentTaskPage type={ETask.HOMEWORK} />} />
               <Route path=":id">
                 <Route index element={<SingleStudentTask />} />
               </Route>
             </Route>
             <Route path="assignments">
-              <Route
-                index
-                element={<StudentTaskPage type={ETask.ASSIGNMENT} />}
-              />
-
+              <Route index element={<StudentTaskPage type={ETask.ASSIGNMENT} />} />
               <Route path=":id">
                 <Route index element={<SingleStudentTask />} />
               </Route>
