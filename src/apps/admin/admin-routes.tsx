@@ -8,6 +8,7 @@ import { lazy } from 'react';
 import SalaryStructuresPage from './pages/finance-system/salary-management/salary-structures/salary-structures.page';
 import PayrollAndPaymentsPage from './pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page';
 import SingleEmployeeSalaryDetailsPage from './pages/finance-system/salary-management/payroll-and-payments/single-employee-salary-details.page';
+import SingleStaffPage from './pages/staffs/single-staff-page';
 const AddAcademicYear = lazy(() => import('./pages/academic-year/add-academic-year.page'));
 const AcademicYearsListPage = lazy(() => import('./pages/academic-year/academic-years-list.page'));
 const ClassesListPage = lazy(() => import('./pages/classes/classes-list.page'));
@@ -171,7 +172,7 @@ const AdminRoutes = () => {
                         <Route index element={<StaffListPage />} />
                         <Route path="new" element={<AddStaffPage />} />
                         <Route path=":id">
-                            <Route index element={<div>Staff single view page</div>} />
+                            <Route index element={<SingleStaffPage />} />
                             <Route path="edit" element={<EditStaffPage />} />
                         </Route>
                     </Route>

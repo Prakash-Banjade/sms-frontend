@@ -23,7 +23,11 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
     const { setSearchParams, searchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetClassRoomsOptions({
-        queryString: 'page=1&take=50',
+        queryString: createQueryString({
+            page: 1,
+            take: 50,
+            onlyPrimaryClass: onlyClassRoom ? 'true' : undefined,
+        }),
     });
 
     const { data: subjects, isLoading: isLoadingSubjects } = useGetSubjectOptions({

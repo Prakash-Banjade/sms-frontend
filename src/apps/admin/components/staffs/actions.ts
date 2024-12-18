@@ -4,16 +4,16 @@ import { SelectOption } from "@/types/global.type";
 import { StaffWithAttendanceResponse, TSingleStaff, TStaffsResponse } from "@/types/staff.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
-export const useGetStaff = ({
+export const useGetStaff = <T = TSingleStaff>({
     id,
     queryString,
     options,
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<TSingleStaff>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
-    const response = useFetchData<TSingleStaff>({
+    const response = useFetchData<T>({
         queryKey: [QueryKey.STAFFS, id],
         endpoint: QueryKey.STAFFS,
         id,

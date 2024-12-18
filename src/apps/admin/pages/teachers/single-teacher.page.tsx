@@ -53,8 +53,8 @@ export default function SingleTeacherPage() {
                             </div>
                         </CardContent>
                     </Card>
-                    <PersonalInfoCard teacher={teacher} />
-                    <FinancialInfoCard teacher={teacher} />
+                    <PersonalInfoCard employee={teacher} />
+                    <FinancialInfoCard employee={teacher} />
                 </section>
                 <section className="space-y-6">
                     <SingleAttendanceView accountId={teacher.accountId} employee />

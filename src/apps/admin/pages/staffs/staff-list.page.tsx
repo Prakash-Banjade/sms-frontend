@@ -3,11 +3,11 @@ import { DataTable } from "@/components/data-table/data-table"
 import { staffsColumns } from "../../components/staffs/staff.columns"
 import { useSearchParams } from "react-router-dom"
 import { useGetStaffs } from "../../components/staffs/actions"
-import StaffSearchFilters from "./staff-search-filters"
+import SearchInput from "@/components/search-components/search-input"
+import { FacetedFilter } from "@/components/data-table/faceted-filter"
+import { StaffTypeMappings } from "@/utils/labelToValueMappings"
 
-type Props = {}
-
-export default function StaffListPage({ }: Props) {
+export default function StaffListPage() {
     return (
         <ContainerLayout
             title="View all staffs"
@@ -32,7 +32,11 @@ export const StaffsList = () => {
             columns={staffsColumns}
             data={data?.data ?? []}
             meta={data?.meta}
-            filters={<StaffSearchFilters />}
+            filters={<section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
+                <SearchInput placeholder="Search by name or email" label="Name or Email" />
+                <SearchInput placeholder="Search by staff ID" label="Staff ID" searchKey="staffId" className="min-w-[100px]" />
+                <FacetedFilter title="Staff Type" searchKey="type" options={Object.entries(StaffTypeMappings).map(([_, value]) => ({ label: value, value }))} />
+            </section>}
         />
     )
 }
