@@ -71,6 +71,7 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
                                                 placeholder="In Time"
                                                 name="inTime"
                                                 value={employee.attendance?.inTime ?? ''}
+                                                disabled={!!employee.attendance?.inTime && !!employee.attendance?.id}
                                                 onChange={e => updateTime(e, employee.account?.id ?? '')}
                                             />
                                         </TableCell>
@@ -83,7 +84,7 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
                                                 placeholder="Out Time"
                                                 value={employee.attendance?.outTime ?? ''}
                                                 onChange={e => updateTime(e, employee.account?.id ?? '')}
-                                                disabled={!employee.attendance}
+                                                disabled={!employee.attendance || (!!employee.attendance?.outTime && !!employee.attendance?.id)}
                                             />
                                         </TableCell>
                                     </React.Fragment>
