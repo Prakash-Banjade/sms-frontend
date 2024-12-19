@@ -27,6 +27,7 @@ export type TStudent = TStudent_BasicInfo & {
     parentClass: string,
     routeStopId: string | null;
     routeStop: string | null;
+    accountId: string;
 }
 
 export type TStudentsResponse = {

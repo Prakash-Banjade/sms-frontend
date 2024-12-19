@@ -16,7 +16,8 @@ import { TStudent } from "@/types/student.type"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
-
+import { useAppMutation } from "@/hooks/useAppMutation"
+import { QueryKey } from "@/react-query/queryKeys"
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
     {
@@ -119,6 +120,15 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         cell: ({ row }) => {
             const navigate = useNavigate();
 
+            const { mutateAsync } = useAppMutation();
+
+            const sendCredentials = async () => {
+                await mutateAsync({
+                    endpoint: QueryKey.ACCOUNTS + `/${row.original.accountId}/send-new-credentials`,
+                    method: "post",
+                });
+            }
+
             return (
                 <>
                     <DropdownMenu>
@@ -132,6 +142,9 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => navigate(`${row.original.id}/edit`)}>
                                 <span>Edit</span>
+                            </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={sendCredentials}>
+                                <span>Send Credentials</span>
                             </DropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
