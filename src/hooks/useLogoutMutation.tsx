@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/auth-provider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import usePersist from "./usePersist";
 import { useAppMutation } from "./useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
@@ -8,6 +8,7 @@ export function useLogoutMutation() {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     const { setPersist } = usePersist();
+    const location = useLocation();
 
     const { mutateAsync, isPending } = useAppMutation<void, void>();
 
