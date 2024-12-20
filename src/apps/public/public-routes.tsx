@@ -3,6 +3,7 @@ import PublicLayout from './layout/public-layout';
 import LoginPage from './pages/login.page';
 import ForgotPasswordPage from './pages/forgot-password.page';
 import ResetPasswordPage from './pages/reset-password.page';
+import ConfirmEmailPage from './pages/confirm-email.page';
 
 const PublicRoutes = () => {
     return (
@@ -13,6 +14,10 @@ const PublicRoutes = () => {
                     <Route index element={<Navigate to="/auth/login" />} />
                     <Route path="login" element={<LoginPage />} />
                     <Route path="forgot-password" element={<ForgotPasswordPage />} />
+                    <Route path="confirm-email">
+                        <Route index element={<Navigate to="/auth/login" />} />
+                        <Route path=":verificationToken" element={<ConfirmEmailPage />} />
+                    </Route>
                     <Route path="reset-password">
                         <Route index element={<Navigate to="/auth/login" />} />
                         <Route path=":token" element={<ResetPasswordPage />} />

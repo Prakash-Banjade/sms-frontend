@@ -15,6 +15,7 @@ import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
 import { EMAIL_REGEX } from "@/CONSTANTS"
+import toast from "react-hot-toast"
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const loginFormSchema = z.object({
@@ -37,7 +38,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         },
     })
 
-    const { mutateAsync } = useAppMutation<loginFormSchemaType, { access_token: string }>();
+    const { mutateAsync } = useAppMutation<loginFormSchemaType, { access_token: string } | { message: string }>();
 
     async function onSubmit(values: loginFormSchemaType) {
         const response = await mutateAsync({
@@ -47,11 +48,18 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             toastOnSuccess: false,
         });
 
-        if (response?.data && response.data?.access_token) {
+        if (!response.data) return;
+
+        if ('access_token' in response.data) {
             setAuth(response.data.access_token);
             const payload: TAuthPayload = jwtDecode(response.data.access_token);
 
             navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });
+        }
+
+        if ('message' in response.data) {
+            toast(response.data.message);
+            form.reset();
         }
     }
 

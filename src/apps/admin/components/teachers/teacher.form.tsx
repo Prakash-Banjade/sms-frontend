@@ -47,7 +47,8 @@ export default function TeacherForm(props: Props) {
         });
 
         if (response?.data?.message) {
-            navigate(`/admin/teachers`);
+            console.log(response.data)
+            // navigate(`/admin/teachers`);
         }
     }
 
