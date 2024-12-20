@@ -8,6 +8,7 @@ import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { QueryKey } from "@/react-query/queryKeys";
 
 type Props = {
     token: string;
@@ -33,7 +34,7 @@ export default function ResetPasswordForm({ token }: Props) {
     const [error, setError] = useState<string | null>(null);
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: (data: { password: string, token: string }) => axios.post(`${import.meta.env.VITE_API_URL}/auth/reset-password`, data),
+        mutationFn: (data: { password: string, token: string }) => axios.post(`${import.meta.env.VITE_API_URL}/${QueryKey.AUTH_RESET_PASSWORD}`, data),
         onError: (error) => {
             if (error instanceof AxiosError) {
                 if (error.response?.data?.message instanceof Object && 'message' in error.response.data.message) {

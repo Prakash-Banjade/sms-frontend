@@ -15,8 +15,6 @@ import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
-import { useAppMutation } from "@/hooks/useAppMutation"
-import { QueryKey } from "@/react-query/queryKeys"
 
 export const teachersColumns: ColumnDef<Teacher>[] = [
     {
@@ -93,15 +91,6 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
         cell: ({ row }) => {
             const navigate = useNavigate();
 
-            const { mutateAsync } = useAppMutation();
-
-            const sendCredentials = async () => {
-                await mutateAsync({
-                    endpoint: QueryKey.ACCOUNTS + `/${row.original.account?.id}/send-new-credentials`,
-                    method: "post",
-                });
-            }
-
             return (
                 <>
                     <DropdownMenu>
@@ -115,9 +104,6 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => navigate(`${row.original.id}/edit`)}>
                                 <span>Edit</span>
-                            </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={sendCredentials}>
-                                <span>Send Credentials</span>
                             </DropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
