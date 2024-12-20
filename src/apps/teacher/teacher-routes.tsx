@@ -1,14 +1,17 @@
+import RequireAuth from '@/components/auth/require-auth';
+import { Role } from '@/types/global.type';
 import { Route, Routes } from 'react-router-dom';
-// import TeacherLayout from './layout/TeacherLayout';
-// import TeacherDashboard from './pages/TeacherDashboard';
-// Add more teacher pages as needed
+import { teacherSidebarMenuItems } from './layout/sidebar-items';
+import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 
 const TeacherRoutes = () => {
   return (
     <Routes>
-      <Route element={<div />}>
-        <Route path="dashboard" element={<div />} />
-        {/* Add more teacher-specific routes */}
+      <Route element={<RequireAuth authorizedRoles={[Role.TEACHER]} />}>
+        <Route element={<AppRootLayout menuItems={teacherSidebarMenuItems} />}>
+          <Route path="dashboard" element={<div>This is teacher dashboard</div>} />
+          {/* Add more teacher-specific routes */}
+        </Route>
       </Route>
     </Routes>
   );
