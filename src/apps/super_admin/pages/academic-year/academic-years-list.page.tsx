@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table/data-table"
 import { academicYearColumns } from "../../components/academic-year/academic-years.columns"
 import { useSearchParams } from "react-router-dom"
-import { useGetAcademicYears } from "../../components/academic-year/actions"
+import { useGetAcademicYears } from "../../data-access/academic-year-data-access"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button';

@@ -16,21 +16,6 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
         groupLabel: "Academic Administration",
         menuItems: [
             {
-                title: "Academic Year",
-                url: "academic-years",
-                icon: Calendar,
-                items: [
-                    {
-                        title: "Academic Years",
-                        url: "",
-                    },
-                    {
-                        title: "Add Academic Year",
-                        url: "new",
-                    },
-                ]
-            },
-            {
                 title: "Class",
                 url: "classes",
                 icon: Building,

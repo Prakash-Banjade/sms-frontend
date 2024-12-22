@@ -7,7 +7,7 @@ import { StudentDetailedMarksTable } from './student-detailed-marks-table'
 import { Button } from '@/components/ui/button'
 import { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
-import { useGetActiveAcademicYear } from '../../academic-year/actions'
+import { useGetActiveAcademicYear } from '../../../../super_admin/data-access/academic-year-data-access'
 
 type Props = {
     data: TExamReportByStudent;

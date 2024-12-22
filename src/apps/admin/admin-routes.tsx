@@ -9,8 +9,6 @@ import SalaryStructuresPage from './pages/finance-system/salary-management/salar
 import PayrollAndPaymentsPage from './pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page';
 import SingleEmployeeSalaryDetailsPage from './pages/finance-system/salary-management/payroll-and-payments/single-employee-salary-details.page';
 import SingleStaffPage from './pages/staffs/single-staff-page';
-const AddAcademicYear = lazy(() => import('./pages/academic-year/add-academic-year.page'));
-const AcademicYearsListPage = lazy(() => import('./pages/academic-year/academic-years-list.page'));
 const ClassesListPage = lazy(() => import('./pages/classes/classes-list.page'));
 const AddClassPage = lazy(() => import('./pages/classes/add-class-page'));
 const SubjectsListPage = lazy(() => import('./pages/subjects/subjects-list.page'));
@@ -83,10 +81,6 @@ const AdminRoutes = () => {
             <Route element={<RequireAuth authorizedRoles={[Role.ADMIN]} />}>
                 <Route element={<AppRootLayout menuItems={adminSidebarMenuItems} />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="academic-years">
-                        <Route index element={<AcademicYearsListPage />} />
-                        <Route path="new" element={<AddAcademicYear />} />
-                    </Route>
                     <Route path="classes">
                         <Route index element={<ClassesListPage />} />
                         <Route path="new" element={<AddClassPage />} />

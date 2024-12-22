@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useAuth } from "@/contexts/auth-provider";
 import { Suspense, useMemo } from "react";
-import { useGetActiveAcademicYear } from "@/apps/admin/components/academic-year/actions";
+import { useGetActiveAcademicYear } from "@/apps/super_admin/data-access/academic-year-data-access";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
 
