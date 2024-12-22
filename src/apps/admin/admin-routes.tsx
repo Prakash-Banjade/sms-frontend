@@ -1,14 +1,14 @@
+import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AdminDashboard } from './pages/dashboard';
 import { adminSidebarMenuItems } from './layout/sidebar-items';
 import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
-import { lazy } from 'react';
-import SalaryStructuresPage from './pages/finance-system/salary-management/salary-structures/salary-structures.page';
-import PayrollAndPaymentsPage from './pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page';
-import SingleEmployeeSalaryDetailsPage from './pages/finance-system/salary-management/payroll-and-payments/single-employee-salary-details.page';
-import SingleStaffPage from './pages/staffs/single-staff-page';
+const SingleStaffPage = lazy(() => import('./pages/staffs/single-staff-page'));
+const SalaryStructuresPage = lazy(() => import('./pages/finance-system/salary-management/salary-structures/salary-structures.page'));
+const PayrollAndPaymentsPage = lazy(() => import('./pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page'));
+const SingleEmployeeSalaryDetailsPage = lazy(() => import('./pages/finance-system/salary-management/payroll-and-payments/single-employee-salary-details.page'));
+const AdminDashboard = lazy(() => import('./pages/dashboard'));
 const ClassesListPage = lazy(() => import('./pages/classes/classes-list.page'));
 const AddClassPage = lazy(() => import('./pages/classes/add-class-page'));
 const SubjectsListPage = lazy(() => import('./pages/subjects/subjects-list.page'));
@@ -53,8 +53,6 @@ const StudentChangeClassPage = lazy(() => import('./pages/students-management/ch
 const StudentPromotionPage = lazy(() => import('./pages/students-management/student-promotion.page'));
 const RouteStopsPage = lazy(() => import('./pages/transportation/route-stops.page'));
 const VehiclesPage = lazy(() => import('./pages/transportation/vehicles.page'));
-const ExamTypesPage = lazy(() => import('./pages/examination/exam-types.page'));
-const MarkGradesPage = lazy(() => import('./pages/examination/mark-grades.page'));
 const ExamsPage = lazy(() => import('./pages/examination/exams.page'));
 const NewExamPage = lazy(() => import('./pages/examination/new-exam.page'));
 const EditExamPage = lazy(() => import('./pages/examination/edit-exam.page'));
@@ -73,7 +71,6 @@ const FeeStructuresPage = lazy(() => import('./pages/finance-system/fee-manageme
 const FeeBillingAndPaymentsPage = lazy(() => import('./pages/finance-system/fee-management/billings-and-payments/fee-billing-and-payment.page'));
 const SingleStudentFeeDetailsPage = lazy(() => import('./pages/finance-system/fee-management/billings-and-payments/single-student-fee-details.page'));
 const GeneralSettingsPage = lazy(() => import('./pages/settings/general-settings.page'));
-
 
 const AdminRoutes = () => {
     return (
@@ -106,8 +103,6 @@ const AdminRoutes = () => {
                     </Route>
                     <Route path="examination">
                         <Route index element={<Navigate to="exam-setup" />} />
-                        <Route path="exam-type" element={<ExamTypesPage />} />
-                        <Route path="marks-grade" element={<MarkGradesPage />} />
                         <Route path="exam-setup">
                             <Route index element={<ExamsPage />} />
                             <Route path="new" element={<NewExamPage />} />

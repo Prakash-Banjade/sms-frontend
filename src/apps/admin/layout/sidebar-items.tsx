@@ -75,14 +75,6 @@ export const adminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: BookOpenCheck,
                 items: [
                     {
-                        title: "Marks Grade",
-                        url: "marks-grade",
-                    },
-                    {
-                        title: "Exam Type",
-                        url: "exam-type",
-                    },
-                    {
                         title: "Exam Setup & Evaluation",
                         url: "exam-setup",
                     },

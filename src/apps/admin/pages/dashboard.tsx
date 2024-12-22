@@ -12,7 +12,7 @@ const financeData = Array.from({ length: 12 }).map((_, i) => ({
     expense: 1800 + Math.random() * 900,
 }))
 
-export function AdminDashboard() {
+export default function AdminDashboard() {
     const { data: dashboard, isLoading } = useGetAdminDashboard({});
 
     return (
