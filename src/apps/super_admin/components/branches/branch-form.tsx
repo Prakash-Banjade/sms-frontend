@@ -74,6 +74,7 @@ export default function BranchForm(props: Props) {
                         label="Address"
                         description="Address of the branch."
                         placeholder="eg. Tilottama-9, Butwal"
+                        required
                     />
                 </section>
                 <AppForm.Textarea<branchFormType>

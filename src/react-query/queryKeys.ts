@@ -9,6 +9,7 @@ export enum QueryKey {
     AUTH_VERIFY_EMAIL_CONFIRM_TOKEN = "auth/verify-email-confirm-token",
     DASHBOARD = "dashboard",
     ME = "accounts/me",
+    USERS = "users",
     TEACHERS = "teachers",
     STAFFS = "staffs",
     STUDENTS = "students",

@@ -22,7 +22,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Admins",
-                url: "branch-admins",
+                url: "admins",
                 icon: Users,
                 items: [
                     {
