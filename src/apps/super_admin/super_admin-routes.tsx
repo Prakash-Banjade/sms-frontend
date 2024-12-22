@@ -4,6 +4,7 @@ import { ETask, Role } from '@/types/global.type';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { superAdminSidebarMenuItems } from './layout/sidebar-items';
+import BranchesListPage from './pages/branches/branches-list.page';
 const AcademicYearsListPage = lazy(() => import('./pages/academic-year/academic-years-list.page'));
 const AddAcademicYear = lazy(() => import('./pages/academic-year/add-academic-year.page'));
 const ExamTypesPage = lazy(() => import('../admin/pages/examination/exam-types.page'));
@@ -83,6 +84,9 @@ const SuperAdminRoutes = () => {
             <Route element={<RequireAuth authorizedRoles={[Role.SUPER_ADMIN]} />}>
                 <Route element={<AppRootLayout menuItems={superAdminSidebarMenuItems} />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
+                    <Route path="branches">
+                        <Route index element={<BranchesListPage />} />
+                    </Route>
                     <Route path="academic-years">
                         <Route index element={<AcademicYearsListPage />} />
                         <Route path="new" element={<AddAcademicYear />} />

@@ -19,16 +19,6 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Branches",
                 url: "branches",
                 icon: Building,
-                items: [
-                    {
-                        title: "Branch List",
-                        url: "",
-                    },
-                    {
-                        title: "Add Branch",
-                        url: "new",
-                    },
-                ]
             },
             {
                 title: "Admins",

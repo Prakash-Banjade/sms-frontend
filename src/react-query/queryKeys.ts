@@ -12,6 +12,7 @@ export enum QueryKey {
     TEACHERS = "teachers",
     STAFFS = "staffs",
     STUDENTS = "students",
+    BRANCHES = "branches",
     ACADEMIC_YEARS = "academic-years",
     CLASSES = "class-rooms",
     IMAGES = "upload/images",
