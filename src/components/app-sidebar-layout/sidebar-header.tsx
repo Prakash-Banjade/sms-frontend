@@ -5,6 +5,8 @@ import { useAuth } from "@/contexts/auth-provider";
 import { Role } from "@/types/global.type";
 import { useGetBranchOptions } from "@/apps/super_admin/data-access/branches-data-access";
 import { useNavigate } from "react-router-dom";
+import { useCurrentUser } from "@/contexts/user-provider";
+import { cn } from "@/lib/utils";
 
 export function AppSidebarHeader() {
     const { isMobile } = useSidebar();
@@ -17,6 +19,8 @@ export function AppSidebarHeader() {
         }
     });
 
+    const { user } = useCurrentUser();
+
     return (
         <SidebarHeader>
             <SidebarMenu>
@@ -25,14 +29,14 @@ export function AppSidebarHeader() {
                         <DropdownMenuTrigger asChild>
                             <SidebarMenuButton
                                 size="lg"
-                                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                className={cn(payload?.role === Role.SUPER_ADMIN ? "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground" : "pointer-events-none")}
                             >
                                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                     <School className="size-5" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
                                     <span className="font-semibold">Abhyam Academy</span>
-                                    <span className="text-xs mt-1">Comming Soon...</span>
+                                    <span className="text-xs mt-1">{user?.branchName ?? "Comming Soon..."}</span>
                                 </div>
                                 {
                                     (payload?.role === Role.SUPER_ADMIN && !!branches?.length) && (<ChevronsUpDown className="ml-auto" />)

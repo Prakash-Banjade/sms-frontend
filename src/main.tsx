@@ -8,6 +8,7 @@ import { ThemeProvider } from './contexts/theme-provider.tsx'
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/auth-provider.tsx'
 import { TooltipProvider } from './components/ui/tooltip.tsx'
+import { UserProvider } from './contexts/user-provider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,7 +28,9 @@ createRoot(document.getElementById('root')!).render(
             }}
           />
           <TooltipProvider>
-            <App />
+            <UserProvider>
+              <App />
+            </UserProvider>
           </TooltipProvider>
         </ThemeProvider>
       </QueryClientProvider>

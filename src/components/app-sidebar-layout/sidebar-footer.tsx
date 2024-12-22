@@ -1,20 +1,17 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
-import { useFetchData } from "@/hooks/useFetchData"
 import { useLogoutMutation } from "@/hooks/useLogoutMutation"
-import { QueryKey } from "@/react-query/queryKeys"
-import { TCurrentUser } from "@/types/global.type"
-import { ChevronUp, LoaderCircle, LogOut, User2 } from "lucide-react"
+import { ChevronUp, LoaderCircle, LogOut } from "lucide-react"
+import { ProfileAvatar } from "../ui/avatar"
+import { getImageUrl } from "@/lib/utils"
+import { useCurrentUser } from "@/contexts/user-provider"
 
 export const AppSidebarFooter = () => {
     const { handleLogout, isPending } = useLogoutMutation();
 
-    const { data, isLoading } = useFetchData<TCurrentUser>({
-        queryKey: [QueryKey.ME],
-        endpoint: QueryKey.ME,
-    });
+    const { isLoading, user } = useCurrentUser();
 
-    if (isLoading || !data) return null;
+    if (isLoading || !user) return null;
 
     return (
         <SidebarFooter>
@@ -22,8 +19,9 @@ export const AppSidebarFooter = () => {
                 <SidebarMenuItem>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <SidebarMenuButton>
-                                <User2 /> {data?.firstName + " " + data?.lastName}
+                            <SidebarMenuButton className="h-12">
+                                <ProfileAvatar src={getImageUrl(user.profileImageUrl, "w=40&q=70")} name={user.firstName + " " + user.lastName} className="size-10" />
+                                {user?.firstName + " " + user?.lastName}
                                 <ChevronUp className="ml-auto" />
                             </SidebarMenuButton>
                         </DropdownMenuTrigger>
@@ -31,7 +29,7 @@ export const AppSidebarFooter = () => {
                             side="top"
                             className="w-[--radix-popper-anchor-width]"
                         >
-                            <DropdownMenuLabel className="break-words">{data?.email}</DropdownMenuLabel>
+                            <DropdownMenuLabel className="break-words">{user?.email}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <span>Account</span>

@@ -5,6 +5,7 @@ export default function PublicLayout() {
     const { payload } = useAuth();
     const location = useLocation();
 
+    console.log(payload)
     return payload?.role ? (
         <Navigate to={`/${payload.role}/dashboard`} replace state={{ from: location }} />
     ) : (
