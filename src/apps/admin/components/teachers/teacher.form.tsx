@@ -48,7 +48,7 @@ export default function TeacherForm(props: Props) {
 
         if (response?.data?.message) {
             console.log(response.data)
-            // navigate(`/admin/teachers`);
+            navigate(`/admin/teachers`);
         }
     }
 
