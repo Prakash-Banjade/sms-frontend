@@ -18,7 +18,6 @@ export default function SingleStudentFeeDetailsPage() {
 
     return (
         <div className="container mx-auto @container">
-
             <Card>
                 <CardContent className="p-6">
                     <form className="flex gap-4 items-end" onSubmit={handleSubmit}>
@@ -36,7 +35,7 @@ export default function SingleStudentFeeDetailsPage() {
                 </CardContent>
             </Card>
 
-            <FeeBillingAndPaymentTabs />
+            <FeeBillingAndPaymentTabs setStudentId={setStudentId} />
         </div>
     )
 }

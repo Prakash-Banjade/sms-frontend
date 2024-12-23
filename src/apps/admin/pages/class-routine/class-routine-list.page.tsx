@@ -5,10 +5,9 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { ClassRoutinesDisplayList } from "../../components/class-routine/routines-display-list"
 import { EDayOfWeek, Role } from "@/types/global.type"
 import { useAuth } from "@/contexts/auth-provider"
+import { isAdmin } from "@/utils/role-ckeck"
 
-type Props = {}
-
-export default function ClassRoutineListPage({ }: Props) {
+export default function ClassRoutineListPage() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
     const { payload } = useAuth()
 
@@ -27,7 +26,7 @@ export default function ClassRoutineListPage({ }: Props) {
     return (
         <div className="container mx-auto">
             {
-                payload?.role === Role.ADMIN && <ClassRoutineSearchFilters />
+                isAdmin(payload) && <ClassRoutineSearchFilters />
             }
             <Tabs defaultValue={defaultTab} className="mt-6" onValueChange={setCurrentTab}>
                 <TabsList className="w-full h-auto flex flex-wrap gap-2">
@@ -44,7 +43,7 @@ export default function ClassRoutineListPage({ }: Props) {
             {/* if role is student or teacher, no classRoomId is needed, but for admin classRoomId is required */}
             {
                 (
-                    (payload?.role === Role.ADMIN && searchParams.get("classRoomId"))
+                    (isAdmin(payload) && searchParams.get("classRoomId"))
                     || payload?.role === Role.STUDENT
                     || payload?.role === Role.TEACHER
                 ) ?

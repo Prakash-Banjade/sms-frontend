@@ -10,6 +10,7 @@ import FeeInvoiceForm from "./fee-invoice/fee-invoice-form";
 import StudentLedgerView from "./fee-ledger/student-ledger-view";
 import FeePaymentForm from "./fee-payment.tsx/fee-payment-form";
 import LibraryFinePayment from "./library-fine/library-fine-payment";
+import { useEffect } from "react";
 
 const tabs = [
     {
@@ -34,7 +35,7 @@ const tabs = [
     }
 ]
 
-export default function FeeBillingAndPaymentTabs() {
+export default function FeeBillingAndPaymentTabs({ setStudentId }: { setStudentId: React.Dispatch<React.SetStateAction<string>> }) {
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetFeeStudent({
@@ -42,7 +43,11 @@ export default function FeeBillingAndPaymentTabs() {
         options: {
             enabled: !!searchParams.get('studentID'),
         }
-    })
+    });
+
+    useEffect(() => {
+        if (data) setStudentId(data.student?.studentId?.toString() || '')
+    }, [data])
 
     if (!searchParams.get('studentID')) return <div className="h-[400px] grid place-items-center text-muted-foreground">Enter student ID to view transactions</div>
 
@@ -84,8 +89,6 @@ export default function FeeBillingAndPaymentTabs() {
 }
 
 function StudentDetails({ feeStudent }: { feeStudent: TFeeStudent['student'] | undefined }) {
-    const { searchParams } = useCustomSearchParams();
-
     if (!feeStudent) return null;
 
     return (
@@ -99,7 +102,7 @@ function StudentDetails({ feeStudent }: { feeStudent: TFeeStudent['student'] | u
                     </section>
                     <section className="flex gap-24">
                         <div className="space-y-1">
-                            <p>Student ID: {searchParams.get('studentID')}</p>
+                            <p>Student ID: {feeStudent.studentId}</p>
                             <p>Roll No: {feeStudent.rollNo}</p>
                         </div>
 
