@@ -6,9 +6,8 @@ import { useGetTeachers } from "../../components/teachers/actions"
 import TeacherSearchFilters from "../../components/teachers/teacher-search-filters"
 import { createQueryString } from "@/utils/create-query-string"
 
-type Props = {}
+export default function TeacherListPage() {
 
-export default function TeacherListPage({ }: Props) {
     return (
         <ContainerLayout
             title="View all teachers"

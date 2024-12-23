@@ -5,6 +5,7 @@ import DashboardCountCard from '@/components/dashboard/dashboard-count-card'
 import { AcademicYearCalendar } from '../components/dashboard/academic-events-calendar'
 import { useGetAdminDashboard } from '../data-access/dashboard-data-access'
 import Dashboard_LeaveRequests from '../components/dashboard/leave-requests'
+import { useAuth } from '@/contexts/auth-provider'
 
 const financeData = Array.from({ length: 12 }).map((_, i) => ({
     month: i + 1,
@@ -14,16 +15,17 @@ const financeData = Array.from({ length: 12 }).map((_, i) => ({
 
 export default function AdminDashboard() {
     const { data: dashboard, isLoading } = useGetAdminDashboard({});
+    const { payload } = useAuth();
 
     return (
         <div className='@container'>
             <div className="grid @7xl:grid-cols-3 grid-cols-1 gap-6">
                 <section className='@7xl:col-span-2'>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                        <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} navigateTo='/admin/students' />
-                        <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} navigateTo='/admin/teachers' />
-                        <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} footer='Including sections' navigateTo='/admin/classes' />
-                        <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} navigateTo='/admin/staffs' />
+                        <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/students`} />
+                        <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/teachers`} />
+                        <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} footer='Including sections' navigateTo={`/${payload?.role}/classes`} />
+                        <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} navigateTo={`/${payload?.role}/staffs`} />
                     </div>
 
                     {/* Income vs Expense Chart */}

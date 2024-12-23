@@ -17,6 +17,8 @@ import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { Badge } from "@/components/ui/badge"
 import { useQueryClient } from "@tanstack/react-query"
+import { setCookie } from "@/utils/cookie"
+import { CookieKey } from "@/CONSTANTS"
 
 export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
     {
@@ -57,6 +59,8 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
             const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
 
             async function changeActive() {
+                setCookie(CookieKey.ACADEMICYEAR_ID, academicYear.id);
+
                 await mutateAsync({
                     method: "patch",
                     endpoint: `${QueryKey.ACADEMIC_YEARS}/${academicYear.id}/change-active`,

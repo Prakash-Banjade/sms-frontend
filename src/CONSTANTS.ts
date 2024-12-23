@@ -16,3 +16,8 @@ export const MILITARY_TIME_REGEX = /^([01]\d|2[0-3]):([0-5]\d)$/;
 export const NUMBER_REGEX_STRING = '^[0-9]*$'
 
 export const ISO_TIME = 'T00:00:00Z' as const;
+
+export enum CookieKey {
+    BRANCH_ID = 'branchId',
+    ACADEMICYEAR_ID = 'academicYearId',
+}

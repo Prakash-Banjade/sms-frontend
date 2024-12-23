@@ -7,11 +7,15 @@ import { useGetBranchOptions } from "@/apps/super_admin/data-access/branches-dat
 import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "@/contexts/user-provider";
 import { cn } from "@/lib/utils";
+import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
+import { CookieKey } from "@/CONSTANTS";
+import { useState } from "react";
 
 export function AppSidebarHeader() {
     const { isMobile } = useSidebar();
     const { payload } = useAuth();
     const navigate = useNavigate();
+    const [branch, setBranch] = useState(getCookie(CookieKey.BRANCH_ID));
 
     const { data: branches } = useGetBranchOptions({
         options: {
@@ -36,7 +40,15 @@ export function AppSidebarHeader() {
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
                                     <span className="font-semibold">Abhyam Academy</span>
-                                    <span className="text-xs mt-1">{user?.branchName ?? "Comming Soon..."}</span>
+                                    <span className="text-xs mt-1">
+                                        {
+                                            user?.branchName
+                                                ? user?.branchName
+                                                : branches?.find(b => b.value === branch)?.label
+                                                    ? branches?.find(b => b.value === branch)?.label
+                                                    : "Comming Soon..."
+                                        }
+                                    </span>
                                 </div>
                                 {
                                     (payload?.role === Role.SUPER_ADMIN && !!branches?.length) && (<ChevronsUpDown className="ml-auto" />)
@@ -54,10 +66,26 @@ export function AppSidebarHeader() {
                                     <DropdownMenuLabel className="text-xs text-muted-foreground">
                                         Branches
                                     </DropdownMenuLabel>
+                                    <DropdownMenuItem
+                                        className="gap-2 p-2"
+                                        onClick={() => {
+                                            deleteCookie(CookieKey.BRANCH_ID)
+                                            setBranch(null);
+                                        }}
+                                    >
+                                        <div className="flex size-6 items-center justify-center rounded-sm border">
+                                            <School className="size-4 shrink-0" />
+                                        </div>
+                                        All
+                                    </DropdownMenuItem>
                                     {(branches ?? []).map((branch) => (
                                         <DropdownMenuItem
                                             key={branch.value}
                                             className="gap-2 p-2"
+                                            onClick={() => {
+                                                setCookie(CookieKey.BRANCH_ID, branch.value, {})
+                                                setBranch(branch.value);
+                                            }}
                                         >
                                             <div className="flex size-6 items-center justify-center rounded-sm border">
                                                 <School className="size-4 shrink-0" />
