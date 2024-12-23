@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { useAuth } from "@/contexts/auth-provider";
@@ -68,8 +68,7 @@ const PersistLogin = () => {
         content = <Outlet />;
     }
 
-
-    return content;
+    return content ?? <Navigate to="/auth/login" replace />;
 };
 
 export default PersistLogin;

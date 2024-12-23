@@ -57,7 +57,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Class",
-                url: "/admin/classes",
+                url: "classes",
                 icon: Building,
                 items: [
                     {
@@ -76,7 +76,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Subject",
-                url: "/admin/subjects",
+                url: "subjects",
                 icon: BookOpenText,
                 items: [
                     {
@@ -91,7 +91,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Class Routine",
-                url: "/admin/class-routines",
+                url: "class-routines",
                 icon: Shapes,
                 items: [
                     {
@@ -106,12 +106,12 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Lesson Plan",
-                url: "/admin/lesson-plans",
+                url: "lesson-plans",
                 icon: BookCheck,
             },
             {
                 title: "Examination",
-                url: "/admin/examination",
+                url: "examination",
                 icon: BookOpenCheck,
                 items: [
                     {
@@ -134,7 +134,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Notice",
-                url: "/admin/notices",
+                url: "notices",
                 icon: BellRing,
             }
         ]
@@ -144,7 +144,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Student Management",
-                url: "/admin/students",
+                url: "students",
                 icon: UsersRound,
                 items: [
                     {
@@ -175,7 +175,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Attendance",
-                url: "/admin/students/attendance",
+                url: "students/attendance",
                 icon: Calendar,
                 items: [
                     {
@@ -190,7 +190,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Tasks",
-                url: "/admin/tasks",
+                url: "tasks",
                 icon: BookOpenText,
                 items: [
                     {
@@ -205,7 +205,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Transportation",
-                url: "/admin/transportation",
+                url: "transportation",
                 icon: Bus,
                 items: [
                     {
@@ -220,7 +220,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Dormitory",
-                url: "/admin/dormitory",
+                url: "dormitory",
                 icon: Building,
                 items: [
                     {
@@ -244,7 +244,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Teachers",
-                url: "/admin/teachers",
+                url: "teachers",
                 icon: UsersRound,
                 items: [
                     {
@@ -259,7 +259,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Non Teaching Staffs",
-                url: "/admin/staffs",
+                url: "staffs",
                 icon: Users,
                 items: [
                     {
@@ -274,7 +274,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Attendance",
-                url: "/admin/employees",
+                url: "employees",
                 icon: Calendar,
                 items: [
                     {
@@ -294,12 +294,12 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Overview",
-                url: "/admin/library",
+                url: "library",
                 icon: Library,
             },
             {
                 title: "Manage",
-                url: "/admin/library/books",
+                url: "library/books",
                 icon: BookOpenText,
                 items: [
                     {
@@ -318,7 +318,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Issues & Returns",
-                url: "/admin/library/issues-and-returns",
+                url: "library/issues-and-returns",
                 icon: Calendar,
             },
         ]
@@ -328,7 +328,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Fee Management",
-                url: "/admin/finance/fee-management",
+                url: "finance/fee-management",
                 icon: Banknote,
                 items: [
                     {
@@ -347,7 +347,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Salary Management",
-                url: "/admin/finance/salary-management",
+                url: "finance/salary-management",
                 icon: HandCoins,
                 items: [
                     {
@@ -367,7 +367,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "Student Report",
-                url: "/admin/reports/student-report",
+                url: "reports/student-report",
                 icon: UsersRound,
                 items: [
                     {
@@ -382,7 +382,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Teacher Report",
-                url: "/admin/reports/teacher-report",
+                url: "reports/teacher-report",
                 icon: Users,
                 items: [
                     {
@@ -393,7 +393,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Staff Report",
-                url: "/admin/reports/staff-report",
+                url: "reports/staff-report",
                 icon: Users2,
                 items: [
                     {
@@ -404,12 +404,12 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Class Report",
-                url: "/admin/reports/class-report",
+                url: "reports/class-report",
                 icon: Building,
             },
             {
                 title: "Examination Report",
-                url: "/admin/reports/examination-report",
+                url: "reports/examination-report",
                 icon: BookOpenText,
                 items: [
                     {
@@ -429,7 +429,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "General Settings",
-                url: "/admin/settings/general-settings",
+                url: "settings/general-settings",
                 icon: Settings,
             }
         ]

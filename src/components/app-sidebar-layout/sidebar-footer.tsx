@@ -40,7 +40,9 @@ export const AppSidebarFooter = () => {
                             <DropdownMenuSeparator />
                             <button
                                 type="button"
-                                onClick={handleLogout}
+                                onClick={async () => {
+                                    await handleLogout();
+                                }}
                                 disabled={isPending}
                                 className="text-left flex gap-2 items-center w-full px-2 py-1.5 text-sm hover:bg-secondary transition-colors select-none rounded-sm disabled:opacity-70"
                             >

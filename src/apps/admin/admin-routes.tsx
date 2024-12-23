@@ -75,7 +75,7 @@ const GeneralSettingsPage = lazy(() => import('./pages/settings/general-settings
 const AdminRoutes = () => {
     return (
         <Routes>
-            <Route element={<RequireAuth authorizedRoles={[Role.ADMIN, Role.SUPER_ADMIN]} />}>
+            <Route element={<RequireAuth authorizedRoles={[Role.ADMIN]} />}>
                 <Route element={<AppRootLayout menuItems={adminSidebarMenuItems} />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="classes">
