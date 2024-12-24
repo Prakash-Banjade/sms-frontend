@@ -59,7 +59,11 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
             const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
 
             async function changeActive() {
-                setCookie(CookieKey.ACADEMICYEAR_ID, academicYear.id);
+                setCookie(CookieKey.ACADEMICYEAR_ID, academicYear.id, {
+                    sameSite: import.meta.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+                    secure: import.meta.env.NODE_ENV === 'production',
+                    domain: import.meta.env.VITE_API_DOMAIN,
+                });
 
                 await mutateAsync({
                     method: "patch",

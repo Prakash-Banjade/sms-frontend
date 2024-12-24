@@ -1,7 +1,6 @@
-import { CookieKey } from "@/CONSTANTS";
-
 type CookieOptions = {
     path?: string;
+    domain?: string;
     expires?: Date;
     maxAge?: number;
     secure?: boolean;
@@ -10,13 +9,17 @@ type CookieOptions = {
 
 // Set a cookie
 export const setCookie = (
-    name: CookieKey,
+    name: string,
     value: string,
     options: CookieOptions = {}
 ): void => {
-    const { path = "/", expires, maxAge, secure, sameSite = "Lax" } = options;
+    const { path = "/", domain, expires, maxAge, secure, sameSite = "Lax" } = options;
 
     let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=${path}`;
+
+    if (domain) {
+        cookieString += `; domain=${domain}`;
+    }
 
     if (expires) {
         cookieString += `; expires=${expires.toUTCString()}`;
@@ -31,12 +34,14 @@ export const setCookie = (
     }
 
     cookieString += `; sameSite=${sameSite}`;
+    
+    console.log(cookieString)
 
     document.cookie = cookieString;
 };
 
 // Get a cookie
-export const getCookie = (name: CookieKey): string | null => {
+export const getCookie = (name: string): string | null => {
     const cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
         const [key, value] = cookie.split("=");
@@ -48,6 +53,6 @@ export const getCookie = (name: CookieKey): string | null => {
 };
 
 // Delete a cookie
-export const deleteCookie = (name: CookieKey, path: string = "/"): void => {
-    setCookie(name, "", { path, maxAge: -1 });
+export const deleteCookie = (name: string, path: string = "/", domain?: string): void => {
+    setCookie(name, "", { path, domain, maxAge: -1 });
 };

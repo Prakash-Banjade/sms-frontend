@@ -83,7 +83,11 @@ export function AppSidebarHeader() {
                                             key={branch.value}
                                             className="gap-2 p-2"
                                             onClick={() => {
-                                                setCookie(CookieKey.BRANCH_ID, branch.value, {})
+                                                setCookie(CookieKey.BRANCH_ID, branch.value, {
+                                                    sameSite: import.meta.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+                                                    secure: import.meta.env.NODE_ENV === 'production',
+                                                    domain: import.meta.env.VITE_API_DOMAIN,
+                                                })
                                                 setBranch(branch.value);
                                             }}
                                         >
