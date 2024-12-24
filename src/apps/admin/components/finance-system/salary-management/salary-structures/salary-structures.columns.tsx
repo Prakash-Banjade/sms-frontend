@@ -10,6 +10,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { Link } from "react-router-dom"
 import SalaryStructureForm from "./salary-structure.form"
+import { useAuth } from "@/contexts/auth-provider"
 
 export const salaryStructureColumns: ColumnDef<TSalaryStructure>[] = [
     {
@@ -25,6 +26,8 @@ export const salaryStructureColumns: ColumnDef<TSalaryStructure>[] = [
         accessorKey: "fullName",
         cell: ({ row }) => {
             const employee = row.original;
+            const { payload } = useAuth();
+
             const route = (
                 employee.teacherId
                     ? 'teachers/'
@@ -33,7 +36,7 @@ export const salaryStructureColumns: ColumnDef<TSalaryStructure>[] = [
 
             return <TooltipWrapper label="Click to view">
                 <Link
-                    to={`/admin/${route}`}
+                    to={`/${payload?.role}/${route}`}
                     className="text-14 font-medium hover:underline">
                     {row.original.fullName}
                 </Link>

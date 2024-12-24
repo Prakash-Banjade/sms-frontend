@@ -16,7 +16,6 @@ const financeData = Array.from({ length: 12 }).map((_, i) => ({
 export default function AdminDashboard() {
     const { data: dashboard, isLoading } = useGetAdminDashboard({});
     const { payload } = useAuth();
-    console.log(payload)
 
     return (
         <div className='@container'>

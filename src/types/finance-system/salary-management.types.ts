@@ -91,7 +91,8 @@ export type TSalaryPaymentResponse = {
         paymentDate: string,
         paymentMethod: EPaymentMethod,
         remark: string,
-        amount: number
+        amount: number,
+        salaryDate: string;
     }[],
     meta: TMeta,
 }

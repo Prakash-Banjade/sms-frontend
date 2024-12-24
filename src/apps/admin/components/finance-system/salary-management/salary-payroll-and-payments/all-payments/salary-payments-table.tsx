@@ -45,6 +45,7 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                     <TableRow>
                         <TableHead>Payment Date</TableHead>
                         <TableHead>Payment Method</TableHead>
+                        <TableHead>Salary Month</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead>Remark</TableHead>
                         <TableHead></TableHead>
@@ -56,19 +57,20 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                             <TableRow key={index}>
                                 <TableCell>{format(new Date(item.paymentDate), 'dd/MM/yyyy')}</TableCell>
                                 <TableCell className="capitalize">{item.paymentMethod}</TableCell>
+                                <TableCell>{format(new Date(item.salaryDate), 'MMM yyyy')}</TableCell>
                                 <TableCell>Rs. {item.amount?.toLocaleString()}</TableCell>
-                                <TableCell>{item.remark}</TableCell>
-                                {
-                                    index === 0 && <TableCell>
-                                        <SalaryPaymentActionColumn />
-                                    </TableCell>
-                                }
+                                <TableCell>{item.remark || '-'}</TableCell>
+                                <TableCell>
+                                    {
+                                        index === 0 && <SalaryPaymentActionColumn />
+                                    }
+                                </TableCell>
                             </TableRow>
                         )
                     })}
                     {
                         data?.data?.length === 0 && <TableRow className="hover:bg-transparent">
-                            <TableCell colSpan={4} className="text-center text-muted-foreground py-10">No payments found.</TableCell>
+                            <TableCell colSpan={5} className="text-center text-muted-foreground py-10">No payments found.</TableCell>
                         </TableRow>
                     }
                 </TableBody>
