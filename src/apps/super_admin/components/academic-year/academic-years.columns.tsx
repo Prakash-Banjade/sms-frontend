@@ -60,8 +60,8 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
 
             async function changeActive() {
                 setCookie(CookieKey.ACADEMICYEAR_ID, academicYear.id, {
-                    sameSite: import.meta.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-                    secure: import.meta.env.NODE_ENV === 'production',
+                    sameSite: import.meta.env.VITE_API_ENV === 'production' ? 'None' : 'Lax',
+                    secure: import.meta.env.VITE_API_ENV === 'production',
                     domain: import.meta.env.VITE_API_DOMAIN,
                 });
 
