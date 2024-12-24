@@ -11,7 +11,7 @@ import AppForm from "@/components/forms/app-form"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TAuthPayload, useAuth } from "@/contexts/auth-provider"
+import { TAuthPayload, TCurrentUser, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
 import { EMAIL_REGEX } from "@/CONSTANTS"
@@ -38,7 +38,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         },
     })
 
-    const { mutateAsync } = useAppMutation<loginFormSchemaType, { access_token: string } | { message: string }>();
+    const { mutateAsync } = useAppMutation<loginFormSchemaType, { access_token: string, user: TCurrentUser } | { message: string }>();
 
     async function onSubmit(values: loginFormSchemaType) {
         const response = await mutateAsync({
@@ -51,7 +51,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
         if (!response.data) return;
 
         if ('access_token' in response.data) {
-            setAuth(response.data.access_token);
+            setAuth({
+                accessToken: response.data.access_token,
+                user: response.data.user,
+            });
             const payload: TAuthPayload = jwtDecode(response.data.access_token);
 
             navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });

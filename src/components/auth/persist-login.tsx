@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import { useAppMutation } from "@/hooks/useAppMutation";
-import { useAuth } from "@/contexts/auth-provider";
+import { TCurrentUser, useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import usePersist from "@/hooks/usePersist";
 import AppLoadingSkeleton from "../app-sidebar-layout/app-loading-skeleton";
@@ -14,7 +14,7 @@ const PersistLogin = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<any>(null);
 
-    const { mutateAsync, isPending, isError, isSuccess, status } = useAppMutation<void, { access_token: string }>();
+    const { mutateAsync, isPending, isError, isSuccess, status } = useAppMutation<void, { access_token: string, user: TCurrentUser }>();
 
     useEffect(() => {
 
@@ -28,7 +28,7 @@ const PersistLogin = () => {
                 })
 
                 if (response?.data?.access_token) {
-                    setAuth(response.data.access_token);
+                    setAuth({ accessToken: response.data.access_token, user: response.data.user });
                     setSuccess(true);
                 }
             } catch (err) {

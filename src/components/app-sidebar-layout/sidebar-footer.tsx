@@ -4,14 +4,11 @@ import { useLogoutMutation } from "@/hooks/useLogoutMutation"
 import { ChevronUp, LoaderCircle, LogOut } from "lucide-react"
 import { ProfileAvatar } from "../ui/avatar"
 import { getImageUrl } from "@/lib/utils"
-import { useCurrentUser } from "@/contexts/user-provider"
+import { useAuth } from "@/contexts/auth-provider"
 
 export const AppSidebarFooter = () => {
     const { handleLogout, isPending } = useLogoutMutation();
-
-    const { isLoading, user } = useCurrentUser();
-
-    if (isLoading || !user) return null;
+    const { payload } = useAuth();
 
     return (
         <SidebarFooter>
@@ -20,8 +17,8 @@ export const AppSidebarFooter = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <SidebarMenuButton className="h-12">
-                                <ProfileAvatar src={getImageUrl(user.profileImageUrl, "w=40&q=70")} name={user.firstName + " " + user.lastName} className="size-10" />
-                                {user?.firstName + " " + user?.lastName}
+                                <ProfileAvatar src={getImageUrl(payload?.profileImageUrl, "w=40&q=70")} name={payload?.firstName + " " + payload?.lastName} className="size-10" />
+                                {payload?.firstName + " " + payload?.lastName}
                                 <ChevronUp className="ml-auto" />
                             </SidebarMenuButton>
                         </DropdownMenuTrigger>
@@ -29,7 +26,7 @@ export const AppSidebarFooter = () => {
                             side="top"
                             className="w-[--radix-popper-anchor-width]"
                         >
-                            <DropdownMenuLabel className="break-words">{user?.email}</DropdownMenuLabel>
+                            <DropdownMenuLabel className="break-words">{payload?.email}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <span>Account</span>

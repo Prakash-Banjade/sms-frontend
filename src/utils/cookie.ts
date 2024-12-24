@@ -35,8 +35,6 @@ export const setCookie = (
 
     cookieString += `; sameSite=${sameSite}`;
     
-    console.log(cookieString)
-
     document.cookie = cookieString;
 };
 

@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useMutation } from "@tanstack/react-query";
 import { useAxios } from "@/services/api";
+import { CookieKey } from "@/CONSTANTS";
+import { deleteCookie } from "@/utils/cookie";
 
 export function useLogoutMutation() {
     const { setAuth } = useAuth();
@@ -16,8 +18,9 @@ export function useLogoutMutation() {
         },
         onSuccess: () => {
             localStorage.removeItem("persist")
-            setAuth(null);
+            Object.values(CookieKey).forEach(key => deleteCookie(key)); // remove cookie
             navigate("/auth/login", { replace: true, state: { from: location } });
+            setAuth(null);
         }
     });
 

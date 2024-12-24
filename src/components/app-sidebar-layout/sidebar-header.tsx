@@ -5,7 +5,6 @@ import { useAuth } from "@/contexts/auth-provider";
 import { Role } from "@/types/global.type";
 import { useGetBranchOptions } from "@/apps/super_admin/data-access/branches-data-access";
 import { useNavigate } from "react-router-dom";
-import { useCurrentUser } from "@/contexts/user-provider";
 import { cn } from "@/lib/utils";
 import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
 import { CookieKey } from "@/CONSTANTS";
@@ -15,15 +14,13 @@ export function AppSidebarHeader() {
     const { isMobile } = useSidebar();
     const { payload } = useAuth();
     const navigate = useNavigate();
-    const [branch, setBranch] = useState(getCookie(CookieKey.BRANCH_ID));
+    const [branch, setBranch] = useState(payload?.branchId ?? getCookie(CookieKey.BRANCH_ID));
 
     const { data: branches } = useGetBranchOptions({
         options: {
             enabled: payload?.role === Role.SUPER_ADMIN
         }
     });
-
-    const { user } = useCurrentUser();
 
     return (
         <SidebarHeader>
@@ -42,8 +39,8 @@ export function AppSidebarHeader() {
                                     <span className="font-semibold">Abhyam Academy</span>
                                     <span className="text-xs mt-1">
                                         {
-                                            user?.branchName
-                                                ? user?.branchName
+                                            payload?.branchName
+                                                ? payload?.branchName
                                                 : branches?.find(b => b.value === branch)?.label
                                                     ? branches?.find(b => b.value === branch)?.label
                                                     : "Comming Soon..."
