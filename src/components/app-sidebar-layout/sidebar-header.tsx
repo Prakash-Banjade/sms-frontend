@@ -9,12 +9,14 @@ import { cn } from "@/lib/utils";
 import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
 import { CookieKey } from "@/CONSTANTS";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function AppSidebarHeader() {
     const { isMobile } = useSidebar();
     const { payload } = useAuth();
     const navigate = useNavigate();
     const [branch, setBranch] = useState(payload?.branchId ?? getCookie(CookieKey.BRANCH_ID));
+    const queryClient = useQueryClient();
 
     const { data: branches } = useGetBranchOptions({
         options: {
@@ -68,6 +70,7 @@ export function AppSidebarHeader() {
                                         onClick={() => {
                                             deleteCookie(CookieKey.BRANCH_ID)
                                             setBranch(null);
+                                            queryClient.invalidateQueries(); // invalidate all cache
                                         }}
                                     >
                                         <div className="flex size-6 items-center justify-center rounded-sm border">
@@ -86,6 +89,7 @@ export function AppSidebarHeader() {
                                                     domain: import.meta.env.VITE_API_DOMAIN,
                                                 })
                                                 setBranch(branch.value);
+                                                queryClient.invalidateQueries(); // invalidate all cache
                                             }}
                                         >
                                             <div className="flex size-6 items-center justify-center rounded-sm border">
