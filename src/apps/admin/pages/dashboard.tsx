@@ -1,17 +1,29 @@
 import { PieChart, Users, Users2 } from 'lucide-react'
-import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import DashboardCountCard from '@/components/dashboard/dashboard-count-card'
 import { AcademicYearCalendar } from '../components/dashboard/academic-events-calendar'
 import { useGetAdminDashboard } from '../data-access/dashboard-data-access'
 import Dashboard_LeaveRequests from '../components/dashboard/leave-requests'
 import { useAuth } from '@/contexts/auth-provider'
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 
 const financeData = Array.from({ length: 12 }).map((_, i) => ({
     month: i + 1,
     income: 2700 + Math.random() * 900,
     expense: 1800 + Math.random() * 900,
 }))
+
+const chartConfig = {
+    income: {
+        label: "Income",
+        color: "hsl(var(--chart-1))",
+    },
+    expense: {
+        label: "Expense",
+        color: "hsl(var(--chart-2))",
+    },
+} satisfies ChartConfig
 
 export default function AdminDashboard() {
     const { data: dashboard, isLoading } = useGetAdminDashboard({});
@@ -35,16 +47,42 @@ export default function AdminDashboard() {
                             <CardDescription>Monthly financial overview</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <LineChart data={financeData}>
-                                    <XAxis dataKey="month" />
+                            <ChartContainer config={chartConfig} className='w-full h-auto'>
+                                <LineChart
+                                    accessibilityLayer
+                                    data={financeData}
+                                    margin={{
+                                        left: 12,
+                                        right: 12,
+                                    }}
+                                >
+                                    <CartesianGrid vertical={false} />
                                     <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Line type="monotone" dataKey="income" stroke="hsl(var(--success))" name="Income" />
-                                    <Line type="monotone" dataKey="expense" stroke="hsl(var(--destructive))" name="Expense" />
+                                    <XAxis
+                                        dataKey="month"
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickMargin={8}
+                                        tickFormatter={(value) => value}
+                                    />
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                                    <ChartLegend content={<ChartLegendContent />} />
+                                    <Line
+                                        dataKey="income"
+                                        type="monotone"
+                                        stroke="hsl(var(--success))"
+                                        strokeWidth={2}
+                                        dot={false}
+                                    />
+                                    <Line
+                                        dataKey="expense"
+                                        type="monotone"
+                                        stroke="hsl(var(--destructive))"
+                                        strokeWidth={2}
+                                        dot={false}
+                                    />
                                 </LineChart>
-                            </ResponsiveContainer>
+                            </ChartContainer>
                         </CardContent>
                     </Card>
 
