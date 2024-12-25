@@ -11,9 +11,11 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { ELeaveRequestStatus } from "@/types/global.type"
 import { QueryKey } from "@/react-query/queryKeys"
 import LeaveRequestsLoadingSkeleton from "./leave-request-skeleton"
+import { useAuth } from "@/contexts/auth-provider"
 
 export default function Dashboard_LeaveRequests() {
     const { data: leaveRequests, isLoading } = useGetAdminDashboardLeaveRequests({});
+    const { payload } = useAuth()
 
     const { mutateAsync } = useAppMutation();
 
@@ -84,7 +86,7 @@ export default function Dashboard_LeaveRequests() {
                                     <div className="flex justify-between gap-5 items-center text-sm text-muted-foreground">
                                         <span>Total: {leaveRequests?.studentsLeaveRequests?.total}</span>
                                         <Link
-                                            to="/admin/students/attendance/leave-requests?status=pending"
+                                            to={`/${payload?.role}/students/attendance/leave-requests?status=pending`}
                                             className="hover:underline text-foreground"
                                         >
                                             View All
@@ -135,7 +137,7 @@ export default function Dashboard_LeaveRequests() {
                                     <div className="flex justify-between gap-5 items-center text-sm text-muted-foreground">
                                         <span>Total: {leaveRequests?.teachersLeaveRequests?.total}</span>
                                         <Link
-                                            to="/admin/employees/leave-requests?status=pending"
+                                            to={`/${payload?.role}/employees/leave-requests?status=pending`}
                                             className="hover:underline text-foreground"
                                         >
                                             View All

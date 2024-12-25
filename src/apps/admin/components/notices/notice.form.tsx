@@ -1,6 +1,7 @@
 import AppForm from "@/components/forms/app-form"
 import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,6 +30,7 @@ export type noticeSchemaType = z.infer<typeof noticeSchema>;
 
 export default function NoticeForm(props: Props) {
     const navigate = useNavigate();
+    const { payload } = useAuth();
 
     const form = useForm<noticeSchemaType>({
         resolver: zodResolver(noticeSchema),
@@ -51,7 +53,7 @@ export default function NoticeForm(props: Props) {
         const id = response?.data?.id;
 
         if (!!id) {
-            navigate(`/admin/notices/${id}`);
+            navigate(`/${payload?.role}/notices/${id}`);
         }
     }
 
