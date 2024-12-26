@@ -14,8 +14,8 @@ export default function ExamEvaluationPage() {
     const { data: exam, isLoading } = useGetExam({
         id: params.id!,
         queryString: createQueryString({
-            onlyPast: true,
-            // includeExamSubjects: true, // TODO: remove this
+            // onlyPast: true,
+            includeExamSubjects: true, // TODO: remove this
         }),
         options: { enabled: !!params.id }
     });
