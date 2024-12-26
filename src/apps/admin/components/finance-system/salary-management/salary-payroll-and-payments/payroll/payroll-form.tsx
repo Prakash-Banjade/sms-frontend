@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { startOfDayString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Minus, Plus, TriangleAlert } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAppMutation } from "@/hooks/useAppMutation"
@@ -18,7 +18,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import LoadingButton from "@/components/forms/loading-button"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import PayrollPrintBtn from "./payroll-print-btn"
-
 
 type Props = {
     salaryEmployee: TSalaryEmployee,
@@ -68,6 +67,10 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
         resolver: zodResolver(payrollSchema),
         defaultValues: formDefaultValues,
     });
+
+    useEffect(() => {
+        form.reset(defaultValues ?? formDefaultValues);
+    }, [defaultValues])
 
     const totalAdjustments = useMemo(() => {
         return form.watch('salaryAdjustments')?.reduce((acc, curr) => {
