@@ -30,7 +30,7 @@ export const useGetExamTypeOptions = ({
 }) => {
     const response = useFetchData<SelectOption[]>({
         endpoint: QueryKey.EXAM_TYPES + '/' + QueryKey.OPTIONS,
-        queryKey: queryString ? [QueryKey.EXAM_TYPES, queryString] : [QueryKey.EXAM_TYPES],
+        queryKey: queryString ? [QueryKey.EXAM_TYPES, QueryKey.OPTIONS, queryString] : [QueryKey.EXAM_TYPES, QueryKey.OPTIONS],
         queryString,
         options,
     })
