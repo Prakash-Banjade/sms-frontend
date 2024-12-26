@@ -1,9 +1,9 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
-import { startOfDayString } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { addDays, format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod"
@@ -12,6 +12,8 @@ type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     studentId: string;
 }
+
+const tomorrow = format(addDays(new Date(), 1), "yyyy-MM-dd");
 
 const bookIssueFormSchema = z.object({
     bookId: z.string({ required_error: "Book ID is required" }).uuid(),
@@ -23,7 +25,7 @@ const bookIssueFormSchema = z.object({
 
 const defaultValues: Partial<bookIssueFormSchemaType> = {
     bookId: undefined,
-    dueDate: startOfDayString(new Date()),
+    dueDate: tomorrow,
 }
 
 export type bookIssueFormSchemaType = z.infer<typeof bookIssueFormSchema>;
@@ -78,7 +80,7 @@ export default function BookIssueForm({ setIsOpen, studentId }: Props) {
                     name="dueDate"
                     label="Due Date"
                     required
-                    min={new Date().toISOString().split('T')[0]}
+                    min={tomorrow}
                 />
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>

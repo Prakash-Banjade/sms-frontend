@@ -3,7 +3,8 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { TStudentTransaction } from "@/types/library-book.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { differenceInDays, startOfDay } from "date-fns";
+import { addDays, differenceInDays, format, startOfDay } from "date-fns";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod"
@@ -23,17 +24,19 @@ const bookRenewFormSchema = z.object({
     })
 })
 
-const defaultValues: Partial<bookRenewFormSchemaType> = {
-    dueDate: new Date().toISOString(),
-}
-
 export type bookRenewFormSchemaType = z.infer<typeof bookRenewFormSchema>;
 
 export default function BookRenewForm({ setIsOpen, selectedTransactions, resetSelectedTransactions }: Props) {
+    const minSelectableDueDate = useMemo(() => {
+        const dueDate = selectedTransactions.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())[0]?.dueDate
+
+        return format(addDays(new Date(dueDate), 1), 'yyyy-MM-dd')
+    }, [selectedTransactions])
+
     const form = useForm<bookRenewFormSchemaType>({
         resolver: zodResolver(bookRenewFormSchema),
         defaultValues: {
-            ...defaultValues,
+            dueDate: minSelectableDueDate,
             transactionIds: selectedTransactions?.map(t => t.id),
         },
     })
@@ -75,7 +78,7 @@ export default function BookRenewForm({ setIsOpen, selectedTransactions, resetSe
                     name="dueDate"
                     label="Due Date"
                     required
-                    min={new Date().toISOString().split('T')[0]}
+                    min={minSelectableDueDate}
                 />
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
