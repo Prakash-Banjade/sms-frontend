@@ -68,7 +68,11 @@ export function AppSidebarHeader() {
                                     <DropdownMenuItem
                                         className="gap-2 p-2"
                                         onClick={() => {
-                                            deleteCookie(CookieKey.BRANCH_ID)
+                                            deleteCookie(CookieKey.BRANCH_ID, {
+                                                sameSite: import.meta.env.VITE_API_ENV === 'production' ? 'None' : 'Lax',
+                                                secure: import.meta.env.VITE_API_ENV === 'production',
+                                                domain: import.meta.env.VITE_API_DOMAIN,
+                                            })
                                             setBranch(null);
                                             queryClient.invalidateQueries(); // invalidate all cache
                                         }}

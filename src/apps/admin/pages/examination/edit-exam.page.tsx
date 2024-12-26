@@ -9,9 +9,11 @@ import { formatDateNumeric } from "@/utils/format-date";
 import { TSingleExam } from "@/types/examination.type";
 import { TExamSubjectsSchema } from "../../schemas/exam-setup.schema";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/auth-provider";
 
 export default function EditExamPage() {
     const params = useParams();
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetExam({ // fetching the exam
         id: params.id!,
@@ -20,7 +22,7 @@ export default function EditExamPage() {
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!data) return <Navigate to="/admin/exam-setup" />
+    if (!data) return <Navigate to={`/${payload?.role}/exam-setup`} />
 
     return (
         <ContainerLayout

@@ -10,7 +10,7 @@ export const useGetTask = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<TSingleTask>
+    options?: Partial<UseQueryOptions<TSingleTask>>
 }) => {
     const response = useFetchData<TSingleTask>({
         queryKey: [QueryKey.TASKS, id],

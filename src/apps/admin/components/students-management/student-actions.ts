@@ -10,7 +10,7 @@ export const useGetStudent = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<TSingleStudent>
+    options?: Partial<UseQueryOptions<TSingleStudent>>
 }) => {
     const response = useFetchData<TSingleStudent>({
         queryKey: [QueryKey.STUDENTS, id],

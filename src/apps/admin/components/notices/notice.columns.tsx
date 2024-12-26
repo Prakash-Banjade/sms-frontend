@@ -28,7 +28,7 @@ export const noticesColumns: ColumnDef<TNotice>[] = [
         cell: ({ row }) => {
             return (
                 <TooltipWrapper label="Click to view">
-                    <Link to={`/admin/notices/${row.original.id}`} className="hover:text-blue-500 hover:underline">
+                    <Link to={`${row.original.id}`} className="hover:text-blue-500 hover:underline">
                         {row.original.title}
                     </Link>
                 </TooltipWrapper>

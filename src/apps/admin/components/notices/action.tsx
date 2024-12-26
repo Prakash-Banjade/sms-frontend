@@ -10,7 +10,7 @@ export const useGetNotice = ({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<TSingleNotice>
+    options?: Partial<UseQueryOptions<TSingleNotice>>
 }) => {
     const response = useFetchData<TSingleNotice>({
         queryKey: [QueryKey.NOTICES, id],

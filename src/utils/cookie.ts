@@ -34,7 +34,7 @@ export const setCookie = (
     }
 
     cookieString += `; sameSite=${sameSite}`;
-    
+
     document.cookie = cookieString;
 };
 
@@ -51,6 +51,7 @@ export const getCookie = (name: string): string | null => {
 };
 
 // Delete a cookie
-export const deleteCookie = (name: string, path: string = "/", domain?: string): void => {
-    setCookie(name, "", { path, domain, maxAge: -1 });
+export const deleteCookie = (name: string, options: CookieOptions = {}): void => {
+    console.log('delete cookie')
+    setCookie(name, "", { ...options, path: "/", maxAge: -1 });
 };

@@ -10,9 +10,11 @@ import { formatDate } from '@/utils/format-date'
 import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import LoadingButton from '@/components/forms/loading-button'
+import { useAuth } from '@/contexts/auth-provider'
 
 export default function SingleLessonPlanPage() {
     const params = useParams();
+    const { payload } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -34,7 +36,7 @@ export default function SingleLessonPlanPage() {
 
     if (isLoading) return <LessonPlanSkeleton />
 
-    if (!lessonPlan) return <Navigate to="/admin/lesson-plans" />;
+    if (!lessonPlan) return <Navigate to={`/${payload?.role}/lesson-plans`} />;
 
     return (
         <div className="container mx-auto">
@@ -156,12 +158,12 @@ export default function SingleLessonPlanPage() {
                             </CardHeader>
                             <CardContent>
                                 <div className="flex flex-col gap-4">
-                                    <Button className="w-full" variant="outline" onClick={() => navigate(`/admin/lesson-plans/${lessonPlan.id}/edit`, { state: { from: location } })}>
+                                    <Button className="w-full" variant="outline" onClick={() => navigate(`/${payload?.role}/lesson-plans/${lessonPlan.id}/edit`, { state: { from: location } })}>
                                         <PencilIcon className="w-4 h-4 mr-2" />
                                         Edit Lesson Plan
                                     </Button>
                                     {
-                                        lessonPlan?.status === ELessonPlanStatus.In_Progress && ( 
+                                        lessonPlan?.status === ELessonPlanStatus.In_Progress && (
                                             <LoadingButton
                                                 type="button"
                                                 isLoading={isPending}

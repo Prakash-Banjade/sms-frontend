@@ -165,7 +165,7 @@ export default function TaskForm(props: Props) {
 
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={() => navigate(`/admin/tasks/${props.taskType}s`)}>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate(`/${payload?.role}/tasks/${props.taskType}s`)}>Cancel</AppForm.Cancel>
                     <AppForm.Submit className="capitalize">
                         {
                             !!props.taskId ? "Save changes" : `Add ${props.taskType}`

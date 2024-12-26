@@ -1,9 +1,10 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { createStudentSchema } from "../../schemas/student.schema"
 import { useGetStudent } from "../../components/students-management/student-actions";
 import StudentForm from "../../components/students-management/student.form.";
 import { useMemo } from "react";
+import { useAuth } from "@/contexts/auth-provider";
 
 type Props = {}
 
@@ -15,17 +16,14 @@ export default function EditStudentPage({ }: Props) {
             title="Editing the student"
             description="Have some changes and save changes."
         >
-            {
-                !!params.id
-                    ? <StudentEditForm id={params.id} />
-                    : <Navigate to="/admin/students" />
-            }
+            <StudentEditForm id={params.id!} />
         </ContainerLayout>
     )
 }
 
 function StudentEditForm({ id }: { id: string }) {
     const navigate = useNavigate();
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetStudent({ id });
 
@@ -49,7 +47,7 @@ function StudentEditForm({ id }: { id: string }) {
 
     if (isLoading) return <div className="p-5">Loading the student info...</div>
 
-    if (!data) navigate('/admin/students');
+    if (!data) navigate(`/${payload?.role}/students`);
 
     return (
         <StudentForm

@@ -4,28 +4,29 @@ import { Navigate, useParams } from "react-router-dom"
 import { useGetSubject } from "../../components/subjects/data-access";
 import SubjectChapterList from "./subject-chapter-list";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/auth-provider";
 
 export default function SingleSubjectPage() {
     const params = useParams();
 
-    if (!params.id) return <Navigate to="/admin/subjects" />;
-
     return (
         <section className="container mx-auto">
-            <SubjectOverview subjectId={params.id} />
-            <SubjectChapterList subjectId={params.id} />
+            <SubjectOverview subjectId={params.id!} />
+            <SubjectChapterList subjectId={params.id!} />
         </section>
     )
 }
 
 function SubjectOverview({ subjectId }: { subjectId: string }) {
+    const { payload } = useAuth();
+
     const { data: subject, isLoading } = useGetSubject({
         id: subjectId,
     })
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!subject) return <Navigate to="/admin/subjects" />;
+    if (!subject) return <Navigate to={`/${payload?.role}/subjects`} />;
 
     return (
         <>

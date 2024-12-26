@@ -8,10 +8,13 @@ import { formatDate } from "@/utils/format-date";
 import { truncateFilename } from "@/utils/truncate-file-name";
 import { getImageUrl } from "@/lib/utils";
 import { useEffect } from "react";
+import { useAuth } from "@/contexts/auth-provider";
 
 export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
+    const { payload } = useAuth();
     const { data: student, isLoading } = useGetStudent({
         id,
+        options: { enabled: !!id }
     });
 
     useEffect(() => {
@@ -20,7 +23,7 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
 
     if (isLoading) return <div className="p-5">Loading the student info...</div>
 
-    if (!student) return <Navigate to="/admin/students" />;
+    if (!student) return <Navigate to={`/${payload?.role}/students`} />;
 
     return (
         <Card className="@container">

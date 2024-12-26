@@ -140,7 +140,7 @@ export default function LessonPlanForm(props: Props) {
                 </section>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={() => navigate(location.state?.from.pathname ?? `/admin/lesson-plans`, { replace: true })}>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate(location.state?.from.pathname ?? `/${payload?.role}/lesson-plans`, { replace: true })}>Cancel</AppForm.Cancel>
                     <LoadingButton // IDK why usign AppForm.Submit don't work here, so used this
                         isLoading={isPending}
                         loadingText={!!props.lessonPlanId ? "Saving..." : "Creating..."}

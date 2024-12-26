@@ -9,6 +9,7 @@ import { BloodGroupMappings, GenderMappings, MaritalStatusMappings, StaffTypeMap
 import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../schemas/staff.schema";
 import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
+import { useAuth } from "@/contexts/auth-provider";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;
@@ -16,6 +17,7 @@ type Props = {
 
 export default function StaffForm(props: Props) {
     const params = useParams();
+    const { payload } = useAuth();
 
     const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ export default function StaffForm(props: Props) {
             form.setError("basicSalary", { message: "Basic salary is required" });
             form.setFocus("basicSalary");
         }
-        
+
         const method = !!params.id ? "patch" : "post";
 
         const response = await mutateAsync({
@@ -47,7 +49,7 @@ export default function StaffForm(props: Props) {
         });
 
         if (response?.data?.message) {
-            navigate(`/admin/staffs`);
+            navigate(`/${payload?.role}/staffs`);
         }
     }
 
@@ -235,7 +237,7 @@ export default function StaffForm(props: Props) {
                 </div>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={() => navigate('/admin/staffs')}>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate(`/${payload?.role}/staffs`)}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
                             !!params.id ? "Save changes" : "Add Staff"

@@ -16,6 +16,7 @@ import { examSubjectsSchema, TExamSubjectsSchema } from '@/apps/admin/schemas/ex
 import _ from 'lodash';
 import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/contexts/auth-provider';
 
 type Props = {
     subjects: TSubject[];
@@ -29,6 +30,7 @@ type Props = {
 
 export default function ExamSetupForm({ subjects, examId, defaultValues }: Props) {
     const [searchParams] = useSearchParams();
+    const { payload } = useAuth();
 
     const [selectAll, setSelectAll] = useState(defaultValues?.examSubjects?.every(subject => subject.isChecked)); // used to track the checked subjects
 
@@ -92,7 +94,7 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
         })
 
         if (response?.data?.message) {
-            navigate(`/admin/examination/exam-setup`)
+            navigate(`/${payload?.role}/examination/exam-setup`)
         }
     }
 

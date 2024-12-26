@@ -9,6 +9,7 @@ import { teacherFormDefaultValues, teacherSchema, teacherSchemaType } from "../.
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
 import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
+import { useAuth } from "@/contexts/auth-provider";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
@@ -16,6 +17,7 @@ type Props = {
 
 export default function TeacherForm(props: Props) {
     const params = useParams();
+    const { payload } = useAuth();
 
     const navigate = useNavigate();
 
@@ -47,8 +49,7 @@ export default function TeacherForm(props: Props) {
         });
 
         if (response?.data?.message) {
-            console.log(response.data)
-            navigate(`/admin/teachers`);
+            navigate(`/${payload?.role}/teachers`);
         }
     }
 
@@ -228,7 +229,7 @@ export default function TeacherForm(props: Props) {
                 </div>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={() => navigate('/admin/teachers')}>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => navigate(`/${payload?.role}/teachers`)}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
                             !!params.id ? "Save changes" : "Add Teacher"

@@ -35,7 +35,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         },
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={`/admin/students/${row.original.id}`} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
+                <Link to={`${row.original.id}`} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
                     <ProfileAvatar
                         name={row.original.fullName}
                         src={getImageUrl(row.original.profileImageUrl, "w=40")}

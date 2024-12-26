@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import { useGetNotice } from "../../components/notices/action"
 import { TSingleNotice } from "@/types/notice.type";
 import NoticeForm from "../../components/notices/notice.form";
@@ -9,14 +9,10 @@ import { Calendar, Pencil } from "lucide-react";
 import { TooltipWrapper } from "@/components/ui/tooltip";
 import DOMPurify from 'dompurify';
 import { formatDate } from "@/utils/format-date";
+import { useAuth } from "@/contexts/auth-provider";
 
-type Props = {}
-
-export default function NoticeViewPage({ }: Props) {
+export default function NoticeViewPage() {
   const params = useParams();
-  const navigate = useNavigate();
-
-  if (!params.id) navigate('/admin/notices');
 
   return (
     <div className="container mx-auto">
@@ -26,15 +22,17 @@ export default function NoticeViewPage({ }: Props) {
 }
 
 function NoticeView({ id }: { id: string }) {
+  const { payload } = useAuth();
   const { searchParams, setSearchParams } = useCustomSearchParams();
 
   const { data, isLoading } = useGetNotice({
     id,
+    options: { enabled: !!id }
   })
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (!data) return <Navigate to="/admin/notices" />;
+  if (!data) return <Navigate to={`/${payload?.role}/notices`} />;
 
   return searchParams.get('edit') === 'true'
     ? <NoticeEdit notice={data} />

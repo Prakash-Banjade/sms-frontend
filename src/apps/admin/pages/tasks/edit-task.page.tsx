@@ -3,29 +3,30 @@ import { ETask } from "@/types/global.type";
 import { Navigate, useParams } from "react-router-dom";
 import TaskForm from "../../components/tasks/task.form";
 import { useGetTask } from "../../components/tasks/action";
+import { useAuth } from "@/contexts/auth-provider";
 
 export default function EditTaskPage({ type }: { type: ETask }) {
     const params = useParams();
-
-    if (!params.id) return <Navigate to="/admin/tasks" />;
 
     return (
         <ContainerLayout
             title={`Edit ${type}`}
         >
-            <TaskEditForm type={type} id={params.id} />
+            <TaskEditForm type={type} id={params.id!} />
         </ContainerLayout>
     )
 }
 
 function TaskEditForm({ type, id }: { id: string, type: ETask }) {
+    const { payload } = useAuth();
     const { data, isLoading } = useGetTask({
         id,
+        options: { enabled: !!id },
     });
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!data) return <Navigate to="/admin/tasks" />;
+    if (!data) return <Navigate to={`/${payload?.role}/tasks`} />;
 
     return (
         <TaskForm

@@ -7,9 +7,11 @@ import { createQueryString } from "@/utils/create-query-string";
 import { TExamSubject } from "@/types/examination.type";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useEffect } from "react";
+import { useAuth } from "@/contexts/auth-provider";
 
 export default function ExamEvaluationPage() {
     const params = useParams();
+    const { payload } = useAuth();
 
     const { data: exam, isLoading } = useGetExam({
         id: params.id!,
@@ -22,7 +24,7 @@ export default function ExamEvaluationPage() {
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!exam && !isLoading) return <Navigate to="/admin/exam-setup" />;
+    if (!exam && !isLoading) return <Navigate to={`/${payload?.role}/exam-setup`} />;
 
     return (
         <ContainerLayout

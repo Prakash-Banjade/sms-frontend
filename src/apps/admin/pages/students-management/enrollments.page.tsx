@@ -7,17 +7,18 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import SearchInput from "@/components/search-components/search-input"
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
+import { useAuth } from "@/contexts/auth-provider"
 
-type Props = {}
+export default function EnrollmentsPage() {
+    const { payload } = useAuth();
 
-export default function EnrollmentsPage({ }: Props) {
     return (
         <ContainerLayout
             title="All Enrollments"
             description="Enrollments of all the students in the entire school."
             actionTrigger={
                 <Button asChild>
-                    <Link to="/admin/students/new-registration">
+                    <Link to={`/${payload?.role}/students/new-registration`}>
                         <Plus />
                         New Registration
                     </Link>

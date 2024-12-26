@@ -2,6 +2,7 @@ import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
 import { Navigate, useParams } from "react-router-dom"
 import { useGetLessonPlan } from "../../components/lesson-plan/data-access";
 import LessonPlanForm from "../../components/lesson-plan/lesson-plan-form";
+import { useAuth } from "@/contexts/auth-provider";
 
 
 export default function EditLessonPlanPage() {
@@ -17,13 +18,12 @@ export default function EditLessonPlanPage() {
 }
 
 function LessonPlanEditForm({ id }: { id: string }) {
-    const { data, isLoading } = useGetLessonPlan({
-        id,
-    });
+    const { payload } = useAuth();
+    const { data, isLoading } = useGetLessonPlan({ id });
 
     if (isLoading) return <div>Loading...</div>;
 
-    if (!data) return <Navigate to="/admin/lesson-plans" />;
+    if (!data) return <Navigate to={`/${payload?.role}/lesson-plans`} />;
 
     return (
         <LessonPlanForm

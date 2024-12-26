@@ -1,8 +1,9 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import TeacherForm from "../../components/teachers/teacher.form"
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useGetTeacher } from "../../components/teachers/actions"
 import { teacherSchema } from "../../schemas/teacher.schema"
+import { useAuth } from "@/contexts/auth-provider"
 
 type Props = {}
 
@@ -14,25 +15,23 @@ export default function EditTeacherPage({ }: Props) {
             title="Editing the teacher"
             description="Have some changes and save changes."
         >
-            {
-                !!params.id
-                    ? <TeacherEditForm id={params.id} />
-                    : <Navigate to="/admin/teachers" />
-            }
+            <TeacherEditForm id={params.id!} />
         </ContainerLayout>
     )
 }
 
 function TeacherEditForm({ id }: { id: string }) {
     const navigate = useNavigate();
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetTeacher({
         id,
+        options: { enabled: !!id }
     })
 
     if (isLoading) return <div className="p-5">Loading the teacher info...</div>
 
-    if (!data) navigate('/admin/teachers')
+    if (!data) navigate(`/${payload?.role}/teachers`)
 
     const { data: filteredValues } = teacherSchema.safeParse(data);
 

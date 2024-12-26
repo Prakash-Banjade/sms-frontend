@@ -10,7 +10,7 @@ export const useGetTeacher = <T = TSingleTeacher>({
 }: {
     id: string;
     queryString?: string;
-    options?: UseQueryOptions<T>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
     const response = useFetchData<T>({
         queryKey: [QueryKey.TEACHERS, id],
@@ -28,7 +28,7 @@ export const useGetTeachers = <T = TeachersResponse,>({
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<T>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
     const response = useFetchData<T>({
         endpoint: QueryKey.TEACHERS,
