@@ -14,6 +14,7 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
 
     const updateTime = (e: React.ChangeEvent<HTMLInputElement>, accountId: string) => {
         const { name, value } = e.target;
+        if (!name || !value) return;
 
         const updatedAttendances: T[] = attendances.map(employee => {
             if (employee.account?.id === accountId && employee.attendance) {
@@ -84,7 +85,7 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
                                                 placeholder="Out Time"
                                                 value={employee.attendance?.outTime ?? ''}
                                                 onChange={e => updateTime(e, employee.account?.id ?? '')}
-                                                disabled={!employee.attendance || (!!employee.attendance?.outTime && !!employee.attendance?.id)}
+                                                disabled={!employee.attendance?.inTime}
                                             />
                                         </TableCell>
                                     </React.Fragment>
