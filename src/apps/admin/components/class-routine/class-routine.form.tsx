@@ -64,6 +64,7 @@ export default function ClassRoutineForm(props: Props) {
                         description="Select the type of routine"
                         required
                         options={Object.entries(RoutineTypeMappings).map(([label, value]) => ({ label, value }))}
+                        value={form.watch('type') ?? ''}
                     />
 
                     <ClassSectionFormField />
@@ -100,6 +101,7 @@ export default function ClassRoutineForm(props: Props) {
                         description="Select the day of the week"
                         required
                         options={Object.entries(DayOfWeekMappings).map(([label, value]) => ({ label, value }))}
+                        value={form.watch('dayOfTheWeek') ?? ''}
                     />
 
                     <AppForm.TimePicker<classRoutineSchemaType>

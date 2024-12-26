@@ -60,6 +60,14 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
         }
     });
 
+    useEffect(() => {
+        if (!form.watch('classRoomId')) {
+            setClassRoomId('');
+            setSectionId('');
+            setSectionIds([]);
+        }
+    }, [form.watch('classRoomId')])
+
     useEffect(() => { // update selected class room on data change, specially on first render on edit page
         if (data) {
             setSelectedClassRoom(data?.find((classRoom) => classRoom.id === form.getValues("classRoomId")))
@@ -80,7 +88,7 @@ export function ClassSectionFormField({ noDescription = false, containerClassNam
                             </FormLabel>
                         </div>
                         <Select
-                            value={classRoomId || undefined}
+                            value={classRoomId}
                             onValueChange={val => {
                                 setSelectedClassRoom(data?.find((classRoom) => classRoom.id === val))
                                 setClassRoomId(val)

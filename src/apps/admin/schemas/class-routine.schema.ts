@@ -14,7 +14,9 @@ export const classRoutineSchema = z.object({
         errorMap: () => ({ message: 'Invalid routine type' }),
     }),
     classRoomId: z.string()
-        .uuid({ message: 'Invalid class room ID. Must be a valid UUID' }),
+        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
+            message: 'Invalid class room ID',
+        }),
     sectionId: z.string()
         .transform((val) => (val === '' ? undefined : val))
         .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
@@ -38,5 +40,6 @@ export const classRoutineDefaultValues: Partial<classRoutineSchemaType> = {
     type: ERoutineType.CLASS,
     startTime: "",
     endTime: "",
-    classRoomId: undefined,
+    classRoomId: "",
+    subjectId: "",
 }
