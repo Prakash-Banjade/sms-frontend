@@ -1,4 +1,6 @@
 import { ISO_TIME } from "@/CONSTANTS";
+import { TAuthPayload } from "@/contexts/auth-provider";
+import { Role } from "@/types/global.type";
 import { clsx, type ClassValue } from "clsx"
 import { add, format } from "date-fns";
 import { twMerge } from "tailwind-merge"
@@ -25,4 +27,8 @@ export const getCreatedAt = (date: Date): Date => {
 
 export function startOfDayString(date: Date) {
   return format(date, 'yyyy-MM-dd') + ISO_TIME;
+}
+
+export function isAdmin(payload: TAuthPayload | null): boolean {
+  return ([Role.ADMIN, Role.SUPER_ADMIN] as Role[]).includes(payload?.role as Role);
 }

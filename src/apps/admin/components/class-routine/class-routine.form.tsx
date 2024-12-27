@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType } from "../../schemas/class-routine.schema";
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
-import { ERoutineType } from "@/types/global.type";
+import { ERoutineType, SelectOption } from "@/types/global.type";
 import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 
 type Props = ({
@@ -17,6 +17,7 @@ type Props = ({
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) & {
     defaultValues?: Partial<classRoutineSchemaType>;
+    selectedTeacher?: SelectOption;
 }
 
 export default function ClassRoutineForm(props: Props) {
@@ -92,6 +93,24 @@ export default function ClassRoutineForm(props: Props) {
                             />
                         </>
                     }
+                    <AppForm.DynamicSelect<classRoutineSchemaType>
+                        name="teacherId"
+                        label="Teacher"
+                        placeholder="Select teacher"
+                        description="Select the teacher"
+                        fetchOptions={{
+                            endpoint: QueryKey.TEACHERS + '/' + QueryKey.OPTIONS,
+                            queryKey: form.watch('subjectId') ? [QueryKey.TEACHERS, form.watch('subjectId') ?? ''] : [QueryKey.TEACHERS],
+                            queryString: createQueryString({
+                                assignedSubjectId: form.watch('subjectId'),
+                            }),
+                            options: {
+                                enabled: !!form.watch('subjectId'),
+                            }
+                        }}
+                        labelKey={'label'}
+                        disabled={!form.watch('subjectId') || form.watch('type') === ERoutineType.BREAK}
+                    />
 
 
                     <AppForm.Select<classRoutineSchemaType>
@@ -109,6 +128,7 @@ export default function ClassRoutineForm(props: Props) {
                         label="Start time"
                         placeholder="Select start time"
                         required
+                        description="Start time of the period"
                     />
 
                     <AppForm.TimePicker<classRoutineSchemaType>
@@ -116,6 +136,7 @@ export default function ClassRoutineForm(props: Props) {
                         label="End time"
                         placeholder="Select end time"
                         required
+                        description="End time of the period"
                     />
 
                 </section>

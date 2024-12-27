@@ -3,23 +3,18 @@ import { TClassRoutine } from "@/types/class-routine.type";
 import { useSearchParams } from "react-router-dom";
 import { useGetClassRoutines } from "./actions";
 import { createQueryString } from "@/utils/create-query-string";
-import { EDayOfWeek, ERoutineType, Role } from "@/types/global.type";
+import { EDayOfWeek, ERoutineType } from "@/types/global.type";
 import { EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import ClassRoutineForm from "./class-routine.form";
-import {
-    DropdownMenu,
-    DropdownMenuButtonItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useAuth } from "@/contexts/auth-provider";
-import { cn } from "@/lib/utils";
+import { cn, isAdmin } from "@/lib/utils";
 import { compareAsc, parse } from "date-fns";
 
 export function ClassRoutinesDisplayList() {
@@ -57,8 +52,8 @@ export function ClassRoutinesDisplayList() {
 function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
     const { payload } = useAuth();
 
-    const subjectTeacher = classRoutine.subject?.teacher
-        ? classRoutine.subject?.teacher?.firstName + " " + classRoutine.subject?.teacher?.lastName
+    const subjectTeacher = classRoutine?.teacher
+        ? classRoutine.teacher.firstName + " " + classRoutine.teacher.lastName
         : "**Not Assigned**";
 
     const className = classRoutine.classRoom?.parent
@@ -85,7 +80,7 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
                             }
                         </h3>
                         {
-                            payload?.role === Role.ADMIN && <ClassRoutineCardActions classRoutine={classRoutine} />
+                            isAdmin(payload) && <ClassRoutineCardActions classRoutine={classRoutine} />
                         }
                     </header>
                     {
@@ -125,6 +120,7 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                 isOpen={isEditOpen}
                 setIsOpen={setIsEditOpen}
                 title="Edit class routine"
+                className="max-w-[800px]"
             >
                 <ClassRoutineForm
                     classRoutineId={classRoutine.id}
@@ -137,6 +133,7 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                         endTime: classRoutine.endTime,
                         dayOfTheWeek: classRoutine.dayOfTheWeek,
                         type: classRoutine.type,
+                        teacherId: classRoutine.teacher?.id,
                     }}
                 />
             </ResponsiveDialog>

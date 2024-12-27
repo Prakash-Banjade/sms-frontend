@@ -80,16 +80,14 @@ export function DynamicCombobox<T extends FieldValues>({
                                 variant="outline"
                                 role="combobox"
                                 aria-expanded={open}
-                                className="w-full justify-between h-max min-h-10"
+                                className="w-full justify-between h-max min-h-10 overflow-hidden disabled:!cursor-not-allowed disabled:pointer-events-auto"
                                 disabled={disabled || isLoading}
                             >
-                                <div className="flex gap-2 justify-start flex-wrap">
-                                    {
-                                        selectedValues?.length
-                                            ? formatArray(selectedValues.map(item => item.label), 2)
-                                            : placeholder
-                                    }
-                                </div>
+                                {
+                                    selectedValues?.length
+                                        ? formatArray(selectedValues.map(item => item.label), 2)
+                                        : placeholder
+                                }
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>

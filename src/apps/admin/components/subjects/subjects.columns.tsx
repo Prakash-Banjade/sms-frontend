@@ -15,6 +15,8 @@ import SubjectForm from "./subject-form"
 import { Link } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
+import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/contexts/auth-provider"
 
 export const subjectsColumns: ColumnDef<TSubject>[] = [
     {
@@ -51,13 +53,22 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         }
     },
     {
-        header: "Subject teacher",
-        accessorKey: "teacher.firstName",
+        header: "Subject teachers",
+        accessorKey: "teachers",
         cell: ({ row }) => {
-            const teacherName = row.original.teacher?.firstName + " " + row.original.teacher?.lastName;
-            return !!row.original?.teacher
-                ? <span>{teacherName}</span>
-                : <span className="text-muted-foreground">**Not Assigned**</span>
+            const { payload } = useAuth();
+
+            return row.original.teachers?.length > 0 ? <ul>
+                {row.original.teachers.map((t) => (
+                    <li key={t.id}>
+                        <Badge variant={'outline'} className="whitespace-nowrap">
+                            <Link to={`/${payload?.role}/teachers/${t.id}`} className="hover:underline">
+                                {t.firstName} {t.lastName}
+                            </Link>
+                        </Badge>
+                    </li>
+                ))}
+            </ul> : <span className="text-muted-foreground">**Not Assigned**</span>
         }
     },
     {
@@ -103,8 +114,12 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
                             defaultValues={{
                                 ...row.original,
                                 classRoomId: row.original.classRoom?.id,
-                                teacherId: row.original.teacher?.id,
+                                teacherIds: row.original.teachers.map((t) => t.id),
                             }}
+                            selectedTeachers={row.original.teachers?.map(t => ({
+                                label: `${t.firstName} ${t.lastName}`,
+                                value: t.id
+                            }))}
                         />
                     </ResponsiveDialog>
                     <DropdownMenu>
@@ -119,19 +134,6 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
-                            {/* {
-                                !row.original.teacher && <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                    <span>Assign Teacher</span>
-                                </DropdownMenuButtonItem>
-                            }
-                            {
-                                !row.original.classRoom && <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                    <span>Assign Class Room</span>
-                                </DropdownMenuButtonItem>
-                            } */}
-                            {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
-                                <span>Delete</span>
-                            </DropdownMenuButtonItem> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

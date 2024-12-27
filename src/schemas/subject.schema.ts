@@ -10,18 +10,8 @@ export const subjectFormSchema = z.object({
     theoryFM: z.coerce.number().int({ message: 'Theory full marks must be an integer' }).refine(val => val >= 0),
     practicalPM: z.coerce.number().int({ message: 'Practical pass marks must be an integer' }).refine(val => val >= 0),
     practicalFM: z.coerce.number().int({ message: 'Practical full marks must be an integer' }).refine(val => val >= 0),
-    classRoomId: z.string()
-        .transform((val) => (val === '' ? undefined : val))
-        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
-            message: 'Invalid class room ID',
-        })
-        .nullish(),
-    teacherId: z.string()
-        .transform((val) => (val === '' ? undefined : val))
-        .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
-            message: 'Invalid teacher ID',
-        })
-        .nullish(),
+    classRoomId: z.string({ required_error: 'Class room is required' }).uuid({ message: 'Class room ID must be a valid UUID' }),
+    teacherIds: z.array(z.string().uuid()).optional(),
 });
 
 export type subjectFormSchemaType = z.infer<typeof subjectFormSchema>;
@@ -31,6 +21,7 @@ export const subjectFormDefaultValues: Partial<subjectFormSchemaType> = {
     content: "",
     subjectCode: "",
     type: ESubjectType.Regular,
+    teacherIds: [],
 };
 
 export const subjectChapterSchema = z.object({

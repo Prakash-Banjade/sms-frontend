@@ -4,7 +4,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
 import { TClassesResponse } from "@/types/class.type";
-import { ESubjectType } from "@/types/global.type";
+import { ESubjectType, SelectOption } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ type Props = ({
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) & {
     defaultValues?: Partial<subjectFormSchemaType>;
+    selectedTeachers?: SelectOption[]
 }
 
 export default function SubjectForm(props: Props) {
@@ -43,7 +44,6 @@ export default function SubjectForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 classRoomId: values.classRoomId ?? null,
-                teacherId: values.teacherId ?? null,
                 type: values.type,
             },
             invalidateTags: [QueryKey.SUBJECTS],
@@ -127,21 +127,24 @@ export default function SubjectForm(props: Props) {
                         name="classRoomId"
                         label="Class room"
                         placeholder="Select class room"
-                        description="Select the class room. Can assigned later."
+                        description="Select class room the subject belongs to."
                         fetchOptions={{
                             endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
                             queryKey: [QueryKey.CLASSES, QueryKey.OPTIONS],
-                            queryString: 'page=1&take=50',
+                            queryString: 'page=1&take=50&onlyPrimaryClass=true',
                         }}
                         labelKey={'name'}
+                        required
                     />
 
-                    <AppForm.DynamicSelect_V2<subjectFormSchemaType>
-                        name="teacherId"
-                        label="Subject Teacher"
-                        placeholder="Select teacher"
-                        description="Select the subject teacher. Can assigned later."
+                    <AppForm.DynamicCombobox<subjectFormSchemaType>
+                        name="teacherIds"
+                        label="Subject Teachers"
+                        placeholder="Select teachers"
+                        description="Select the subject teachers. Can assigned later."
                         queryKey={QueryKey.TEACHERS}
+                        multiple
+                        defaultSelected={props.selectedTeachers}
                     />
 
                 </section>

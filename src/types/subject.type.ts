@@ -15,11 +15,11 @@ export type TSubject = {
         id: string,
         name: string,
     } | null;
-    teacher: {
+    teachers: {
         id: string,
         firstName: string,
         lastName: string,
-    } | null;
+    }[];
 }
 
 export type TSubjectsResponse = {

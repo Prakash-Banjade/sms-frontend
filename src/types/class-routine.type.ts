@@ -20,12 +20,12 @@ export type TClassRoutine = {
         id: string,
         subjectName: string,
         subjectCode: string,
-        teacher: {
-            id: string,
-            firstName: string,
-            lastName: string
-        }
-    }
+    },
+    teacher: {
+        id: string,
+        firstName: string,
+        lastName: string
+    } | null
 }
 
 export type TClassRoutineResponse = {
