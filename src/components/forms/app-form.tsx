@@ -13,7 +13,6 @@ import { AppFormSelect } from './select';
 import { AppFormPhone } from './app-form-phone';
 import { AppFormText } from './app-form-text';
 import { AppFormEmail } from './app-form-email';
-import { DynamicMultiSelect } from './app-form-dynamic-multiselect';
 import { MultiSelect } from './app-form-multiselect';
 import { DynamicCombobox } from './dynamic-combobox';
 import { FileUpload } from './file-upload';
@@ -292,7 +291,6 @@ AppForm.ImageUpload = ImageUpload;
 
 AppForm.MultiSelect = MultiSelect;
 
-AppForm.DynamicMultiSelect = DynamicMultiSelect;
 
 AppForm.DynamicCombobox = DynamicCombobox;
 
