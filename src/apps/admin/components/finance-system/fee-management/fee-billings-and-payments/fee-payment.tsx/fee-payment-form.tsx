@@ -61,7 +61,13 @@ export default function FeePaymentForm({ feeStudent }: Props) {
     const { mutateAsync, isPending } = useAppMutation<paymentSchemaType, { receiptNo: string }>();
 
     async function onSubmit(values: paymentSchemaType) {
-        if (receiptNo) return; // don't perform submission until there is receipt no
+        if (receiptNo || !data) return; // don't perform submission until there is receipt no
+
+        if (data?.ledgerItem?.studentLedger?.amount < values.paidAmount) {
+            form.setError('paidAmount', { message: 'Amount must be less than or equal to the outstanding amount' });
+            form.setFocus('paidAmount');
+            return;
+        }
 
         const response = await mutateAsync({
             method: "post",
@@ -74,6 +80,10 @@ export default function FeePaymentForm({ feeStudent }: Props) {
             setReceiptNo(response.data.receiptNo);
         }
     }
+
+    useEffect(() => {
+        if (Object.keys(form.formState.errors).length) setIsDialogOpen(false);
+    }, [form.formState.errors])
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -322,7 +332,7 @@ export default function FeePaymentForm({ feeStudent }: Props) {
                                 </div>
                             </ScrollArea>
                         </ResponsiveDialog>
-                        <Button onClick={() => setIsDialogOpen(true)} type="button" disabled={Object.keys(form.formState.errors).length > 0 || !form.formState.isValid}>
+                        <Button onClick={() => setIsDialogOpen(true)} type="button" disabled={Object.keys(form.formState.errors).length > 0}>
                             {
                                 !receiptNo ? <>
                                     Continue <ArrowRight />

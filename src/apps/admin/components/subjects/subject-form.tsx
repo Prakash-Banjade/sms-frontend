@@ -35,7 +35,7 @@ export default function SubjectForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<subjectFormSchemaType>, any>();
 
     async function onSubmit(values: subjectFormSchemaType) {
-        const method = ((!!props.setIsOpen && props.subjectId) || params.id) ? "patch" : "post";
+        const method = !!id ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
@@ -80,16 +80,20 @@ export default function SubjectForm(props: Props) {
                         required
                     />
 
-                    <section>
-                        <AppForm.Select<subjectFormSchemaType>
-                            name="type"
-                            label="Subject Type"
-                            placeholder="Select subject type"
-                            required
-                            options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))}
-                        />
-                        <p className="text-sm text-info mt-2">! Note: It is not recommended to change the subject type once created. May cause unexpected issues.</p>
-                    </section>
+                    {
+                        !id && (
+                            <section>
+                                <AppForm.Select<subjectFormSchemaType>
+                                    name="type"
+                                    label="Subject Type"
+                                    placeholder="Select subject type"
+                                    required
+                                    options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))}
+                                />
+                                {/* <p className="text-sm text-info mt-2">! Note: It is not recommended to change the subject type once created. May cause unexpected issues.</p> */}
+                            </section>
+                        )
+                    }
 
                     <AppForm.Number<subjectFormSchemaType>
                         name="theoryFM"
@@ -123,19 +127,23 @@ export default function SubjectForm(props: Props) {
                         required
                     />
 
-                    <AppForm.DynamicSelect<subjectFormSchemaType, TClassesResponse>
-                        name="classRoomId"
-                        label="Class room"
-                        placeholder="Select class room"
-                        description="Select class room the subject belongs to."
-                        fetchOptions={{
-                            endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
-                            queryKey: [QueryKey.CLASSES, QueryKey.OPTIONS],
-                            queryString: 'page=1&take=50&onlyPrimaryClass=true',
-                        }}
-                        labelKey={'name'}
-                        required
-                    />
+                    {
+                        !id && (
+                            <AppForm.DynamicSelect<subjectFormSchemaType, TClassesResponse>
+                                name="classRoomId"
+                                label="Class room"
+                                placeholder="Select class room"
+                                description="Select class room the subject belongs to."
+                                fetchOptions={{
+                                    endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
+                                    queryKey: [QueryKey.CLASSES, QueryKey.OPTIONS],
+                                    queryString: 'page=1&take=50&onlyPrimaryClass=true',
+                                }}
+                                labelKey={'name'}
+                                required
+                            />
+                        )
+                    }
 
                     <AppForm.DynamicCombobox<subjectFormSchemaType>
                         name="teacherIds"

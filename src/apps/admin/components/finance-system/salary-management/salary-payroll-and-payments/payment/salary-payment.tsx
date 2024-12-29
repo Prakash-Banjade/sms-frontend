@@ -63,6 +63,17 @@ function SalaryPaymentForm({ payroll }: { payroll: TLastPayroll }) {
     const { mutateAsync, isPending } = useAppMutation<paymentSchemaType, { message: string }>();
 
     async function onSubmit(values: paymentSchemaType) {
+        if (!payroll) return;
+
+        if ((payroll.netSalary - payroll.paidSalary) < values.amount) {
+            form.setError('amount', {
+                message: `Amount must be less than ${payroll.netSalary - payroll.paidSalary}`,
+                type: 'manual',
+            });
+            form.setFocus('amount');
+            return;
+        };
+
         const res = await mutateAsync({
             endpoint: QueryKey.SALARY_PAYMENTS,
             method: 'post',
@@ -121,6 +132,7 @@ function SalaryPaymentForm({ payroll }: { payroll: TLastPayroll }) {
                                         min={0}
                                         max={payroll.netSalary - payroll.paidSalary}
                                         inputClassName='w-fit'
+                                        containerClassName='flex gap-2 flex-col items-end'
                                     />
                                 </TableCell>
                             </TableRow>
