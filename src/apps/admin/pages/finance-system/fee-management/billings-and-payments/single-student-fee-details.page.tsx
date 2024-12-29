@@ -35,7 +35,7 @@ export default function SingleStudentFeeDetailsPage() {
                 </CardContent>
             </Card>
 
-            <FeeBillingAndPaymentTabs setStudentId={setStudentId} />
+            <FeeBillingAndPaymentTabs />
         </div>
     )
 }

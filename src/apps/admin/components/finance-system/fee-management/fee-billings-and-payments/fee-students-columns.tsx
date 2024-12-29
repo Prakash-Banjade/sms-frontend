@@ -14,7 +14,7 @@ export const feeStudentsColumns: ColumnDef<TStudentsWithLedgerResponse['data'][0
             return <DataTableColumnHeader column={column} title="Student ID" />
         },
         cell: ({ row }) => {
-            return <Link to={`student?studentID=${row.original.id}`} className="hover:underline">{row.original.studentId}</Link>
+            return <Link to={`student?studentID=${row.original.studentId}`} className="hover:underline">{row.original.studentId}</Link>
         }
     },
     {
@@ -23,7 +23,7 @@ export const feeStudentsColumns: ColumnDef<TStudentsWithLedgerResponse['data'][0
             return <DataTableColumnHeader column={column} title="Name" />
         },
         cell: ({ row }) => {
-            return <Link to={`student?studentID=${row.original.id}`} className="hover:underline">{row.original.fullName}</Link>
+            return <Link to={`student?studentID=${row.original.studentId}`} className="hover:underline">{row.original.fullName}</Link>
         }
     },
     {

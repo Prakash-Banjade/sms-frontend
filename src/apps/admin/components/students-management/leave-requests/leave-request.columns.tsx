@@ -6,7 +6,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Check, CircleDashed, LoaderCircle, MoreHorizontal, Trash, X } from "lucide-react"
+import { Check, LoaderCircle, MoreHorizontal, Trash, X } from "lucide-react"
 import { formatDateNumeric } from "@/utils/format-date"
 import { TStudentLeaveRequest } from "@/types/leave-request.type"
 import { Badge } from "@/components/ui/badge"
@@ -90,6 +90,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
             const [isOpen, setIsOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation();
+            const { mutateAsync: updateStatus, isPending: isStatusPending } = useAppMutation();
 
             const [statusLoading, setStatusLoading] = useState({
                 [ELeaveRequestStatus.APPROVED]: false,
@@ -100,7 +101,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
             const handleUpdateStatus = async (status: ELeaveRequestStatus) => {
                 setStatusLoading({ ...statusLoading, [status]: true });
 
-                await mutateAsync({
+                await updateStatus({
                     method: "patch",
                     endpoint: QueryKey.LEAVE_REQUESTS + `/${row.original.id}/updateStatus`,
                     data: { status },
@@ -134,34 +135,28 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <section className="flex flex-col">
                                 {
-                                    currentStatus !== ELeaveRequestStatus.PENDING && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.PENDING)} disabled={isPending}>
-                                        {
-                                            statusLoading[ELeaveRequestStatus.PENDING] ? <LoaderCircle className="animate-spin" /> : <CircleDashed />
-                                        }
-                                        Mark as Pending
-                                    </Button>
-                                }
-                                {
-                                    currentStatus !== ELeaveRequestStatus.APPROVED && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.APPROVED)} disabled={isPending}>
-                                        {
-                                            statusLoading[ELeaveRequestStatus.APPROVED] ? <LoaderCircle className="animate-spin" /> : <Check />
-                                        }
-                                        Mark as Approved
-                                    </Button>
-                                }
-                                {
-                                    currentStatus !== ELeaveRequestStatus.REJECTED && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.REJECTED)} disabled={isPending}>
-                                        {
-                                            statusLoading[ELeaveRequestStatus.REJECTED] ? <LoaderCircle className="animate-spin" /> : <X />
-                                        }
-                                        Mark as Rejected
-                                    </Button>
+                                    currentStatus === ELeaveRequestStatus.PENDING && (
+                                        <>
+                                            <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.APPROVED)} disabled={isPending || isStatusPending}>
+                                                {
+                                                    statusLoading[ELeaveRequestStatus.APPROVED] ? <LoaderCircle className="animate-spin" /> : <Check />
+                                                }
+                                                Mark as Approved
+                                            </Button>
+                                            <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.REJECTED)} disabled={isPending || isStatusPending}>
+                                                {
+                                                    statusLoading[ELeaveRequestStatus.REJECTED] ? <LoaderCircle className="animate-spin" /> : <X />
+                                                }
+                                                Mark as Rejected
+                                            </Button>
+                                        </>
+                                    )
                                 }
                                 <Button
                                     variant={'ghost'}
                                     size={'sm'}
                                     className="px-2 py-1.5 justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                    disabled={isPending}
+                                    disabled={isPending || isStatusPending}
                                     onClick={handleDelete}
                                 >
                                     {

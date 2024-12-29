@@ -10,7 +10,6 @@ import FeeInvoiceForm from "./fee-invoice/fee-invoice-form";
 import StudentLedgerView from "./fee-ledger/student-ledger-view";
 import FeePaymentForm from "./fee-payment.tsx/fee-payment-form";
 import LibraryFinePayment from "./library-fine/library-fine-payment";
-import { useEffect } from "react";
 
 const tabs = [
     {
@@ -35,7 +34,7 @@ const tabs = [
     }
 ]
 
-export default function FeeBillingAndPaymentTabs({ setStudentId }: { setStudentId: React.Dispatch<React.SetStateAction<string>> }) {
+export default function FeeBillingAndPaymentTabs() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
     const { data, isLoading } = useGetFeeStudent({
@@ -44,10 +43,6 @@ export default function FeeBillingAndPaymentTabs({ setStudentId }: { setStudentI
             enabled: !!searchParams.get('studentID'),
         }
     });
-
-    useEffect(() => {
-        if (data) setStudentId(data.student?.studentId?.toString() || '')
-    }, [data])
 
     if (!searchParams.get('studentID')) return <div className="h-[400px] grid place-items-center text-muted-foreground">Enter student ID to view transactions</div>
 
