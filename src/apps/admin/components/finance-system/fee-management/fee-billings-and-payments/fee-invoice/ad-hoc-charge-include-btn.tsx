@@ -11,19 +11,14 @@ import { EChargeHeadPeriod, EChargeHeadType } from "@/types/finance-system/fee-m
 import { createQueryString } from "@/utils/create-query-string";
 import { Check, Plus } from "lucide-react"
 import { useState } from "react";
-import { useGetChargeHeads } from "../../data-access";
+import { useGetChargeHeadOptions } from "../../data-access";
 import { feeInvoiceSchemaType } from "./fee-invoice-form";
 
 type TAdHocChargesResponse = {
-    data: {
-        id: string,
-        name: string,
-        period: EChargeHeadPeriod,
-        type: EChargeHeadType,
-        feeStructures: {
-            amount: number
-        }[]
-    }[]
+    value: string,
+    label: string,
+    amount: number | null,
+    period: EChargeHeadPeriod
 }
 
 type Props = {
@@ -35,10 +30,11 @@ type Props = {
 export default function AdHocChargeIncludeBtn({ classRoomId, setValue, chargeHeadIds }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedCHId, setSelectedCHId] = useState<string | undefined>(undefined);
-    const { data, isLoading } = useGetChargeHeads<TAdHocChargesResponse>({
+
+    const { data, isLoading } = useGetChargeHeadOptions<TAdHocChargesResponse[]>({
         queryString: createQueryString({
             classRoomId,
-            types: EChargeHeadType.Ad_Hoc,
+            type: EChargeHeadType.Ad_Hoc,
             skipPagination: 'true',
             defaults: 'false',
         }),
@@ -48,17 +44,17 @@ export default function AdHocChargeIncludeBtn({ classRoomId, setValue, chargeHea
     const handleInclude = () => {
         if (!selectedCHId) return;
 
-        const ch = data?.data?.find(ch => ch?.id === selectedCHId);
+        const ch = data?.find(ch => ch.value === selectedCHId);
 
-        if (!ch || chargeHeadIds.includes(ch.id)) return;
+        if (!ch || chargeHeadIds.includes(ch.value)) return;
 
         setValue({
-            amount: ch.feeStructures[0]?.amount ?? 0,
-            chargeHeadId: ch.id,
+            amount: ch.amount ?? 0,
+            chargeHeadId: ch.value,
             isChecked: true,
             period: ch.period,
             required: false,
-            chargeHeadName: ch.name,
+            chargeHeadName: ch.label,
             discount: 0,
             remark: '',
         });
@@ -80,8 +76,8 @@ export default function AdHocChargeIncludeBtn({ classRoomId, setValue, chargeHea
                         </SelectTrigger>
                         <SelectContent>
                             {
-                                (data?.data ?? [])?.filter(ch => !chargeHeadIds.includes(ch?.id))?.map(option => (
-                                    <SelectItem value={option.id} key={option.id}>{option?.name}</SelectItem>
+                                (data ?? [])?.filter(ch => !chargeHeadIds.includes(ch?.value))?.map(option => (
+                                    <SelectItem value={option.value} key={option.value}>{option?.label}</SelectItem>
                                 ))
                             }
                         </SelectContent>
@@ -100,7 +96,6 @@ export default function AdHocChargeIncludeBtn({ classRoomId, setValue, chargeHea
                 variant="outline"
                 size="sm"
                 onClick={() => setIsOpen(true)}
-            // disabled={(data?.data ?? [])?.filter(fs => !chargeHeadIds.includes(fs.id))?.length === 0}
             >
                 <Plus />
                 <span>Ad Hoc</span>

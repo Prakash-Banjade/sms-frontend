@@ -1,6 +1,7 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
 import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TLastInvoice, TSingleInvoice, TSinglePayment, TStudentLedgerResponse } from "@/types/finance-system/fee-management.types";
+import { SelectOption } from "@/types/global.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetChargeHeads = <T = TChargeHeadsResponse>({
@@ -13,6 +14,23 @@ export const useGetChargeHeads = <T = TChargeHeadsResponse>({
     const response = useFetchData<T>({
         endpoint: QueryKey.CHARGE_HEADS,
         queryKey: queryString ? [QueryKey.CHARGE_HEADS, queryString] : [QueryKey.CHARGE_HEADS],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetChargeHeadOptions = <T = SelectOption[]>({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: Partial<UseQueryOptions<T>>
+}) => {
+    const response = useFetchData<T>({
+        endpoint: QueryKey.CHARGE_HEADS + '/' + QueryKey.OPTIONS,
+        queryKey: queryString ? [QueryKey.CHARGE_HEADS, QueryKey.OPTIONS, queryString] : [QueryKey.CHARGE_HEADS, QueryKey.OPTIONS],
         queryString,
         options,
     })
