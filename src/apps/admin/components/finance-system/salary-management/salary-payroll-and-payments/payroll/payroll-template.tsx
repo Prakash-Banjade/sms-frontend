@@ -23,7 +23,7 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
     const unpaidAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Unpaid)?.amount ?? 0;
     const totalBonus = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
     const totalDeduction = deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
-    const totalEarnings = salaryEmployee.grossSalary + unpaidAmount + totalBonus;
+    const totalEarnings = salaryEmployee.grossSalary + unpaidAmount + totalBonus + advanceAmount;
 
     return (
         <Card className="min-h-[297mm] w-[210mm] bg-white text-black mx-auto flex flex-col" ref={ref}>
@@ -91,7 +91,7 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                             {
                                 advanceAmount > 0 && <TableRow>
                                     <TableCell>Advance Amount this month</TableCell>
-                                    <TableCell className="text-right">Rs. {unpaidAmount?.toLocaleString()}</TableCell>
+                                    <TableCell className="text-right">Rs. {advanceAmount?.toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             {

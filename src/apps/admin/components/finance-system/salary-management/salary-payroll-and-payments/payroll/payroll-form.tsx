@@ -78,7 +78,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
         }, 0) ?? 0;
     }, [form.watch()]);
 
-    const grossEarnings = (salaryEmployee.grossSalary + (salaryEmployee.employee?.payAmount ?? 0) - (salaryEmployee?.lastAdvanceAmount ?? 0));
+    const totalEarnings = (salaryEmployee.grossSalary + (salaryEmployee.employee?.payAmount ?? 0) - (salaryEmployee?.lastAdvanceAmount ?? 0));
 
     const { mutateAsync, isPending } = useAppMutation<any, { message: string }>();
 
@@ -190,8 +190,8 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                                 }
                                 <TableRow className="hover:bg-transparent">
                                     <TableCell className="text-right font-semibold text-lg" colSpan={2}>
-                                        Gross Earnings: &nbsp;
-                                        Rs. {grossEarnings.toLocaleString()}
+                                        Total Earnings: &nbsp;
+                                        Rs. {totalEarnings.toLocaleString()}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -292,7 +292,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
 
                 <section className="text-center text-xl px-4 !mt-10">
                     Net Salary:&nbsp;
-                    <strong>Rs. {(grossEarnings + totalAdjustments + +form.watch('advance')).toLocaleString()}</strong>
+                    <strong>Rs. {(totalEarnings + totalAdjustments + +form.watch('advance')).toLocaleString()}</strong>
                 </section>
                 {
                     (!paidSalary || paidSalary === 0) && <section className="flex justify-center">
