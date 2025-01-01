@@ -22,7 +22,7 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
     const advanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Advance)?.amount ?? 0;
     const unpaidAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Unpaid)?.amount ?? 0;
     const totalBonus = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
-    const totalDeduction = deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
+    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0);
     const totalEarnings = salaryEmployee.grossSalary + unpaidAmount + totalBonus + advanceAmount;
 
     return (

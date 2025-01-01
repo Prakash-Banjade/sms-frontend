@@ -54,7 +54,7 @@ function ReportSection() {
 
     if (!data) return <div className="mt-20 text-center text-muted-foreground">No data found</div>;
 
-    if (!data?.data?.length) return <div className="mt-20 text-center text-muted-foreground">Exam not held or not evaluated yet!</div>; // no student report is evaluated yet
+    // if (!data?.data?.length) return <div className="mt-20 text-center text-muted-foreground">Exam not held or not evaluated yet!</div>; // no student report is evaluated yet
 
     return (
         <section className="p-6 rounded-lg border space-y-6 @container">
@@ -93,6 +93,7 @@ function ReportSection() {
                     columns={subjectWiseReportColumns}
                     meta={data?.meta}
                     filters={<SearchFilters />}
+                    reset={false}
                 />
             </section>
         </section>

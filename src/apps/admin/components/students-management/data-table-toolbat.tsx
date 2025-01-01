@@ -9,11 +9,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 export interface DataTableToolbarProps<TData> extends PropsWithChildren {
     table: Table<TData>,
     searchLabel?: string;
+    reset?: boolean;
 }
 
 export function DataTableToolbar<TData>({
     table,
-    children
+    children,
+    reset = true,
 }: DataTableToolbarProps<TData>) {
     const location = useLocation();
     const navigate = useNavigate();
@@ -27,7 +29,7 @@ export function DataTableToolbar<TData>({
             </div>
 
             <section className='flex items-center gap-x-2'>
-                {searchParams.size > 0 && !(searchParams.size === 1 && searchParams.has('search')) && (
+                {searchParams.size > 0 && !(searchParams.size === 1 && searchParams.has('search')) && reset && (
                     <Button
                         variant='ghost'
                         onClick={() => navigate({ pathname: location.pathname, search: '' })}
