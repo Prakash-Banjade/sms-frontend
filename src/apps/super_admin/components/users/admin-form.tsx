@@ -3,6 +3,7 @@ import LoadingButton from "@/components/forms/loading-button";
 import { NAME_REGEX, NAME_WITH_SPACE_REGEX } from "@/CONSTANTS"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
+import { Role } from "@/types/global.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +46,7 @@ export default function AdminForm() {
         });
 
         if (response?.data?.message) {
-            navigate('/super-admin/admins');
+            navigate(`/${Role.SUPER_ADMIN}/admins`);
         }
     }
 
