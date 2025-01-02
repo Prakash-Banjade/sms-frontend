@@ -4,6 +4,7 @@ import { adminSidebarMenuItems } from './layout/sidebar-items';
 import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
+import AccountPage from './pages/account/account.page';
 const SingleStaffPage = lazy(() => import('./pages/staffs/single-staff-page'));
 const SalaryStructuresPage = lazy(() => import('./pages/finance-system/salary-management/salary-structures/salary-structures.page'));
 const PayrollAndPaymentsPage = lazy(() => import('./pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page'));
@@ -227,6 +228,7 @@ const AdminRoutes = () => {
                     </Route>
                     {/* Add more admin-specific routes */}
                 </Route>
+                <Route path="account" element={<AccountPage />} />
             </Route>
         </Routes>
     );

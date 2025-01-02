@@ -5,10 +5,12 @@ import { ChevronUp, LoaderCircle, LogOut } from "lucide-react"
 import { ProfileAvatar } from "../ui/avatar"
 import { getImageUrl } from "@/lib/utils"
 import { useAuth } from "@/contexts/auth-provider"
+import { useNavigate } from "react-router-dom"
 
 export const AppSidebarFooter = () => {
     const { handleLogout, isPending } = useLogoutMutation();
     const { payload } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <SidebarFooter>
@@ -28,11 +30,10 @@ export const AppSidebarFooter = () => {
                         >
                             <DropdownMenuLabel className="break-words">{payload?.email}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <span>Account</span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <span>Billing</span>
+                            <DropdownMenuItem
+                                onClick={() => { navigate(`/${payload?.role}/account`) }}
+                            >
+                                <span>My Account</span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <button

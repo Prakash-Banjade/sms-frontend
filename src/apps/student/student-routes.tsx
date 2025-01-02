@@ -4,6 +4,7 @@ import RequireAuth from "@/components/auth/require-auth";
 import { ETask, Role } from "@/types/global.type";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { studentSidebarMenuItems } from "./layout/sidebar-items";
+import AccountPage from "../admin/pages/account/account.page";
 const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
 const StudentAttendenceListPage = lazy(() => import("./pages/academics/attendence.page"));
 const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
@@ -57,6 +58,7 @@ const StudentRoutes = () => {
             <Route index element={<NoticePage />} />
             <Route path=":id" element={<NoticeViewPage />} />
           </Route>
+          <Route path="account" element={<AccountPage />} />
         </Route>
       </Route>
     </Routes>

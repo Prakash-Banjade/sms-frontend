@@ -4,6 +4,7 @@ import { ETask, Role } from '@/types/global.type';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { superAdminSidebarMenuItems } from './layout/sidebar-items';
+import AccountPage from '../admin/pages/account/account.page';
 const BranchesListPage = lazy(() => import('./pages/branches/branches-list.page'));
 const AdminsListPage = lazy(() => import('./pages/admins/admins-list-page'));
 const AddAdminPage = lazy(() => import('./pages/admins/add-admin-page'));
@@ -78,7 +79,6 @@ const FeeStructuresPage = lazy(() => import('../admin/pages/finance-system/fee-m
 const FeeBillingAndPaymentsPage = lazy(() => import('../admin/pages/finance-system/fee-management/billings-and-payments/fee-billing-and-payment.page'));
 const SingleStudentFeeDetailsPage = lazy(() => import('../admin/pages/finance-system/fee-management/billings-and-payments/single-student-fee-details.page'));
 const GeneralSettingsPage = lazy(() => import('../admin/pages/settings/general-settings.page'));
-
 
 const SuperAdminRoutes = () => {
     return (
@@ -244,6 +244,7 @@ const SuperAdminRoutes = () => {
                     <Route path="settings">
                         <Route path="general-settings" element={<GeneralSettingsPage />} />
                     </Route>
+                    <Route path="account" element={<AccountPage />} />
                 </Route>
             </Route>
         </Routes>
