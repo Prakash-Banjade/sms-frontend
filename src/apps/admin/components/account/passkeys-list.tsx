@@ -11,6 +11,8 @@ export default function PassKeysList() {
 
     if (isLoading) return <div>Loading...</div>;
 
+    if (!credentials?.length) return <div className="mt-10 text-sm text-muted-foreground font-semibold">You currently don't have any passkeys registered.</div>;
+
     return (
         <div className="space-y-px mt-6 border rounded-md overflow-hidden">
             {credentials?.map((cred, ind) => {
