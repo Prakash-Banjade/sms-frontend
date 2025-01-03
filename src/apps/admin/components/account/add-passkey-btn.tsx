@@ -4,40 +4,46 @@ import { Plus } from "lucide-react";
 import { startRegistration } from '@simplewebauthn/browser';
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { QueryKey } from "@/react-query/queryKeys";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AddPassKeyBtn() {
     const axios = useAxios();
     const [error, setError] = useState<string | null>(null);
     const [isPending, setIsPending] = useState<boolean>(false);
+    const queryClient = useQueryClient();
 
     const handleAddPassKey = async () => {
         setError(null);
-        setIsPending(false);
+        setIsPending(true);
         try {
-            const response = await axios.post('/passkey/register');
+            const response = await axios.post(`/${QueryKey.WEB_AUTHN}/register`);
 
             const challengePayload = response.data?.challengePayload;
 
-            if (!challengePayload) return; // todo: show some error msg
+            if (!challengePayload) throw new Error('Failed to register passkey'); // todo: show some error msg
 
             try {
-                setIsPending(true);
+                const registrationResponse = await startRegistration({ optionsJSON: challengePayload, useAutoRegister: true });
 
-                const registrationResponse = await startRegistration({ optionsJSON: challengePayload });
-
-                const response = await axios.post('/passkey/verify-register', {
+                const response = await axios.post(`/${QueryKey.WEB_AUTHN}/verify-register`, {
                     registrationResponse,
                 });
 
                 if (response.data?.message) {
                     toast.success(response.data.message);
+                    queryClient.invalidateQueries({
+                        queryKey: [QueryKey.WEB_AUTHN],
+                    })
                 }
 
             } catch (e) {
-                console.log(e)
                 if (e instanceof Error) {
-                    if (e.message.includes('timed out')) return setError('Registration cancelled or timeout.')
-                    return setError(e.message)
+                    if (e.message.includes('timed out')) {
+                        setError('Registration cancelled or timeout.')
+                    } else {
+                        setError(e.message)
+                    }
                 };
                 setError('Something went wrong');
             } finally {
@@ -45,8 +51,11 @@ export default function AddPassKeyBtn() {
             }
 
         } catch (e) {
-            if (e instanceof Error) return setError(e.message);
-            setError('Failed to register passkey');
+            if (e instanceof Error) {
+                setError(e.message);
+            } else {
+                setError('Failed to register passkey');
+            }
         }
     }
 

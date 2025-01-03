@@ -16,6 +16,7 @@ import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
 import { EMAIL_REGEX } from "@/CONSTANTS"
 import toast from "react-hot-toast"
+import PasskeyLoginButton from "./passkey-login-btn"
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const loginFormSchema = z.object({
@@ -23,14 +24,15 @@ const loginFormSchema = z.object({
     password: z.string({ required_error: "Password is required" }).min(8, { message: "Password must be at least 8 characters long" }),
 })
 
-type loginFormSchemaType = z.infer<typeof loginFormSchema>;
+export type loginFormSchemaType = z.infer<typeof loginFormSchema>;
 
 export function LoginForm({ className, ...props }: LoginFormProps) {
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const [isWebAuthnPending, setIsWebAuthnPending] = React.useState<boolean>(false);
 
-    const form = useForm<z.infer<typeof loginFormSchema>>({
+    const form = useForm<loginFormSchemaType>({
         resolver: zodResolver(loginFormSchema),
         defaultValues: {
             email: "",
@@ -75,6 +77,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                         label="Email"
                         name="email"
                         placeholder="name@example.com"
+                        autoComplete="webauthn"
                     />
                     <section>
                         <AppForm.Password<loginFormSchemaType>
@@ -97,9 +100,10 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
                     <section className="space-y-3">
                         <RememberMe />
-                        <AppForm.Submit className="w-full">
+                        <AppForm.Submit disabled={isWebAuthnPending} className="w-full">
                             Sign in
                         </AppForm.Submit>
+                        <PasskeyLoginButton isPending={isWebAuthnPending} setIsPending={setIsWebAuthnPending} />
                     </section>
 
                 </form>
@@ -116,9 +120,9 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
             </div>
             <Button variant="outline" type="button" disabled={false}>
                 {false ? (
-                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                    <LoaderCircle className="h-4 w-4 animate-spin" />
                 ) : (
-                    <Icons.gitHub className="mr-2 h-4 w-4" />
+                    <Icons.gitHub className="h-4 w-4" />
                 )}{" "}
                 GitHub
             </Button>

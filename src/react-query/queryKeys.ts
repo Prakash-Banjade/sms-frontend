@@ -8,6 +8,7 @@ export enum QueryKey {
     AUTH_VERIFY_PWD_RESET_TOKEN = "auth/verify-pwd-reset-token",
     AUTH_VERIFY_EMAIL = "auth/verify-email",
     AUTH_VERIFY_EMAIL_CONFIRM_TOKEN = "auth/verify-email-confirm-token",
+    WEB_AUTHN = "web-authn",
     DASHBOARD = "dashboard",
     ME = "users/me",
     USERS = "users",

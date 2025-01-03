@@ -52,6 +52,5 @@ export const getCookie = (name: string): string | null => {
 
 // Delete a cookie
 export const deleteCookie = (name: string, options: CookieOptions = {}): void => {
-    console.log('delete cookie')
     setCookie(name, "", { ...options, path: "/", maxAge: -1 });
 };
