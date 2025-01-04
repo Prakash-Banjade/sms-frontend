@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { KeyRound } from "lucide-react"
 import React from "react"
-import { useGetWebAuthnCredentials } from "../../data-access/account-data-access"
+import { useGetWebAuthnCredentials } from "../../../admin/data-access/account-data-access"
 import { formatDistanceToNow, isToday } from "date-fns"
 import EditPassKeyBtn from "./edit-passkey-btn"
 import DeletePassKeyBtn from "./delete-passkey-btn"

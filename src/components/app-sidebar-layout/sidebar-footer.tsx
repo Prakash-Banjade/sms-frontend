@@ -1,9 +1,9 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
+import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { useLogoutMutation } from "@/hooks/useLogoutMutation"
 import { ChevronUp, LoaderCircle, LogOut } from "lucide-react"
 import { ProfileAvatar } from "../ui/avatar"
-import { getImageUrl } from "@/lib/utils"
+import { cn, getImageUrl } from "@/lib/utils"
 import { useAuth } from "@/contexts/auth-provider"
 import { useNavigate } from "react-router-dom"
 
@@ -11,6 +11,7 @@ export const AppSidebarFooter = () => {
     const { handleLogout, isPending } = useLogoutMutation();
     const { payload } = useAuth();
     const navigate = useNavigate();
+    const { setOpen, open } = useSidebar();
 
     return (
         <SidebarFooter>
@@ -18,20 +19,27 @@ export const AppSidebarFooter = () => {
                 <SidebarMenuItem>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <SidebarMenuButton className="h-12">
-                                <ProfileAvatar src={getImageUrl(payload?.profileImageUrl, "w=40&q=70")} name={payload?.firstName + " " + payload?.lastName} className="size-10" />
-                                {payload?.firstName + " " + payload?.lastName}
-                                <ChevronUp className="ml-auto" />
+                            <SidebarMenuButton className={cn("h-12", !open && "grid place-items-center rounded-full")}>
+                                <ProfileAvatar
+                                    src={getImageUrl(payload?.profileImageUrl, "w=40&q=70")}
+                                    name={payload?.firstName + " " + payload?.lastName}
+                                    className={cn(!open ? "absolute size-8" : "size-10")}
+                                />
+                                {open && <span>{payload?.firstName + " " + payload?.lastName}</span>}
+                                {open && <ChevronUp className="ml-auto" />}
                             </SidebarMenuButton>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             side="top"
-                            className="w-[--radix-popper-anchor-width]"
+                        // className="w-[--radix-popper-anchor-width]"
                         >
                             <DropdownMenuLabel className="break-words">{payload?.email}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                onClick={() => { navigate(`/${payload?.role}/account`) }}
+                                onClick={() => {
+                                    setOpen(false);
+                                    navigate(`/${payload?.role}/account`)
+                                }}
                             >
                                 <span>My Account</span>
                             </DropdownMenuItem>

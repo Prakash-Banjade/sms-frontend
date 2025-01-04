@@ -6,6 +6,7 @@ import { Role } from './types/global.type';
 import PublicRoutes from './apps/public/public-routes';
 import PersistLogin from './components/auth/persist-login';
 import SuperAdminRoutes from './apps/super_admin/super_admin-routes';
+import { UserRoutes } from './apps/common/common-routes';
 
 const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
             {
                 path: '/*',
                 element: <PublicRoutes />,  // Public routes will be handled inside PublicRoutes
+            },
+            {
+                path: `/${Role.USER}/*`,
+                element: <UserRoutes />,  // Common routes without any layout
             },
             {
                 path: `/${Role.SUPER_ADMIN}/*`,

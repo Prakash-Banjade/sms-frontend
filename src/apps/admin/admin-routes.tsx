@@ -4,7 +4,7 @@ import { adminSidebarMenuItems } from './layout/sidebar-items';
 import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
-import AccountPage from './pages/account/account.page';
+import { CommonRoutes } from '../common/common-routes';
 const SingleStaffPage = lazy(() => import('./pages/staffs/single-staff-page'));
 const SalaryStructuresPage = lazy(() => import('./pages/finance-system/salary-management/salary-structures/salary-structures.page'));
 const PayrollAndPaymentsPage = lazy(() => import('./pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page'));
@@ -78,160 +78,167 @@ const AdminRoutes = () => {
         <Routes>
             <Route element={<RequireAuth authorizedRoles={[Role.ADMIN]} />}>
                 <Route element={<AppRootLayout menuItems={adminSidebarMenuItems} />}>
-                    <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="classes">
-                        <Route index element={<ClassesListPage />} />
-                        <Route path="new" element={<AddClassPage />} />
-                        <Route path=":id" element={<SingleClassRoomPage />} />
-                        <Route path="sections" element={<SectionsListPage />} />
-                    </Route>
-                    <Route path="subjects">
-                        <Route index element={<SubjectsListPage />} />
-                        <Route path="new" element={<AddSubjectPage />} />
-                        <Route path=":id" element={<SingleSubjectPage />} />
-                    </Route>
-                    <Route path="class-routines">
-                        <Route index element={<ClassRoutineListPage />} />
-                        <Route path="new" element={<AddClassRoutinePage />} />
-                    </Route>
-                    <Route path="lesson-plans">
-                        <Route index element={<LessonPlansListPage />} />
-                        <Route path="new" element={<AddLessonPlanPage />} />
-                        <Route path=":id">
-                            <Route index element={<SingleLessonPlanPage />} />
-                            <Route path="edit" element={<EditLessonPlanPage />} />
-                        </Route>
-                    </Route>
-                    <Route path="examination">
-                        <Route index element={<Navigate to="exam-setup" />} />
-                        <Route path="exam-setup">
-                            <Route index element={<ExamsPage />} />
-                            <Route path="new" element={<NewExamPage />} />
-                            <Route path=":id">
-                                <Route index element={<Navigate to="edit" />} />
-                                <Route path="edit" element={<EditExamPage />} />
-                                <Route path="evaluation" element={<ExamEvaluationPage />} />
-                            </Route>
-                        </Route>
-                        <Route path="exam-routines" element={<ExamRoutinePage />} />
-                    </Route>
-                    <Route path="notices">
-                        <Route index element={<NoticesListPage />} />
-                        <Route path="new" element={<AddNoticePage />} />
-                        <Route path=":id" element={<NoticeViewPage />} />
-                    </Route>
-                    <Route path="tasks">
-                        <Route index element={<Navigate to="homeworks" />} />
-                        <Route path='homeworks'>
-                            <Route index element={<TasksPage type={ETask.HOMEWORK} />} />
-                            <Route path='new' element={<AddTaskPage type={ETask.HOMEWORK} />} />
-                            <Route path=":id">
-                                <Route index element={<SingleTaskPage />} />
-                                <Route path="edit" element={<EditTaskPage type={ETask.HOMEWORK} />} />
-                            </Route>
-                        </Route>
-                        <Route path='assignments'>
-                            <Route index element={<TasksPage type={ETask.ASSIGNMENT} />} />
-                            <Route path='new' element={<AddTaskPage type={ETask.ASSIGNMENT} />} />
-                            <Route path=":id">
-                                <Route index element={<SingleTaskPage />} />
-                                <Route path="edit" element={<EditTaskPage type={ETask.ASSIGNMENT} />} />
-                            </Route>
-                        </Route>
-                    </Route>
-                    <Route path="transportation">
-                        <Route path="vehicles">
-                            <Route index element={<VehiclesPage />} />
-                        </Route>
-                        <Route path="route-stops" element={<RouteStopsPage />} />
-                    </Route>
-                    <Route path="dormitory">
-                        <Route index element={<DormitoryPage />} />
-                        <Route path="room-types" element={<RoomTypePage />} />
-                        <Route path="dormitory-rooms" element={<DormitoryRoomPage />} />
-                    </Route>
-                    <Route path="teachers">
-                        <Route index element={<TeacherListPage />} />
-                        <Route path="new" element={<AddTeacherPage />} />
-                        <Route path=":id">
-                            <Route index element={<SingleTeacherPage />} />
-                            <Route path="edit" element={<EditTeacherPage />} />
-                        </Route>
-                    </Route>
-                    <Route path="staffs">
-                        <Route index element={<StaffListPage />} />
-                        <Route path="new" element={<AddStaffPage />} />
-                        <Route path=":id">
-                            <Route index element={<SingleStaffPage />} />
-                            <Route path="edit" element={<EditStaffPage />} />
-                        </Route>
-                    </Route>
-                    <Route path="employees">
-                        <Route index element={<EmployeeAttendancePage />} />
-                        <Route path="leave-requests" element={<EmployeesLeaveRequestsPage />} />
-                        <Route path="attendance" element={<EmployeeAttendancePage />} />
-                    </Route>
-                    <Route path="students">
-                        <Route path='new-registration' element={<NewRegistrationPage />} />
-                        <Route path="enrollments" element={<EnrollmentsPage />} />
-                        <Route index element={<StudentsListPage />} />
-                        <Route path='attendance'>
-                            <Route index element={<StudentAttendancePage />} />
-                            <Route path='leave-requests' element={<StudentsLeaveRequestsPage />} />
-                        </Route>
-                        <Route path="subject-selection" element={<SubjectSelectionPage />} />
-                        <Route path="change-class" element={<StudentChangeClassPage />} />
-                        <Route path="promote" element={<StudentPromotionPage />} />
-                        <Route path=":id">
-                            <Route index element={<SingleStudentPage />} />
-                            <Route path="edit" element={<EditStudentPage />} />
-                        </Route>
-                    </Route>
-                    <Route path="library">
-                        <Route index element={<LibraryOverviewPage />} />
-                        <Route path="books">
-                            <Route index element={<LibraryBookListPage />} />
-                            <Route path="categories" element={<BookCategoriesPage />} />
-                            <Route path="new" element={<AddLibraryBookPage />} />
-                        </Route>
-                        <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
-                        <Route path="members" element={<LibraryMembersPage />} />
-                    </Route>
-                    <Route path='finance'>
-                        <Route path="fee-management">
-                            <Route index element={<Navigate to="charge-heads" />} />
-                            <Route path="charge-heads" element={<ChargeHeadsPage />} />
-                            <Route path="fee-structures" element={<FeeStructuresPage />} />
-                            <Route path="billing-and-payments" >
-                                <Route index element={<FeeBillingAndPaymentsPage />} />
-                                <Route path="student" element={<SingleStudentFeeDetailsPage />} />
-                            </Route>
-                        </Route>
-                        <Route path="salary-management">
-                            <Route index element={<Navigate to="salary-structures" />} />
-                            <Route path="salary-structures" element={<SalaryStructuresPage />} />
-                            <Route path="payroll-and-payments">
-                                <Route index element={<PayrollAndPaymentsPage />} />
-                                <Route path="employee" element={<SingleEmployeeSalaryDetailsPage />} />
-                            </Route>
-                        </Route>
-                    </Route>
-                    <Route path="reports">
-                        <Route path="examination-report">
-                            <Route index element={<Navigate to="student-wise" />} />
-                            <Route path="student-wise" element={<ExaminationReport_StudentWise />} />
-                            <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
-                        </Route>
-                    </Route>
-                    <Route path="settings">
-                        <Route path="general-settings" element={<GeneralSettingsPage />} />
-                    </Route>
-                    {/* Add more admin-specific routes */}
+                    {AdminRoutesGroup()}
+                    {CommonRoutes()}
                 </Route>
-                <Route path="account" element={<AccountPage />} />
             </Route>
         </Routes>
     );
 };
+
+export const AdminRoutesGroup = () => {
+    return (
+        <>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="classes">
+                <Route index element={<ClassesListPage />} />
+                <Route path="new" element={<AddClassPage />} />
+                <Route path=":id" element={<SingleClassRoomPage />} />
+                <Route path="sections" element={<SectionsListPage />} />
+            </Route>
+            <Route path="subjects">
+                <Route index element={<SubjectsListPage />} />
+                <Route path="new" element={<AddSubjectPage />} />
+                <Route path=":id" element={<SingleSubjectPage />} />
+            </Route>
+            <Route path="class-routines">
+                <Route index element={<ClassRoutineListPage />} />
+                <Route path="new" element={<AddClassRoutinePage />} />
+            </Route>
+            <Route path="lesson-plans">
+                <Route index element={<LessonPlansListPage />} />
+                <Route path="new" element={<AddLessonPlanPage />} />
+                <Route path=":id">
+                    <Route index element={<SingleLessonPlanPage />} />
+                    <Route path="edit" element={<EditLessonPlanPage />} />
+                </Route>
+            </Route>
+            <Route path="examination">
+                <Route index element={<Navigate to="exam-setup" />} />
+                <Route path="exam-setup">
+                    <Route index element={<ExamsPage />} />
+                    <Route path="new" element={<NewExamPage />} />
+                    <Route path=":id">
+                        <Route index element={<Navigate to="edit" />} />
+                        <Route path="edit" element={<EditExamPage />} />
+                        <Route path="evaluation" element={<ExamEvaluationPage />} />
+                    </Route>
+                </Route>
+                <Route path="exam-routines" element={<ExamRoutinePage />} />
+            </Route>
+            <Route path="notices">
+                <Route index element={<NoticesListPage />} />
+                <Route path="new" element={<AddNoticePage />} />
+                <Route path=":id" element={<NoticeViewPage />} />
+            </Route>
+            <Route path="tasks">
+                <Route index element={<Navigate to="homeworks" />} />
+                <Route path='homeworks'>
+                    <Route index element={<TasksPage type={ETask.HOMEWORK} />} />
+                    <Route path='new' element={<AddTaskPage type={ETask.HOMEWORK} />} />
+                    <Route path=":id">
+                        <Route index element={<SingleTaskPage />} />
+                        <Route path="edit" element={<EditTaskPage type={ETask.HOMEWORK} />} />
+                    </Route>
+                </Route>
+                <Route path='assignments'>
+                    <Route index element={<TasksPage type={ETask.ASSIGNMENT} />} />
+                    <Route path='new' element={<AddTaskPage type={ETask.ASSIGNMENT} />} />
+                    <Route path=":id">
+                        <Route index element={<SingleTaskPage />} />
+                        <Route path="edit" element={<EditTaskPage type={ETask.ASSIGNMENT} />} />
+                    </Route>
+                </Route>
+            </Route>
+            <Route path="transportation">
+                <Route path="vehicles">
+                    <Route index element={<VehiclesPage />} />
+                </Route>
+                <Route path="route-stops" element={<RouteStopsPage />} />
+            </Route>
+            <Route path="dormitory">
+                <Route index element={<DormitoryPage />} />
+                <Route path="room-types" element={<RoomTypePage />} />
+                <Route path="dormitory-rooms" element={<DormitoryRoomPage />} />
+            </Route>
+            <Route path="teachers">
+                <Route index element={<TeacherListPage />} />
+                <Route path="new" element={<AddTeacherPage />} />
+                <Route path=":id">
+                    <Route index element={<SingleTeacherPage />} />
+                    <Route path="edit" element={<EditTeacherPage />} />
+                </Route>
+            </Route>
+            <Route path="staffs">
+                <Route index element={<StaffListPage />} />
+                <Route path="new" element={<AddStaffPage />} />
+                <Route path=":id">
+                    <Route index element={<SingleStaffPage />} />
+                    <Route path="edit" element={<EditStaffPage />} />
+                </Route>
+            </Route>
+            <Route path="employees">
+                <Route index element={<EmployeeAttendancePage />} />
+                <Route path="leave-requests" element={<EmployeesLeaveRequestsPage />} />
+                <Route path="attendance" element={<EmployeeAttendancePage />} />
+            </Route>
+            <Route path="students">
+                <Route path='new-registration' element={<NewRegistrationPage />} />
+                <Route path="enrollments" element={<EnrollmentsPage />} />
+                <Route index element={<StudentsListPage />} />
+                <Route path='attendance'>
+                    <Route index element={<StudentAttendancePage />} />
+                    <Route path='leave-requests' element={<StudentsLeaveRequestsPage />} />
+                </Route>
+                <Route path="subject-selection" element={<SubjectSelectionPage />} />
+                <Route path="change-class" element={<StudentChangeClassPage />} />
+                <Route path="promote" element={<StudentPromotionPage />} />
+                <Route path=":id">
+                    <Route index element={<SingleStudentPage />} />
+                    <Route path="edit" element={<EditStudentPage />} />
+                </Route>
+            </Route>
+            <Route path="library">
+                <Route index element={<LibraryOverviewPage />} />
+                <Route path="books">
+                    <Route index element={<LibraryBookListPage />} />
+                    <Route path="categories" element={<BookCategoriesPage />} />
+                    <Route path="new" element={<AddLibraryBookPage />} />
+                </Route>
+                <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
+                <Route path="members" element={<LibraryMembersPage />} />
+            </Route>
+            <Route path='finance'>
+                <Route path="fee-management">
+                    <Route index element={<Navigate to="charge-heads" />} />
+                    <Route path="charge-heads" element={<ChargeHeadsPage />} />
+                    <Route path="fee-structures" element={<FeeStructuresPage />} />
+                    <Route path="billing-and-payments" >
+                        <Route index element={<FeeBillingAndPaymentsPage />} />
+                        <Route path="student" element={<SingleStudentFeeDetailsPage />} />
+                    </Route>
+                </Route>
+                <Route path="salary-management">
+                    <Route index element={<Navigate to="salary-structures" />} />
+                    <Route path="salary-structures" element={<SalaryStructuresPage />} />
+                    <Route path="payroll-and-payments">
+                        <Route index element={<PayrollAndPaymentsPage />} />
+                        <Route path="employee" element={<SingleEmployeeSalaryDetailsPage />} />
+                    </Route>
+                </Route>
+            </Route>
+            <Route path="reports">
+                <Route path="examination-report">
+                    <Route index element={<Navigate to="student-wise" />} />
+                    <Route path="student-wise" element={<ExaminationReport_StudentWise />} />
+                    <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
+                </Route>
+            </Route>
+            <Route path="settings">
+                <Route path="general-settings" element={<GeneralSettingsPage />} />
+            </Route>
+        </>
+    )
+}
 
 export default AdminRoutes;

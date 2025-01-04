@@ -17,7 +17,6 @@ export function useLogoutMutation() {
             await axios.post(`${import.meta.env.VITE_API_URL}/${QueryKey.AUTH_LOGOUT}`);
         },
         onSuccess: () => {
-            localStorage.removeItem("persist")
             Object.values(CookieKey).forEach(key => deleteCookie(key)); // remove cookie
             navigate("/auth/login", { replace: true, state: { from: location } });
             setAuth(null);

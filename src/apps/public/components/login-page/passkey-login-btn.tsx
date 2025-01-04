@@ -42,7 +42,7 @@ export default function PasskeyLoginButton({ isPending, setIsPending }: Props) {
         setError(null);
         setIsPending(true);
         try {
-            const response = await axios.post(`/${QueryKey.WEB_AUTHN}/login`, {
+            const response = await axios.post(`/${QueryKey.WEB_AUTHN}/auth-challenge`, {
                 email: form.getValues('email')
             });
 
@@ -111,8 +111,8 @@ function setErrorMsg(error: unknown, setError: React.Dispatch<React.SetStateActi
                 form.setError(err.field, { message: err?.message });
                 form.setFocus(err.field);
             }
-        } else if (typeof error.response?.data?.message === 'string') {
-            setError(error.response?.data?.message);
+        } else if (typeof err === 'string') {
+            setError(err);
         } else {
             setError(error.message);
         }

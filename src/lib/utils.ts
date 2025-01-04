@@ -1,6 +1,7 @@
 import { ISO_TIME } from "@/CONSTANTS";
 import { TAuthPayload } from "@/contexts/auth-provider";
 import { Role } from "@/types/global.type";
+import { AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx"
 import { add, format } from "date-fns";
 import { twMerge } from "tailwind-merge"
@@ -31,4 +32,21 @@ export function startOfDayString(date: Date) {
 
 export function isAdmin(payload: TAuthPayload | null): boolean {
   return ([Role.ADMIN, Role.SUPER_ADMIN] as Role[]).includes(payload?.role as Role);
+}
+
+export function getErrMsg(error: unknown): string | null {
+  if (error instanceof AxiosError) {
+
+    const err = error.response?.data?.message;
+
+    if (err instanceof Object && 'message' in err) {
+      return err.message;
+    } else if (typeof err === 'string') {
+      return err;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
 }
