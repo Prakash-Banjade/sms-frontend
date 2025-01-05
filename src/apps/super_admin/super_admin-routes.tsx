@@ -6,6 +6,8 @@ import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { superAdminSidebarMenuItems } from './layout/sidebar-items';
 import { CommonRoutes } from '../common/common-routes';
 import { AdminRoutesGroup } from '../admin/admin-routes';
+const ExamTypesPage = lazy(() => import('../admin/pages/examination/exam-types.page'));
+const MarkGradePage = lazy(() => import('../admin/pages/examination/mark-grades.page'));
 const BranchesListPage = lazy(() => import('./pages/branches/branches-list.page'));
 const AdminsListPage = lazy(() => import('./pages/admins/admins-list-page'));
 const AddAdminPage = lazy(() => import('./pages/admins/add-admin-page'));
@@ -25,6 +27,10 @@ const SuperAdminRoutes = () => {
                     <Route path="academic-years">
                         <Route index element={<AcademicYearsListPage />} />
                         <Route path="new" element={<AddAcademicYear />} />
+                    </Route>
+                    <Route path="examination">
+                        <Route path="exam-type" element={<ExamTypesPage />} />
+                        <Route path="marks-grade" element={<MarkGradePage />} />
                     </Route>
                     {AdminRoutesGroup()}
                     {CommonRoutes()}

@@ -38,10 +38,10 @@ export const AppSidebarFooter = () => {
                             <DropdownMenuItem
                                 onClick={() => {
                                     setOpen(false);
-                                    navigate(`/${payload?.role}/account`)
+                                    navigate(`/${payload?.role}/settings`)
                                 }}
                             >
-                                <span>My Account</span>
+                                <span>Settings</span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <button

@@ -1,14 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import AccountPage from "./pages/account/account.page"
 import RequireSudo from "@/components/auth/require-sudo"
 import NewPassKeyPage from "./components/passkey/new-passkey-page"
 import { Role } from "@/types/global.type"
 import RequireAuth from "@/components/auth/require-auth"
+import SettingsPage from "./pages/settings/settings.page"
 
 export const CommonRoutes = () => {
     return (
         <>
-            <Route path="account" element={<AccountPage />} />
+            <Route path="settings" element={<SettingsPage />} />
         </>
     )
 }

@@ -4,3 +4,11 @@ export type TWebAuthnCredential = {
     name: string,
     lastUsed: string | null,
 }
+
+export type TLoginDevice = {
+    ua: string,
+    deviceId: string,
+    lastLogin: string,
+    firstLogin: string,
+    current: boolean,
+}

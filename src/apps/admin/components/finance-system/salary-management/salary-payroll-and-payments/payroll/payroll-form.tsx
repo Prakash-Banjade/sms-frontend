@@ -6,7 +6,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { startOfDayString } from "@/lib/utils"
+import { cn, startOfDayString } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useEffect, useMemo } from "react"
@@ -83,6 +83,8 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
     const { mutateAsync, isPending } = useAppMutation<any, { message: string }>();
 
     const onSubmit = async (values: PayrollFormSchemaType) => {
+        if (hasPaymentMade) return;
+
         const res = await mutateAsync({
             method: !!defaultValues ? 'patch' : 'post',
             endpoint: QueryKey.PAYROLLS,
@@ -110,6 +112,8 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
             setSearchParams('sub-tab', 'last');
         };
     };
+
+    const hasPaymentMade = !!paidSalary;
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
@@ -204,6 +208,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                                 placeholder="eg. 1000"
                                 inputClassName="w-40"
                                 min={0}
+                                readOnly={hasPaymentMade}
                             />
                         </section>
                     </div>
@@ -227,6 +232,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                                                 <AppForm.Text
                                                     name={`salaryAdjustments.${index}.description`}
                                                     placeholder="eg. Tax (13%)"
+                                                    readOnly={hasPaymentMade}
                                                 />
                                             </TableCell>
                                             <TableCell>
@@ -237,7 +243,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                                                         <FormItem>
                                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <FormControl>
-                                                                    <SelectTrigger>
+                                                                    <SelectTrigger aria-readonly={hasPaymentMade} className={cn(hasPaymentMade && "pointer-events-none")}>
                                                                         <SelectValue placeholder="Select a type" />
                                                                     </SelectTrigger>
                                                                 </FormControl>
@@ -255,27 +261,32 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                                                 <AppForm.Number
                                                     name={`salaryAdjustments.${index}.amount`}
                                                     placeholder="eg. 1000"
+                                                    readOnly={hasPaymentMade}
                                                 />
                                             </TableCell>
                                             <TableCell>
-                                                <Button type="button" variant={'destructive'} size={'icon'} onClick={() => remove(index)}>
-                                                    <Minus />
-                                                </Button>
+                                                {
+                                                    !hasPaymentMade && <Button type="button" variant={'destructive'} size={'icon'} onClick={() => remove(index)}>
+                                                        <Minus />
+                                                    </Button>
+                                                }
                                             </TableCell>
                                         </TableRow>
                                     ))
                                 }
                                 <TableRow className="hover:bg-transparent">
                                     <TableCell>
-                                        <Button
-                                            type="button"
-                                            variant={'outline'}
-                                            size={'sm'}
-                                            onClick={() => append({ amount: 0, description: '', type: ESalaryAdjustmentType.Deduction })}
-                                        >
-                                            <Plus />
-                                            Add
-                                        </Button>
+                                        {
+                                            !hasPaymentMade && <Button
+                                                type="button"
+                                                variant={'outline'}
+                                                size={'sm'}
+                                                onClick={() => append({ amount: 0, description: '', type: ESalaryAdjustmentType.Deduction })}
+                                            >
+                                                <Plus />
+                                                Add
+                                            </Button>
+                                        }
                                     </TableCell>
                                     {
                                         fields?.length > 0 && <TableCell className="text-right font-semibold text-lg" colSpan={2}>
@@ -295,7 +306,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                     <strong>Rs. {(totalEarnings + totalAdjustments + +form.watch('advance')).toLocaleString()}</strong>
                 </section>
                 {
-                    (!paidSalary || paidSalary === 0) && <section className="flex justify-center">
+                    !hasPaymentMade && <section className="flex justify-center">
                         <LoadingButton
                             isLoading={isPending}
                             loadingText={payrollId ? 'Updating...' : 'Generating...'}
@@ -307,13 +318,13 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                     </section>
                 }
                 {
-                    payrollId && (!paidSalary || paidSalary === 0) && (
+                    payrollId && !hasPaymentMade && (
                         <div className="bg-info/10 text-info text-sm rounded-md p-2 mt-2 mx-auto w-fit flex items-center">
                             <TriangleAlert size={16} className="mr-2" /> Once a payment is made, the payroll can't be update anymore.
                         </div>
                     )
                 }
             </form>
-        </AppForm>
+        </AppForm >
     )
 }
