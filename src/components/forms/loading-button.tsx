@@ -14,7 +14,7 @@ export default function LoadingButton({ children, isLoading, loadingText, ...pro
                 isLoading ?
                     <>
                         <LoaderCircle className="animate-spin" />
-                        <span>{loadingText}</span>
+                        <span className="break-words max-w-full">{loadingText}</span>
                     </> :
                     <>{children}</>
             }
