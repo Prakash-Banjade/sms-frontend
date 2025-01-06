@@ -51,24 +51,26 @@ export default function SudoActionConfirmPage({ setIsVerified }: Props) {
                     }
                 </Card>
 
-                <Card className="p-4">
-                    <h3 className="font-semibold mb-3">Having problems?</h3>
-                    {
-                        <button
-                            type="button"
-                            onClick={() => setConfirmOption(confirmOption === 'passkey' ? 'password' : 'passkey')}
-                            className="text-sm text-blue-500 hover:underline"
-                        >
-                            {
-                                confirmOption === 'passkey' ? (
-                                    <span>Use your password</span>
-                                ) : (
-                                    <span>Use your passkey</span>
-                                )
-                            }
-                        </button>
-                    }
-                </Card>
+                {
+                    !!credentials?.length && <Card className="p-4">
+                        <h3 className="font-semibold mb-3">Having problems?</h3>
+                        {
+                            <button
+                                type="button"
+                                onClick={() => setConfirmOption(confirmOption === 'passkey' ? 'password' : 'passkey')}
+                                className="text-sm text-blue-500 hover:underline"
+                            >
+                                {
+                                    confirmOption === 'passkey' ? (
+                                        <span>Use your password</span>
+                                    ) : (
+                                        <span>Use your passkey</span>
+                                    )
+                                }
+                            </button>
+                        }
+                    </Card>
+                }
 
                 {/* Tip Section */}
                 <p className="text-center text-sm text-muted-foreground">

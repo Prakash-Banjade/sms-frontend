@@ -128,6 +128,8 @@ function setErrorMsg(error: unknown, setError: React.Dispatch<React.SetStateActi
             if (!!err?.field) {
                 form.setError(err.field, { message: err?.message });
                 form.setFocus(err.field);
+            } else {
+                setError(err?.message);
             }
         } else if (typeof err === 'string') {
             setError(err);

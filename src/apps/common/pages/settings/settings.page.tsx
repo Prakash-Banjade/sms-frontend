@@ -38,15 +38,15 @@ export default function SettingsPage() {
       title="Settings"
       description="Manage your account settings."
     >
-      <Tabs value={success ? data : tabsObj[0].name} className="w-full">
-        <div className="flex gap-20">
-          <nav>
-            <TabsList className="flex flex-col justify-start gap-4 h-full bg-transparent">
+      <Tabs value={success ? data : tabsObj[0].name} className="w-full @container">
+        <div className="flex @5xl:flex-row flex-col @5xl:gap-20 gap-10">
+          <nav className="border-b @5xl:border-b-0">
+            <TabsList className="flex @5xl:flex-col flex-wrap justify-start gap-4 h-full bg-transparent">
               {
                 tabsObj.map(tab => (
                   <TabsTrigger
                     className={cn(
-                      "capitalize !w-full !block text-left !text-foreground py-2.5 hover:underline rounded-lg pr-20",
+                      "capitalize @5xl:!w-full !block text-left !text-foreground py-2.5 hover:underline rounded-lg @5xl:pr-20",
                       tab.name === data && "!bg-secondary hover:no-underline"
                     )}
                     key={tab.name}
@@ -60,7 +60,7 @@ export default function SettingsPage() {
             </TabsList>
           </nav>
 
-          <div className="w-full max-w-[800px]">
+          <div className="w-full @5xl:max-w-[800px]">
             {
               tabsObj.map(tab => (
                 <TabsContent
