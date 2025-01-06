@@ -9,6 +9,7 @@ import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMapp
 import { createQueryString } from "@/utils/create-query-string";
 import { ERoutineType, SelectOption } from "@/types/global.type";
 import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import { useGetClassRoomsOptions } from "../class-rooms/actions";
 
 type Props = ({
     setIsOpen?: undefined;
@@ -27,12 +28,36 @@ export default function ClassRoutineForm(props: Props) {
     const form = useForm<classRoutineSchemaType>({
         resolver: zodResolver(classRoutineSchema),
         defaultValues: props?.defaultValues ?? classRoutineDefaultValues,
-    })
+    });
+
+    const { data: classRooms, isLoading } = useGetClassRoomsOptions({
+        queryString: 'page=1&take=50'
+    });
 
     const { mutateAsync } = useAppMutation<Partial<classRoutineSchemaType>, any>();
 
     async function onSubmit(values: classRoutineSchemaType) {
-        const method = ((!!props.setIsOpen && props.classRoutineId) || params.id) ? "patch" : "post";
+        const selectedClassRoom = classRooms?.find((classRoom) => classRoom.id === values.classRoomId);
+
+        if (selectedClassRoom?.children?.length && !values.sectionId) {
+            form.setError("sectionId", { type: "required", message: "Section is required" });
+            form.setFocus("sectionId");
+            return;
+        }
+
+        if (values.type === ERoutineType.CLASS && !values.subjectId) {
+            form.setError("subjectId", { type: "required", message: "Subject is required" });
+            form.setFocus("subjectId");
+            return;
+        }
+
+        if (values.type === ERoutineType.CLASS && !values.teacherId) {
+            form.setError("teacherId", { type: "required", message: "Teacher is required" });
+            form.setFocus("teacherId");
+            return;
+        }
+
+        const method = !!id ? "patch" : "post";
 
         const response = await mutateAsync({
             method,
@@ -68,31 +93,28 @@ export default function ClassRoutineForm(props: Props) {
                         value={form.watch('type') ?? ''}
                     />
 
-                    <ClassSectionFormField />
+                    <ClassSectionFormField options={classRooms ?? []} isLoading={isLoading} />
 
-                    { // while on edit, no need to update subject
-                        !id && <>
-                            <AppForm.DynamicSelect<classRoutineSchemaType>
-                                name="subjectId"
-                                label="Subject"
-                                placeholder="Select subject"
-                                description="Select the subject"
-                                fetchOptions={{
-                                    endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
-                                    queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                                    queryString: createQueryString({
-                                        classRoomId: form.watch('classRoomId'),
-                                    }),
-                                    options: {
-                                        enabled: !!form.watch('classRoomId'),
-                                    }
-                                }}
-                                labelKey={'subjectName'}
-                                required={form.watch('type') === ERoutineType.CLASS}
-                                disabled={!form.watch('classRoomId') || form.watch('type') === ERoutineType.BREAK}
-                            />
-                        </>
-                    }
+                    <AppForm.DynamicSelect<classRoutineSchemaType>
+                        name="subjectId"
+                        label="Subject"
+                        placeholder="Select subject"
+                        description="Select the subject"
+                        fetchOptions={{
+                            endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                            queryString: createQueryString({
+                                classRoomId: form.watch('classRoomId'),
+                            }),
+                            options: {
+                                enabled: !!form.watch('classRoomId'),
+                            }
+                        }}
+                        labelKey={'subjectName'}
+                        required={form.watch('type') === ERoutineType.CLASS}
+                        disabled={!form.watch('classRoomId') || form.watch('type') === ERoutineType.BREAK}
+                    />
+
                     <AppForm.DynamicSelect<classRoutineSchemaType>
                         name="teacherId"
                         label="Teacher"
@@ -109,7 +131,7 @@ export default function ClassRoutineForm(props: Props) {
                             }
                         }}
                         labelKey={'label'}
-                        disabled={!form.watch('subjectId') || form.watch('type') === ERoutineType.BREAK}
+                        disabled={(form.watch('type') === ERoutineType.CLASS && !form.watch('subjectId')) || form.watch('type') === ERoutineType.BREAK}
                     />
 
 

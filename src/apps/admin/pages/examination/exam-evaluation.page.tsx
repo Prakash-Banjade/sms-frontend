@@ -8,6 +8,7 @@ import { TExamSubject } from "@/types/examination.type";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/auth-provider";
+import { ESubjectType } from "@/types/global.type";
 
 export default function ExamEvaluationPage() {
     const params = useParams();
@@ -44,13 +45,14 @@ const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubject
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
     useEffect(() => {
-        setSearchParams('optionalSubjectId', undefined); // Clear optional subject id on mount
-    }, [])
+        const firstExamSubject = examSubjects[0].subject;
+        setSearchParams('optionalSubjectId', firstExamSubject?.type === ESubjectType.Optional ? firstExamSubject.id : undefined);
+    }, []);
 
     const { data: students, isLoading } = useGetExamStudents({ // no pagination
         id: examId,
         queryString: createQueryString({
-            optionalSubjectId: searchParams.get('optionalSubjectId'),
+            optionalSubjectId: searchParams.get('optionalSubjectId')
         }),
         options: { enabled: !!examId }
     });
