@@ -8,7 +8,8 @@ export type TWebAuthnCredential = {
 export type TLoginDevice = {
     ua: string,
     deviceId: string,
-    lastLogin: string,
     firstLogin: string,
+    lastActivityRecord: string,
     current: boolean,
+    signedIn: boolean,
 }

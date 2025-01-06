@@ -12,7 +12,7 @@ export type TCurrentUser = {
     firstName: string,
     lastName: string,
     profileImageUrl: string | null,
-    branchName: string | null
+    branchName: string | null,
 } | undefined
 
 const authDefaultValue: TAuthContext = {
@@ -57,6 +57,7 @@ export type TAuthPayload = {
     accountId: string;
     role: Role;
     branchId: string | undefined;
+    deviceId: string,
 } & TCurrentUser;
 
 export const useAuth = () => {
