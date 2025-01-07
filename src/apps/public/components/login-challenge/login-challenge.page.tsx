@@ -104,7 +104,7 @@ function TwoFAOptions() {
                             <CircleHelp size={20} /> Get help
                         </span>
                         <span className="text-sm ml-10 text-left text-muted-foreground">
-                            For security reasons, this may take 3-5 business days
+                            For security reasons, this may take 1-2 business days
                         </span>
                     </button>
                 </li>

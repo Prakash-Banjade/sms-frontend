@@ -40,7 +40,7 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
     });
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: (data: FormValues) => axios.post(`${import.meta.env.VITE_API_URL}/auth/verify-two-fa-otp`, data),
+        mutationFn: (data: FormValues) => axios.post(`${import.meta.env.VITE_API_URL}/auth/verify-two-fa-otp`, data, { withCredentials: true }),
         onError: (error) => {
             if (error instanceof AxiosError) {
                 const errorMsg = error.response?.data?.message;
@@ -104,7 +104,7 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
         }, 1000);
 
         return () => clearInterval(interval);
-    })
+    }, [])
 
     function onSubmit(data: FormValues) {
         if (isResendPending) return;
