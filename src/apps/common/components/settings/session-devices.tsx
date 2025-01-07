@@ -6,9 +6,11 @@ import { Chrome, CircleCheck, Globe, Laptop, LogOut, Smartphone } from 'lucide-r
 import SessionDevicesLoading from './session-devices-loading';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
-import LoadingButton from '@/components/forms/loading-button';
 import { useAuth } from '@/contexts/auth-provider';
 import { format } from 'date-fns';
+import { ResponsiveAlertDialog } from '@/components/ui/responsive-alert-dialog';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function SessionDevices() {
     const { data, isLoading } = useGetSessionDevices({});
@@ -30,9 +32,8 @@ export default function SessionDevices() {
 }
 
 const DeviceItem = ({ d }: { d: TLoginDevice }) => {
-    const deviceInfo = new UAParser(d.ua).getResult();
     const { payload } = useAuth();
-    const isCurrentDevice = d.deviceId === payload?.deviceId;
+    const [isOpen, setIsOpen] = useState(false);
 
     const { mutateAsync, isPending } = useAppMutation();
 
@@ -43,6 +44,13 @@ const DeviceItem = ({ d }: { d: TLoginDevice }) => {
             invalidateTags: [QueryKey.ACCOUNTS_DEVICES]
         });
     }
+
+    const deviceInfo = new UAParser(d.ua).getResult();
+    const deviceName: string | undefined = !!deviceInfo.device?.model
+        ? `${deviceInfo.device?.vendor} (${deviceInfo.device?.model})`
+        : deviceInfo.os?.name
+    const isCurrentDevice = d.deviceId === payload?.deviceId;
+
 
     return (
         <Card>
@@ -60,9 +68,7 @@ const DeviceItem = ({ d }: { d: TLoginDevice }) => {
                     <div>
                         <h4 className="font-medium" title='Device'>
                             {
-                                !!deviceInfo.device?.model
-                                    ? `${deviceInfo.device?.vendor} (${deviceInfo.device?.model})`
-                                    : deviceInfo.os?.name ?? "Unknown"
+                                deviceName ?? "Unknown"
                             }
                         </h4>
                         <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-1">
@@ -82,17 +88,19 @@ const DeviceItem = ({ d }: { d: TLoginDevice }) => {
                     (d.signedIn && !isCurrentDevice) ? (
                         <section className='space-y-2 flex flex-col items-end'>
                             <p className='text-xs text-muted-foreground text-right'>Don't recognize something?</p>
-                            <LoadingButton
+                            <ResponsiveAlertDialog
+                                action={() => handleSignOut(d.deviceId)}
+                                isOpen={isOpen}
+                                setIsOpen={setIsOpen}
+                                title={`Sign out on ${deviceName ?? "this"} device?`}
+                                description={`You will no longer be signed in on ${deviceName ?? "this"} device.`}
+                                actionLabel='Sign Out'
                                 isLoading={isPending}
-                                variant="outline"
-                                size="sm"
-                                type="button"
-                                onClick={() => handleSignOut(d.deviceId)}
-                                loadingText='Signing out...'
-                            >
+                            />
+                            <Button type="button" variant='outline' size='sm' onClick={() => setIsOpen(true)}>
                                 <LogOut className="h-4 w-4 mr-2" />
                                 Sign Out
-                            </LoadingButton>
+                            </Button>
                         </section>
                     ) : !isCurrentDevice && (
                         <p className='text-sm text-muted-foreground'>Currently <br /> signed out</p>
