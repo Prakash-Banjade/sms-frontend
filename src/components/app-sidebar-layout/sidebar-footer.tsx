@@ -5,12 +5,13 @@ import { ChevronUp, LoaderCircle, LogOut } from "lucide-react"
 import { ProfileAvatar } from "../ui/avatar"
 import { cn, getImageUrl } from "@/lib/utils"
 import { useAuth } from "@/contexts/auth-provider"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export const AppSidebarFooter = () => {
     const { handleLogout, isPending } = useLogoutMutation();
     const { payload } = useAuth();
     const navigate = useNavigate();
+    const pathname = useLocation().pathname;
     const { setOpen, open } = useSidebar();
 
     return (
@@ -37,7 +38,7 @@ export const AppSidebarFooter = () => {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 onClick={() => {
-                                    setOpen(false);
+                                    !pathname.includes("settings") && setOpen(false);
                                     navigate(`/${payload?.role}/settings`)
                                 }}
                             >

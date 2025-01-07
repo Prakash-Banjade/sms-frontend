@@ -33,8 +33,8 @@ export default function PasswordAndAuthentication() {
                     </Button>
                 </header>
 
-                <p className="text-sm text-muted-foreground">
-                    Passkeys are WebAuthn credentials that verify your identity through methods like touch, facial recognition, <br />
+                <p className="@lg:text-sm text-xs text-muted-foreground">
+                    Passkeys are WebAuthn credentials that verify your identity through methods like touch, facial recognition,
                     a device password, or a PIN. They can serve as an alternative to passwords or be used for two-factor authentication (2FA)
                 </p>
 

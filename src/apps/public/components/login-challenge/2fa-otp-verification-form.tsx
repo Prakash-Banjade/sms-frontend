@@ -5,23 +5,29 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import LoadingButton from "@/components/forms/loading-button"
-import { QueryKey } from "@/react-query/queryKeys"
 import axios, { AxiosError } from "axios"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
+import { useEffect } from "react"
+import { TAuthPayload, TCurrentUser, useAuth } from "@/contexts/auth-provider"
+import { jwtDecode } from "jwt-decode"
 
 const FormSchema = z.object({
     otp: z.string().min(6, {
         message: "Your one-time password must be 6 characters.",
     }),
     verificationToken: z.string().min(1),
-})
+});
+
+const timeSchema = z.number().refine((val) => !isNaN(Date.parse(new Date(val).toISOString())));
 
 type FormValues = z.infer<typeof FormSchema>
 
-export function EmailVerificationForm({ verificationToken }: { verificationToken: string }) {
+export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verificationToken: string }) {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { setAuth } = useAuth();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(FormSchema),
@@ -32,13 +38,13 @@ export function EmailVerificationForm({ verificationToken }: { verificationToken
     });
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: (data: FormValues) => axios.post(`${import.meta.env.VITE_API_URL}/${QueryKey.AUTH_VERIFY_EMAIL}`, data),
+        mutationFn: (data: FormValues) => axios.post(`${import.meta.env.VITE_API_URL}/auth/verify-two-fa-otp`, data),
         onError: (error) => {
             if (error instanceof AxiosError) {
                 const errorMsg = error.response?.data?.message;
 
                 if ('error' in errorMsg && errorMsg.error === 'TokenExpiredError') {
-                    toast.error('Your verification token has expired. Please request a new one.');
+                    toast.error('OTP has expired. Please request a new one.');
                     navigate('/auth/login')
                 }
 
@@ -48,11 +54,31 @@ export function EmailVerificationForm({ verificationToken }: { verificationToken
                 }
             }
         },
-        onSuccess() {
-            toast.success('Your email has been verified successfully. Login credentials have been sent to your email.');
-            navigate('/auth/login')
+        onSuccess(res) { // after successful handle, login the user
+            const response = res.data as { access_token: string, user: TCurrentUser };
+
+            if ('access_token' in response) {
+                setAuth({
+                    accessToken: response.access_token,
+                    user: response.user,
+                });
+                const payload: TAuthPayload = jwtDecode(response.access_token);
+
+                navigate(`/${payload.role}/dashboard`, { replace: true });
+            } else {
+                toast.error(res.data.message);
+            }
         }
     })
+
+    // check if location.state has valid time or not
+    useEffect(() => {
+        const time = location.state?.time;
+
+        const { success } = timeSchema.safeParse(time);
+
+        if (!success) navigate('/auth/login');
+    }, [])
 
     function onSubmit(data: FormValues) {
         mutateAsync(data);
@@ -91,7 +117,7 @@ export function EmailVerificationForm({ verificationToken }: { verificationToken
                     type="submit"
                     loadingText="Verifying..."
                 >
-                    Verify
+                    Submit
                 </LoadingButton>
             </form>
         </Form>

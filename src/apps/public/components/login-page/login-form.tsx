@@ -10,7 +10,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { TAuthPayload, TCurrentUser, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
-import { EMAIL_REGEX } from "@/CONSTANTS"
+import { AuthMessage, EMAIL_REGEX } from "@/CONSTANTS"
 import toast from "react-hot-toast"
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -57,6 +57,10 @@ export function LoginForm({ className, setIsFormSubmitting, ...props }: LoginFor
             const payload: TAuthPayload = jwtDecode(response.data.access_token);
 
             navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });
+        }
+
+        if ('message' in response.data && response.data.message === AuthMessage.DEVICE_NOT_FOUND) {
+            return navigate("challenge", { replace: true, state: { email: form.getValues('email') } });
         }
 
         if ('message' in response.data) {
