@@ -11,6 +11,7 @@ export enum QueryKey {
     AUTH_VERIFY_SUDO = "auth/verify-sudo",
     WEB_AUTHN = "web-authn",
     ACCOUNTS_DEVICES = "accounts/devices",
+    TWOFA_STATUS = "accounts/2fa/status",
     DASHBOARD = "dashboard",
     ME = "users/me",
     USERS = "users",

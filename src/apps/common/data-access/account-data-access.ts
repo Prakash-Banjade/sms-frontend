@@ -16,3 +16,12 @@ export const useGetSessionDevices = ({
 
     return response;
 }
+
+export const useGetTwoFAStatus = () => {
+    const response = useFetchData<{ twoFaEnabledAt: string | null }>({
+        endpoint: QueryKey.TWOFA_STATUS,
+        queryKey: [QueryKey.TWOFA_STATUS],
+    })
+
+    return response;
+}

@@ -20,7 +20,7 @@ export const NUMBER_REGEX_STRING = '^[0-9]*$'
 
 export const ISO_TIME = 'T00:00:00Z' as const;
 
-export const RESEND_OTP_TIME_SEC = 10;
+export const RESEND_OTP_TIME_SEC = 60;
 
 export enum CookieKey {
     BRANCH_ID = 'branchId',

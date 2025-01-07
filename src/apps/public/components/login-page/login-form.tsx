@@ -59,8 +59,8 @@ export function LoginForm({ className, setIsFormSubmitting, ...props }: LoginFor
             navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });
         }
 
-        if ('message' in response.data && response.data.message === AuthMessage.DEVICE_NOT_FOUND) {
-            return navigate("challenge", { replace: true, state: { email: form.getValues('email') } });
+        if ('message' in response.data && 'hasPasskey' in response.data && response.data.message === AuthMessage.DEVICE_NOT_FOUND) {
+            return navigate("challenge", { replace: true, state: { email: form.getValues('email'), hasPasskey: !!response.data.hasPasskey } });
         }
 
         if ('message' in response.data) {

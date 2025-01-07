@@ -2,11 +2,12 @@ import { Separator } from "@/components/ui/separator";
 import { getErrMsg } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { CircleHelp, Inbox, KeyRound } from "lucide-react";
+import { CircleHelp, Inbox } from "lucide-react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
+import TwoFaPasskeyVerification from "./2fa-passkey-verification";
 
 export default function LoginChallengePage() {
     return (
@@ -24,7 +25,10 @@ export default function LoginChallengePage() {
     )
 }
 
-const emailSchema = z.string().email();
+const locationSchema = z.object({
+    email: z.string().email(),
+    hasPasskey: z.boolean(),
+});
 
 function TwoFAOptions() {
     const location = useLocation();
@@ -45,7 +49,7 @@ function TwoFAOptions() {
     });
 
     useEffect(() => {
-        const { success } = emailSchema.safeParse(location.state?.email);
+        const { success } = locationSchema.safeParse(location.state);
 
         if (!success) navigate('/auth/login');
     }, [])
@@ -79,21 +83,14 @@ function TwoFAOptions() {
                     </button>
                 </li>
                 <Separator className="my-1" />
-                <li>
-                    <button
-                        type="button"
-                        className="rounded-lg w-full flex flex-col gap-2 hover:bg-secondary transition-all px-4 py-5 disabled:cursor-not-allowed disabled:opacity-80"
-                        disabled={isSendOTPPending}
-                    >
-                        <span className="flex items-center gap-4 font-medium">
-                            <KeyRound size={20} /> Use a passkey
-                        </span>
-                        <span className="text-sm ml-10 text-left text-muted-foreground">
-                            You have registered a passkey. You will be prompted to use it.
-                        </span>
-                    </button>
-                </li>
-                <Separator className="my-1" />
+                {
+                    location.state?.hasPasskey && (
+                        <>
+                            <TwoFaPasskeyVerification isExternalPending={isSendOTPPending} email={location.state?.email} />
+                            <Separator className="my-1" />
+                        </>
+                    )
+                }
                 <li>
                     <button
                         type="button"
