@@ -10,7 +10,7 @@ import { z } from "zod";
 
 export default function LoginChallengePage() {
     return (
-        <div className="lg:p-8 h-screen mx-auto flex flex-col justify-center space-y-6 w-[90%] max-w-[600px]">
+        <div className="h-screen mx-auto flex flex-col justify-center space-y-6 w-[90%] max-w-[800px]">
             <div className="flex flex-col sm:text-center gap-1">
                 <h1 className="sm:text-3xl text-2xl font-semibold tracking-tight">
                     2-Step Verification
@@ -33,10 +33,10 @@ function TwoFAOptions() {
     const { isPending: isSendOTPPending, mutateAsync: sendOTP } = useMutation({
         mutationFn: async (email: string) => axios.post(`${import.meta.env.VITE_API_URL}/auth/send-two-fa-otp`, { email }),
         onSuccess: (data) => {
-            const { token } = data.data as { token: string };
+            const { token, expiresIn } = data.data as { token: string, expiresIn: number };
 
             if (token) {
-                navigate(token, { state: { time: Date.now() } }); // time is to keep track of timer
+                navigate(token, { state: { time: Date.now(), expiresIn } }); // time is to keep track of timer
             }
         },
         onError: (err: any) => {
@@ -59,7 +59,7 @@ function TwoFAOptions() {
     };
 
     return (
-        <section className="mt-10">
+        <section className="mt-20">
             <h2 className="text-lg font-semibold mb-4 text-left">Choose how you want to sign in:</h2>
 
             <ul className="flex flex-col">
