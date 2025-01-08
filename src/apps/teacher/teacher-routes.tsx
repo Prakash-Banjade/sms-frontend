@@ -4,6 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import { teacherSidebarMenuItems } from './layout/sidebar-items';
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { CommonRoutes } from '../common/common-routes';
+import MyLeaveRequestsPage from '../common/pages/leave-request/my-leave-requests.page';
+import AddLeaveRequestPage from '../common/pages/leave-request/add-leave-request.page';
 
 const TeacherRoutes = () => {
   return (
@@ -11,7 +13,10 @@ const TeacherRoutes = () => {
       <Route element={<RequireAuth authorizedRoles={[Role.TEACHER]} />}>
         <Route element={<AppRootLayout menuItems={teacherSidebarMenuItems} />}>
           <Route path="dashboard" element={<div>This is teacher dashboard</div>} />
-          {/* Add more teacher-specific routes */}
+          <Route path="leave-requests">
+            <Route index element={<MyLeaveRequestsPage />} />
+            <Route path="new" element={<AddLeaveRequestPage />} />
+          </Route>
           {CommonRoutes()}
         </Route>
       </Route>

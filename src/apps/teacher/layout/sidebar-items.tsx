@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { LayoutDashboard } from "lucide-react";
+import { GitPullRequest, LayoutDashboard } from "lucide-react";
 
 export const teacherSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -10,6 +10,16 @@ export const teacherSidebarMenuItems: TGroupMenuItem[] = [
                 icon: LayoutDashboard,
                 url: "dashboard"
             }
+        ]
+    },
+    {
+        groupLabel: "Academics",
+        menuItems: [
+            {
+                title: "Leave Request",
+                url: "leave-requests",
+                icon: GitPullRequest,
+            },
         ]
     }
 ]

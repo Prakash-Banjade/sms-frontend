@@ -5,6 +5,8 @@ import { ETask, Role } from "@/types/global.type";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { studentSidebarMenuItems } from "./layout/sidebar-items";
 import { CommonRoutes } from "../common/common-routes";
+import MyLeaveRequestsPage from "../common/pages/leave-request/my-leave-requests.page";
+import AddLeaveRequestPage from "../common/pages/leave-request/add-leave-request.page";
 const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
 const StudentAttendenceListPage = lazy(() => import("./pages/academics/attendence.page"));
 const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
@@ -14,8 +16,6 @@ const SingleStudentTask = lazy(() => import("./components/task/assignments/singl
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
 const StudentVechicleDetailsPage = lazy(() => import("./pages/student-vechicle-details.page"));
 const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
-const LeaveRequestPage = lazy(() => import("./pages/academics/leave-request.page"));
-const LeaveRequestConfirmation = lazy(() => import("./components/leave-request/leave-request-confirmation"));
 const StudentDormitoryPage = lazy(() => import("./pages/academics/stu-dormitory.page"));
 const StudentExamRoutinePage = lazy(() => import("./pages/academics/st-exam-routine.page"));
 const StudentExamReportPage = lazy(() => import("./pages/academics/stu-exam-report.page"));
@@ -50,9 +50,9 @@ const StudentRoutes = () => {
           <Route path='dormitory' element={<StudentDormitoryPage />} />
           <Route path='exam-routine' element={<StudentExamRoutinePage />} />
           <Route path='exam-report' element={<StudentExamReportPage />} />
-          <Route path="leave-request">
-            <Route index element={<LeaveRequestPage />} />
-            <Route path="confirm" element={<LeaveRequestConfirmation />} />
+          <Route path="leave-requests">
+            <Route index element={<MyLeaveRequestsPage />} />
+            <Route path="new" element={<AddLeaveRequestPage />} />
           </Route>
           <Route path="notices">
             <Route index element={<NoticePage />} />

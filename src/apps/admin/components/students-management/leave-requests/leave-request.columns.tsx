@@ -14,6 +14,7 @@ import { ELeaveRequestStatus } from "@/types/global.type"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
+import { LeaveRequestRequestDescription } from "@/apps/common/components/leave-request/leave-request-list"
 
 export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
     {
@@ -63,6 +64,15 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
         accessorKey: "Reason",
         header: "Reason",
         cell: ({ row }) => <span>{row.original?.title}</span>
+    },
+    {
+        accessorKey: "description",
+        header: "Description",
+        cell: ({ row }) => (
+            <section className="max-w-[200px]">
+                <LeaveRequestRequestDescription description={row.original?.description ?? ''} />
+            </section>
+        )
     },
     {
         accessorKey: "status",

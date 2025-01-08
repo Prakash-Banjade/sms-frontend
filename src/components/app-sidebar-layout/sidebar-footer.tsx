@@ -32,7 +32,7 @@ export const AppSidebarFooter = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             side="top"
-                        // className="w-[--radix-popper-anchor-width]"
+                            className={cn(open && "w-[--radix-popper-anchor-width]")}
                         >
                             <DropdownMenuLabel className="break-words">{payload?.email}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
