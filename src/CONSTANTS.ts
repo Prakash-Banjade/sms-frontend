@@ -5,6 +5,7 @@ export const PHONE_NUMBER_REGEX_STRING = '^\+?(\d{1,3})?[-.\s]?(\(?\d{1,4}\)?)?[
 export const enum AuthMessage {
     INVALID_AUTH_CREDENTIALS_MSG = 'Invalid email or password',
     DEVICE_NOT_FOUND = 'Invalid device identity',
+    TOKEN_EXPIRED = "TokenExpiredError"
 };
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { getErrMsg } from "@/lib/utils"
-import { RESEND_OTP_TIME_SEC } from "@/CONSTANTS"
+import { AuthMessage, RESEND_OTP_TIME_SEC } from "@/CONSTANTS"
 
 const FormSchema = z.object({
     otp: z.string().min(6, {
@@ -45,15 +45,19 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
             if (error instanceof AxiosError) {
                 const errorMsg = error.response?.data?.message;
 
-                if ('error' in errorMsg && errorMsg.error === 'TokenExpiredError') {
-                    toast.error('OTP has expired. Please request a new one.');
+                if ('error' in errorMsg && errorMsg.error === AuthMessage.TOKEN_EXPIRED) {
                     navigate('/auth/login')
+                }
+
+                if (errorMsg?.message) {
+                    toast.error(errorMsg.message);
                 }
 
                 if (typeof errorMsg === 'string') {
                     toast.error(errorMsg);
-                    navigate('/auth/login')
                 }
+            } else {
+                toast.error(error.message);
             }
         },
         onSuccess(res) { // after successful handle, login the user
