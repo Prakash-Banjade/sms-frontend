@@ -104,7 +104,7 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [])
+    }, [timer])
 
     function onSubmit(data: FormValues) {
         if (isResendPending) return;
