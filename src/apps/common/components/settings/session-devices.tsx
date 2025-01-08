@@ -47,7 +47,7 @@ const DeviceItem = ({ d }: { d: TLoginDevice }) => {
 
     const deviceInfo = new UAParser(d.ua).getResult();
     const deviceName: string | undefined = !!deviceInfo.device?.model
-        ? `${deviceInfo.device?.vendor} (${deviceInfo.device?.model})`
+        ? `${deviceInfo.device?.vendor ?? "Unknown"} (${deviceInfo.device?.model})`
         : deviceInfo.os?.name
     const isCurrentDevice = d.deviceId === payload?.deviceId;
 
@@ -59,7 +59,7 @@ const DeviceItem = ({ d }: { d: TLoginDevice }) => {
                 className="flex items-center justify-between space-x-4 rounded-lg border p-4"
             >
                 <div className="flex items-center space-x-4">
-                    {false ? (
+                    {deviceInfo.device?.type === "mobile" ? (
                         <Smartphone className="size-20 text-muted-foreground" />
                     ) : (
                         <Laptop className="size-20 text-muted-foreground" />
