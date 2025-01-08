@@ -118,7 +118,7 @@ function TwoFaSection() {
                         </div>
                     </section>
                 ) : ( // loading skeleton
-                    <div className="w-full p-4 space-y-2 border rounded-md">
+                    <div className="w-full mt-5 p-4 space-y-2 border rounded-md">
                         <div className="flex items-start gap-4">
                             <div className="size-5 rounded bg-muted animate-pulse" />
                             <div className="space-y-2 flex-1">
