@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 
 type TMyLeaveRequest = {
     id: string,
-    createdAt: string,
+    requestedOn: string,
     leaveFrom: string,
     leaveTo: string,
     title: string,
@@ -42,7 +42,7 @@ export default function LeaveRequestList() {
                             : `${difference + 1} day leave (${leaveFromDate})`;
 
                         return (
-                            <Card className="w-full max-w-md mx-auto">
+                            <Card className="w-full max-w-md mx-auto" key={lr.id}>
                                 <CardHeader>
                                     <CardTitle className="flex justify-between items-center">
                                         <span className="text-lg font-semibold">{lr.title}</span>
@@ -71,7 +71,7 @@ export default function LeaveRequestList() {
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <Clock className="size-5" />
-                                        <span className="text-sm">Applied on {format(new Date(lr.createdAt), 'MMM dd, yyyy')}</span>
+                                        <span className="text-sm">Applied on {format(new Date(lr.requestedOn), 'MMM dd, yyyy')}</span>
                                     </div>
                                 </CardContent>
                             </Card>
