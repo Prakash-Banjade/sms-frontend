@@ -13,6 +13,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import { startOfDayString } from '@/lib/utils';
+import { subDays } from 'date-fns';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -35,11 +36,13 @@ export function AcademicYearCalendar() {
 
   const handleDateSelect = (selectInfo: EventInput) => {
     const { start, end } = selectInfo;
-    if (!start || !end) return;
 
+    if (!start || !end) return;
+    
+    // end date is being 1 day greater so need to reduce one day
     setSelectedDate({
       startDate: start.toString(),
-      endDate: end.toString(),
+      endDate: subDays(new Date(end.toString()), 1).toString(),
     });
 
     setIsAddOpen(true);
@@ -47,6 +50,7 @@ export function AcademicYearCalendar() {
 
   const handleEventClick = (clickInfo: any) => {
     const def = clickInfo.event._def;
+
     setIsEditOpen(true);
     setSelectedEvent({
       id: def.publicId,
@@ -57,6 +61,8 @@ export function AcademicYearCalendar() {
       eventLocation: def.extendedProps?.eventLocation,
       members: def.extendedProps?.members,
       createdAt: def.extendedProps?.createdAt,
+      beginTime: def.extendedProps?.beginTime,
+      endingTime: def.extendedProps?.endingTime,
     });
   };
 
@@ -138,6 +144,8 @@ export function AcademicYearCalendar() {
             dateFrom: event.dateFrom,
             dateTo: event.dateTo,
             createdAt: event.createdAt,
+            beginTime: event.beginTime,
+            endingTime: event.endingTime,
           }))}
           select={handleDateSelect}
           eventClick={handleEventClick}

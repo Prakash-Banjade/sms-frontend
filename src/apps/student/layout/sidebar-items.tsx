@@ -59,7 +59,7 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
             },
             {
                 title: "Leave Request",
-                url: "leave-request",
+                url: "leave-requests",
                 icon: GitPullRequest,
             },
         ],

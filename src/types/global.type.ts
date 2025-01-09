@@ -58,6 +58,13 @@ export enum AuthProvider {
     CREDENTIALS = 'credentials',
 }
 
+export enum EPasskeyChallengeType {
+    Register = 'register',
+    Login = 'login',
+    Sudo = 'sudo',
+    TwoFaVerify = 'twofa_verify'
+}
+
 export enum EClassType {
     PRIMARY = 'primary', // to denote the direct parent class
     SECTION = 'section',

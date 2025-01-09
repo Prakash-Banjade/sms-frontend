@@ -28,16 +28,12 @@ export const classRoutineSchema = z.object({
         .transform((val) => (val === '' ? undefined : val))
         .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
             message: 'Invalid subject ID',
-        })
-        .nullish(),
+        }).nullish(),
     teacherId: z.string()
         .transform((val) => (val === '' ? undefined : val))
         .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
             message: 'Invalid teacher ID',
-        }),
-}).refine(data => data.type !== ERoutineType.CLASS || !!data.subjectId, {
-    message: 'Please select a subject for class routine',
-    path: ['subjectId'],
+        }).nullish(),
 }).refine(data => {
     const startTime = parse(data.startTime, 'HH:mm', new Date());
     const endTime = parse(data.endTime, 'HH:mm', new Date());

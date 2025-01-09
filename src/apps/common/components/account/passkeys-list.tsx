@@ -5,11 +5,12 @@ import { useGetWebAuthnCredentials } from "../../../admin/data-access/account-da
 import { formatDistanceToNow, isToday } from "date-fns"
 import EditPassKeyBtn from "./edit-passkey-btn"
 import DeletePassKeyBtn from "./delete-passkey-btn"
+import PasskeysListLoading from "./skeleton/passkey-list-loading"
 
 export default function PassKeysList() {
     const { data: credentials, isLoading } = useGetWebAuthnCredentials({})
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <PasskeysListLoading />;
 
     if (!credentials?.length) return <div className="mt-10 text-sm text-muted-foreground font-semibold">You currently don't have any passkeys registered.</div>;
 

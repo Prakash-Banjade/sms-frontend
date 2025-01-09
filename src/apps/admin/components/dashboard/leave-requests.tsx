@@ -72,7 +72,7 @@ export default function Dashboard_LeaveRequests() {
                                                         </div>
                                                         <div className="flex items-center gap-2">
                                                             <Clock className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(leaveRequest.createdAt)} ago</p>
+                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(new Date(leaveRequest.requestedOn))} ago</p>
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-1 flex-col">
@@ -123,7 +123,7 @@ export default function Dashboard_LeaveRequests() {
                                                         </div>
                                                         <div className="flex items-center gap-2">
                                                             <Clock className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(leaveRequest.createdAt)} ago</p>
+                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(new Date(leaveRequest.requestedOn))} ago</p>
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-1 flex-col">

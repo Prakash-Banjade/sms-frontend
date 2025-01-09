@@ -1,5 +1,4 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import AuthSideView from "../components/auth-side-view";
 import ResetPasswordForm from "../components/reset-password/reset-password-form";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -28,19 +27,16 @@ export default function ResetPasswordPage() {
     if (isPending) return <div>Loading...</div>;
 
     return (
-        <div className="relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 min-w-full">
-            <AuthSideView />
-            <div className="lg:p-8 h-screen mx-auto flex flex-col justify-center space-y-6 w-[90%] max-w-[600px]">
-                <div className="flex flex-col space-y-2 text-center">
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                        Reset Password
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Please enter your new password and confirm it.
-                    </p>
-                </div>
-                <ResetPasswordForm token={token} />
+        <div className="lg:p-8 h-screen mx-auto flex flex-col justify-center space-y-6 w-[90%] max-w-[600px]">
+            <div className="flex flex-col space-y-2 text-center">
+                <h1 className="text-2xl font-semibold tracking-tight">
+                    Reset Password
+                </h1>
+                <p className="text-muted-foreground">
+                    Please enter your new password and confirm it.
+                </p>
             </div>
+            <ResetPasswordForm token={token} />
         </div>
     )
 }

@@ -1,19 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Check, CircleDashed, LoaderCircle, MoreHorizontal, X } from "lucide-react"
+import { Check, LoaderCircle, MoreHorizontal, Trash, X } from "lucide-react"
 import { formatDateNumeric } from "@/utils/format-date"
 import { TEmployeeLeaveRequest } from "@/types/leave-request.type"
 import { Badge } from "@/components/ui/badge"
 import { ELeaveRequestStatus } from "@/types/global.type"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { LeaveRequestRequestDescription } from "@/apps/common/components/leave-request/leave-request-list"
 
 export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = [
     {
@@ -23,7 +19,7 @@ export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = 
     {
         accessorKey: "requestedDate",
         header: "Requested Date",
-        cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.createdAt) })}</span>
+        cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.requestedOn) })}</span>
     },
     {
         accessorKey: "name",
@@ -54,6 +50,15 @@ export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = 
         cell: ({ row }) => <span>{row.original?.title}</span>
     },
     {
+        accessorKey: "description",
+        header: "Description",
+        cell: ({ row }) => (
+            <section className="max-w-[200px]">
+                <LeaveRequestRequestDescription description={row.original?.description ?? ''} />
+            </section>
+        )
+    },
+    {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
@@ -79,6 +84,8 @@ export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = 
             const [isOpen, setIsOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation();
+            const { mutateAsync: updateStatus, isPending: isStatusPending, error } = useAppMutation();
+
             const [statusLoading, setStatusLoading] = useState({
                 [ELeaveRequestStatus.APPROVED]: false,
                 [ELeaveRequestStatus.REJECTED]: false,
@@ -88,18 +95,36 @@ export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = 
             const handleUpdateStatus = async (status: ELeaveRequestStatus) => {
                 setStatusLoading({ ...statusLoading, [status]: true });
 
-                await mutateAsync({
+                await updateStatus({
                     method: "patch",
                     endpoint: QueryKey.LEAVE_REQUESTS + `/${row.original.id}/updateStatus`,
                     data: { status },
                     invalidateTags: [QueryKey.LEAVE_REQUESTS],
-                    toastOnSuccess: false,
-                    toastOnError: false,
                 });
+
+                // if error occurs, below code won't execute, so useEffect is used to unset the loading state
 
                 setStatusLoading({ ...statusLoading, [status]: false });
                 setIsOpen(false);
             };
+
+            const handleDelete = async () => {
+                await mutateAsync({
+                    method: "delete",
+                    endpoint: QueryKey.LEAVE_REQUESTS + `/${row.original.id}`,
+                    invalidateTags: [QueryKey.LEAVE_REQUESTS],
+                });
+
+                setIsOpen(false);
+            };
+
+            useEffect(() => {
+                if (!!error) setStatusLoading({
+                    [ELeaveRequestStatus.APPROVED]: false,
+                    [ELeaveRequestStatus.REJECTED]: false,
+                    [ELeaveRequestStatus.PENDING]: false,
+                });
+            }, [error]);
 
             return (
                 <>
@@ -114,29 +139,35 @@ export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = 
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <section className="flex flex-col">
                                 {
-                                    currentStatus !== ELeaveRequestStatus.PENDING && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.PENDING)} disabled={isPending}>
-                                        {
-                                            statusLoading[ELeaveRequestStatus.PENDING] ? <LoaderCircle className="animate-spin" /> : <CircleDashed />
-                                        }
-                                        Mark as Pending
-                                    </Button>
+                                    currentStatus === ELeaveRequestStatus.PENDING && (
+                                        <>
+                                            <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.APPROVED)} disabled={isPending || isStatusPending}>
+                                                {
+                                                    statusLoading[ELeaveRequestStatus.APPROVED] ? <LoaderCircle className="animate-spin" /> : <Check />
+                                                }
+                                                Mark as Approved
+                                            </Button>
+                                            <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.REJECTED)} disabled={isPending || isStatusPending}>
+                                                {
+                                                    statusLoading[ELeaveRequestStatus.REJECTED] ? <LoaderCircle className="animate-spin" /> : <X />
+                                                }
+                                                Mark as Rejected
+                                            </Button>
+                                        </>
+                                    )
                                 }
-                                {
-                                    currentStatus !== ELeaveRequestStatus.APPROVED && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.APPROVED)} disabled={isPending}>
-                                        {
-                                            statusLoading[ELeaveRequestStatus.APPROVED] ? <LoaderCircle className="animate-spin" /> : <Check />
-                                        }
-                                        Mark as Approved
-                                    </Button>
-                                }
-                                {
-                                    currentStatus !== ELeaveRequestStatus.REJECTED && <Button variant={'ghost'} size={'sm'} className="px-2 py-1.5 justify-start" onClick={() => handleUpdateStatus(ELeaveRequestStatus.REJECTED)} disabled={isPending}>
-                                        {
-                                            statusLoading[ELeaveRequestStatus.REJECTED] ? <LoaderCircle className="animate-spin" /> : <X />
-                                        }
-                                        Mark as Rejected
-                                    </Button>
-                                }
+                                <Button
+                                    variant={'ghost'}
+                                    size={'sm'}
+                                    className="px-2 py-1.5 justify-start text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                    disabled={isPending || isStatusPending}
+                                    onClick={handleDelete}
+                                >
+                                    {
+                                        isPending ? <LoaderCircle className="animate-spin" /> : <Trash />
+                                    }
+                                    Delete
+                                </Button>
                             </section>
                         </DropdownMenuContent>
                     </DropdownMenu>

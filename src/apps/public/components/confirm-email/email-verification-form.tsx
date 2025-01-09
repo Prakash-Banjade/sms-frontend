@@ -79,7 +79,7 @@ export function EmailVerificationForm({ verificationToken }: { verificationToken
                                 </InputOTP>
                             </FormControl>
                             <FormDescription>
-                                Please enter the one-time password sent to your phone.
+                                Please enter the one-time password sent to your email.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

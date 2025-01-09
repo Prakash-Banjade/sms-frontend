@@ -234,9 +234,7 @@ export const AdminRoutesGroup = () => {
                     <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
                 </Route>
             </Route>
-            <Route path="settings">
-                <Route path="general-settings" element={<GeneralSettingsPage />} />
-            </Route>
+            <Route path="general-settings" element={<GeneralSettingsPage />} />
         </>
     )
 }

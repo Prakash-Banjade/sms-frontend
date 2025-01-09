@@ -2,8 +2,7 @@ import { ELeaveRequestStatus, TMeta } from "./global.type";
 
 export type TStudentLeaveRequest = {
     id: string,
-    createdAt: string,
-    updatedAt: string,
+    requestedOn: string,
     leaveFrom: string,
     leaveTo: string,
     title: string,
@@ -36,8 +35,7 @@ export type TStudentLeaveRequestsResponse = {
 
 export type TEmployeeLeaveRequest = {
     id: string,
-    createdAt: string,
-    updatedAt: string,
+    requestedOn: string,
     leaveFrom: string,
     leaveTo: string,
     title: string,

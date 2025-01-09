@@ -5,12 +5,13 @@ import { ChevronUp, LoaderCircle, LogOut } from "lucide-react"
 import { ProfileAvatar } from "../ui/avatar"
 import { cn, getImageUrl } from "@/lib/utils"
 import { useAuth } from "@/contexts/auth-provider"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export const AppSidebarFooter = () => {
     const { handleLogout, isPending } = useLogoutMutation();
     const { payload } = useAuth();
     const navigate = useNavigate();
+    const pathname = useLocation().pathname;
     const { setOpen, open } = useSidebar();
 
     return (
@@ -31,17 +32,17 @@ export const AppSidebarFooter = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                             side="top"
-                        // className="w-[--radix-popper-anchor-width]"
+                            className={cn(open && "w-[--radix-popper-anchor-width]")}
                         >
                             <DropdownMenuLabel className="break-words">{payload?.email}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 onClick={() => {
-                                    setOpen(false);
-                                    navigate(`/${payload?.role}/account`)
+                                    !pathname.includes("settings") && setOpen(false);
+                                    navigate(`/${payload?.role}/settings`)
                                 }}
                             >
-                                <span>My Account</span>
+                                <span>Settings</span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <button

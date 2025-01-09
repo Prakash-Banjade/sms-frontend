@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { getErrMsg } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useAxios } from "@/services/api";
+import { EPasskeyChallengeType } from "@/types/global.type";
 import { startAuthentication } from "@simplewebauthn/browser";
 import { KeyRound } from "lucide-react";
 import { useState } from "react";
@@ -23,7 +24,7 @@ export function ConfirmByPasskey({ setIsVerified }: Props) {
         try {
             const response = await axios.post(`/${QueryKey.WEB_AUTHN}/auth-challenge`, {
                 email: payload?.email,
-                type: 'sudo', // challenge type
+                type: EPasskeyChallengeType.Sudo,
             });
 
             const challengePayload = response.data?.challengePayload;

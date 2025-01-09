@@ -41,7 +41,7 @@ export default function NewPassKeyPage() {
                     queryClient.invalidateQueries({
                         queryKey: [QueryKey.WEB_AUTHN],
                     })
-                    navigate(`/${payload?.role}/account`, { replace: true })
+                    navigate(`/${payload?.role}/settings?tab=password-and-authentication`, { replace: true })
                 }
 
             } catch (e) {
@@ -108,7 +108,7 @@ export default function NewPassKeyPage() {
                         <Button
                             variant={'ghost'}
                             className="w-full"
-                            onClick={() => navigate(`/${payload?.role}/account`, { replace: true })}
+                            onClick={() => navigate(`/${payload?.role}/settings?tab=password-and-authentication`, { replace: true })}
                         >
                             Cancel
                         </Button>

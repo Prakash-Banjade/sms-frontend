@@ -13,7 +13,8 @@ import { Badge } from "@/components/ui/badge"
 import { ELeaveRequestStatus } from "@/types/global.type"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { LeaveRequestRequestDescription } from "@/apps/common/components/leave-request/leave-request-list"
 
 export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
     {
@@ -23,7 +24,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
     {
         accessorKey: "requestedDate",
         header: "Requested Date",
-        cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.createdAt) })}</span>
+        cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.requestedOn) })}</span>
     },
     {
         accessorKey: "name",
@@ -65,6 +66,15 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
         cell: ({ row }) => <span>{row.original?.title}</span>
     },
     {
+        accessorKey: "description",
+        header: "Description",
+        cell: ({ row }) => (
+            <section className="max-w-[200px]">
+                <LeaveRequestRequestDescription description={row.original?.description ?? ''} />
+            </section>
+        )
+    },
+    {
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
@@ -90,7 +100,7 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
             const [isOpen, setIsOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation();
-            const { mutateAsync: updateStatus, isPending: isStatusPending } = useAppMutation();
+            const { mutateAsync: updateStatus, isPending: isStatusPending, error } = useAppMutation();
 
             const [statusLoading, setStatusLoading] = useState({
                 [ELeaveRequestStatus.APPROVED]: false,
@@ -108,6 +118,8 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
                     invalidateTags: [QueryKey.LEAVE_REQUESTS],
                 });
 
+                // if error occurs, below code won't execute, so useEffect is used to unset the loading state
+
                 setStatusLoading({ ...statusLoading, [status]: false });
                 setIsOpen(false);
             };
@@ -121,6 +133,14 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
 
                 setIsOpen(false);
             };
+
+            useEffect(() => {
+                if (!!error) setStatusLoading({
+                    [ELeaveRequestStatus.APPROVED]: false,
+                    [ELeaveRequestStatus.REJECTED]: false,
+                    [ELeaveRequestStatus.PENDING]: false,
+                });
+            }, [error]);
 
             return (
                 <>

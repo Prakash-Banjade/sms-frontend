@@ -1,11 +1,13 @@
 import AppForm from "@/components/forms/app-form"
 import { Button } from "@/components/ui/button";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
+import { MILITARY_TIME_REGEX } from "@/CONSTANTS";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { startOfDayString } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { differenceInMinutes, isAfter, parse } from "date-fns";
 import { Trash } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,8 +29,26 @@ export const eventSchema = z.object({
     description: z.string().nullish(),
     dateFrom: z.string({ required_error: 'Date from is required' }).refine(val => !isNaN(Date.parse(val))),
     dateTo: z.string({ required_error: 'Date to is required' }).refine(val => !isNaN(Date.parse(val))),
+    beginTime: z.string()
+        .regex(MILITARY_TIME_REGEX, { message: 'Invalid start time. Required format: HH:MM' }),
+    endingTime: z.string()
+        .regex(MILITARY_TIME_REGEX, { message: 'Invalid end time. Required format: HH:MM' }),
     eventLocation: z.string(),
     members: z.array(z.string()).nullish(),
+}).refine(data => {
+    const beginTime = parse(data.beginTime, 'HH:mm', new Date());
+    const endingTime = parse(data.endingTime, 'HH:mm', new Date());
+    return isAfter(endingTime, beginTime);
+}, {
+    message: 'End time must be greater than start time',
+    path: ['endingTime'],
+}).refine(data => {
+    const beginTime = parse(data.beginTime, 'HH:mm', new Date());
+    const endTime = parse(data.endingTime, 'HH:mm', new Date());
+    return differenceInMinutes(endTime, beginTime) >= 10;
+}, {
+    message: 'Event must be at least 10 minutes long',
+    path: ['endingTime'],
 }).superRefine((data, ctx) => {
     if (new Date(data.dateFrom) > new Date(data.dateTo)) {
         ctx.addIssue({
@@ -48,6 +68,8 @@ export const eventFormDefaultValues: Partial<eventSchemaType> = {
     dateTo: '',
     eventLocation: '',
     members: [],
+    beginTime: '',
+    endingTime: '',
 }
 
 export default function EventForm(props: Props) {
@@ -69,8 +91,11 @@ export default function EventForm(props: Props) {
             id,
             data: {
                 ...getDirtyValues(values, form),
+                beginTime: values.beginTime,
+                endingTime: values.endingTime,
+                members: values.members,
                 dateFrom: startOfDayString(new Date(values.dateFrom)),
-                dateTo: startOfDayString(new Date(values.dateFrom)),
+                dateTo: startOfDayString(new Date(values.dateTo)),
             },
             invalidateTags: [QueryKey.EVENTS],
         });
@@ -108,6 +133,22 @@ export default function EventForm(props: Props) {
                         placeholder="eg. Parents Meeting"
                         description="Enter the title for event"
                         required
+                    />
+
+                    <AppForm.TimePicker<eventSchemaType>
+                        name="beginTime"
+                        label="Start time"
+                        placeholder="Select start time"
+                        required
+                        description="Start time of the event"
+                    />
+
+                    <AppForm.TimePicker<eventSchemaType>
+                        name="endingTime"
+                        label="End time"
+                        placeholder="Select end time"
+                        required
+                        description="End time of the event"
                     />
 
                     <AppForm.Text<eventSchemaType>

@@ -429,7 +429,7 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
         menuItems: [
             {
                 title: "General Settings",
-                url: "settings/general-settings",
+                url: "general-settings",
                 icon: Settings,
             }
         ]
