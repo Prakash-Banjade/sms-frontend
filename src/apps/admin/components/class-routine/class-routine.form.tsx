@@ -57,10 +57,8 @@ export default function ClassRoutineForm(props: Props) {
             return;
         }
 
-        const method = !!id ? "patch" : "post";
-
         const response = await mutateAsync({
-            method,
+            method: !!id ? "patch" : "post",
             endpoint: QueryKey.CLASSROUTINE,
             id,
             data: {

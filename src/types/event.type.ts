@@ -9,6 +9,8 @@ export type TEvent = {
     dateTo: string,
     eventLocation: string,
     members: string[] | null,
+    beginTime: string,
+    endingTime: string,
 }
 
 export type TEventsResponse = {
