@@ -11,10 +11,11 @@ import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { TAuthPayload, TCurrentUser, useAuth } from "@/contexts/auth-provider"
 import { jwtDecode } from "jwt-decode"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { getErrMsg } from "@/lib/utils"
 import { AuthMessage, RESEND_OTP_TIME_SEC } from "@/CONSTANTS"
+import useTimer from "@/hooks/useTimer"
 
 const FormSchema = z.object({
     otp: z.string().min(6, {
@@ -29,8 +30,8 @@ export function TwoFactorAuthOTPVerificationForm() {
     const { token } = useParams();
     const navigate = useNavigate();
     const { setAuth } = useAuth();
-    const [timer, setTimer] = useState(RESEND_OTP_TIME_SEC);
-    const [resendMessage, setResendMessage] = useState('')
+    const [resendMessage, setResendMessage] = useState('');
+    const { resetTimer, timeLeft, startTimer, isRunning } = useTimer(RESEND_OTP_TIME_SEC, { startOnMount: true });
 
     const form = useForm<FormValues>({
         resolver: zodResolver(FormSchema),
@@ -84,10 +85,11 @@ export function TwoFactorAuthOTPVerificationForm() {
             const { token, expiresIn } = data.data as { token: string, expiresIn: number }
 
             if (token) {
-                navigate(`/auth/login/challenge/${token}`, { state: { expiresIn } });
-                setTimer(RESEND_OTP_TIME_SEC);
                 setResendMessage('A new OTP has been sent to your email.');
                 form.setValue('verificationToken', token);
+                resetTimer();
+                startTimer();
+                navigate(`/auth/login/challenge/${token}`, { state: { expiresIn } });
 
                 // clear after 10s
                 setTimeout(() => {
@@ -98,19 +100,7 @@ export function TwoFactorAuthOTPVerificationForm() {
         onError(e) {
             toast.error(getErrMsg(e) ?? 'Failed to send OTP');
         }
-    })
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (timer > 0) {
-                setTimer(timer - 1);
-            } else {
-                clearInterval(interval);
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [timer])
+    });
 
     function onSubmit(data: FormValues) {
         if (isResendPending) return;
@@ -163,16 +153,16 @@ export function TwoFactorAuthOTPVerificationForm() {
 
                 <section className="mt-6 flex items-center justify-center">
                     {
-                        timer > 0 ? (
+                        timeLeft > 0 ? (
                             <p className="text-sm text-muted-foreground">
-                                Resend In: {timer}s
+                                Resend In: {timeLeft}s
                             </p>
                         ) : (
                             <Button
                                 type="button"
                                 variant={'link'}
                                 onClick={resendOtp}
-                                disabled={isResendPending || isPending}
+                                disabled={isResendPending || isPending || isRunning}
                                 className="p-0 h-fit"
                             >
                                 Resend OTP
