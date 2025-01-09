@@ -1,11 +1,8 @@
-import { Navigate, useLocation, useParams } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { TwoFactorAuthOTPVerificationForm } from "../components/login-challenge/2fa-otp-verification-form";
 
 export default function Confirm2FAOTPPage() {
-    const { token } = useParams();
     const location = useLocation();
-
-    if (!token) return <Navigate to="/auth/login" />
 
     return (
         <div className="h-screen mx-auto flex flex-col justify-center space-y-12 w-[90%] max-w-[600px]">
@@ -18,7 +15,7 @@ export default function Confirm2FAOTPPage() {
                     <span className="font-semibold">OTP will expire in {Math.ceil((location.state?.expiresIn ?? 0) / 60)} minutes</span>
                 </p>
             </div>
-            <TwoFactorAuthOTPVerificationForm verificationToken={token} />
+            <TwoFactorAuthOTPVerificationForm />
         </div>
     )
 }

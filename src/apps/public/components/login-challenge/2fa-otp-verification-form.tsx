@@ -6,7 +6,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import LoadingButton from "@/components/forms/loading-button"
 import axios, { AxiosError } from "axios"
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { TAuthPayload, TCurrentUser, useAuth } from "@/contexts/auth-provider"
@@ -25,7 +25,8 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>
 
-export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verificationToken: string }) {
+export function TwoFactorAuthOTPVerificationForm() {
+    const { token } = useParams();
     const navigate = useNavigate();
     const { setAuth } = useAuth();
     const [timer, setTimer] = useState(RESEND_OTP_TIME_SEC);
@@ -35,7 +36,7 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
         resolver: zodResolver(FormSchema),
         defaultValues: {
             otp: "",
-            verificationToken,
+            verificationToken: token ?? "",
         },
     });
 
@@ -78,7 +79,7 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
     });
 
     const { mutateAsync: resend, isPending: isResendPending } = useMutation({
-        mutationFn: () => axios.post(`${import.meta.env.VITE_API_URL}/auth/resend-two-fa-otp`, { verificationToken }),
+        mutationFn: () => axios.post(`${import.meta.env.VITE_API_URL}/auth/resend-two-fa-otp`, { verificationToken: token }),
         onSuccess: (data) => {
             const { token, expiresIn } = data.data as { token: string, expiresIn: number }
 
@@ -86,6 +87,7 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
                 navigate(`/auth/login/challenge/${token}`, { state: { expiresIn } });
                 setTimer(RESEND_OTP_TIME_SEC);
                 setResendMessage('A new OTP has been sent to your email.');
+                form.setValue('verificationToken', token);
 
                 // clear after 10s
                 setTimeout(() => {
@@ -119,6 +121,8 @@ export function TwoFactorAuthOTPVerificationForm({ verificationToken }: { verifi
         if (isPending) return;
         resend();
     }
+
+    if (!token) return <Navigate to="/auth/login" />
 
     return (
         <section>
