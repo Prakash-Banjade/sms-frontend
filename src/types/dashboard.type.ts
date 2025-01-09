@@ -14,7 +14,7 @@ export type TDashboardLeaveRequests = {
             title: string;
             studentName: string;
             classRoomName: string;
-            createdAt: string;
+            requestedOn: string;
             profileImageUrl: string | null;
             totalLeaveRequests: string;
         }[];
@@ -27,7 +27,7 @@ export type TDashboardLeaveRequests = {
             leaveTo: string;
             title: string;
             teacherName: string;
-            createdAt: string;
+            requestedOn: string;
             profileImageUrl: string | null;
             totalLeaveRequests: string;
         }[];

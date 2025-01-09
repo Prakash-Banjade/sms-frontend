@@ -19,7 +19,7 @@ export const employeeLeaveRequestsColumns: ColumnDef<TEmployeeLeaveRequest>[] = 
     {
         accessorKey: "requestedDate",
         header: "Requested Date",
-        cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.createdAt) })}</span>
+        cell: ({ row }) => <span>{formatDateNumeric({ date: new Date(row.original?.requestedOn) })}</span>
     },
     {
         accessorKey: "name",
