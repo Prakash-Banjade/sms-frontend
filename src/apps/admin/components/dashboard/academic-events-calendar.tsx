@@ -13,7 +13,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import { startOfDayString } from '@/lib/utils';
-import { subDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -38,7 +38,7 @@ export function AcademicYearCalendar() {
     const { start, end } = selectInfo;
 
     if (!start || !end) return;
-    
+
     // end date is being 1 day greater so need to reduce one day
     setSelectedDate({
       startDate: start.toString(),
@@ -101,7 +101,14 @@ export function AcademicYearCalendar() {
       <ResponsiveDialog
         isOpen={isAddOpen}
         setIsOpen={setIsAddOpen}
-        title={`Create New Event ${(selectedDate?.startDate === selectedDate?.endDate).toString()}`}
+        title={
+          `Create New Event (${(selectedDate?.startDate && selectedDate?.endDate)
+          && (
+            selectedDate?.startDate === selectedDate?.endDate
+              ? format(selectedDate.startDate, 'MMM dd, yyyy')
+              : `${format(selectedDate.startDate, 'MMM dd, yyyy')} - ${format(selectedDate.endDate, 'MMM dd, yyyy')}`
+          )})`
+        }
         className="w-[97%] max-w-[800px]"
       >
         <EventForm setIsOpen={setIsAddOpen} defaultValues={{ ...eventFormDefaultValues, dateFrom: selectedDate?.startDate, dateTo: selectedDate?.endDate }} />
