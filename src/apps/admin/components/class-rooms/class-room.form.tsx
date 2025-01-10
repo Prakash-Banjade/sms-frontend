@@ -3,9 +3,12 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
-import { EClassType, SelectOption } from "@/types/global.type";
+import { EClassType, EDegreeLevel, SelectOption } from "@/types/global.type";
+import { createQueryString } from "@/utils/create-query-string";
 import { getDirtyValues } from "@/utils/get-dirty-values";
+import { EDegreeLevelMappings } from "@/utils/labelToValueMappings";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -59,10 +62,47 @@ export default function ClassRoomForm(props: Props) {
         props.setIsOpen && props.setIsOpen(false);
     }
 
+    useEffect(() => {
+        !id && form.setValue('facultyId', '');
+    }, [form.watch('degreeLevel')])
+
     return (
         <AppForm schema={classRoomFormSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <section className="grid lg:grid-cols-2 gap-8 grid-cols-1">
+                    {
+                        !id && (
+                            <>
+                                <AppForm.Select<classRoomFormSchemaType>
+                                    name="degreeLevel"
+                                    label="Degree Level"
+                                    description="Select the degree level."
+                                    options={Object.entries(EDegreeLevel).map(([_, value]) => ({ label: EDegreeLevelMappings[value], value }))}
+                                    required
+                                />
+
+                                <AppForm.DynamicSelect<classRoomFormSchemaType>
+                                    name="facultyId"
+                                    label="Faculty"
+                                    placeholder="Select faculty"
+                                    description="Select the faculty"
+                                    fetchOptions={{
+                                        endpoint: QueryKey.FACULTIES + '/' + QueryKey.OPTIONS,
+                                        queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS, form.watch('degreeLevel')!],
+                                        queryString: createQueryString({
+                                            degreeLevel: form.watch('degreeLevel'),
+                                        }),
+                                        options: { enabled: !!form.watch('degreeLevel') }
+                                    }}
+                                    disableOnNoOption
+                                    disabled={!form.watch('degreeLevel')}
+                                    labelKey="name"
+                                    required
+                                />
+                            </>
+                        )
+                    }
+
                     <AppForm.Text<classRoomFormSchemaType>
                         name="name"
                         label="Class name"

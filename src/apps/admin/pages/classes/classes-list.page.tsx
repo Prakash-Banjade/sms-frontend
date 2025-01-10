@@ -5,9 +5,8 @@ import { classesColumns } from "../../components/class-rooms/classes.columns"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import ClassesSearchFilters from "../../components/class-rooms/class-list-filters"
 import { createQueryString } from "@/utils/create-query-string"
-type Props = {}
 
-export default function ClassesListPage({ }: Props) {
+export default function ClassesListPage() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetClasses({
@@ -15,6 +14,8 @@ export default function ClassesListPage({ }: Props) {
             search: searchParams.get('search'),
             page: searchParams.get('page'),
             take: searchParams.get('take'),
+            facultyId: searchParams.get('facultyId'),
+            degreeLevel: searchParams.get('degreeLevel'),
         })
     });
 

@@ -29,7 +29,7 @@ type FormSchemaType = z.infer<typeof formSchema>
 const defaultValues: Partial<z.infer<typeof formSchema>> = {
     name: '',
     description: '',
-    degreeLevel: EDegreeLevel.Basic_School,
+    degreeLevel: EDegreeLevel.Plus_Two,
     duration: undefined,
 }
 
@@ -73,7 +73,11 @@ export default function FacultyForm(props: Props) {
                         name="degreeLevel"
                         label="Degree Level"
                         description="Select the degree level."
-                        options={Object.entries(EDegreeLevel).map(([_, value]) => ({ label: EDegreeLevelMappings[value], value }))}
+                        options={
+                            Object.entries(EDegreeLevel)
+                                .filter(([_, value]) => value !== EDegreeLevel.Basic_School)
+                                .map(([_, value]) => ({ label: EDegreeLevelMappings[value], value }))
+                        }
                         required
                     />
 

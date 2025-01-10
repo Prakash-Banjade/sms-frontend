@@ -1,14 +1,7 @@
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
 import { useGetClassRoomsOptions } from '@/apps/admin/components/class-rooms/actions';
 import { useEffect } from 'react';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from '../ui/label';
 import { useGetSubjectOptions } from '@/apps/admin/components/subjects/data-access';
 import { createQueryString } from '@/utils/create-query-string';

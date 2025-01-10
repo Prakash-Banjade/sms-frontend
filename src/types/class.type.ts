@@ -10,6 +10,7 @@ export type TClass = {
     monthlyFee: number,
     location: string,
     classType: EClassType,
+    faculty: string,
     parentClassName: string | null,
     totalStudentsCount: string,
     totalFemaleStudentsCount: string,

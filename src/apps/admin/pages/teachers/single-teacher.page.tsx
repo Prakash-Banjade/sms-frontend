@@ -16,7 +16,7 @@ export default function SingleTeacherPage() {
 
     const { data: teacher, isLoading } = useFetchData<TSingleTeacherDetail>({
         endpoint: QueryKey.TEACHERS + '/' + params.id! + '/details',
-        queryKey: [QueryKey.TEACHERS, params.id!],
+        queryKey: [QueryKey.TEACHERS, params.id!, 'details'],
         options: { enabled: !!params.id }
     });
 
