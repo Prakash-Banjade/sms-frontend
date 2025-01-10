@@ -1,11 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {
-    DropdownMenu,
-    DropdownMenuButtonItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DestructiveDropdownMenuButtonItem, DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useAppMutation } from "@/hooks/useAppMutation"
@@ -14,13 +8,8 @@ import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TDormitory } from "@/types/dormitory.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import DormitoryForm, { dormitoryFormType } from "./dormitory.form"
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card"
-
+import DormitoryForm from "./dormitory.form"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
 export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
     {
@@ -94,7 +83,7 @@ export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
             const [isEditOpen, setIsEditOpen] = useState(false);
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-            const { mutateAsync, isPending } = useAppMutation<dormitoryFormType, any>();
+            const { mutateAsync, isPending } = useAppMutation();
 
             async function handleDelete() {
                 await mutateAsync({
@@ -137,9 +126,9 @@ export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
+                            <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>
-                            </DropdownMenuButtonItem>
+                            </DestructiveDropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

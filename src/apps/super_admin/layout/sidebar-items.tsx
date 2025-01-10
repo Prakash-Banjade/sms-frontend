@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Banknote, BellRing, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, HandCoins, LayoutDashboard, Library, Settings, Shapes, Users, Users2, UsersRound } from "lucide-react"
+import { Banknote, BellRing, Blocks, BookCheck, BookOpenCheck, BookOpenText, Building, Bus, Calendar, HandCoins, LayoutDashboard, Library, Settings, Shapes, Users, Users2, UsersRound } from "lucide-react"
 
 export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -51,6 +51,21 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
                     },
                     {
                         title: "Add Academic Year",
+                        url: "new",
+                    },
+                ]
+            },
+            {
+                title: "Faculty",
+                url: "faculties",
+                icon: Blocks,
+                items: [
+                    {
+                        title: "Faculties",
+                        url: "",
+                    },
+                    {
+                        title: "Add Faculty",
                         url: "new",
                     },
                 ]

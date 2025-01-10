@@ -5,6 +5,8 @@
 |--------------------------------------------------
 */
 
+import { EDegreeLevel } from "@/types/global.type"
+
 // label: value
 export const DayOfWeekMappings = {
     Monday: "monday",
@@ -87,4 +89,13 @@ export const AttendanceStatusMappings = {
     Absent: "absent",
     Late: "late",
     Leave: "leave",
+}
+
+// value: label
+export const EDegreeLevelMappings: Record<EDegreeLevel, string> = {
+    [EDegreeLevel.Basic_School]: "Basic School",
+    [EDegreeLevel.Plus_Two]: "+2",
+    [EDegreeLevel.Diploma]: "Diploma",
+    [EDegreeLevel.Bachelor]: "Bachelor",
+    [EDegreeLevel.Master]: "Master",
 }
