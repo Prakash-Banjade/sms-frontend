@@ -89,7 +89,7 @@ export const createStudentSchema = studentSchema.superRefine((data, ctx) => {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'Bank name, account number, and IFSC code are all required if any are provided',
-            path: ['bankInformation'], // you can assign this to a meaningful path
+            path: !bankName ? ['bankName'] : !bankAccountNumber ? ['bankAccountNumber'] : ['ifscCode'],
         });
     }
 });
