@@ -30,7 +30,7 @@ export default function ClassRoomForm(props: Props) {
     const { payload } = useAuth();
 
     const form = useForm<classRoomFormSchemaType>({
-        resolver: zodResolver(id ? classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true }) : classRoomFormSchema),
+        resolver: zodResolver(id ? classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, degreeLevel: true, facultyId: true }) : classRoomFormSchema),
         defaultValues: props?.defaultValues ?? classRoomFormDefaultValues,
     })
 

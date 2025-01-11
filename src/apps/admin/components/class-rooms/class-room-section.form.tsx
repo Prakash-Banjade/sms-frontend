@@ -22,7 +22,7 @@ type Props = {
 
 export default function ClassSectionForm(props: Props) {
     const form = useForm<classRoomFormSchemaType>({
-        resolver: zodResolver(classRoomFormSchema),
+        resolver: zodResolver(classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, degreeLevel: true, facultyId: true })),
         defaultValues: {
             ...(props?.defaultValues ?? classRoomFormDefaultValues),
             admissionFee: 0,

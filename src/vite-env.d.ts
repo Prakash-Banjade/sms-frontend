@@ -7,6 +7,7 @@ interface ImportMetaEnv {
     readonly VITE_STALE_TIME: number;
     readonly VITE_GC_TIME: number;
     readonly VITE_RETRY: number;
+    readonly VITE_STREAM_VIDEO_API_KEY: string;
 }
 
 interface ImportMeta {
