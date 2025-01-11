@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "./auth-provider"
 import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
+import { useAxios } from "@/services/api";
 
 export default function ClientProvider({ children }: { children: React.ReactNode }) {
     const videoClient = useInitializedVideoClient();
 
-    if (!videoClient) throw new Error("Please use this hook inside the ClientProvider.");
+    if (!videoClient) return null;
 
     return (
         <StreamVideo client={videoClient}>
@@ -15,9 +16,9 @@ export default function ClientProvider({ children }: { children: React.ReactNode
 }
 
 export const useInitializedVideoClient = () => {
+    const axios = useAxios();
     const { payload, access_token } = useAuth();
     const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(null);
-
 
     useEffect(() => {
         if (!payload || !access_token) return;
@@ -30,7 +31,7 @@ export const useInitializedVideoClient = () => {
                 name: `${payload.firstName} ${payload.lastName}`,
                 type: "authenticated",
             },
-            token: access_token,
+            tokenProvider: async () => await axios.get("/accounts/get-stream-token").then((res) => res.data),
         });
 
         setVideoClient(client);
@@ -39,7 +40,7 @@ export const useInitializedVideoClient = () => {
             client.disconnectUser(); // disconnect the user
             setVideoClient(null);
         }
-    }, [payload, access_token]);
+    }, []);
 
     return videoClient;
 }
