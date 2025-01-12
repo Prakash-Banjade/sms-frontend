@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { z } from "zod"
-import StepIndicator from "./step-indicator"
-import ClassSelectionStep from "./class-selection-step"
-import FinalDetailsStep from "./final-details-step"
+import StepIndicator from "../create-live-class-form/step-indicator"
+import ClassSelectionStep from "../create-live-class-form/class-selection-step"
+import FinalDetailsStep from "../create-live-class-form/final-details-step"
 import { startOfDayString } from "@/lib/utils"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
@@ -66,7 +66,7 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
         },
     });
 
-    const { mutateAsync } = useAppMutation<TCreateLiveClassSchema, { message: string, id: string, students: { id: string }[] }>();
+    const { mutateAsync } = useAppMutation<TCreateLiveClassSchema, { message: string, id: string, students: string[] }>();
 
     const onSubmit = async (data: TCreateLiveClassSchema) => {
         const response = await mutateAsync({
@@ -83,13 +83,13 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
             try {
                 const call = client.call(ONLINE_CLASS_CALL_TYPE, response.data.id);
 
-                const call_members = response.data.students.map((student) => ({
-                    user_id: student.id,
+                const call_members = response.data.students.map((studentId) => ({
+                    user_id: studentId,
                     role: ONLINE_CLASS_MEMBER_ROLE,
                 })).concat({ // join the current user also
                     user_id: payload?.accountId,
                     role: ONLINE_CLASS_MEMBER_ROLE,
-                })
+                });
 
                 await call.getOrCreate({
                     data: {
@@ -127,10 +127,10 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
                     className="flex transition-transform duration-500"
                     style={{ transform: `translateX(-${currentStep * 100}%)` }}
                 >
-                    <div className="w-full flex-shrink-0 p-2">
+                    <div className="w-full flex-shrink-0 p-3">
                         <ClassSelectionStep setCurrentStep={setCurrentStep} />
                     </div>
-                    <div className="w-full flex-shrink-0 p-2">
+                    <div className="w-full flex-shrink-0 p-3">
                         <FinalDetailsStep />
                     </div>
                 </div>

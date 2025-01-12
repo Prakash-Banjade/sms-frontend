@@ -3,16 +3,16 @@ import { CallingState, DeviceSettings, StreamCall, StreamTheme, useCallStateHook
 import { useNavigate, useParams } from "react-router-dom"
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import useLoadCall from "@/hooks/useLoadCall";
-import { ONLINE_CLASS_CALL_TYPE } from "../components/online-classes/create-live-class-form/create-live-class-form";
+import { ONLINE_CLASS_CALL_TYPE } from "../components/online-classes/live-online-class/create-live-class-form";
 import { useAuth } from "@/contexts/auth-provider";
 import useStreamCall from "@/hooks/useStreamCall";
-import { ArrowLeft, CheckCircle, Clock, FileText, Loader2, MessageCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, Clock, FileText, Loader2, MessageCircle, VideoOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import PermissionPrompt from "../components/online-classes/live-online-class/permission-prompt";
 import AudioVolumeIndicator from "../components/online-classes/live-online-class/audio-volume-indicator";
 import FlexibleCallLayout from "../components/online-classes/live-online-class/flexible-layout";
 import { format } from "date-fns";
-import { Card, CardContent, CardFooter, } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox";
 
 export default function LiveOnlineClassPage() {
@@ -21,13 +21,28 @@ export default function LiveOnlineClassPage() {
 
     const { call, callLoading } = useLoadCall(id!);
 
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (!!call) {
+                const e = event || window.event;
+                e.preventDefault();
+                if (e) {
+                    e.returnValue = '';
+                }
+                return '';
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
     if (callLoading) return <div>Loading...</div>;
 
-    if (!call) return (
-        <Button type="button">
-            Call Not Found
-        </Button>
-    );
+    if (!call) return <CallNotFound />;
 
     const notAllowedToJoin = call.type === ONLINE_CLASS_CALL_TYPE && call.state.members.findIndex((member) => member.user_id === payload?.accountId) === -1;
 
@@ -220,4 +235,33 @@ function ClassEndedScreen() {
             </div>
         </div>
     );
+}
+
+function CallNotFound() {
+    const { payload } = useAuth();
+
+    const navigate = useNavigate();
+
+    return (
+        <Card className="w-full max-w-xl mx-auto py-10 border-none">
+            <CardHeader>
+                <CardTitle className="text-2xl font-bold text-center">Call Not Found</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-4">
+                <div className="text-6xl text-muted-foreground mb-4">
+                    <VideoOff className="inline-block w-16 h-16" />
+                </div>
+                <p className="text-lg font-medium">Oops! The call you're looking for doesn't exist.</p>
+                <p className="text-sm text-muted-foreground">
+                    This call may have ended or the link you followed might be incorrect.
+                </p>
+            </CardContent>
+            <CardFooter className="justify-center">
+                <Button onClick={() => navigate(`/${payload?.role}/live-classes`)} variant="ghost" className="w-full">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+                </Button>
+            </CardFooter>
+        </Card>
+
+    )
 }

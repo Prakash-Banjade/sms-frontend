@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import './style.css'
 import { useFormContext } from "react-hook-form";
-import { TCreateLiveClassSchema } from "./create-live-class-form";
+import { TCreateLiveClassSchema } from "../live-online-class/create-live-class-form";
 
 interface StepIndicatorProps {
     steps: string[]

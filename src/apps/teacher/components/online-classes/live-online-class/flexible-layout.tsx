@@ -1,4 +1,4 @@
-import { CallControls, PaginatedGridLayout, SpeakerLayout, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { CallControls, CallParticipantsList, PaginatedGridLayout, SpeakerLayout, useCallStateHooks } from "@stream-io/video-react-sdk";
 import { BetweenHorizonalEnd, BetweenVerticalEnd, LayoutGrid, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import EndCallButton from "./end-call-button";
@@ -46,7 +46,14 @@ export default function FlexibleCallLayout() {
             <CallLayoutView layout={layout} />
             <CallControls onLeave={() => navigate('left')} />
             <EndCallButton />
-            <OnlineClassDetails />
+            <section className="flex gap-6 mt-10">
+                <section className="grow">
+                    <OnlineClassDetails />
+                </section>
+                <div className="border rounded-lg p-3 grow max-w-[400px]">
+                    <CallParticipantsList onClose={() => { }} />
+                </div>
+            </section>
         </div>
     );
 }
@@ -120,7 +127,7 @@ function OnlineClassDetails() {
     const teacherName = `${onlineClass.teacher.firstName} ${onlineClass.teacher.lastName}`;
 
     return (
-        <Card className="w-full max-w-4xl mx-auto !mt-10">
+        <Card>
             <CardHeader>
                 <div className="flex justify-between items-start">
                     <div>

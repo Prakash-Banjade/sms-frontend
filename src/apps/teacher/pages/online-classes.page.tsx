@@ -1,7 +1,7 @@
 import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import CreateLiveClassForm from '../components/online-classes/create-live-class-form/create-live-class-form'
+import CreateLiveClassForm from '../components/online-classes/live-online-class/create-live-class-form'
 import { Calendar, Copy, Merge, MoreHorizontal, Plus, Radio } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { EOnlineClassStatus, TOnlineClass, useGetOnlineClasses } from '../data-access/online-class-data-access'
@@ -10,10 +10,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { format } from 'date-fns'
 import { useAuth } from '@/contexts/auth-provider'
 import { Role } from '@/types/global.type'
+import SearchInput from '@/components/search-components/search-input'
+import ClassRoomSearchFilterInputs from '@/components/search-components/class-room-search'
+import { createQueryString } from '@/utils/create-query-string'
 
 export default function OnlineClassesPage() {
     const { payload } = useAuth();
@@ -56,7 +59,17 @@ function CreateOnlineClassDialog() {
 }
 
 function OnlineClassesTable() {
-    const { data, isLoading } = useGetOnlineClasses({});
+    const [searchParam] = useSearchParams();
+
+    const { data, isLoading } = useGetOnlineClasses({
+        queryString: createQueryString({
+            page: searchParam.get('page'),
+            take: searchParam.get('take'),
+            search: searchParam.get('search'),
+            classRoomId: searchParam.get('classRoomId'),
+            sectionId: searchParam.get('sectionId'),
+        })
+    });
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -65,6 +78,7 @@ function OnlineClassesTable() {
             columns={onlineClassesColumns}
             data={data?.data ?? []}
             meta={data?.meta}
+            filters={<OnlineClassesSearchFilters />}
         />
     )
 }
@@ -158,3 +172,14 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
         },
     },
 ]
+
+function OnlineClassesSearchFilters() {
+    const { payload } = useAuth()
+
+    return payload?.role === Role.TEACHER && (
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full">
+            <SearchInput placeholder="Search by title" label="Title" />
+            <ClassRoomSearchFilterInputs />
+        </section>
+    )
+}
