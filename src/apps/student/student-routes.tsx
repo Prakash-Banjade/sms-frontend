@@ -7,6 +7,7 @@ import { studentSidebarMenuItems } from "./layout/sidebar-items";
 import { CommonRoutes } from "../common/common-routes";
 import MyLeaveRequestsPage from "../common/pages/leave-request/my-leave-requests.page";
 import AddLeaveRequestPage from "../common/pages/leave-request/add-leave-request.page";
+import ClientProvider from "@/contexts/client-provider";
 const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
 const StudentAttendenceListPage = lazy(() => import("./pages/academics/attendence.page"));
 const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
@@ -20,12 +21,23 @@ const StudentDormitoryPage = lazy(() => import("./pages/academics/stu-dormitory.
 const StudentExamRoutinePage = lazy(() => import("./pages/academics/st-exam-routine.page"));
 const StudentExamReportPage = lazy(() => import("./pages/academics/stu-exam-report.page"));
 const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
+import OnlineClassesPage from "../teacher/pages/online-classes.page"
+import LiveOnlineClassPage from "../teacher/pages/live-online-class-page";
+import CallLeftPage from "../teacher/pages/call-left.page";
+
+const StudentRootLayout = () => {
+  return (
+    <ClientProvider> {/* For stream video client */}
+      <AppRootLayout menuItems={studentSidebarMenuItems} />
+    </ClientProvider>
+  )
+}
 
 const StudentRoutes = () => {
   return (
     <Routes>
       <Route element={<RequireAuth authorizedRoles={[Role.STUDENT]} />}>
-        <Route element={<AppRootLayout menuItems={studentSidebarMenuItems} />}>
+        <Route element={<StudentRootLayout />}>
           <Route path="dashboard" element={<StudentDashboardPage />} />
           <Route path="tasks">
             <Route index element={<Navigate to="homeworks" />} />
@@ -50,6 +62,16 @@ const StudentRoutes = () => {
           <Route path='dormitory' element={<StudentDormitoryPage />} />
           <Route path='exam-routine' element={<StudentExamRoutinePage />} />
           <Route path='exam-report' element={<StudentExamReportPage />} />
+          <Route path="live-classes">
+            <Route index element={<OnlineClassesPage />} />
+            <Route path="live">
+              <Route index element={<Navigate to="live-classes" />} />
+              <Route path=":id">
+                <Route index element={<LiveOnlineClassPage />} />
+                <Route path='left' element={<CallLeftPage />} />
+              </Route>
+            </Route>
+          </Route>
           <Route path="leave-requests">
             <Route index element={<MyLeaveRequestsPage />} />
             <Route path="new" element={<AddLeaveRequestPage />} />

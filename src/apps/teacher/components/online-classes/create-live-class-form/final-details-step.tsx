@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { TCreateLiveClassSchema } from "./create-live-class-form"
 import AppForm from "@/components/forms/app-form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-
+import { addDays, format } from "date-fns"
 
 export default function FinalDetailsStep() {
     const form = useFormContext<TCreateLiveClassSchema>()
@@ -16,6 +16,7 @@ export default function FinalDetailsStep() {
                 label="Title"
                 placeholder="Enter class title"
                 required
+                max={100}
             />
             <AppForm.Textarea<TCreateLiveClassSchema>
                 name="description"
@@ -71,6 +72,8 @@ export default function FinalDetailsStep() {
                                 <Input
                                     type="datetime-local"
                                     {...field}
+                                    min={format(new Date(), "yyyy-MM-dd HH:mm").split(" ").join("T")}
+                                    max={addDays(new Date(), 2).toISOString().split("T")[0] + "T23:59"}
                                 />
                             </FormControl>
                             <FormMessage />

@@ -10,22 +10,30 @@ import FinalDetailsStep from "./final-details-step"
 import { startOfDayString } from "@/lib/utils"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
-import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk"
+import { useStreamVideoClient } from "@stream-io/video-react-sdk"
 import AppForm from "@/components/forms/app-form"
 import toast from "react-hot-toast"
-import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from "@/contexts/auth-provider"
+import { addDays, isBefore, isFuture, startOfDay } from "date-fns"
+import { useNavigate } from "react-router-dom"
 
 const steps = ["Class And Subject", "Final Details"]
+
+export const ONLINE_CLASS_CALL_TYPE = "online-class";
+export const ONLINE_CLASS_MEMBER_ROLE = "call_member";
 
 export const createLiveClassSchema = z.object({
     classRoomId: z.string({ required_error: "Please select a class" }).uuid({ message: "Invalid class" }),
     subjectId: z.string({ required_error: "Please select a subject" }).uuid({ message: "Invalid subject" }),
-    title: z.string().min(3, "Title must be at least 3 characters long"),
+    title: z.string().min(3, "Title must be at least 3 characters long").max(100, "Title must be less than 100 characters long"),
     description: z.string().min(10, "Description must be at least 10 characters long").max(500, "Description must be less than 500 characters long"),
     startImmediately: z.boolean(),
     scheduleDate: z.string({ required_error: "Please select a date" }).refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid date',
     }).optional(),
+}).refine(({ scheduleDate, startImmediately }) => !scheduleDate || startImmediately || (isFuture(scheduleDate) && isBefore(scheduleDate, startOfDay(addDays(new Date(), 3)))), {
+    message: "Schedule date must be a future date less than 3 days from now",
+    path: ["scheduleDate"],
 }).superRefine((data, ctx) => {
     if (data.startImmediately && !data.scheduleDate) {
         ctx.addIssue({
@@ -45,7 +53,8 @@ type Props = {
 export default function CreateLiveClassForm({ setOpen }: Props) {
     const [currentStep, setCurrentStep] = useState(0);
     const client = useStreamVideoClient();
-    const [call, setCall] = useState<Call | undefined>(undefined);
+    const { payload } = useAuth();
+    const navigate = useNavigate();
 
     const form = useForm<TCreateLiveClassSchema>({
         resolver: zodResolver(createLiveClassSchema),
@@ -55,12 +64,12 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
             startImmediately: false,
             scheduleDate: startOfDayString(new Date()).slice(0, -1), // removing the ending Z character
         },
-    })
+    });
 
-    const { mutateAsync } = useAppMutation();
+    const { mutateAsync } = useAppMutation<TCreateLiveClassSchema, { message: string, id: string, students: { id: string }[] }>();
 
     const onSubmit = async (data: TCreateLiveClassSchema) => {
-        await mutateAsync({
+        const response = await mutateAsync({
             endpoint: QueryKey.ONLINE_CLASSES,
             method: 'post',
             data: {
@@ -70,23 +79,28 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
             invalidateTags: [QueryKey.ONLINE_CLASSES],
         });
 
-        if (data.startImmediately && !!client) {
+        if (!!client && response.data.id && payload) {
             try {
-                const id = uuidv4();
+                const call = client.call(ONLINE_CLASS_CALL_TYPE, response.data.id);
 
-                const call = client.call("default", id);
+                const call_members = response.data.students.map((student) => ({
+                    user_id: student.id,
+                    role: ONLINE_CLASS_MEMBER_ROLE,
+                })).concat({ // join the current user also
+                    user_id: payload?.accountId,
+                    role: ONLINE_CLASS_MEMBER_ROLE,
+                })
 
                 await call.getOrCreate({
                     data: {
-                        custom: {
-                            title: data.title,
-                            description: data.description,
-                        }
+                        starts_at: new Date(data.scheduleDate ?? new Date()).toISOString(),
+                        members: call_members,
                     }
                 });
 
-                setCall(call);
-                console.log(call.id)
+                if (data.startImmediately) {
+                    navigate(`live/${response.data.id}`);
+                }
 
             } catch (e) {
                 console.log(e);

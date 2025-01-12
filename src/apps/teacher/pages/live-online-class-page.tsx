@@ -1,0 +1,223 @@
+import { Button } from "@/components/ui/button";
+import { CallingState, DeviceSettings, StreamCall, StreamTheme, useCallStateHooks, VideoPreview } from "@stream-io/video-react-sdk";
+import { useNavigate, useParams } from "react-router-dom"
+import "@stream-io/video-react-sdk/dist/css/styles.css";
+import useLoadCall from "@/hooks/useLoadCall";
+import { ONLINE_CLASS_CALL_TYPE } from "../components/online-classes/create-live-class-form/create-live-class-form";
+import { useAuth } from "@/contexts/auth-provider";
+import useStreamCall from "@/hooks/useStreamCall";
+import { ArrowLeft, CheckCircle, Clock, FileText, Loader2, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import PermissionPrompt from "../components/online-classes/live-online-class/permission-prompt";
+import AudioVolumeIndicator from "../components/online-classes/live-online-class/audio-volume-indicator";
+import FlexibleCallLayout from "../components/online-classes/live-online-class/flexible-layout";
+import { format } from "date-fns";
+import { Card, CardContent, CardFooter, } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox";
+
+export default function LiveOnlineClassPage() {
+    const { id } = useParams();
+    const { payload } = useAuth();
+
+    const { call, callLoading } = useLoadCall(id!);
+
+    if (callLoading) return <div>Loading...</div>;
+
+    if (!call) return (
+        <Button type="button">
+            Call Not Found
+        </Button>
+    );
+
+    const notAllowedToJoin = call.type === ONLINE_CLASS_CALL_TYPE && call.state.members.findIndex((member) => member.user_id === payload?.accountId) === -1;
+
+    if (notAllowedToJoin) return (
+        <div className="flex flex-col items-center justify-center py-20">
+            <h1>You are not allowed to join this call</h1>
+            <p>If you think this is an error, please contact the teacher</p>
+        </div>
+    );
+
+    return (
+        <StreamCall call={call}>
+            <StreamTheme>
+                <ClassScreen />
+            </StreamTheme>
+        </StreamCall>
+    );
+}
+
+function ClassScreen() {
+    const call = useStreamCall();
+
+    const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
+
+    const callEndedAt = useCallEndedAt();
+    const callStartsAt = useCallStartsAt();
+
+    const [setupComplete, setSetupComplete] = useState(false);
+
+    async function handleSetupComplete() {
+        call.join();
+        setSetupComplete(true);
+    }
+
+    const callIsInFuture = callStartsAt && new Date(callStartsAt) > new Date();
+
+    const callHasEnded = !!callEndedAt;
+
+    if (callHasEnded) {
+        return <ClassEndedScreen />;
+    }
+
+    if (callIsInFuture) {
+        return <UpcomingClassScreen />;
+    }
+
+    return (
+        <div className="space-y-6">
+            {setupComplete ? (
+                <section className="container mx-auto">
+                    <CallUI />
+                </section>
+            ) : (
+                <SetupUI onSetupComplete={handleSetupComplete} />
+            )}
+        </div>
+    );
+}
+
+interface SetupUIProps {
+    onSetupComplete: () => void;
+}
+
+function SetupUI({ onSetupComplete }: SetupUIProps) {
+    const call = useStreamCall();
+
+    const { useMicrophoneState, useCameraState } = useCallStateHooks();
+
+    const micState = useMicrophoneState();
+    const camState = useCameraState();
+
+    const [micCamDisabled, setMicCamDisabled] = useState(false);
+
+    useEffect(() => {
+        if (micCamDisabled) {
+            call.camera.disable();
+            call.microphone.disable();
+        } else {
+            call.camera.enable();
+            call.microphone.enable();
+        }
+    }, [micCamDisabled, call]);
+
+    if (!micState.hasBrowserPermission || !camState.hasBrowserPermission) {
+        return <PermissionPrompt />;
+    }
+
+    return (
+        <div className="flex flex-col items-center gap-3">
+            <h1 className="text-center text-2xl font-bold">
+                Setup your camera and microphone
+            </h1>
+            <VideoPreview />
+            <div className="flex h-16 items-center gap-3">
+                <AudioVolumeIndicator />
+                <DeviceSettings />
+            </div>
+            <label className="flex items-center gap-2 font-medium">
+                <Checkbox
+                    checked={micCamDisabled}
+                    onCheckedChange={val => setMicCamDisabled(val === true)}
+                />
+                Join with mic and camera off
+            </label>
+            <Button onClick={onSetupComplete}>Join Class</Button>
+        </div>
+    );
+}
+
+function CallUI() {
+    const { useCallCallingState } = useCallStateHooks();
+
+    const callingState = useCallCallingState();
+
+    if (callingState !== CallingState.JOINED) {
+        return <Loader2 className="mx-auto animate-spin" />;
+    }
+
+    return <FlexibleCallLayout />;
+}
+
+function UpcomingClassScreen() {
+    const call = useStreamCall();
+    const { payload } = useAuth();
+    const navigate = useNavigate();
+
+    return (
+        <div className="py-10">
+            <Card className="w-full max-w-md mx-auto border-none">
+                <CardContent className="text-center space-y-4 pt-6">
+                    <div className="text-6xl text-muted-foreground mb-4">
+                        <Clock className="inline-block w-16 h-16" />
+                    </div>
+                    <p className="text-lg font-medium">The class has not started yet.</p>
+                    {call.state.startsAt ? (
+                        <>
+                            <p className="text-sm text-muted-foreground">
+                                This class is scheduled to begin on:
+                            </p>
+                            <p className="text-lg font-semibold">
+                                {format(call.state.startsAt, "dd MMM yyyy hh:mm a")}
+                            </p>
+                        </>
+                    ) : (
+                        <p className="text-sm text-muted-foreground">
+                            The start date for this class has not been set.
+                        </p>
+                    )}
+                </CardContent>
+                <CardFooter className="justify-center">
+                    <Button onClick={() => navigate(`/${payload?.role}/live-classes`)} variant="outline">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+                    </Button>
+                </CardFooter>
+            </Card>
+        </div>
+    );
+}
+
+function ClassEndedScreen() {
+    const { payload } = useAuth();
+
+    const navigate = useNavigate();
+
+    return (
+        <div className="flex flex-col items-center gap-6">
+            <p className="font-bold">This class has ended</p>
+            <Card className="w-full max-w-md mx-auto">
+                <CardContent className="text-center space-y-4 pt-6">
+                    <div className="text-6xl text-green-500 mb-4">
+                        <CheckCircle className="inline-block w-16 h-16" />
+                    </div>
+                    <p className="text-lg font-medium">The class has ended.</p>
+                </CardContent>
+                <CardFooter className="flex flex-col space-y-2">
+                    <Button className="w-full">
+                        <FileText className="mr-2 h-4 w-4" /> View Class Resources
+                    </Button>
+                    <Button variant="outline" className="w-full">
+                        <MessageCircle className="mr-2 h-4 w-4" /> Join Discussion Forum
+                    </Button>
+                    <Button onClick={() => navigate(`/${payload?.role}/live-classes`)} variant="ghost" className="w-full">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+                    </Button>
+                </CardFooter>
+            </Card>
+            <div className="space-y-3">
+                <h2 className="text-center text-xl font-bold">Recordings</h2>
+                {/* <RecordingsList /> */}
+            </div>
+        </div>
+    );
+}

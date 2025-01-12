@@ -6,9 +6,10 @@ import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { CommonRoutes } from '../common/common-routes';
 import MyLeaveRequestsPage from '../common/pages/leave-request/my-leave-requests.page';
 import AddLeaveRequestPage from '../common/pages/leave-request/add-leave-request.page';
-import LiveClassesPage from './pages/live-classes.page';
-import RunningLiveClassPage from './pages/running-live-class-page';
+import OnlineClassesPage from './pages/online-classes.page';
+import LiveOnlineClassPage from './pages/live-online-class-page';
 import ClientProvider from '@/contexts/client-provider';
+import CallLeftPage from './pages/call-left.page';
 
 const TeacherRootLayout = () => {
   return (
@@ -29,10 +30,13 @@ const TeacherRoutes = () => {
             <Route path="new" element={<AddLeaveRequestPage />} />
           </Route>
           <Route path="live-classes">
-            <Route index element={<LiveClassesPage />} />
+            <Route index element={<OnlineClassesPage />} />
             <Route path="live">
               <Route index element={<Navigate to="live-classes" />} />
-              <Route path=":id" element={<RunningLiveClassPage />} />
+              <Route path=":id">
+                <Route index element={<LiveOnlineClassPage />} />
+                <Route path='left' element={<CallLeftPage />} />
+              </Route>
             </Route>
           </Route>
           <Route path="recorded-lectures">
