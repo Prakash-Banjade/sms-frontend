@@ -71,7 +71,7 @@ const ProfileCard = ({ student }: { student: TSingleStudent }) => (
             </div>
         </CardHeader>
         <CardContent className="space-y-3">
-            <InfoRow icon={<GraduationCap />} label="Class" value={`${student.classRoom.name} (${student.classRoom.parent.name})`} />
+            <InfoRow icon={<GraduationCap />} label="Class" value={`${student.classRoom?.name} (${student.classRoom?.parent?.name})`} />
             <InfoRow icon={<FileDigit />} label="Roll Number" value={student.rollNo.toString()} />
             <InfoRow icon={<CalendarDays />} label="Date of Birth" value={formatDate({ date: new Date(student.dob) })} />
             <InfoRow icon={<MapPin />} label="Address" value={student.currentAddress} />
