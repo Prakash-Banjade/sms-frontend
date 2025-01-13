@@ -22,24 +22,24 @@ export default function LiveOnlineClassPage() {
 
     const { call, callLoading } = useLoadCall(id!);
 
-    useEffect(() => {
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (!!call) {
-                const e = event || window.event;
-                e.preventDefault();
-                if (e) {
-                    e.returnValue = '';
-                }
-                return '';
-            }
-        };
+    // useEffect(() => {
+    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    //         if (!!call) {
+    //             const e = event || window.event;
+    //             e.preventDefault();
+    //             if (e) {
+    //                 e.returnValue = '';
+    //             }
+    //             return '';
+    //         }
+    //     };
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
 
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, []);
 
     if (callLoading) return <div>Loading...</div>;
 
