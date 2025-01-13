@@ -1,7 +1,5 @@
-
-
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, GitPullRequest, BookOpenText, BellRing, Radio, ListVideo } from "lucide-react";
+import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, UsersRound, Library, GitPullRequest, BookOpenText, BellRing, Radio } from "lucide-react";
 
 export const studentSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -71,11 +69,6 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Live Classes",
                 url: "live-classes",
                 icon: Radio,
-            },
-            {
-                title: "Recorded Lectures",
-                url: "recorded-lectures",
-                icon: ListVideo,
             }
         ]
     },

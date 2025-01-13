@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { GitPullRequest, LayoutDashboard, ListVideo, Radio } from "lucide-react";
+import { GitPullRequest, LayoutDashboard, Radio } from "lucide-react";
 
 export const teacherSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -30,11 +30,6 @@ export const teacherSidebarMenuItems: TGroupMenuItem[] = [
                 url: "live-classes",
                 icon: Radio,
             },
-            {
-                title: "Recorded Lectures",
-                url: "recorded-lectures",
-                icon: ListVideo,
-            }
         ]
     },
 ]
