@@ -12,7 +12,7 @@ export default function useLoadRecordings(call: Call) {
         async function loadRecordings() {
             setRecordingsLoading(true);
 
-            if (!payload?.accountId) return;
+            if (!payload?.accountId) return setRecordingsLoading(false);
 
             const { recordings } = await call.queryRecordings();
             setRecordings(recordings);

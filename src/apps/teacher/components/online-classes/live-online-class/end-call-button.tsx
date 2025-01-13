@@ -1,12 +1,17 @@
 import { EOnlineClassStatus } from "@/apps/teacher/data-access/online-class-data-access";
+import { Button } from "@/components/ui/button";
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import useStreamCall from "@/hooks/useStreamCall";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useCallStateHooks } from "@stream-io/video-react-sdk";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, PhoneOff } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function EndCallButton() {
+    const [isOpen, setIsOpen] = useState(false);
+
     const call = useStreamCall();
 
     const { useLocalParticipant } = useCallStateHooks();
@@ -39,17 +44,32 @@ export default function EndCallButton() {
     }
 
     return (
-        <button
-            type="button"
-            onClick={handleCallEnd}
-            className="mx-auto block font-medium text-destructive hover:underline"
-            disabled={isPending}
-        >
-            {
-                isPending
-                    ? <LoaderCircle className="animate-spin" />
-                    : "End call for everyone"
-            }
-        </button>
+        <>
+            <ResponsiveAlertDialog
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                title="End call for everyone"
+                description="This will end the call for every participants and mark the class as completed."
+                action={handleCallEnd}
+                actionLabel="End call"
+                isLoading={isPending}
+            />
+            <Button
+                variant={'destructive'}
+                type="button"
+                disabled={isPending}
+                onClick={() => setIsOpen(true)}
+                className="mx-auto flex"
+            >
+                {
+                    isPending
+                        ? <LoaderCircle className="animate-spin" />
+                        : <>
+                            <PhoneOff />
+                            End call for everyone
+                        </>
+                }
+            </Button>
+        </>
     );
 }

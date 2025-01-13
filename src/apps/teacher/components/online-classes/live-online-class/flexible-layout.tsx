@@ -46,7 +46,7 @@ export default function FlexibleCallLayout() {
             <CallLayoutView layout={layout} />
             <CallControls onLeave={() => navigate('left')} />
             <EndCallButton />
-            <section className="flex gap-6 mt-10">
+            <section className="flex gap-6 !mt-10">
                 <section className="grow">
                     <OnlineClassDetails />
                 </section>

@@ -11,7 +11,7 @@ export default function useLoadCall(id: string) {
         async function loadCall() {
             setCallLoading(true);
 
-            if (!client) return;
+            if (!client) return setCallLoading(false);
 
             const { calls } = await client.queryCalls({
                 filter_conditions: { id },

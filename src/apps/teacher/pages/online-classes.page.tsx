@@ -2,13 +2,13 @@ import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import CreateLiveClassForm from '../components/online-classes/live-online-class/create-live-class-form'
-import { Calendar, Copy, Merge, MoreHorizontal, Plus, Radio } from 'lucide-react'
+import { Calendar, CalendarOff, Copy, Disc, Loader2, Merge, MoreHorizontal, Plus, Radio } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { EOnlineClassStatus, TOnlineClass, useGetOnlineClasses } from '../data-access/online-class-data-access'
 import { DataTable } from '@/components/data-table/data-table'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
-import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DestructiveDropdownMenuButtonItem, DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import toast from 'react-hot-toast'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { format } from 'date-fns'
@@ -17,6 +17,13 @@ import { Role } from '@/types/global.type'
 import SearchInput from '@/components/search-components/search-input'
 import ClassRoomSearchFilterInputs from '@/components/search-components/class-room-search'
 import { createQueryString } from '@/utils/create-query-string'
+import { useAppMutation } from '@/hooks/useAppMutation'
+import { ResponsiveAlertDialog } from '@/components/ui/responsive-alert-dialog'
+import useLoadCall from '@/hooks/useLoadCall'
+import { QueryKey } from '@/react-query/queryKeys'
+import { Call } from '@stream-io/video-react-sdk'
+import useLoadRecordings from '@/hooks/useLoadRecordings'
+import { ResponsiveDialog } from '@/components/ui/responsive-dialog'
 
 export default function OnlineClassesPage() {
     const { payload } = useAuth();
@@ -142,14 +149,59 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
         cell: ({ row }) => {
             const id = row.original.id;
             const navigate = useNavigate();
+            const [isCancelOpen, setIsCancelOpen] = useState(false);
+            const [isRecordingsOpen, setIsRecordingsOpen] = useState(false);
+            const { call } = useLoadCall(id);
+            const { payload } = useAuth();
 
             function handleCopyLink() {
                 navigator.clipboard.writeText(window.location.href + '/live/' + id)
                     .then(() => toast.success("Link Copied", { position: "bottom-right" }))
             }
 
+            const { mutateAsync, isPending } = useAppMutation();
+
+            function handleCancelClass() {
+                if (!call) return;
+
+                call.endCall().then(async () => {
+                    await mutateAsync({
+                        endpoint: QueryKey.ONLINE_CLASSES + `/${call.id}` + '/status',
+                        method: 'patch',
+                        data: { status: EOnlineClassStatus.Cancelled },
+                        invalidateTags: [QueryKey.ONLINE_CLASSES],
+                        toastOnSuccess: false,
+                    });
+                    call.leave();
+                }).catch(() => {
+                    toast.error('Failed to dismiss class');
+                })
+            }
+
             return (
                 <>
+                    <ResponsiveAlertDialog
+                        isOpen={isCancelOpen}
+                        setIsOpen={setIsCancelOpen}
+                        title="Dismiss Class?"
+                        description="This will dismiss the class and mark as cancelled."
+                        action={handleCancelClass}
+                        actionLabel="End call"
+                        isLoading={isPending}
+                    />
+
+
+                    <ResponsiveDialog
+                        isOpen={isRecordingsOpen}
+                        setIsOpen={setIsRecordingsOpen}
+                        title='Call Recordings'
+                        description='View your recorded calls here.'
+                    >
+                        {
+                            call && <RecordingsDialogOption call={call} />
+                        }
+                    </ResponsiveDialog>
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -159,19 +211,68 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuButtonItem onClick={handleCopyLink}>
-                                <Copy /><span>Copy Join Link</span>
-                            </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => navigate(`live/${id}`)}>
-                                <Merge /><span>Join</span>
-                            </DropdownMenuButtonItem>
+                            {
+                                [EOnlineClassStatus.Live].includes(row.original.status) && (
+                                    <>
+                                        <DropdownMenuButtonItem onClick={handleCopyLink} disabled={isPending}>
+                                            <Copy /><span>Copy Join Link</span>
+                                        </DropdownMenuButtonItem>
+                                        <DropdownMenuButtonItem onClick={() => navigate(`live/${id}`)} disabled={isPending}>
+                                            <Merge /><span>Join</span>
+                                        </DropdownMenuButtonItem>
+                                    </>
+                                )
+                            }
+                            {
+                                payload?.role === Role.TEACHER && row.original.status === EOnlineClassStatus.Scheduled && (
+                                    <DestructiveDropdownMenuButtonItem onClick={() => setIsCancelOpen(true)} disabled={isPending}>
+                                        <CalendarOff /><span>Cancel</span>
+                                    </DestructiveDropdownMenuButtonItem>
+                                )
+                            }
+
+                            {
+                                row.original.status === EOnlineClassStatus.Completed && (
+                                    <DropdownMenuButtonItem onClick={() => setIsRecordingsOpen(true)} disabled={isPending}>
+                                        <Disc /><span>View Recordings</span>
+                                    </DropdownMenuButtonItem>
+                                )
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>
             )
         },
     },
-]
+];
+
+const RecordingsDialogOption = ({ call }: { call: Call }) => {
+    const { recordings, recordingsLoading } = useLoadRecordings(call);
+
+    if (recordingsLoading) return <Loader2 className="mx-auto animate-spin" />;
+
+    if (recordings.length === 0) return (
+        <p className='my-2 text-muted-foreground'>No recordings for this class.</p>
+    );
+
+    return (
+        <ul className="list-inside list-disc py-3">
+            {recordings
+                .sort((a, b) => b.end_time.localeCompare(a.end_time))
+                .map((recording) => (
+                    <li key={recording.url}>
+                        <a
+                            href={recording.url}
+                            target="_blank"
+                            className="hover:underline"
+                        >
+                            {new Date(recording.end_time).toLocaleString()}
+                        </a>
+                    </li>
+                ))}
+        </ul>
+    )
+}
 
 function OnlineClassesSearchFilters() {
     const { payload } = useAuth()

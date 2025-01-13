@@ -14,6 +14,7 @@ import FlexibleCallLayout from "../components/online-classes/live-online-class/f
 import { format } from "date-fns";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox";
+import { CallRecordingList } from "./call-left.page";
 
 export default function LiveOnlineClassPage() {
     const { id } = useParams();
@@ -204,20 +205,22 @@ function UpcomingClassScreen() {
 
 function ClassEndedScreen() {
     const { payload } = useAuth();
+    const { id } = useParams();
 
     const navigate = useNavigate();
 
+    const { call } = useLoadCall(id!);
+
     return (
-        <div className="flex flex-col items-center gap-6">
-            <p className="font-bold">This class has ended</p>
-            <Card className="w-full max-w-md mx-auto">
-                <CardContent className="text-center space-y-4 pt-6">
-                    <div className="text-6xl text-green-500 mb-4">
-                        <CheckCircle className="inline-block w-16 h-16" />
-                    </div>
-                    <p className="text-lg font-medium">The class has ended.</p>
-                </CardContent>
-                <CardFooter className="flex flex-col space-y-2">
+        <Card className="w-full max-w-2xl mx-auto border-none">
+            <CardContent className="text-center space-y-4 pt-6">
+                <div className="text-6xl text-green-500 mb-4">
+                    <CheckCircle className="inline-block w-16 h-16" />
+                </div>
+                <p className="text-lg font-medium">The class has ended.</p>
+            </CardContent>
+            <CardFooter className="flex flex-col gap-2">
+                <section className="space-y-2 max-w-md mx-auto">
                     <Button className="w-full">
                         <FileText className="mr-2 h-4 w-4" /> View Class Resources
                     </Button>
@@ -227,13 +230,12 @@ function ClassEndedScreen() {
                     <Button onClick={() => navigate(`/${payload?.role}/live-classes`)} variant="ghost" className="w-full">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
                     </Button>
-                </CardFooter>
-            </Card>
-            <div className="space-y-3">
-                <h2 className="text-center text-xl font-bold">Recordings</h2>
-                {/* <RecordingsList /> */}
-            </div>
-        </div>
+                </section>
+                {
+                    call && <CallRecordingList call={call} />
+                }
+            </CardFooter>
+        </Card>
     );
 }
 

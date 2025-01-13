@@ -1,4 +1,4 @@
-import useLoadRecordings from "@/hooks/useRecordings";
+import useLoadRecordings from "@/hooks/useLoadRecordings";
 import useStreamCall from "@/hooks/useStreamCall";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
