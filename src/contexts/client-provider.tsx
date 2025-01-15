@@ -1,18 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "./auth-provider"
-import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
+import { Call, StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
 import { useAxios } from "@/services/api";
+
+type TStreamClientContext = {
+    runningCall: Call | undefined;
+    setRunningCall: React.Dispatch<React.SetStateAction<Call | undefined>>;
+}
+
+const StreamClientContext = React.createContext<TStreamClientContext | null>(null);
 
 export default function ClientProvider({ children }: { children: React.ReactNode }) {
     const videoClient = useInitializedVideoClient();
+    const [runningCall, setRunningCall] = useState<Call | undefined>(undefined);
 
     if (!videoClient) return null;
 
     return (
         <StreamVideo client={videoClient}>
-            {children}
+            <StreamClientContext.Provider value={{ runningCall, setRunningCall }}>
+                {children}
+            </StreamClientContext.Provider>
         </StreamVideo>
     )
+}
+
+export const useStreamClientContext = () => {
+    const context = React.useContext(StreamClientContext);
+    if (!context) {
+        throw new Error("useStreamClientContext must be used within a StreamClientProvider");
+    }
+
+    return context;
 }
 
 export const useInitializedVideoClient = () => {

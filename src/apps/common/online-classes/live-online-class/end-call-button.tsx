@@ -37,7 +37,6 @@ export default function EndCallButton() {
                 invalidateTags: [QueryKey.ONLINE_CLASSES],
                 toastOnSuccess: false,
             });
-            call.leave();
         }).catch(() => {
             toast.error('Failed to end call');
         })

@@ -1,10 +1,10 @@
 import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
-import CreateLiveClassForm from '../components/online-classes/live-online-class/create-live-class-form'
+import { useEffect, useState } from 'react'
+import CreateLiveClassForm from '../../online-classes/live-online-class/create-live-class-form'
 import { Calendar, CalendarOff, Clapperboard, Copy, Disc, Loader2, Merge, MoreHorizontal, Plus, Radio } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { EOnlineClassStatus, TOnlineClass, useGetOnlineClasses } from '../data-access/online-class-data-access'
+import { EOnlineClassStatus, TOnlineClass, useGetOnlineClasses } from '../../../teacher/data-access/online-class-data-access'
 import { DataTable } from '@/components/data-table/data-table'
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
@@ -24,6 +24,7 @@ import { QueryKey } from '@/react-query/queryKeys'
 import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
 import useLoadRecordings from '@/hooks/useLoadRecordings'
 import { ResponsiveDialog } from '@/components/ui/responsive-dialog'
+import { OnlineClassNewWindowEvents } from '../../online-classes/live-online-class/flexible-layout'
 
 export default function OnlineClassesPage() {
     const { payload } = useAuth();
@@ -67,6 +68,8 @@ function CreateOnlineClassDialog() {
 
 function OnlineClassesTable() {
     const [searchParam] = useSearchParams();
+    const navigate = useNavigate();
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetOnlineClasses({
         queryString: createQueryString({
@@ -77,6 +80,22 @@ function OnlineClassesTable() {
             sectionId: searchParam.get('sectionId'),
         })
     });
+
+    const handleLeave = (event: CustomEvent<{ id: string }>) => {
+        const id = event.detail.id;
+
+        !!id && navigate(`/${payload?.role}/live-classes/live/${id}/left`);
+    }
+
+
+    useEffect(() => {
+        // Listen for custom events triggered from the new window
+        window.addEventListener(OnlineClassNewWindowEvents.Call_Leave, e => handleLeave(e as CustomEvent));
+
+        return () => {
+            window.removeEventListener(OnlineClassNewWindowEvents.Call_Leave, e => handleLeave(e as CustomEvent));
+        };
+    }, []);
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -148,7 +167,6 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const id = row.original.id;
-            const navigate = useNavigate();
             const [isCancelOpen, setIsCancelOpen] = useState(false);
             const [isRecordingsOpen, setIsRecordingsOpen] = useState(false);
             const { payload } = useAuth();
@@ -197,8 +215,22 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                     toastOnSuccess: false,
                 });
 
-                navigate(`live/${id}`);
+                openOnlineClassWindow();
             }
+
+            const openOnlineClassWindow = () => {
+                const newWindow = window.open(
+                    `${window.location.origin}/${payload?.role}/live-classes/live/${id}`, // Replace with your URL
+                    '_blank', // Open in a new tab or window
+                    'width=1000,height=1000' // Window features
+                );
+
+                // Ensure the new window exists before interacting with it
+                if (newWindow && !newWindow.opener) {
+                    toast.error('Failed to open online class window. This might be due to some popup blocker in your browser.');
+                }
+            };
+
 
             return (
                 <>
@@ -236,7 +268,7 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                                         <DropdownMenuButtonItem onClick={handleCopyLink} disabled={isPending}>
                                             <Copy /><span>Copy Join Link</span>
                                         </DropdownMenuButtonItem>
-                                        <DropdownMenuButtonItem onClick={() => navigate(`live/${id}`)} disabled={isPending}>
+                                        <DropdownMenuButtonItem onClick={openOnlineClassWindow} disabled={isPending}>
                                             <Merge /><span>Join</span>
                                         </DropdownMenuButtonItem>
                                     </>

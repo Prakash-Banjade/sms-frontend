@@ -55,30 +55,36 @@ export default StudentProfile;
 /**
  * ProfileCard Component
  */
-const ProfileCard = ({ student }: { student: TSingleStudent }) => (
-    <Card className="lg:col-span-1 h-fit">
-        <CardHeader>
-            <div className="flex items-center space-x-4">
-                <ProfileAvatar
-                    src={getImageUrl(student.profileImage?.url, 'w=80')}
-                    className="size-20"
-                    name={`${student.firstName} ${student.lastName}`}
-                />
-                <div className="space-y-2">
-                    <CardTitle>{`${student.firstName} ${student.lastName}`}</CardTitle>
-                    <CardDescription>Student ID: {student.studentId}</CardDescription>
+const ProfileCard = ({ student }: { student: TSingleStudent }) => {
+    const classRoomName = student.classRoom.parent?.name
+        ? `${student.classRoom.parent.name} - ${student.classRoom.name}`
+        : `${student.classRoom.name}`
+
+    return (
+        <Card className="lg:col-span-1 h-fit">
+            <CardHeader>
+                <div className="flex items-center space-x-4">
+                    <ProfileAvatar
+                        src={getImageUrl(student.profileImage?.url, 'w=80')}
+                        className="size-20"
+                        name={`${student.firstName} ${student.lastName}`}
+                    />
+                    <div className="space-y-2">
+                        <CardTitle>{`${student.firstName} ${student.lastName}`}</CardTitle>
+                        <CardDescription>Student ID: {student.studentId}</CardDescription>
+                    </div>
                 </div>
-            </div>
-        </CardHeader>
-        <CardContent className="space-y-3">
-            <InfoRow icon={<GraduationCap />} label="Class" value={`${student.classRoom?.name} (${student.classRoom?.parent?.name})`} />
-            <InfoRow icon={<FileDigit />} label="Roll Number" value={student.rollNo.toString()} />
-            <InfoRow icon={<CalendarDays />} label="Date of Birth" value={formatDate({ date: new Date(student.dob) })} />
-            <InfoRow icon={<MapPin />} label="Address" value={student.currentAddress} />
-            <InfoRow icon={<Phone />} label="Phone" value={student.phone} />
-        </CardContent>
-    </Card>
-);
+            </CardHeader>
+            <CardContent className="space-y-3">
+                <InfoRow icon={<GraduationCap />} label="Class" value={classRoomName} />
+                <InfoRow icon={<FileDigit />} label="Roll Number" value={student.rollNo.toString()} />
+                <InfoRow icon={<CalendarDays />} label="Date of Birth" value={formatDate({ date: new Date(student.dob) })} />
+                <InfoRow icon={<MapPin />} label="Address" value={student.currentAddress} />
+                <InfoRow icon={<Phone />} label="Phone" value={student.phone} />
+            </CardContent>
+        </Card>
+    )
+};
 
 /**
  * PersonalInfo Component

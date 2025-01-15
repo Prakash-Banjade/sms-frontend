@@ -1,6 +1,6 @@
 import { CallControls, CallParticipantsList, PaginatedGridLayout, SpeakerLayout } from "@stream-io/video-react-sdk";
 import { BetweenHorizonalEnd, BetweenVerticalEnd, LayoutGrid, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EndCallButton from "./end-call-button";
 import { useNavigate, useParams } from "react-router-dom";
 import { TooltipWrapper } from "@/components/ui/tooltip";
@@ -13,15 +13,31 @@ import './style.css'
 
 type CallLayout = "speaker-vert" | "speaker-horiz" | "grid";
 
+export enum OnlineClassNewWindowEvents {
+    Call_Leave = 'call-leave',
+    Call_End = 'call-end',
+}
+
 export default function FlexibleCallLayout() {
+    const { id } = useParams();
     const [layout, setLayout] = useState<CallLayout>("speaker-vert");
-    const navigate = useNavigate();
+
+    function onCallLeave() { // will be triggered from the new window, opener is `online-classes.page.tsx`
+        if (window.opener) {
+            // Trigger a custom event on the main window
+            const event = new CustomEvent(OnlineClassNewWindowEvents.Call_Leave, { detail: { id } });
+            window.opener.dispatchEvent(event);
+            window.close();
+        } else {
+            console.warn('No opener window found');
+        }
+    }
 
     return (
         <div className="space-y-3">
             <CallLayoutButtons layout={layout} setLayout={setLayout} />
             <CallLayoutView layout={layout} />
-            <CallControls onLeave={() => navigate('left')} />
+            <CallControls onLeave={onCallLeave} />
             <EndCallButton />
             <section className="@container !mt-10">
                 <section className="@4xl:flex gap-6 hidden">

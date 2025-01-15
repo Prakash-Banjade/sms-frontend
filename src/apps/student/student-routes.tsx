@@ -4,7 +4,7 @@ import RequireAuth from "@/components/auth/require-auth";
 import { ETask, Role } from "@/types/global.type";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { studentSidebarMenuItems } from "./layout/sidebar-items";
-import { CommonRoutes } from "../common/common-routes";
+import { CommonRoutes, OnlineClassesRoutes } from "../common/common-routes";
 const MyLeaveRequestsPage = lazy(() => import("../common/pages/leave-request/my-leave-requests.page"));
 const AddLeaveRequestPage = lazy(() => import("../common/pages/leave-request/add-leave-request.page"));
 import StreamClientProvider from "../teacher/layout/stream-client-provider";
@@ -21,9 +21,7 @@ const StudentDormitoryPage = lazy(() => import("./pages/academics/stu-dormitory.
 const StudentExamRoutinePage = lazy(() => import("./pages/academics/st-exam-routine.page"));
 const StudentExamReportPage = lazy(() => import("./pages/academics/stu-exam-report.page"));
 const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
-const OnlineClassesPage = lazy(() => import("../teacher/pages/online-classes.page"));
-const LiveOnlineClassPageWrapper = lazy(() => import("../teacher/pages/live-online-class-page"));
-const CallLeftPage = lazy(() => import("../teacher/pages/call-left.page"));
+const OnlineClassesPage = lazy(() => import("../common/pages/online-classes/online-classes.page"));
 
 const StudentRoutes = () => {
   return (
@@ -56,13 +54,6 @@ const StudentRoutes = () => {
           <Route path='exam-report' element={<StudentExamReportPage />} />
           <Route path="live-classes" element={<StreamClientProvider />}>
             <Route index element={<OnlineClassesPage />} />
-            <Route path="live">
-              <Route index element={<Navigate to="live-classes" />} />
-              <Route path=":id">
-                <Route index element={<LiveOnlineClassPageWrapper />} />
-                <Route path='left' element={<CallLeftPage />} />
-              </Route>
-            </Route>
           </Route>
           <Route path="leave-requests">
             <Route index element={<MyLeaveRequestsPage />} />
@@ -75,6 +66,7 @@ const StudentRoutes = () => {
           {CommonRoutes()}
         </Route>
       </Route>
+      {OnlineClassesRoutes()} {/* This needs to be out of regular layout */}
     </Routes>
   );
 };

@@ -36,7 +36,7 @@ export default function CallLeftPage() {
                     <Button onClick={onRejoin} size="lg" className="w-full">
                         <VideoIcon className="mr-2 h-5 w-5" /> Rejoin Call
                     </Button>
-                    <Button variant={'ghost'} size="lg" className="w-full" onClick={() => navigate(`/${payload?.role}/live-classes`)}>
+                    <Button variant={'ghost'} size="lg" className="w-full" onClick={() => navigate(`/${payload?.role}/live-classes`, { replace: true })}>
                         <ArrowLeft className="mr-2 h-5 w-5" />
                         Go Back
                     </Button>
