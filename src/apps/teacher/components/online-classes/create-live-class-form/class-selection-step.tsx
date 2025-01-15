@@ -60,6 +60,15 @@ export default function ClassSelectionStep({ setCurrentStep }: Props) {
                                                 </FormLabel>
                                             </FormItem>
                                         ))}
+
+                                        {
+                                            data?.data?.length === 0 && (
+                                                <p className="text-center text-muted py-5">
+                                                    No class found. <br />
+                                                    Is seems you don't own any class.
+                                                </p>
+                                            )
+                                        }
                                     </RadioGroup>
                                 </FormControl>
                             )

@@ -1,44 +1,21 @@
-import { CallControls, CallParticipantsList, PaginatedGridLayout, SpeakerLayout, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { CallControls, CallParticipantsList, PaginatedGridLayout, SpeakerLayout } from "@stream-io/video-react-sdk";
 import { BetweenHorizonalEnd, BetweenVerticalEnd, LayoutGrid, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EndCallButton from "./end-call-button";
 import { useNavigate, useParams } from "react-router-dom";
 import { TooltipWrapper } from "@/components/ui/tooltip";
-import { EOnlineClassStatus, useGetOnlineClass } from "@/apps/teacher/data-access/online-class-data-access";
+import { useGetOnlineClass } from "@/apps/teacher/data-access/online-class-data-access";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton";
-import { QueryKey } from "@/react-query/queryKeys";
-import { useAppMutation } from "@/hooks/useAppMutation";
-import useStreamCall from "@/hooks/useStreamCall";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import './style.css'
 
 type CallLayout = "speaker-vert" | "speaker-horiz" | "grid";
 
 export default function FlexibleCallLayout() {
     const [layout, setLayout] = useState<CallLayout>("speaker-vert");
     const navigate = useNavigate();
-    const call = useStreamCall();
-    const { mutateAsync } = useAppMutation();
-    const { useLocalParticipant } = useCallStateHooks();
-    const localParticipant = useLocalParticipant();
-
-    // once the component is mounted, we start the call as live
-    useEffect(() => {
-        const participantIsChannelOwner =
-            localParticipant &&
-            call.state.createdBy &&
-            localParticipant.userId === call.state.createdBy.id;
-
-        if (!participantIsChannelOwner) return;
-
-        mutateAsync({
-            endpoint: QueryKey.ONLINE_CLASSES + `/${call.id}` + '/status',
-            method: 'patch',
-            data: { status: EOnlineClassStatus.Live },
-            invalidateTags: [QueryKey.ONLINE_CLASSES],
-            toastOnSuccess: false,
-        });
-    }, []);
 
     return (
         <div className="space-y-3">
@@ -46,13 +23,29 @@ export default function FlexibleCallLayout() {
             <CallLayoutView layout={layout} />
             <CallControls onLeave={() => navigate('left')} />
             <EndCallButton />
-            <section className="flex gap-6 !mt-10">
-                <section className="grow">
-                    <OnlineClassDetails />
+            <section className="@container !mt-10">
+                <section className="@4xl:flex gap-6 hidden">
+                    <section className="grow">
+                        <OnlineClassDetails />
+                    </section>
+                    <div className="border rounded-lg p-3 grow max-w-[400px]">
+                        <CallParticipantsList onClose={() => { }} />
+                    </div>
                 </section>
-                <div className="border rounded-lg p-3 grow max-w-[400px]">
-                    <CallParticipantsList onClose={() => { }} />
-                </div>
+                <section className="@4xl:hidden">
+                    <Tabs defaultValue="details">
+                        <TabsList className="flex">
+                            <TabsTrigger value="details" className="flex-1">Class Details</TabsTrigger>
+                            <TabsTrigger value="participants" className="flex-1">Participants</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="details">
+                            <OnlineClassDetails />
+                        </TabsContent>
+                        <TabsContent value="participants" className="pt-3">
+                            <CallParticipantsList onClose={() => { }} />
+                        </TabsContent>
+                    </Tabs>
+                </section>
             </section>
         </div>
     );
@@ -91,11 +84,7 @@ function CallLayoutButtons({ layout, setLayout }: CallLayoutButtonsProps) {
     );
 }
 
-interface CallLayoutViewProps {
-    layout: CallLayout;
-}
-
-function CallLayoutView({ layout }: CallLayoutViewProps) {
+function CallLayoutView({ layout }: { layout: CallLayout }) {
     if (layout === "speaker-vert") {
         return <SpeakerLayout />;
     }
@@ -129,12 +118,12 @@ function OnlineClassDetails() {
     return (
         <Card>
             <CardHeader>
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start flex-wrap gap-1">
                     <div>
-                        <CardTitle className="text-2xl font-bold mb-2">{onlineClass.title}</CardTitle>
-                        <h2 className="text-xl text-muted-foreground">{onlineClass.subject?.subjectName}</h2>
+                        <CardTitle className="sm:text-2xl text-lg font-bold sm:mb-2">{onlineClass.title}</CardTitle>
+                        <h2 className="sm:text-xl text-base text-muted-foreground">{onlineClass.subject?.subjectName}</h2>
                     </div>
-                    <Badge variant="secondary" className="text-sm">
+                    <Badge variant="secondary" className="sm:text-sm">
                         {classRoomName}
                     </Badge>
                 </div>
@@ -145,7 +134,7 @@ function OnlineClassDetails() {
                     <span>Instructor: {teacherName}</span>
                 </div>
                 <div className="border-t pt-4">
-                    <h3 className="text-lg font-semibold mb-2">Description</h3>
+                    <h3 className="sm:text-lg text-base font-semibold mb-2">Description</h3>
                     <p className="text-muted-foreground">{onlineClass.description}</p>
                 </div>
             </CardContent>

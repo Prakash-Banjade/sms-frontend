@@ -55,27 +55,32 @@ export function CallRecordingList({ call }: { call: Call }) {
 
     if (recordingsLoading) return <Loader2 className="mx-auto animate-spin" />;
 
-    if (recordings.length === 0) return null;
-
     return (
         <div className="space-y-3 text-center mt-4">
             <h2 className="text-xl font-bold mb-2">Recordings</h2>
 
-            <ul className="list-inside list-disc">
-                {recordings
-                    .sort((a, b) => b.end_time.localeCompare(a.end_time))
-                    .map((recording) => (
-                        <li key={recording.url}>
-                            <a
-                                href={recording.url}
-                                target="_blank"
-                                className="hover:underline"
-                            >
-                                {new Date(recording.end_time).toLocaleString()}
-                            </a>
-                        </li>
-                    ))}
-            </ul>
+            {
+                recordings.length > 0 ? (
+                    <ul className="list-inside list-disc">
+                        {recordings
+                            .sort((a, b) => b.end_time.localeCompare(a.end_time))
+                            .map((recording) => (
+                                <li key={recording.url}>
+                                    <a
+                                        href={recording.url}
+                                        target="_blank"
+                                        className="hover:underline"
+                                    >
+                                        {new Date(recording.end_time).toLocaleString()}
+                                    </a>
+                                </li>
+                            ))}
+                    </ul>
+                ) : (
+                    <p className="font-medium">No recordings for this class.</p>
+                )
+            }
+
             <p className="text-sm text-muted-foreground">
                 <strong>Note:</strong> It can take up to 1 minute before new recordings show up.
                 <br />

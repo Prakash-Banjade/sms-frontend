@@ -8,38 +8,52 @@ import { useAuth } from "@/contexts/auth-provider";
 import useStreamCall from "@/hooks/useStreamCall";
 import { ArrowLeft, CheckCircle, Clock, FileText, Loader2, MessageCircle, VideoOff } from "lucide-react";
 import { useEffect, useState } from "react";
-import PermissionPrompt from "../components/online-classes/live-online-class/permission-prompt";
 import AudioVolumeIndicator from "../components/online-classes/live-online-class/audio-volume-indicator";
 import FlexibleCallLayout from "../components/online-classes/live-online-class/flexible-layout";
 import { format } from "date-fns";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox";
 import { CallRecordingList } from "./call-left.page";
+import { EOnlineClassStatus, useGetOnlineClass } from "../data-access/online-class-data-access";
+import AccessBlockedWarning from "../components/online-classes/live-online-class/mic-cam-access-blocked-wraning";
+import toast from "react-hot-toast";
 
-export default function LiveOnlineClassPage() {
+export default function LiveOnlineClassPageWrapper() {
+    const { id } = useParams();
+
+    const { data: onlineClass, isLoading } = useGetOnlineClass({ id: id!, options: { enabled: !!id } });
+
+    if (onlineClass?.status !== EOnlineClassStatus.Live) return <ClassNotStartedByTeacher />;
+
+    if (isLoading) return <div>Loading...</div>;
+
+    return <LiveOnlineClassPage />
+}
+
+export function LiveOnlineClassPage() {
     const { id } = useParams();
     const { payload } = useAuth();
 
     const { call, callLoading } = useLoadCall(id!);
 
-    // useEffect(() => {
-    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    //         if (!!call) {
-    //             const e = event || window.event;
-    //             e.preventDefault();
-    //             if (e) {
-    //                 e.returnValue = '';
-    //             }
-    //             return '';
-    //         }
-    //     };
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (!!call) {
+                const e = event || window.event;
+                e.preventDefault();
+                if (e) {
+                    e.returnValue = '';
+                }
+                return '';
+            }
+        };
 
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('beforeunload', handleBeforeUnload);
 
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, []);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     if (callLoading) return <div>Loading...</div>;
 
@@ -127,8 +141,16 @@ function SetupUI({ onSetupComplete }: SetupUIProps) {
         }
     }, [micCamDisabled, call]);
 
+    const handleRetry = () => {
+        if (!micState.hasBrowserPermission || !camState.hasBrowserPermission) {
+            return toast.error('Please allow microphone and camera permissions');
+        }
+
+        onSetupComplete();
+    }
+
     if (!micState.hasBrowserPermission || !camState.hasBrowserPermission) {
-        return <PermissionPrompt />;
+        return <AccessBlockedWarning onRetry={handleRetry} />;
     }
 
     return (
@@ -265,5 +287,33 @@ function CallNotFound() {
             </CardFooter>
         </Card>
 
+    )
+}
+
+const ClassNotStartedByTeacher = () => {
+    const { payload } = useAuth();
+
+    const navigate = useNavigate();
+
+    return (
+        <Card className="w-full max-w-xl mx-auto py-10 border-none">
+            <CardHeader>
+                <CardTitle className="text-2xl font-bold text-center">Class Not Started</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-4">
+                <div className="text-6xl text-muted-foreground mb-4">
+                    <VideoOff className="inline-block w-16 h-16" />
+                </div>
+                <p className="text-lg font-medium">This call has not started yet.</p>
+                <p className="text-sm text-muted-foreground">
+                    The teacher has not yet started the class.
+                </p>
+            </CardContent>
+            <CardFooter className="justify-center">
+                <Button onClick={() => navigate(`/${payload?.role}/live-classes`)} variant="ghost" className="w-full">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+                </Button>
+            </CardFooter>
+        </Card>
     )
 }

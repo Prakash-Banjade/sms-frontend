@@ -2,7 +2,7 @@ import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import CreateLiveClassForm from '../components/online-classes/live-online-class/create-live-class-form'
-import { Calendar, CalendarOff, Copy, Disc, Loader2, Merge, MoreHorizontal, Plus, Radio } from 'lucide-react'
+import { Calendar, CalendarOff, Clapperboard, Copy, Disc, Loader2, Merge, MoreHorizontal, Plus, Radio } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { EOnlineClassStatus, TOnlineClass, useGetOnlineClasses } from '../data-access/online-class-data-access'
 import { DataTable } from '@/components/data-table/data-table'
@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { DestructiveDropdownMenuButtonItem, DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import toast from 'react-hot-toast'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { format } from 'date-fns'
+import { format, isBefore } from 'date-fns'
 import { useAuth } from '@/contexts/auth-provider'
 import { Role } from '@/types/global.type'
 import SearchInput from '@/components/search-components/search-input'
@@ -21,7 +21,7 @@ import { useAppMutation } from '@/hooks/useAppMutation'
 import { ResponsiveAlertDialog } from '@/components/ui/responsive-alert-dialog'
 import useLoadCall from '@/hooks/useLoadCall'
 import { QueryKey } from '@/react-query/queryKeys'
-import { Call } from '@stream-io/video-react-sdk'
+import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
 import useLoadRecordings from '@/hooks/useLoadRecordings'
 import { ResponsiveDialog } from '@/components/ui/responsive-dialog'
 
@@ -51,7 +51,7 @@ function CreateOnlineClassDialog() {
                     <Plus /> Create Live Class
                 </Button>
             </DialogTrigger>
-            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="max-w-[800px] w-[97%]">
+            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="max-w-[800px] w-[97%] max-h-[95vh] overflow-auto">
                 <DialogHeader>
                     <DialogTitle>Create Live Class</DialogTitle>
                     <DialogDescription>
@@ -151,8 +151,8 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
             const navigate = useNavigate();
             const [isCancelOpen, setIsCancelOpen] = useState(false);
             const [isRecordingsOpen, setIsRecordingsOpen] = useState(false);
-            const { call } = useLoadCall(id);
             const { payload } = useAuth();
+            const client = useStreamVideoClient();
 
             function handleCopyLink() {
                 navigator.clipboard.writeText(window.location.href + '/live/' + id)
@@ -161,8 +161,18 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
 
             const { mutateAsync, isPending } = useAppMutation();
 
-            function handleCancelClass() {
-                if (!call) return;
+            async function handleCancelClass() {
+                if (!client) return;
+
+                const { calls } = await client.queryCalls({
+                    filter_conditions: { id },
+                });
+
+                if (!calls.length) return;
+
+                const call = calls[0];
+
+                await call.get();
 
                 call.endCall().then(async () => {
                     await mutateAsync({
@@ -178,6 +188,18 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                 })
             }
 
+            async function handleStartClass() {
+                await mutateAsync({
+                    endpoint: QueryKey.ONLINE_CLASSES + `/${id}` + '/status',
+                    method: 'patch',
+                    data: { status: EOnlineClassStatus.Live },
+                    invalidateTags: [QueryKey.ONLINE_CLASSES],
+                    toastOnSuccess: false,
+                });
+
+                navigate(`live/${id}`);
+            }
+
             return (
                 <>
                     <ResponsiveAlertDialog
@@ -190,16 +212,13 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                         isLoading={isPending}
                     />
 
-
                     <ResponsiveDialog
                         isOpen={isRecordingsOpen}
                         setIsOpen={setIsRecordingsOpen}
                         title='Call Recordings'
                         description='View your recorded calls here.'
                     >
-                        {
-                            call && <RecordingsDialogOption call={call} />
-                        }
+                        <CallRecordingsContainer callId={id} />
                     </ResponsiveDialog>
 
                     <DropdownMenu>
@@ -225,12 +244,18 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                             }
                             {
                                 payload?.role === Role.TEACHER && row.original.status === EOnlineClassStatus.Scheduled && (
-                                    <DestructiveDropdownMenuButtonItem onClick={() => setIsCancelOpen(true)} disabled={isPending}>
-                                        <CalendarOff /><span>Cancel</span>
-                                    </DestructiveDropdownMenuButtonItem>
+                                    <>
+                                        {
+                                            !!row.original.scheduleDate && isBefore(row.original.scheduleDate?.slice(0, -1), new Date()) && <DropdownMenuButtonItem onClick={handleStartClass} disabled={isPending}>
+                                                <Clapperboard /><span>Start Class</span>
+                                            </DropdownMenuButtonItem>
+                                        }
+                                        <DestructiveDropdownMenuButtonItem onClick={() => setIsCancelOpen(true)} disabled={isPending}>
+                                            <CalendarOff /><span>Dismiss Class</span>
+                                        </DestructiveDropdownMenuButtonItem>
+                                    </>
                                 )
                             }
-
                             {
                                 row.original.status === EOnlineClassStatus.Completed && (
                                     <DropdownMenuButtonItem onClick={() => setIsRecordingsOpen(true)} disabled={isPending}>
@@ -239,14 +264,22 @@ export const onlineClassesColumns: ColumnDef<TOnlineClass>[] = [
                                 )
                             }
                         </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu >
                 </>
             )
         },
     },
 ];
 
-const RecordingsDialogOption = ({ call }: { call: Call }) => {
+const CallRecordingsContainer = ({ callId }: { callId: string }) => {
+    const { call } = useLoadCall(callId);
+
+    if (!call) return null;
+
+    return <CallRecordings call={call} />
+}
+
+const CallRecordings = ({ call }: { call: Call }) => {
     const { recordings, recordingsLoading } = useLoadRecordings(call);
 
     if (recordingsLoading) return <Loader2 className="mx-auto animate-spin" />;

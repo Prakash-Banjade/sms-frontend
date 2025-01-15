@@ -26,7 +26,7 @@ export const createLiveClassSchema = z.object({
     classRoomId: z.string({ required_error: "Please select a class" }).uuid({ message: "Invalid class" }),
     subjectId: z.string({ required_error: "Please select a subject" }).uuid({ message: "Invalid subject" }),
     title: z.string().min(3, "Title must be at least 3 characters long").max(100, "Title must be less than 100 characters long"),
-    description: z.string().min(10, "Description must be at least 10 characters long").max(500, "Description must be less than 500 characters long"),
+    description: z.string().min(10, "Description must be at least 10 characters long").max(500, "Description must be less than 500 characters long").nullish(),
     startImmediately: z.boolean(),
     scheduleDate: z.string({ required_error: "Please select a date" }).refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid date',
@@ -60,7 +60,7 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
         resolver: zodResolver(createLiveClassSchema),
         defaultValues: {
             title: "",
-            description: "",
+            description: null,
             startImmediately: false,
             scheduleDate: startOfDayString(new Date()).slice(0, -1), // removing the ending Z character
         },

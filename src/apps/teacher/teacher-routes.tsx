@@ -4,37 +4,30 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { teacherSidebarMenuItems } from './layout/sidebar-items';
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { CommonRoutes } from '../common/common-routes';
-import MyLeaveRequestsPage from '../common/pages/leave-request/my-leave-requests.page';
-import AddLeaveRequestPage from '../common/pages/leave-request/add-leave-request.page';
-import OnlineClassesPage from './pages/online-classes.page';
-import LiveOnlineClassPage from './pages/live-online-class-page';
-import ClientProvider from '@/contexts/client-provider';
-import CallLeftPage from './pages/call-left.page';
-
-const TeacherRootLayout = () => {
-  return (
-    <ClientProvider> {/* For stream video client */}
-      <AppRootLayout menuItems={teacherSidebarMenuItems} />
-    </ClientProvider>
-  )
-}
+import { lazy } from 'react';
+import StreamClientProvider from './layout/stream-client-provider';
+const MyLeaveRequestsPage = lazy(() => import('../common/pages/leave-request/my-leave-requests.page'));
+const AddLeaveRequestPage = lazy(() => import('../common/pages/leave-request/add-leave-request.page'));
+const OnlineClassesPage = lazy(() => import('./pages/online-classes.page'));
+const LiveOnlineClassPageWrapper = lazy(() => import('./pages/live-online-class-page'));
+const CallLeftPage = lazy(() => import('./pages/call-left.page'));
 
 const TeacherRoutes = () => {
   return (
     <Routes>
       <Route element={<RequireAuth authorizedRoles={[Role.TEACHER]} />}>
-        <Route element={<TeacherRootLayout />}>
+        <Route element={<AppRootLayout menuItems={teacherSidebarMenuItems} />}>
           <Route path="dashboard" element={<div>This is teacher dashboard</div>} />
           <Route path="leave-requests">
             <Route index element={<MyLeaveRequestsPage />} />
             <Route path="new" element={<AddLeaveRequestPage />} />
           </Route>
-          <Route path="live-classes">
+          <Route path="live-classes" element={<StreamClientProvider />}>
             <Route index element={<OnlineClassesPage />} />
             <Route path="live">
               <Route index element={<Navigate to="live-classes" />} />
               <Route path=":id">
-                <Route index element={<LiveOnlineClassPage />} />
+                <Route index element={<LiveOnlineClassPageWrapper />} />
                 <Route path='left' element={<CallLeftPage />} />
               </Route>
             </Route>
