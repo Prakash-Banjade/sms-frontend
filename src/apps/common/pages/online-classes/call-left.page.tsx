@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { VideoOff, VideoIcon, ArrowLeft, Loader2 } from 'lucide-react'
+import { VideoOff, ArrowLeft, Loader2 } from 'lucide-react'
 import { useAuth } from "@/contexts/auth-provider";
 import useLoadRecordings from "@/hooks/useLoadRecordings";
 import useLoadCall from "@/hooks/useLoadCall";
 import { Call } from "@stream-io/video-react-sdk";
+import { format } from "date-fns";
 
 export default function CallLeftPage() {
     const { id } = useParams();
@@ -13,10 +14,6 @@ export default function CallLeftPage() {
     const { payload } = useAuth();
 
     const { call } = useLoadCall(id!);
-
-    const onRejoin = () => {
-        navigate(`/${payload?.role}/live-classes/live/${id}`, { replace: true });
-    };
 
     return (
         <Card className="w-full max-w-2xl mx-auto py-10 border-none">
@@ -33,9 +30,6 @@ export default function CallLeftPage() {
             </CardContent>
             <CardFooter className="flex-col gap-2">
                 <section className="space-y-2">
-                    <Button onClick={onRejoin} size="lg" className="w-full">
-                        <VideoIcon className="mr-2 h-5 w-5" /> Rejoin Call
-                    </Button>
                     <Button variant={'ghost'} size="lg" className="w-full" onClick={() => navigate(`/${payload?.role}/live-classes`, { replace: true })}>
                         <ArrowLeft className="mr-2 h-5 w-5" />
                         Go Back
@@ -71,7 +65,7 @@ export function CallRecordingList({ call }: { call: Call }) {
                                         target="_blank"
                                         className="hover:underline"
                                     >
-                                        {new Date(recording.end_time).toLocaleString()}
+                                        {format(recording.end_time, "dd MMM yyyy hh:mm:ss a")}
                                     </a>
                                 </li>
                             ))}

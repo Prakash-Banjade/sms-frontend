@@ -1,8 +1,8 @@
 import { CallControls, CallParticipantsList, PaginatedGridLayout, SpeakerLayout } from "@stream-io/video-react-sdk";
 import { BetweenHorizonalEnd, BetweenVerticalEnd, LayoutGrid, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EndCallButton from "./end-call-button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { TooltipWrapper } from "@/components/ui/tooltip";
 import { useGetOnlineClass } from "@/apps/teacher/data-access/online-class-data-access";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

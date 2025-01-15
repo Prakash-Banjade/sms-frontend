@@ -1,45 +1,45 @@
-import { EOnlineClassStatus } from "@/apps/teacher/data-access/online-class-data-access";
 import { Button } from "@/components/ui/button";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
-import { useAppMutation } from "@/hooks/useAppMutation";
 import useStreamCall from "@/hooks/useStreamCall";
-import { QueryKey } from "@/react-query/queryKeys";
 import { useCallStateHooks } from "@stream-io/video-react-sdk";
 import { LoaderCircle, PhoneOff } from "lucide-react";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import { useState, useTransition } from "react";
+import { OnlineClassNewWindowEvents } from "./flexible-layout";
 
 export default function EndCallButton() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isPending, startTransition] = useTransition();
 
     const call = useStreamCall();
 
     const { useLocalParticipant } = useCallStateHooks();
     const localParticipant = useLocalParticipant();
 
-    const { mutateAsync, isPending } = useAppMutation();
 
     const participantIsChannelOwner =
         localParticipant &&
         call.state.createdBy &&
         localParticipant.userId === call.state.createdBy.id;
 
-    if (!participantIsChannelOwner) {
-        return null;
+    const handleCallEnd = () => {
+        startTransition(() => {
+            if (window.opener) {
+                // Trigger a custom event on the main window
+                const event = new CustomEvent(OnlineClassNewWindowEvents.Call_End, {
+                    detail: {
+                        id: call.id,
+                    }
+                });
+                window.opener.dispatchEvent(event);
+                window.close();
+            } else {
+                console.warn('No opener window found');
+            }
+        });
     }
 
-    const handleCallEnd = () => {
-        call.endCall().then(async () => {
-            await mutateAsync({
-                endpoint: QueryKey.ONLINE_CLASSES + `/${call.id}` + '/status',
-                method: 'patch',
-                data: { status: EOnlineClassStatus.Completed },
-                invalidateTags: [QueryKey.ONLINE_CLASSES],
-                toastOnSuccess: false,
-            });
-        }).catch(() => {
-            toast.error('Failed to end call');
-        })
+    if (!participantIsChannelOwner) {
+        return null;
     }
 
     return (

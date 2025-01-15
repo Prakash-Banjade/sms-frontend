@@ -6,7 +6,7 @@ import useLoadCall from "@/hooks/useLoadCall";
 import { ONLINE_CLASS_CALL_TYPE } from "../../online-classes/live-online-class/create-live-class-form";
 import { useAuth } from "@/contexts/auth-provider";
 import useStreamCall from "@/hooks/useStreamCall";
-import { ArrowLeft, CheckCircle, Clock, FileText, Loader2, MessageCircle, VideoOff } from "lucide-react";
+import { ArrowLeft, CheckCircle, Clock, FileText, FileVideo2, Loader2, MessageCircle, VideoOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import AudioVolumeIndicator from "../../online-classes/live-online-class/audio-volume-indicator";
 import FlexibleCallLayout from "../../online-classes/live-online-class/flexible-layout";
@@ -64,8 +64,10 @@ export function LiveOnlineClassPage() {
 
 function ClassScreen() {
     const call = useStreamCall();
+    const { payload } = useAuth();
 
-    const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
+    const { useCallEndedAt, useCallStartsAt, useParticipants } = useCallStateHooks();
+    const participants = useParticipants();
 
     const callEndedAt = useCallEndedAt();
     const callStartsAt = useCallStartsAt();
@@ -81,12 +83,18 @@ function ClassScreen() {
 
     const callHasEnded = !!callEndedAt;
 
+    const hasAlreadyParticipated = participants.filter((participant) => participant.userId === payload?.accountId).length > 1;
+
     if (callHasEnded) {
         return <ClassEndedScreen />;
     }
 
     if (callIsInFuture) {
         return <UpcomingClassScreen />;
+    }
+
+    if (hasAlreadyParticipated) {
+        return <AlreadyParticipatedScreen />;
     }
 
     return (
@@ -299,6 +307,25 @@ const ClassNotStartedByTeacher = () => {
                     <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
                 </Button>
             </CardFooter>
+        </Card>
+    )
+}
+
+const AlreadyParticipatedScreen = () => {
+    return (
+        <Card className="w-full max-w-xl mx-auto py-10 border-none">
+            <CardHeader>
+                <CardTitle className="text-2xl font-bold text-center">Duplicate Entry</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-4">
+                <div className="text-6xl text-muted-foreground mb-4">
+                    <FileVideo2 className="inline-block w-16 h-16" />
+                </div>
+                <p className="text-lg font-medium">You are already a participant of this call.</p>
+                <p className="text-sm text-muted-foreground">
+                    Cannot join again. Please contact technical support if needed.
+                </p>
+            </CardContent>
         </Card>
     )
 }

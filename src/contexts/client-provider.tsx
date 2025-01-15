@@ -49,6 +49,7 @@ export const useInitializedVideoClient = () => {
                 image: payload.profileImageUrl ?? undefined,
                 name: `${payload.firstName} ${payload.lastName}`,
                 type: "authenticated",
+                
             },
             tokenProvider: async () => await axios.get("/accounts/get-stream-token").then((res) => res.data),
         });
