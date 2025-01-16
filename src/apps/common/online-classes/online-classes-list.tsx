@@ -4,11 +4,10 @@ import { BookOpen, Calendar, CalendarOff, Clapperboard, Copy, Disc, Edit, Loader
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from '@/components/ui/badge'
 import toast from 'react-hot-toast'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { format, isBefore } from 'date-fns'
 import { useAuth } from '@/contexts/auth-provider'
 import { Role } from '@/types/global.type'
-import { createQueryString } from '@/utils/create-query-string'
 import { useAppMutation } from '@/hooks/useAppMutation'
 import { ResponsiveAlertDialog } from '@/components/ui/responsive-alert-dialog'
 import useLoadCall from '@/hooks/useLoadCall'
@@ -16,27 +15,14 @@ import { QueryKey } from '@/react-query/queryKeys'
 import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
 import useLoadRecordings from '@/hooks/useLoadRecordings'
 import { ResponsiveDialog } from '@/components/ui/responsive-dialog'
-import { EOnlineClassStatus, TOnlineClass, useGetOnlineClasses } from '@/apps/teacher/data-access/online-class-data-access'
+import { EOnlineClassStatus, TOnlineClass } from '@/apps/teacher/data-access/online-class-data-access'
 import { OnlineClassNewWindowEvents } from './live-online-class/flexible-layout'
 import UpdateOnlineClassForm from './update-online-class-form'
 
-export default function OnlineClassesList() {
-    const [searchParam] = useSearchParams();
+export default function OnlineClassesList({ onlineClasses }: { onlineClasses: TOnlineClass[] }) {
     const navigate = useNavigate();
     const { payload } = useAuth();
     const client = useStreamVideoClient();
-
-    const { data, isLoading } = useGetOnlineClasses({
-        queryString: createQueryString({
-            page: searchParam.get('page'),
-            take: searchParam.get('take'),
-            search: searchParam.get('search'),
-            classRoomId: searchParam.get('classRoomId'),
-            sectionId: searchParam.get('sectionId'),
-            skipPagination: true,
-            status: searchParam.get('status'),
-        })
-    });
 
     const handleLeave = (event: CustomEvent<{ id: string }>) => {
         const id = event.detail.id;
@@ -79,12 +65,11 @@ export default function OnlineClassesList() {
         await call.endCall();
     }
 
-    if (isLoading) return <div>Loading...</div>;
 
     return (
         <section className='grid @7xl:grid-cols-4 @5xl:grid-cols-3 @2xl:grid-cols-2 gap-2'>
             {
-                data?.data?.map(oc => {
+                onlineClasses?.map(oc => {
                     return (
                         <Card className="w-full flex flex-col bg-secondary/10" key={oc.id}>
                             <CardHeader>
