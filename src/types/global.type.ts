@@ -65,14 +65,6 @@ export enum EPasskeyChallengeType {
     TwoFaVerify = 'twofa_verify'
 }
 
-export enum EDegreeLevel {
-    Basic_School = 'basic_school',
-    Plus_Two = 'plus_two',
-    Diploma = 'diploma',
-    Bachelor = 'bachelor',
-    Master = 'master'
-}
-
 export enum EClassType {
     PRIMARY = 'primary', // to denote the direct parent class
     SECTION = 'section',

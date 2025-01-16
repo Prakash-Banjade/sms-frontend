@@ -2,8 +2,6 @@ import AppForm from "@/components/forms/app-form";
 import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
-import { EDegreeLevel } from "@/types/global.type";
-import { EDegreeLevelMappings } from "@/utils/labelToValueMappings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -19,9 +17,7 @@ type Props = {
 
 const formSchema = z.object({
     name: z.string({ required_error: 'Name is required' }).min(1, { message: 'Name is required' }),
-    description: z.string().optional(),
-    duration: z.coerce.number().int({ message: 'Duration must be an integer' }).min(1, { message: 'Duration must be greater than 0' }),
-    degreeLevel: z.nativeEnum(EDegreeLevel, { message: 'Invalid degree level' }),
+    description: z.string().max(500, { message: 'Description is too long. Max 500 characters.' }).optional(),
 });
 
 type FormSchemaType = z.infer<typeof formSchema>
@@ -29,8 +25,6 @@ type FormSchemaType = z.infer<typeof formSchema>
 const defaultValues: Partial<z.infer<typeof formSchema>> = {
     name: '',
     description: '',
-    degreeLevel: EDegreeLevel.Plus_Two,
-    duration: undefined,
 }
 
 export default function FacultyForm(props: Props) {
@@ -66,26 +60,6 @@ export default function FacultyForm(props: Props) {
                         label="Name"
                         placeholder={`e.g. Science | BCA | BBA`}
                         description="Enter the name of the academic year."
-                        required
-                    />
-
-                    <AppForm.Select<FormSchemaType>
-                        name="degreeLevel"
-                        label="Degree Level"
-                        description="Select the degree level."
-                        options={
-                            Object.entries(EDegreeLevel)
-                                .filter(([_, value]) => value !== EDegreeLevel.Basic_School)
-                                .map(([_, value]) => ({ label: EDegreeLevelMappings[value], value }))
-                        }
-                        required
-                    />
-
-                    <AppForm.Number<FormSchemaType>
-                        name="duration"
-                        label="Duration (Month)"
-                        placeholder="e.g. 48"
-                        description="Enter the duration in month."
                         required
                     />
                 </section>

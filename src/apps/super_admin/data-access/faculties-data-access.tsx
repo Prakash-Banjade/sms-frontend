@@ -1,13 +1,12 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { EDegreeLevel, TMeta } from "@/types/global.type";
+import { TMeta } from "@/types/global.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export type TFaculty = {
     id: string;
     name: string;
-    degreeLevel: EDegreeLevel;
-    duration: number;
+    description: string | null;
 }
 
 export type TFacultiesResponse = {

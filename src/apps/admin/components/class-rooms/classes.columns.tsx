@@ -15,7 +15,6 @@ import ClassRoomForm from "./class-room.form"
 import ClassSectionForm from "./class-room-section.form"
 import { useNavigate } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
-import { EDegreeLevel } from "@/types/global.type"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -140,7 +139,6 @@ export const classesColumns: ColumnDef<TClass>[] = [
                             defaultValues={{
                                 ...row.original,
                                 classTeacherId: row.original.classTeacherId,
-                                degreeLevel: EDegreeLevel.Basic_School, // mock to pass the schema, not neede for backend
                                 facultyId: row.original.id, // mock to pass the schema, not neede for backend
                             }}
                             selectedClassTeacherOption={

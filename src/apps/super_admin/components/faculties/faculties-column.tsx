@@ -8,7 +8,6 @@ import { useState } from "react"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TFaculty } from "../../data-access/faculties-data-access"
 import { useNavigate } from "react-router-dom"
-import { EDegreeLevelMappings } from "@/utils/labelToValueMappings"
 
 export const facultiesColumns: ColumnDef<TFaculty>[] = [
     {
@@ -20,16 +19,11 @@ export const facultiesColumns: ColumnDef<TFaculty>[] = [
         accessorKey: "name",
     },
     {
-        header: "Degree Level",
-        accessorKey: "degreeLevel",
+        header: "Description",
+        accessorKey: "description",
         cell: ({ row }) => {
-            return <span>{EDegreeLevelMappings[row.original.degreeLevel]}</span>
+            return <p className="max-w-lg">{row.original.description || '-'}</p>
         }
-    },
-    {
-        header: "Duration",
-        accessorKey: "duration",
-        cell: ({ row }) => <span>{row.original.duration} months</span>
     },
     {
         id: "actions",

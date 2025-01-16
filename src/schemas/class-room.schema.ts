@@ -1,4 +1,4 @@
-import { EClassType, EDegreeLevel } from "@/types/global.type";
+import { EClassType } from "@/types/global.type";
 import { z } from "zod";
 
 export const classRoomFormSchema = z.object({
@@ -18,7 +18,6 @@ export const classRoomFormSchema = z.object({
             message: 'Invalid class teacher ID',
         })
         .nullish(),
-    degreeLevel: z.nativeEnum(EDegreeLevel, { message: 'Degree level is required' }),
     facultyId: z.string({ required_error: 'Faculty is required' }).uuid({ message: 'Invalid faculty ID' }),
 });
 
@@ -28,7 +27,6 @@ export const classRoomFormDefaultValues: Partial<classRoomFormSchemaType> = {
     description: "",
     monthlyFee: 0,
     admissionFee: 0,
-    degreeLevel: EDegreeLevel.Basic_School,
     facultyId: undefined,
 }
 
