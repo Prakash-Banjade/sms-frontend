@@ -7,7 +7,6 @@ export enum EOnlineClassStatus {
     Scheduled = 'scheduled',
     Live = 'live',
     Completed = 'completed',
-    Cancelled = 'cancelled'
 }
 
 export type TOnlineClass = {
@@ -17,7 +16,8 @@ export type TOnlineClass = {
     scheduleDate: string | null,
     teacherName: string,
     subjectName: string,
-    classRoomName: string
+    classRoomName: string,
+    description: string | null,
 }
 
 export type TOnlineClassesResponse = {

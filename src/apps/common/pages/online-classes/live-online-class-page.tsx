@@ -3,7 +3,7 @@ import { CallingState, DeviceSettings, StreamCall, StreamTheme, useCallStateHook
 import { useNavigate, useParams } from "react-router-dom"
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import useLoadCall from "@/hooks/useLoadCall";
-import { ONLINE_CLASS_CALL_TYPE } from "../../online-classes/live-online-class/create-live-class-form";
+import { ONLINE_CLASS_CALL_TYPE } from "../../online-classes/create-live-class-form/create-live-class-form";
 import { useAuth } from "@/contexts/auth-provider";
 import useStreamCall from "@/hooks/useStreamCall";
 import { ArrowLeft, CheckCircle, Clock, FileText, FileVideo2, Loader2, MessageCircle, VideoOff } from "lucide-react";

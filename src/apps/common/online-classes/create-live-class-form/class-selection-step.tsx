@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { TCreateLiveClassSchema } from "../live-online-class/create-live-class-form"
+import { TCreateLiveClassSchema } from "./create-live-class-form"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useGetAssignedClasses } from "@/apps/teacher/data-access/class-room-data-access";

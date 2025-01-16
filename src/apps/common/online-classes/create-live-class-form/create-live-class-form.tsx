@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { z } from "zod"
-import StepIndicator from "../create-live-class-form/step-indicator"
-import ClassSelectionStep from "../create-live-class-form/class-selection-step"
-import FinalDetailsStep from "../create-live-class-form/final-details-step"
+import StepIndicator from "./step-indicator"
+import ClassSelectionStep from "./class-selection-step"
+import FinalDetailsStep from "./final-details-step"
 import { startOfDayString } from "@/lib/utils"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
@@ -15,7 +15,6 @@ import AppForm from "@/components/forms/app-form"
 import toast from "react-hot-toast"
 import { useAuth } from "@/contexts/auth-provider"
 import { addDays, isBefore, isFuture, startOfDay } from "date-fns"
-import { useNavigate } from "react-router-dom"
 
 const steps = ["Class And Subject", "Final Details"]
 
@@ -54,7 +53,6 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
     const [currentStep, setCurrentStep] = useState(0);
     const client = useStreamVideoClient();
     const { payload } = useAuth();
-    const navigate = useNavigate();
 
     const form = useForm<TCreateLiveClassSchema>({
         resolver: zodResolver(createLiveClassSchema),
@@ -99,7 +97,16 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
                 });
 
                 if (data.startImmediately) {
-                    navigate(`live/${response.data.id}`);
+                    const newWindow = window.open(
+                        `${window.location.origin}/${payload?.role}/live-classes/live/${response.data.id}`,
+                        '_blank', // Open in a new tab or window
+                        'width=1000,height=1000' // Window features
+                    );
+
+                    // Ensure the new window exists before interacting with it
+                    if (newWindow && !newWindow.opener) {
+                        toast.error('Failed to open online class window. This might be due to some popup blocker in your browser.');
+                    }
                 }
 
             } catch (e) {

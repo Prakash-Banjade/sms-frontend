@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { TCreateLiveClassSchema } from "../live-online-class/create-live-class-form"
+import { TCreateLiveClassSchema } from "./create-live-class-form"
 import AppForm from "@/components/forms/app-form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { addDays, format } from "date-fns"
