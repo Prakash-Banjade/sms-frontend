@@ -2,14 +2,13 @@ import { DataTable } from "@/components/data-table/data-table"
 import { useSearchParams } from "react-router-dom"
 import { createQueryString } from "@/utils/create-query-string"
 import { sectionsColumns } from "../../components/class-rooms/sections.columns"
-import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
+import ClassRoomSearchFilterInputs, { FACULTY_SEARCH_KEY } from "@/components/search-components/class-room-search"
 import SearchInput from "@/components/search-components/search-input"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import { useGetClasses } from "../../components/class-rooms/actions"
 import { EClassType } from "@/types/global.type"
-type Props = {}
 
-export default function SectionsListPage({ }: Props) {
+export default function SectionsListPage() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetClasses({
@@ -19,6 +18,7 @@ export default function SectionsListPage({ }: Props) {
             take: searchParams.get('take'),
             parentClassId: searchParams.get("parentClassId"),
             classType: EClassType.SECTION,
+            facultyId: searchParams.get(FACULTY_SEARCH_KEY),
         }),
     });
 
@@ -44,7 +44,7 @@ function SectionsListFilters() {
     return (
         <section className="flex flex-wrap lg:gap-5 gap-3 w-full">
             <SearchInput placeholder="Search..." label="Search by name" />
-            <ClassRoomSearchFilterInputs onlyClassRoom classRoomKey="parentClassId" />
+            <ClassRoomSearchFilterInputs onlyClassRoom classRoomKey="parentClassId" include="classRoom" />
         </section>
     )
 }

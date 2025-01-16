@@ -9,7 +9,7 @@ import SearchInput from "@/components/search-components/search-input"
 import { createQueryString } from "@/utils/create-query-string"
 import { FacetedFilter } from "@/components/data-table/faceted-filter"
 import { ESubjectType } from "@/types/global.type"
-import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
+import ClassRoomSearchFilterInputs, { CLASS_ROOM_SEARCH_KEY, FACULTY_SEARCH_KEY } from "@/components/search-components/class-room-search"
 
 export default function SubjectsListPage() {
     const [searchParams] = useSearchParams();
@@ -23,7 +23,8 @@ export default function SubjectsListPage() {
             types: searchParams.get("types"),
             sortBy: searchParams.get("sortBy"),
             order: searchParams.get("order"),
-            classRoomId: searchParams.get('classRoomId'),
+            [CLASS_ROOM_SEARCH_KEY]: searchParams.get(CLASS_ROOM_SEARCH_KEY),
+            [FACULTY_SEARCH_KEY]: searchParams.get(FACULTY_SEARCH_KEY),
         })
     });
 
