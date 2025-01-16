@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function SudoAccessConfirmLoading() {
     return (
-        <div className="absolute inset-0 -top-[20%] flex items-center justify-center">
+        <div className="h-screen max-h-[1000px] flex items-center justify-center">
             <div className="w-full max-w-md space-y-6 p-4">
                 {/* Title Skeleton */}
                 <div className="flex justify-center">

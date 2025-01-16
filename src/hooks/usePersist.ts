@@ -8,7 +8,7 @@ const usePersist = () => {
     }, [persist])
 
     return {
-        persist,
+        persist: persist || !!window.opener, // needs to persist if new window is opened by the current one, (used in stream video call)
         setPersist
     }
 }

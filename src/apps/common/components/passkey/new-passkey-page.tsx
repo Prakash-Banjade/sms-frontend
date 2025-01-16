@@ -63,7 +63,7 @@ export default function NewPassKeyPage() {
     }
 
     return (
-        <div className="absolute inset-0 -top-[20%] flex items-center justify-center">
+        <div className="h-screen max-h-[1000px] flex items-center justify-center">
             <div className="w-full max-w-md space-y-6 p-4">
                 <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground mx-auto">
                     <School className="size-8" />

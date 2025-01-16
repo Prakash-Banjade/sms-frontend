@@ -1,0 +1,3 @@
+.str-video__participant-list-header__close-button {
+    @apply hidden;
+}

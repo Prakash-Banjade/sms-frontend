@@ -137,7 +137,7 @@ export function DynamicCombobox<T extends FieldValues>({
                                             <CommandItem
                                                 onSelect={() => {
                                                     setSelectedValues([])
-                                                    onChange('')
+                                                    onChange(multiple ? [] : '');
                                                     setSearch('')
                                                     setOpen(false)
                                                 }}

@@ -15,7 +15,7 @@ const getPastStudentsSchema = z.object({
     academicYearId: z.string().uuid({ message: "Select academic year" }),
     classRoomId: z.string().uuid({ message: "Select class" }).optional(),
     sectionId: z.string().optional(),
-    studentId: z.string().optional(),
+    search: z.string().optional(),
 })
 
 type TGetPastStudentsSchema = z.infer<typeof getPastStudentsSchema>
@@ -27,7 +27,7 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
             academicYearId: undefined,
             classRoomId: undefined,
             sectionId: '',
-            studentId: '',
+            search: '',
         },
     })
 
@@ -35,7 +35,7 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
         setSearchQuery(createQueryString({
             classRoomId: values.classRoomId,
             sectionId: values.sectionId,
-            studentId: values.studentId,
+            search: values.search,
             academicYearId: values.academicYearId,
             skipPagination: 'true',
         }))
@@ -45,9 +45,9 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
         <AppForm schema={getPastStudentsSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
                 <AppForm.Text<TGetPastStudentsSchema>
-                    name="studentId"
-                    label="Student ID"
-                    placeholder="eg. 123456"
+                    name="search"
+                    label="Student Name or ID"
+                    placeholder="eg. Search by name or ID"
                     min={1}
                 />
 
