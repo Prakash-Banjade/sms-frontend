@@ -116,9 +116,10 @@ export default function ClassRoutineForm(props: Props) {
                         description="Select the teacher. Can be assigned later."
                         fetchOptions={{
                             endpoint: QueryKey.TEACHERS + '/' + QueryKey.OPTIONS,
-                            queryKey: form.watch('subjectId') ? [QueryKey.TEACHERS, form.watch('subjectId') ?? ''] : [QueryKey.TEACHERS],
+                            queryKey: [QueryKey.TEACHERS, form.watch('subjectId') ?? '', form.watch('facultyId') ?? ''],
                             queryString: createQueryString({
                                 assignedSubjectId: form.watch('subjectId'),
+                                facultyId: form.watch('facultyId'),
                             }),
                             options: {
                                 enabled: !!form.watch('subjectId'),

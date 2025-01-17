@@ -29,6 +29,8 @@ export const teacherSchema = z.object({
         title: z.string({ required_error: 'Title is required' }).min(1, { message: 'Title is required' })
     })).optional(),
 
+    facultyIds: z.array(z.string({ required_error: 'Faculty is required' }).uuid({ message: 'Invalid faculty ID' })).optional(),
+
     profileImageId: z.string().nullish(),
 
     qualification: z.string().min(1, { message: 'Qualification is required' }),
@@ -62,6 +64,7 @@ export const teacherFormDefaultValues: Partial<teacherSchemaType> = {
     dob: '',
     basicSalary: undefined,
     allowances: [],
+    facultyIds: [],
     profileImageId: undefined,
     qualification: '',
     shortDescription: '',

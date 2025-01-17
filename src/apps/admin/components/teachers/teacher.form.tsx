@@ -10,9 +10,11 @@ import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/uti
 import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
+import { SelectOption } from "@/types/global.type";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
+    selectedDepartments?: SelectOption[];
 }
 
 export default function TeacherForm(props: Props) {
@@ -59,7 +61,7 @@ export default function TeacherForm(props: Props) {
             form.setError(errObj.field, { message: errObj?.message });
             form.setFocus(errObj.field);
         }
-    }, [error])
+    }, [error]);
 
     return (
         <AppForm schema={teacherSchema} form={form}>
@@ -159,6 +161,18 @@ export default function TeacherForm(props: Props) {
                             placeholder="eg. B.Tech"
                             description="Qualification of the teacher"
                             required
+                        />
+
+                        <AppForm.DynamicCombobox<teacherSchemaType>
+                            name="facultyIds"
+                            label="Departments"
+                            placeholder="Select departments"
+                            queryKey={QueryKey.FACULTIES}
+                            queryString="keyValue=true"
+                            multiple
+                            emptyPlaceholder="No departments found"
+                            defaultSelected={props.selectedDepartments ?? []}
+                            description="Departments where the teacher belongs to"
                         />
 
                         <AppForm.DatePicker<teacherSchemaType>

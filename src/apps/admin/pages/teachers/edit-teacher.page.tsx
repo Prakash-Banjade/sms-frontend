@@ -2,12 +2,9 @@ import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import TeacherForm from "../../components/teachers/teacher.form"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetTeacher } from "../../components/teachers/actions"
-import { teacherSchema } from "../../schemas/teacher.schema"
 import { useAuth } from "@/contexts/auth-provider"
 
-type Props = {}
-
-export default function EditTeacherPage({ }: Props) {
+export default function EditTeacherPage() {
     const params = useParams();
 
     return (
@@ -33,14 +30,13 @@ function TeacherEditForm({ id }: { id: string }) {
 
     if (!data) navigate(`/${payload?.role}/teachers`)
 
-    const { data: filteredValues } = teacherSchema.safeParse(data);
-
     return (
         <TeacherForm
             defaultValues={{
-                ...filteredValues,
+                ...data,
                 profileImageId: data?.profileImage?.url ?? null,
             }}
+            selectedDepartments={data?.faculties.map(faculty => ({ value: faculty.id, label: faculty.name })) ?? []}
         />
     )
 }

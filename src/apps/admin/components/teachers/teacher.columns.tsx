@@ -15,6 +15,7 @@ import { formatDate } from "@/utils/format-date"
 import { calculateExactAge } from "@/utils/calculate-age"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 export const teachersColumns: ColumnDef<Teacher>[] = [
     {
@@ -83,6 +84,25 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
             return <span>
                 {formatDate({ date: new Date(row.original.joinedDate) })}
             </span>
+        }
+    },
+    {
+        header: "Department",
+        accessorKey: "faculties",
+        cell: ({ row }) => {
+            const faculties = row.original.faculties;
+
+            if (faculties.length === 0) return <p className="text-center text-muted-foreground">N/A</p>;
+
+            return (
+                <ul>
+                    {faculties.map((faculty) => (
+                        <li key={faculty.id}>
+                            <Badge className="capitalize whitespace-nowrap" variant={'outline'}>{faculty.name}</Badge>
+                        </li>
+                    ))}
+                </ul>
+            )
         }
     },
     {

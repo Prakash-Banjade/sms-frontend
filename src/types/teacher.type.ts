@@ -18,7 +18,11 @@ export type Teacher = {
     } | null,
     account: {
         id: string,
-    }
+    },
+    faculties: {
+        id: string,
+        name: string,
+    }[]
 }
 
 export type TeachersResponse = {
