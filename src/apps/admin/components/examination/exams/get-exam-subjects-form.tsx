@@ -1,5 +1,5 @@
 import AppForm from "@/components/forms/app-form";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { Button } from "@/components/ui/button";
 import { QueryKey } from "@/react-query/queryKeys";
 import { SelectOption } from "@/types/global.type";
@@ -63,7 +63,7 @@ export default function GetExamSubjectsForm({ defaultExamType, showClassAndSearc
                 {
                     (!searchParams.get('classRoomId') || showClassAndSearch) && (
                         <>
-                            <ClassSectionFormField noDescription noSection containerClassName='w-[200px]' required={false} />
+                            <ClassSelectionFormField noDescription />
 
                             <Button type="submit" className="self-end" disabled={!form.getValues('examTypeId') || !form.getValues('classRoomId')}>
                                 Search

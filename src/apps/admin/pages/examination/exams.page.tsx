@@ -7,6 +7,7 @@ import { examsColumns } from "../../components/examination/exams/exams.columns";
 import ExamsSearchFilters from "../../components/examination/exams/exams-search-filters";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { CLASS_ROOM_SEARCH_KEY, FACULTY_SEARCH_KEY } from "@/components/search-components/class-room-search";
 
 export default function ExamsPage() {
   const navigate = useNavigate();
@@ -36,8 +37,8 @@ function ExamsTable() {
       page: searchParams.get('page'),
       take: searchParams.get('take'),
       examTypes: searchParams.get('examTypes'),
-      classRoomId: searchParams.get('classRoomId'),
-      sectionId: searchParams.get('sectionId'),
+      [CLASS_ROOM_SEARCH_KEY]: searchParams.get(CLASS_ROOM_SEARCH_KEY),
+      [FACULTY_SEARCH_KEY]: searchParams.get(FACULTY_SEARCH_KEY),
     })
   })
 

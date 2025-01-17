@@ -81,7 +81,6 @@ export default function ClassRoutineForm(props: Props) {
                         value={form.watch('type') ?? ''}
                     />
 
-                    {/* <ClassSectionFormField options={classRooms ?? []} isLoading={isLoading} /> */}
                     <ClassSelectionFormField
                         include="section"
                         required={{

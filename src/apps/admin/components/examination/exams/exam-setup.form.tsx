@@ -17,6 +17,7 @@ import _ from 'lodash';
 import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-provider';
+import { addDays } from 'date-fns';
 
 type Props = {
     subjects: TSubject[];
@@ -86,7 +87,6 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
             id: examId,
             data: {
                 examSubjects: values.examSubjects.filter(subject => subject.isChecked),
-                ////classRoomId: sectionId ?? classRoomId,
                 classRoomId,
                 examTypeId,
             },
@@ -176,6 +176,7 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
                                                             required
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
                                                             min={new Date().toISOString().split("T")[0]}
+                                                            max={addDays(new Date(), 90).toISOString().split("T")[0]}
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -326,7 +327,6 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
                                                         <Input
                                                             type="text"
                                                             {...field}
-                                                            required
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
                                                         />
                                                     </FormControl>

@@ -3,6 +3,7 @@ import StudentLeaveRequestSearchFilters from "@/apps/admin/components/students-m
 import { leaveRequestsColumns } from "@/apps/admin/components/students-management/leave-requests/leave-request.columns"
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import { DataTable } from "@/components/data-table/data-table"
+import { CLASS_ROOM_SEARCH_KEY, FACULTY_SEARCH_KEY, SECTION_SEARCH_KEY } from "@/components/search-components/class-room-search"
 import { createQueryString } from "@/utils/create-query-string"
 import { useSearchParams } from "react-router-dom"
 
@@ -22,8 +23,9 @@ function LeaveRequestList() {
 
     const { data, isLoading } = useGetStudentsLeaveRequests({
         queryString: createQueryString({
-            classRoomId: searchParams.get('classRoomId'),
-            sectionId: searchParams.get('sectionId'),
+            [FACULTY_SEARCH_KEY]: searchParams.get(FACULTY_SEARCH_KEY),
+            [CLASS_ROOM_SEARCH_KEY]: searchParams.get(CLASS_ROOM_SEARCH_KEY),
+            [SECTION_SEARCH_KEY]: searchParams.get(SECTION_SEARCH_KEY),
             status: searchParams.get('status'),
         })
     });

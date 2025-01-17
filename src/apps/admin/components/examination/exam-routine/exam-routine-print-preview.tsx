@@ -22,7 +22,7 @@ export default function ExamRoutinePrint({ examSubjects }: Props) {
                 <header className="flex items-center justify-between gap-2 flex-col mb-10">
                     <h1 className="text-xl font-semibold tracking-tight">{examSubjects[0]?.examType} Examination Schedule</h1>
                     <p className="text-muted-foreground text-sm">
-                        {examSubjects[0]?.classRoomName}
+                        Class: {examSubjects[0]?.classRoomName}
                     </p>
                 </header>
 

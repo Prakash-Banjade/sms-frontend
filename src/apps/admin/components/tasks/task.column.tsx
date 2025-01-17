@@ -30,13 +30,17 @@ export const taskColumns: ColumnDef<Task>[] = [
             const classRooms = typeof task.classRooms === 'string' ? JSON.parse(task.classRooms) : task.classRooms
 
             return (
-                <span>
-                    {
-                        task.parentClassName
-                            ? task.parentClassName
-                            : classRooms?.[0]?.name
-                    }
-                </span>
+                <p className="whitespace-nowrap">
+                    <span>
+                        {
+                            task.parentClassName
+                                ? task.parentClassName
+                                : classRooms?.[0]?.name
+                        }
+                    </span>
+                    <br />
+                    <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
+                </p>
             )
         }
     },

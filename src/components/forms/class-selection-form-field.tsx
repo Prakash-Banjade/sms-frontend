@@ -16,11 +16,13 @@ type TRequiredFields = typeof FACULTY_ID | typeof CLASS_ROOM_ID | typeof SECTION
 type Props = {
     include?: 'classRoom' | 'section';
     required?: Partial<Record<TRequiredFields, boolean>>;
+    noDescription?: boolean;
 }
 
 export default function ClassSelectionFormField({
     include = 'classRoom',
-    required
+    required,
+    noDescription = false,
 }: Props) {
     const form = useFormContext();
 
@@ -86,7 +88,7 @@ export default function ClassSelectionFormField({
                             required={required?.facultyId}
                             disabled={!faculties?.length}
                         >
-                            <SelectTrigger className="">
+                            <SelectTrigger className="min-w-[200px]">
                                 <SelectValue placeholder="Select a faculty" />
                             </SelectTrigger>
                             <SelectContent>
@@ -102,7 +104,7 @@ export default function ClassSelectionFormField({
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <FormDescription>Select the faculty</FormDescription>
+                        {!noDescription && <FormDescription>Select the class faculty</FormDescription>}
                         <FormMessage />
                     </FormItem>
                 )}
@@ -130,7 +132,7 @@ export default function ClassSelectionFormField({
                             }
                             required={required?.classRoomId}
                         >
-                            <SelectTrigger className="">
+                            <SelectTrigger className="min-w-[200px]">
                                 <SelectValue placeholder="Select a class" />
                             </SelectTrigger>
                             <SelectContent>
@@ -153,7 +155,7 @@ export default function ClassSelectionFormField({
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <FormDescription>Select the class room</FormDescription>
+                        {!noDescription && <FormDescription>Select available class</FormDescription>}
                         <FormMessage />
                     </FormItem>
                 )}
@@ -179,7 +181,7 @@ export default function ClassSelectionFormField({
                                     }
                                     required={required?.sectionId}
                                 >
-                                    <SelectTrigger className="">
+                                    <SelectTrigger className="min-w-[200px]">
                                         <SelectValue placeholder="Select a section" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -197,7 +199,7 @@ export default function ClassSelectionFormField({
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
-                                <FormDescription>Select the class room</FormDescription>
+                                {!noDescription && <FormDescription>Select section if available</FormDescription>}
                                 <FormMessage />
                             </FormItem>
                         )}

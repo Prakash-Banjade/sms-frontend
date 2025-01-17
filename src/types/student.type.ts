@@ -28,6 +28,7 @@ export type TStudent = TStudent_BasicInfo & {
     routeStopId: string | null;
     routeStop: string | null;
     accountId: string;
+    faculty: string;
 }
 
 export type TStudentsResponse = {

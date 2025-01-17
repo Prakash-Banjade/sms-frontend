@@ -15,6 +15,7 @@ export type Task = {
     }[] | string,
     parentClassId: string | null,
     parentClassName: string | null,
+    faculty: string,
     submission: {
         status: ETaskSubmissionStatus
     }[]

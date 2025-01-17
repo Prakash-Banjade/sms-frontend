@@ -1,5 +1,5 @@
 import AppForm from "@/components/forms/app-form";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { Button } from "@/components/ui/button";
 import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,7 +48,7 @@ export default function GetstudentsForm({ setSearchQuery }: Props) {
                     min={1}
                 />
 
-                <ClassSectionFormField noDescription containerClassName='w-[200px]' required={false} />
+                <ClassSelectionFormField include="section" noDescription />
 
                 <Button type="submit" className="self-end" disabled={!Object.keys(form.formState.dirtyFields).length}>
                     Search

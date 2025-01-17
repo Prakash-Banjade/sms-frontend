@@ -65,9 +65,6 @@ export default function LessonPlanForm(props: Props) {
         }
     }
 
-    console.log(form.formState.errors)
-    console.log(form.watch())
-
     return (
         <AppForm schema={lessonPlanSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

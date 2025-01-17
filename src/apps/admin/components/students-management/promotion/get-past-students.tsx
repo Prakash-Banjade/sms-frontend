@@ -1,5 +1,5 @@
 import AppForm from "@/components/forms/app-form";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { Button } from "@/components/ui/button";
 import { QueryKey } from "@/react-query/queryKeys";
 import { createQueryString } from "@/utils/create-query-string";
@@ -65,7 +65,7 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
                     containerClassName="min-w-[200px]"
                 />
 
-                <ClassSectionFormField noDescription containerClassName='w-[200px]' required={false} />
+                <ClassSelectionFormField include="section" noDescription />
 
                 <Button type="submit" className="self-end" disabled={!form.watch('academicYearId')}>
                     Search

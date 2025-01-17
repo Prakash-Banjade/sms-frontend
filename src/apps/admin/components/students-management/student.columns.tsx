@@ -51,11 +51,15 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         cell: ({ row }) => {
             const student = row.original;
 
-            return <span>
-                {
-                    student.parentClass ? `${student.parentClass} - ${student.classRoom}` : `${student.classRoom}`
-                }
-            </span>
+            return <p className="whitespace-nowrap">
+                <span>
+                    {
+                        student.parentClass ? `${student.parentClass} - ${student.classRoom}` : `${student.classRoom}`
+                    }
+                </span>
+                <br />
+                <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
+            </p>
         }
     },
     {

@@ -23,6 +23,10 @@ export type TStudentLeaveRequest = {
                     id: string,
                     name: string
                 } | null;
+                faculty: {
+                    id: string,
+                    name: string
+                }
             }
         }
     }

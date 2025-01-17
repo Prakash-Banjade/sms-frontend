@@ -1,5 +1,5 @@
 import AppForm from "@/components/forms/app-form";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
@@ -46,7 +46,7 @@ export default function GetAttendancesForm({ setSearchQuery }: Props) {
     return (
         <AppForm schema={getAttendancesSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
-                <ClassSectionFormField noDescription containerClassName='w-[200px]' required={false} />
+                <ClassSelectionFormField include="section" noDescription />
 
                 <section className="space-y-2">
                     <Label className="text-sm font-normal">Date</Label>

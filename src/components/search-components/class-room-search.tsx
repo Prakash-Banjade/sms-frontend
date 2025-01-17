@@ -81,8 +81,10 @@ export default function ClassRoomSearchFilterInputs({
                 <Select
                     value={searchParams.get(FACULTY_SEARCH_KEY) ?? ''}
                     onValueChange={val => {
-                        setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : val)
-                        setSearchParams(classRoomKey, undefined)
+                        setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : val);
+                        setSearchParams(classRoomKey, undefined);
+                        setSearchParams(SECTION_SEARCH_KEY, undefined);
+                        setSelectedClassRoom(undefined);
 
                         const faculty = faculties?.find((faculty) => faculty.id === val);
                         setSelectedFaculty(faculty);

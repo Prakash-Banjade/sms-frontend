@@ -9,14 +9,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BloodGroupMappings, GenderMappings, ReligionMappings } from "@/utils/labelToValueMappings";
 import { createStudentSchema, studentFormDefaultValues, studentSchemaType } from "../../schemas/student.schema";
 import GuardiansFields from "./guardians-form-fields";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 import { IFileUploadResponse, SelectOption } from "@/types/global.type";
 import ImageUpload from "@/components/forms/image-upload";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
 
 type Props = {
     defaultValues?: undefined;
     documentAttachments?: undefined;
-    defaultRouteStopOption?: undefined; 
+    defaultRouteStopOption?: undefined;
 } | {
     defaultValues: Partial<studentSchemaType>;
     documentAttachments: IFileUploadResponse['files'];
@@ -35,8 +36,15 @@ export default function StudentForm(props: Props) {
     });
 
     const { mutateAsync } = useAppMutation<Partial<studentSchemaType>, any>();
+    const { hasSection } = useFacultySearch();
 
     async function onSubmit(values: studentSchemaType) {
+        if (hasSection(values.classRoomId) && !values.sectionId) {
+            form.setError("sectionId", { type: "required", message: "Section is required" });
+            form.setFocus("sectionId");
+            return;
+        }
+
         const method = !!params.id ? "patch" : "post";
 
         const response = await mutateAsync({
@@ -165,7 +173,7 @@ export default function StudentForm(props: Props) {
                     <legend className="px-2 text-sm">Academic Info</legend>
                     <section className="grid @7xl:grid-cols-4 @5xl:grid-cols-3 @3xl:grid-cols-2 grid-cols-1 gap-6">
                         {
-                            !params.id && <ClassSectionFormField />
+                            !params.id && <ClassSelectionFormField include="section" required={{ classRoomId: true, facultyId: true }} />
                         }
 
                         <AppForm.Number<studentSchemaType>

@@ -1,5 +1,5 @@
 import { MILITARY_TIME_REGEX } from "@/CONSTANTS";
-import { isFuture, isToday } from "date-fns";
+import { differenceInDays, isFuture, isToday } from "date-fns";
 import { z } from "zod";
 
 const examSubjectSchema = z.object({
@@ -8,7 +8,11 @@ const examSubjectSchema = z.object({
     examDate: z.union([
         z.literal("").optional(),
         z.string()
-            .refine((date) => (!isNaN(Date.parse(date)) && (isFuture(new Date(date)) || isToday(new Date(date)))),
+            .refine((date) => (
+                !isNaN(Date.parse(date))
+                && (isFuture(new Date(date)) || isToday(new Date(date)))
+                && differenceInDays(new Date(date), new Date()) <= 90
+            ),
                 { message: "Exam date must be in the future" })
     ]).optional(),
     startTime: z.union([
@@ -55,7 +59,7 @@ const examSubjectSchema = z.object({
         z.literal("").optional(),
         z.string({ required_error: "Subject is required" }).uuid({ message: "Invalid subject ID" })
     ]).optional(),
-}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.theoryFM && !!data.theoryPM && !!data.venue : true, {
+}).refine(data => data.isChecked ? !!data.subjectId && !!data.examDate && !!data.startTime && !!data.duration && !!data.theoryFM && !!data.theoryPM : true, {
     message: "All fields must be filled for checked subjects",
     path: ["isChecked"],
 }).refine(data => (data.theoryPM && data.theoryFM) ? data.theoryPM <= data.theoryFM : true, {

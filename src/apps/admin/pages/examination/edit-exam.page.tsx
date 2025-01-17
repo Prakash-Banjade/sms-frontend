@@ -29,7 +29,7 @@ export default function EditExamPage() {
             title={"Update Exam"}
             description={
                 <Badge variant="outline" className="text-sm">
-                    {data?.classRoom?.name}
+                    {data?.classRoom?.name} - {data?.classRoom?.faculty?.name}
                 </Badge>
             }
         >
