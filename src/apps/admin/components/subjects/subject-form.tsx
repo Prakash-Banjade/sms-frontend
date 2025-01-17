@@ -1,10 +1,12 @@
 import AppForm from "@/components/forms/app-form"
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
+import { FACULTY_SEARCH_KEY } from "@/components/search-components/class-room-search";
 import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { subjectFormDefaultValues, subjectFormSchema, subjectFormSchemaType, } from "@/schemas/subject.schema";
-import { TClassesResponse } from "@/types/class.type";
 import { ESubjectType, SelectOption } from "@/types/global.type";
+import { createQueryString } from "@/utils/create-query-string";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -59,6 +61,8 @@ export default function SubjectForm(props: Props) {
         form.reset();
         props.setIsOpen && props.setIsOpen(false);
     }
+
+    console.log(form.watch())
 
     return (
         <AppForm schema={subjectFormSchema} form={form}>
@@ -128,21 +132,7 @@ export default function SubjectForm(props: Props) {
                     />
 
                     {
-                        !id && (
-                            <AppForm.DynamicSelect<subjectFormSchemaType, TClassesResponse>
-                                name="classRoomId"
-                                label="Class room"
-                                placeholder="Select class room"
-                                description="Select class room the subject belongs to."
-                                fetchOptions={{
-                                    endpoint: QueryKey.CLASSES + '/' + QueryKey.OPTIONS,
-                                    queryKey: [QueryKey.CLASSES, QueryKey.OPTIONS],
-                                    queryString: 'page=1&take=50&onlyPrimaryClass=true',
-                                }}
-                                labelKey={'name'}
-                                required
-                            />
-                        )
+                        !id && <ClassSelectionFormField required={{ facultyId: true, classRoomId: true }} />
                     }
 
                     <AppForm.DynamicCombobox<subjectFormSchemaType>
@@ -153,6 +143,10 @@ export default function SubjectForm(props: Props) {
                         queryKey={QueryKey.TEACHERS}
                         multiple
                         defaultSelected={props.selectedTeachers}
+                        queryString={createQueryString({
+                            [FACULTY_SEARCH_KEY]: form.watch('facultyId'),
+                        })}
+                        options={{ enabled: !!form.watch('facultyId') }}
                     />
 
                 </section>

@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Label } from '../ui/label';
 import { useGetSubjectOptions } from '@/apps/admin/components/subjects/data-access';
 import { createQueryString } from '@/utils/create-query-string';
-import { useFacultySearch } from '@/hooks/useFacultySearch';
+import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
 import { TClassRoomOptions } from '@/types/class.type';
 
 export const FACULTY_SEARCH_KEY = "facultyId"
@@ -18,12 +18,6 @@ type Props = {
     include?: 'classRoom' | 'section';
 }
 
-type TFacultyOption = {
-    id: string;
-    name: string;
-    classRooms?: TClassRoomOptions
-}
-
 export default function ClassRoomSearchFilterInputs({
     onlyClassRoom = false,
     classRoomKey = CLASS_ROOM_SEARCH_KEY,
@@ -34,7 +28,7 @@ export default function ClassRoomSearchFilterInputs({
     const [selectedFaculty, setSelectedFaculty] = useState<TFacultyOption>();
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0]>();
 
-    const { data: faculties, isLoading } = useFacultySearch<TFacultyOption>(createQueryString({ include }));
+    const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include }));
 
     const { data: subjects, isLoading: isLoadingSubjects } = useGetSubjectOptions({
         queryString: createQueryString({

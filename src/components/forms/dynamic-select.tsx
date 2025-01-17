@@ -58,13 +58,16 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                             {label}
                             {(required && !isDisabled) && <span className="text-red-500">*</span>}
                         </FormLabel>
-                        {
-                            !required && !isDisabled && <span role="button" onClick={() => handleOnClear()} className="text-muted-foreground text-sm absolute right-0 mt-[2px]">
-                                Clear
-                            </span>
-                        }
                     </div>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={isDisabled || isLoading} {...props} required={(required && !isDisabled)}>
+                    <Select
+                        onValueChange={val => {
+                            val === "reset" ? handleOnClear() : field.onChange(val);
+                        }}
+                        value={field.value}
+                        disabled={isDisabled || isLoading}
+                        {...props}
+                        required={(required && !isDisabled)}
+                    >
                         <FormControl>
                             <SelectTrigger>
                                 {
@@ -73,6 +76,11 @@ export function DynamicSelect<T extends FieldValues, F = any>({
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                            {
+                                !required && (
+                                    <SelectItem value="reset" className="text-xs text-muted-foreground">{placeholder}</SelectItem>
+                                )
+                            }
                             {
                                 Array.isArray(data) ? ( // data can be array or object based on if pagination is applied from backend
                                     data?.map((option) => (

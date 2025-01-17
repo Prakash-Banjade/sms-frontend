@@ -11,6 +11,7 @@ import { useFetchData } from '@/hooks/useFetchData'
 import { SelectOption } from '@/types/global.type'
 import { QueryKey } from '@/react-query/queryKeys'
 import { createQueryString } from '@/utils/create-query-string';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 interface AppFormDynamicComboboxProps<T> extends TFormFieldProps<T> {
     emptyPlaceholder?: string;
@@ -21,7 +22,8 @@ interface AppFormDynamicComboboxProps<T> extends TFormFieldProps<T> {
     defaultSelected?: SelectOption | SelectOption[] | null;
     onChange?: (value: string) => void;
     queryString?: string;
-    multiple?: boolean
+    multiple?: boolean;
+    options?: Partial<UseQueryOptions<SelectOption[]>>;
 }
 
 export function DynamicCombobox<T extends FieldValues>({
@@ -38,6 +40,7 @@ export function DynamicCombobox<T extends FieldValues>({
     onChange: onChangeProp,
     queryString,
     multiple = false,
+    options: queryOptions
 }: AppFormDynamicComboboxProps<T>) {
     const { control } = useFormContext();
     const [selectedValues, setSelectedValues] = useState<SelectOption[] | null>(
@@ -59,6 +62,7 @@ export function DynamicCombobox<T extends FieldValues>({
         queryString: createQueryString({
             search: debouncedValue,
         }) + (!!queryString ? `&${queryString}` : ''),
+        options: queryOptions,
     });
 
     return (

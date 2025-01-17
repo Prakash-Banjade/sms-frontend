@@ -12,6 +12,7 @@ import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/types/class.type"
 import ClassSectionForm from "./class-room-section.form"
+import { calculateRatios } from "@/lib/utils"
 
 export const sectionsColumns: ColumnDef<TClass>[] = [
     {
@@ -21,6 +22,13 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
     {
         header: "Class name",
         accessorKey: "parentClassName",
+        cell: ({ row }) => {
+            return <p className="whitespace-nowrap">
+                <span>{row.original.parentClassName}</span>
+                <br />
+                <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
+            </p>
+        }
     },
     {
         header: "Section name",
@@ -29,52 +37,30 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
     {
         header: "Total students",
         accessorKey: "totalStudentsCount",
-    },
-    {
-        header: "Total boys",
-        accessorKey: "totalMaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = +row.original.totalStudentsCount === 0
-                ? 0
-                : (+row.original.totalMaleStudentsCount / +row.original.totalStudentsCount) * 100;
-            return !percentage ?
-                <span>{row.original.totalMaleStudentsCount}</span>
-                : <span>
-                    {row.original.totalMaleStudentsCount}{" "}
-                    <span className="text-muted-foreground text-sm">({Math.round(percentage)}%)</span>
-                </span>
-        }
-    },
-    {
-        header: "Total girls",
-        accessorKey: "totalFemalsStudentsCount",
-        cell: ({ row }) => {
-            const percentage = +row.original.totalStudentsCount === 0
-                ? 0
-                : (+row.original.totalFemaleStudentsCount / +row.original.totalStudentsCount) * 100;
-            return !percentage ?
-                <span>{row.original.totalFemaleStudentsCount}</span>
-                : <span>
-                    {row.original.totalFemaleStudentsCount}{" "}
-                    <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
-                </span>
-        }
-    },
-    {
-        header: "Total Others",
-        accessorKey: "totalOthersCount",
-        cell: ({ row }) => {
-            const othersCount = +row.original.totalStudentsCount - +row.original.totalMaleStudentsCount - +row.original.totalFemaleStudentsCount;
+            const section = row.original;
+            const ratio = calculateRatios(
+                +section.totalStudentsCount,
+                +section.totalMaleStudentsCount,
+                +section.totalFemaleStudentsCount,
+                (+section.totalStudentsCount - +section.totalMaleStudentsCount - +section.totalFemaleStudentsCount)
+            );
 
-            const percentage = +row.original.totalStudentsCount === 0
-                ? 0
-                : (othersCount / +row.original.totalStudentsCount) * 100;
-            return !percentage ?
-                <span>{othersCount}</span>
-                : <span>
-                    {othersCount}{" "}
-                    <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
-                </span>
+            return (
+                <div className="space-y-1">
+                    <div className="text-sm text-muted-foreground" title="Students Count">
+                        Males: {section.totalMaleStudentsCount} •
+                        Females: {section.totalFemaleStudentsCount} •
+                        Others: {+section.totalStudentsCount - +section.totalMaleStudentsCount - +section.totalFemaleStudentsCount}
+                    </div>
+                    <div className="font-medium">
+                        <span title="Total students count">Total: {section.totalStudentsCount}</span> &nbsp;
+                        <span className="font-normal text-muted-foreground" title="Ratio - Males : Females : Others">
+                            ({`${ratio[0]} : ${ratio[1]} : ${ratio[2]}`})
+                        </span>
+                    </div>
+                </div>
+            )
         }
     },
     {

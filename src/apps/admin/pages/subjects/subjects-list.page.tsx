@@ -28,8 +28,6 @@ export default function SubjectsListPage() {
         })
     });
 
-    if (isLoading) return <div>Loading...</div>;
-
     return (
         <ContainerLayout
             title="All Subjects"
@@ -39,12 +37,18 @@ export default function SubjectsListPage() {
                 Add Subject
             </Button>}
         >
-            <DataTable
-                columns={subjectsColumns}
-                data={data?.data ?? []}
-                meta={data?.meta}
-                filters={<SubjectsSearchFilters />}
-            />
+            {
+                !isLoading ? (
+                    <DataTable
+                        columns={subjectsColumns}
+                        data={data?.data ?? []}
+                        meta={data?.meta}
+                        filters={<SubjectsSearchFilters />}
+                    />
+                ) : (
+                    <div>Loading...</div>
+                )
+            }
 
         </ContainerLayout>
     )

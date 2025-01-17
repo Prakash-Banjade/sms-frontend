@@ -2,17 +2,12 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "../ui/label";
-import { useFacultySearch } from "@/hooks/useFacultySearch";
-
-type TFacultyOption = {
-    id: string;
-    name: string;
-}
+import { TFacultyOption, useFacultySearch } from "@/hooks/useFacultySearch";
 
 export default function FacultySearchFilters() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
-    const { data } = useFacultySearch<TFacultyOption>();
+    const { data } = useFacultySearch();
     const [facultiesOptions, setFacultiesOptions] = useState<TFacultyOption[]>([]);
 
     useEffect(() => {

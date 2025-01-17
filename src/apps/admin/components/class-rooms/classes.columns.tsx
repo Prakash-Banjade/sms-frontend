@@ -1,11 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {
-    DropdownMenu,
-    DropdownMenuButtonItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
@@ -15,6 +9,7 @@ import ClassRoomForm from "./class-room.form"
 import ClassSectionForm from "./class-room-section.form"
 import { useNavigate } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
+import { calculateRatios } from "@/lib/utils"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -24,56 +19,41 @@ export const classesColumns: ColumnDef<TClass>[] = [
     {
         header: "Class name",
         accessorKey: "name",
+        cell: ({ row }) => {
+            return <p className="whitespace-nowrap">
+                <span>{row.original.name}</span>
+                <br />
+                <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
+            </p>
+        }
     },
     {
         header: "Total students",
         accessorKey: "totalStudentsCount",
-    },
-    {
-        header: "Total boys",
-        accessorKey: "totalMaleStudentsCount",
         cell: ({ row }) => {
-            const percentage = +row.original.totalStudentsCount === 0
-                ? 0
-                : (+row.original.totalMaleStudentsCount / +row.original.totalStudentsCount) * 100;
-            return !percentage ?
-                <span>{row.original.totalMaleStudentsCount}</span>
-                : <span>
-                    {row.original.totalMaleStudentsCount}{" "}
-                    <span className="text-muted-foreground text-sm">({Math.round(percentage)}%)</span>
-                </span>
-        }
-    },
-    {
-        header: "Total girls",
-        accessorKey: "totalFemaleStudentsCount",
-        cell: ({ row }) => {
-            const percentage = +row.original.totalStudentsCount === 0
-                ? 0
-                : (+row.original.totalFemaleStudentsCount / +row.original.totalStudentsCount) * 100;
-            return !percentage ?
-                <span>{row.original.totalFemaleStudentsCount}</span>
-                : <span>
-                    {row.original.totalFemaleStudentsCount}{" "}
-                    <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
-                </span>
-        }
-    },
-    {
-        header: "Total Others",
-        accessorKey: "totalOthersCount",
-        cell: ({ row }) => {
-            const othersCount = +row.original.totalStudentsCount - +row.original.totalMaleStudentsCount - +row.original.totalFemaleStudentsCount;
+            const classRoom = row.original;
+            const ratio = calculateRatios(
+                +classRoom.totalStudentsCount,
+                +classRoom.totalMaleStudentsCount,
+                +classRoom.totalFemaleStudentsCount,
+                (+classRoom.totalStudentsCount - +classRoom.totalMaleStudentsCount - +classRoom.totalFemaleStudentsCount)
+            );
 
-            const percentage = +row.original.totalStudentsCount === 0
-                ? 0
-                : (othersCount / +row.original.totalStudentsCount) * 100;
-            return !percentage ?
-                <span>{othersCount}</span>
-                : <span>
-                    {othersCount}{" "}
-                    <span className="text-muted-foreground text-xs">({Math.round(percentage)}%)</span>
-                </span>
+            return (
+                <div className="space-y-1 whitespace-nowrap">
+                    <div className="text-sm text-muted-foreground" title="Students Count">
+                        Males: {classRoom.totalMaleStudentsCount} •
+                        Females: {classRoom.totalFemaleStudentsCount} •
+                        Others: {+classRoom.totalStudentsCount - +classRoom.totalMaleStudentsCount - +classRoom.totalFemaleStudentsCount}
+                    </div>
+                    <div className="font-medium">
+                        <span title="Total students count">Total: {classRoom.totalStudentsCount}</span> &nbsp;
+                        <span className="font-normal text-muted-foreground" title="Ratio - Males : Females : Others">
+                            ({`${ratio[0]} : ${ratio[1]} : ${ratio[2]}`})
+                        </span>
+                    </div>
+                </div>
+            )
         }
     },
     {
@@ -86,7 +66,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
 
             const teachersArray = Array.isArray(teachersArrayParsed)
                 ? teachersArrayParsed?.map((teacher) => (
-                    <span key={teacher.className}>{teacher.teacherName} <Badge variant={"outline"}>{teacher.className}</Badge></span>
+                    <span key={teacher.className}>{teacher.teacherName} <Badge variant={"outline"} className="whitespace-nowrap" title="Section">{teacher.className}</Badge></span>
                 )) : [];
 
             return <ul className="flex flex-col gap-1">
@@ -103,10 +83,6 @@ export const classesColumns: ColumnDef<TClass>[] = [
                 }
             </ul>
         },
-    },
-    {
-        header: "Faculty",
-        accessorKey: "faculty",
     },
     {
         header: "Location",

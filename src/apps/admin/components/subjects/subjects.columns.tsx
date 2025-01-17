@@ -46,10 +46,11 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         header: "Class",
         accessorKey: "classRoom.name",
         cell: ({ row }) => {
-            const classroomName = row.original.classRoom?.name;
-            return !!row.original?.classRoom
-                ? <span>{classroomName}</span>
-                : <span className="text-muted-foreground">**Not Assigned**</span>
+            return <p className="whitespace-nowrap">
+                <span>{row.original.classRoom?.name}</span>
+                <br />
+                <span className="text-muted-foreground text-xs">({row.original.classRoom?.faculty?.name})</span>
+            </p>
         }
     },
     {
@@ -68,7 +69,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
                         </Badge>
                     </li>
                 ))}
-            </ul> : <span className="text-muted-foreground">**Not Assigned**</span>
+            </ul> : <p className="text-muted-foreground text-center">N/A</p>
         }
     },
     {

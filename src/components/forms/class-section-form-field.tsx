@@ -1,34 +1,14 @@
 import { useFormContext } from "react-hook-form";
 import { useGetClassRoomsOptions } from "@/apps/admin/components/class-rooms/actions";
 import { useEffect, useState } from "react";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TClassRoomOptions } from "@/types/class.type";
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { cn } from "@/lib/utils";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-} from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown, X } from "lucide-react";
-
 
 type Props = ({
     options?: undefined;
@@ -44,14 +24,20 @@ type Props = ({
     required?: boolean;
 }
 
-export function ClassSectionFormField({ noDescription = false, containerClassName = '', multipleSections = false, options, required = true, noSection = false }: Props) {
+export function ClassSectionFormField({
+    noDescription = false,
+    containerClassName = '',
+    multipleSections = false,
+    options,
+    required = true,
+    noSection = false
+}: Props) {
     const form = useFormContext();
 
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0] | undefined>(); // use to render the section option based on the selected class room
     const [classRoomId, setClassRoomId] = useState<string | undefined>(form.getValues("classRoomId") || ''); // use to store the selected class room id
     const [sectionId, setSectionId] = useState<string | undefined>(form.getValues("sectionId") || ''); // use to store the selected section id
     const [sectionIds, setSectionIds] = useState<string[]>(form.getValues("sectionIds") || []); // use to store the selected section ids
-
 
     const { data, isLoading } = useGetClassRoomsOptions({
         queryString: 'page=1&take=50',

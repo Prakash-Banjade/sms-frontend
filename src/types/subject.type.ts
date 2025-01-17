@@ -14,7 +14,11 @@ export type TSubject = {
     classRoom: {
         id: string,
         name: string,
-    } | null;
+        faculty: {
+            id: string,
+            name: string
+        }
+    };
     teachers: {
         id: string,
         firstName: string,

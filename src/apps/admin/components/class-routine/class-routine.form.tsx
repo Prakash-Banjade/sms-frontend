@@ -8,8 +8,8 @@ import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType }
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
 import { ERoutineType, SelectOption } from "@/types/global.type";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
-import { useGetClassRoomsOptions } from "../class-rooms/actions";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
 
 type Props = ({
     setIsOpen?: undefined;
@@ -30,16 +30,12 @@ export default function ClassRoutineForm(props: Props) {
         defaultValues: props?.defaultValues ?? classRoutineDefaultValues,
     });
 
-    const { data: classRooms, isLoading } = useGetClassRoomsOptions({
-        queryString: 'page=1&take=50'
-    });
+    const { hasSection } = useFacultySearch(createQueryString({ include: "section" }));
 
     const { mutateAsync } = useAppMutation<Partial<classRoutineSchemaType>, any>();
 
     async function onSubmit(values: classRoutineSchemaType) {
-        const selectedClassRoom = classRooms?.find((classRoom) => classRoom.id === values.classRoomId);
-
-        if (selectedClassRoom?.children?.length && !values.sectionId) {
+        if (hasSection(values.classRoomId) && !values.sectionId) {
             form.setError("sectionId", { type: "required", message: "Section is required" });
             form.setFocus("sectionId");
             return;
@@ -48,12 +44,6 @@ export default function ClassRoutineForm(props: Props) {
         if (values.type === ERoutineType.CLASS && !values.subjectId) {
             form.setError("subjectId", { type: "required", message: "Subject is required" });
             form.setFocus("subjectId");
-            return;
-        }
-
-        if (values.type === ERoutineType.CLASS && !values.teacherId) {
-            form.setError("teacherId", { type: "required", message: "Teacher is required" });
-            form.setFocus("teacherId");
             return;
         }
 
@@ -91,7 +81,14 @@ export default function ClassRoutineForm(props: Props) {
                         value={form.watch('type') ?? ''}
                     />
 
-                    <ClassSectionFormField options={classRooms ?? []} isLoading={isLoading} />
+                    {/* <ClassSectionFormField options={classRooms ?? []} isLoading={isLoading} /> */}
+                    <ClassSelectionFormField
+                        include="section"
+                        required={{
+                            facultyId: true,
+                            classRoomId: true,
+                        }}
+                    />
 
                     <AppForm.DynamicSelect<classRoutineSchemaType>
                         name="subjectId"
@@ -117,7 +114,7 @@ export default function ClassRoutineForm(props: Props) {
                         name="teacherId"
                         label="Teacher"
                         placeholder="Select teacher"
-                        description="Select the teacher"
+                        description="Select the teacher. Can be assigned later."
                         fetchOptions={{
                             endpoint: QueryKey.TEACHERS + '/' + QueryKey.OPTIONS,
                             queryKey: form.watch('subjectId') ? [QueryKey.TEACHERS, form.watch('subjectId') ?? ''] : [QueryKey.TEACHERS],

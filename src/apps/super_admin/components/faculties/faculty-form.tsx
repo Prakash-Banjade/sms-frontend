@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod"
@@ -30,6 +31,7 @@ const defaultValues: Partial<z.infer<typeof formSchema>> = {
 export default function FacultyForm(props: Props) {
     const navigate = useNavigate();
     const { payload } = useAuth();
+    const queryClient = useQueryClient();
 
     const form = useForm<FormSchemaType>({
         resolver: zodResolver(formSchema),
@@ -48,6 +50,9 @@ export default function FacultyForm(props: Props) {
         });
 
         form.reset();
+        queryClient.invalidateQueries({
+            queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS],
+        })
         navigate(`/${payload?.role}/faculties`);
     }
 

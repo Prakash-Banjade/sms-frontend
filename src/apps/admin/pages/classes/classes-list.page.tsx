@@ -15,24 +15,26 @@ export default function ClassesListPage() {
             page: searchParams.get('page'),
             take: searchParams.get('take'),
             facultyId: searchParams.get('facultyId'),
-            degreeLevel: searchParams.get('degreeLevel'),
         })
     });
-
-    if (isLoading) return <div>Loading...</div>;
 
     return (
         <ContainerLayout
             title="All Classes"
             description="View all classes in your school management system."
         >
-            <DataTable
-                columns={classesColumns}
-                data={data?.data ?? []}
-                meta={data?.meta}
-                filters={<ClassesSearchFilters />}
-            />
-
+            {
+                !isLoading ? (
+                    <DataTable
+                        columns={classesColumns}
+                        data={data?.data ?? []}
+                        meta={data?.meta}
+                        filters={<ClassesSearchFilters />}
+                    />
+                ) : (
+                    <div>Loading...</div>
+                )
+            }
         </ContainerLayout>
     )
 }

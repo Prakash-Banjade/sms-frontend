@@ -12,6 +12,7 @@ export const subjectFormSchema = z.object({
     practicalFM: z.coerce.number().int({ message: 'Practical full marks must be an integer' }).refine(val => val >= 0),
     classRoomId: z.string({ required_error: 'Class room is required' }).uuid({ message: 'Class room ID must be a valid UUID' }),
     teacherIds: z.array(z.string().uuid()).optional(),
+    facultyId: z.string({ required_error: 'Faculty is required' }).uuid({ message: 'Invalid faculty ID' }),
 });
 
 export type subjectFormSchemaType = z.infer<typeof subjectFormSchema>;

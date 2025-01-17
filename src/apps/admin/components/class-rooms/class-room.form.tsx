@@ -6,8 +6,9 @@ import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaTyp
 import { EClassType, SelectOption } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 type Props = ({
     setIsOpen?: undefined;
@@ -21,14 +22,19 @@ type Props = ({
 
 export default function ClassRoomForm(props: Props) {
     const params = useParams();
+    const location = useLocation();
     const id = (!!props.setIsOpen && props.classRoomId) ? props.classRoomId : params.id;
+    const queryClient = useQueryClient();
 
     const navigate = useNavigate();
     const { payload } = useAuth();
 
     const form = useForm<classRoomFormSchemaType>({
         resolver: zodResolver(id ? classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, facultyId: true }) : classRoomFormSchema),
-        defaultValues: props?.defaultValues ?? classRoomFormDefaultValues,
+        defaultValues: props?.defaultValues ?? {
+            ...classRoomFormDefaultValues,
+            facultyId: location.state?.facultyId ?? classRoomFormDefaultValues.facultyId,
+        },
     })
 
     const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType>, any>();
@@ -49,6 +55,9 @@ export default function ClassRoomForm(props: Props) {
         });
 
         if (response?.data?.message) {
+            queryClient.invalidateQueries({
+                queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS],
+            })
             onDialogClose();
             navigate(`/${payload?.role}/classes`);
         }
