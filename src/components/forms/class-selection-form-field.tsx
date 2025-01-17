@@ -5,6 +5,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
 import { TClassRoomOptions } from '@/types/class.type';
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { MultiSectionSelect } from './multi-sections-select';
 
 const FACULTY_ID = 'facultyId';
 const CLASS_ROOM_ID = 'classRoomId';
@@ -17,12 +18,14 @@ type Props = {
     include?: 'classRoom' | 'section';
     required?: Partial<Record<TRequiredFields, boolean>>;
     noDescription?: boolean;
+    multiSection?: boolean;
 }
 
 export default function ClassSelectionFormField({
     include = 'classRoom',
     required,
     noDescription = false,
+    multiSection = false
 }: Props) {
     const form = useFormContext();
 
@@ -162,7 +165,7 @@ export default function ClassSelectionFormField({
             />
 
             {
-                include === 'section' && (
+                include === 'section' && !multiSection && (
                     <FormField
                         control={form.control}
                         name={SECTION_ID}
@@ -203,6 +206,23 @@ export default function ClassSelectionFormField({
                                 <FormMessage />
                             </FormItem>
                         )}
+                    />
+                )
+            }
+
+            {
+                include === 'section' && multiSection && (
+                    <MultiSectionSelect
+                        options={selectedClassRoom?.children ?? []}
+                        values={form.watch('sectionIds') ?? []}
+                        setValues={val => form.setValue('sectionIds', val)}
+                        description='Select sections if available'
+                        required={required?.sectionIds}
+                        disabled={
+                            !selectedClassRoom?.children?.length
+                            || isLoading
+                            || !form.watch('classRoomId')
+                        }
                     />
                 )
             }

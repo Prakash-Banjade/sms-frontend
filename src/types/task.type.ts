@@ -50,7 +50,11 @@ export type TSingleTask = {
         parent: {
             id: string,
             name: string,
-        } | null
+        } | null,
+        faculty: {
+            id: string,
+            name: string,
+        },
     }[],
     submissions: {
         status: ETaskSubmissionStatus,

@@ -41,6 +41,7 @@ function TaskEditForm({ type, id }: { id: string, type: ETask }) {
                 marks: data.marks ?? 0,
                 subjectId: data.subject.id,
                 taskType: type,
+                facultyId: data.classRooms[0]?.faculty?.id,
                 classRoomId: data.classRooms[0].parent?.id
                     ? data.classRooms[0].parent?.id
                     : data.classRooms[0].id,
