@@ -10,6 +10,7 @@ import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../sche
 import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
+import { format, subYears } from "date-fns";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;
@@ -109,7 +110,8 @@ export default function StaffForm(props: Props) {
                                 placeholder="Select date of birth"
                                 description="Date of birth of the staff"
                                 required
-                                max={new Date().toISOString().split('T')[0]}
+                                min={format(subYears(new Date(), 80), "yyyy-MM-dd")}
+                                max={format(subYears(new Date(), 18), "yyyy-MM-dd")}
                             />
 
                             <AppForm.Select<staffSchemaType>

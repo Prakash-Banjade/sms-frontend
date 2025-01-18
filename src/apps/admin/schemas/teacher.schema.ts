@@ -1,5 +1,6 @@
 import { NAME_REGEX, NAME_WITH_SPACE_REGEX, PHONE_NUMBER_REGEX } from "@/CONSTANTS";
 import { EBloodGroup, EMaritalStatus, Gender } from "@/types/global.type";
+import { subYears } from "date-fns";
 import { z } from "zod";
 
 export const teacherSchema = z.object({
@@ -20,7 +21,10 @@ export const teacherSchema = z.object({
 
     phone: z.string().regex(PHONE_NUMBER_REGEX, { message: "Invalid phone number" }),
 
-    dob: z.string().refine(val => !isNaN(Date.parse(val)), { message: 'Invalid date of birth' }),
+    dob: z.string()
+        .refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date of birth' })
+        .refine((val) => new Date(val) <= subYears(new Date(), 18), { message: 'Teacher must be at least 18 years old' })
+        .refine((val) => new Date(val) >= subYears(new Date(), 80), { message: 'Teacher must be less than 80 years old' }),
 
     basicSalary: z.coerce.number().min(0, { message: 'Wage is required' }).optional(),
 
@@ -61,7 +65,8 @@ export const teacherFormDefaultValues: Partial<teacherSchemaType> = {
     lastName: '',
     gender: undefined,
     email: '',
-    dob: '',
+    dob: new Date().toISOString(),
+    phone: '',
     basicSalary: undefined,
     allowances: [],
     facultyIds: [],

@@ -1,5 +1,6 @@
 import { EMAIL_REGEX, NAME_REGEX, NAME_WITH_SPACE_REGEX, PHONE_NUMBER_REGEX } from '@/CONSTANTS';
 import { EBloodGroup, EGuardianRelation, EReligion, Gender } from '@/types/global.type';
+import { subYears } from 'date-fns';
 import { z } from 'zod';
 
 const guardianSchema = z.object({
@@ -45,9 +46,10 @@ export const studentSchema = z.object({
     firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),
     lastName: z.string().min(1, { message: 'Last name is required' }).regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' }),
     gender: z.nativeEnum(Gender, { errorMap: () => ({ message: 'Invalid gender' }) }),
-    dob: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: 'Invalid date of birth',
-    }),
+    dob: z.string()
+        .refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date of birth' })
+        .refine((val) => new Date(val) <= subYears(new Date(), 2), { message: 'Student must be at least 2 years old' })
+        .refine((val) => new Date(val) >= subYears(new Date(), 80), { message: 'Student must be less than 80 years old' }),
     religion: z.nativeEnum(EReligion),
     caste: z.string().nullish(),
     profileImageId: z.string().nullish(),

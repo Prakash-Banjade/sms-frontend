@@ -13,6 +13,7 @@ import { IFileUploadResponse, SelectOption } from "@/types/global.type";
 import ImageUpload from "@/components/forms/image-upload";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
+import { subYears } from "date-fns";
 
 type Props = {
     defaultValues?: undefined;
@@ -106,7 +107,8 @@ export default function StudentForm(props: Props) {
                                 placeholder="Select date of birth"
                                 description="Date of birth of the student"
                                 required
-                                max={new Date().toISOString().split('T')[0]}
+                                min={subYears(new Date(), 80).toISOString().split('T')[0]}
+                                max={subYears(new Date(), 20).toISOString().split('T')[0]}
                             />
 
                             <AppForm.Select<studentSchemaType>
