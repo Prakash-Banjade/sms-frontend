@@ -47,6 +47,7 @@ export default function TeacherForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 profileImageId: values.profileImageId ?? null,
+                facultyIds: values.facultyIds,
             },
             invalidateTags: [QueryKey.TEACHERS],
         });
@@ -172,9 +173,10 @@ export default function TeacherForm(props: Props) {
                             queryKey={QueryKey.FACULTIES}
                             queryString="keyValue=true"
                             multiple
+                            required
                             emptyPlaceholder="No departments found"
                             defaultSelected={props.selectedDepartments ?? []}
-                            description="Departments where the teacher belongs to"
+                            description="Departments where the teacher belongs to. Select at least one department"
                         />
 
                         <AppForm.DatePicker<teacherSchemaType>

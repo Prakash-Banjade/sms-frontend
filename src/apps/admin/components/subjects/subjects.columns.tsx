@@ -116,6 +116,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
                                 ...row.original,
                                 classRoomId: row.original.classRoom?.id,
                                 teacherIds: row.original.teachers.map((t) => t.id),
+                                facultyId: row.original.classRoom?.faculty?.id
                             }}
                             selectedTeachers={row.original.teachers?.map(t => ({
                                 label: `${t.firstName} ${t.lastName}`,

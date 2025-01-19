@@ -6,7 +6,7 @@ export const staffSchema = teacherSchema.extend({
     type: z.nativeEnum(EStaff, {
         required_error: 'Staff type is required',
     }),
-});
+}).omit({ facultyIds: true });
 
 export type staffSchemaType = z.infer<typeof staffSchema>;
 

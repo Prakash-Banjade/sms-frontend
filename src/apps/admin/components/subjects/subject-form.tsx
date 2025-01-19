@@ -62,8 +62,6 @@ export default function SubjectForm(props: Props) {
         props.setIsOpen && props.setIsOpen(false);
     }
 
-    console.log(form.watch())
-
     return (
         <AppForm schema={subjectFormSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="@container space-y-8">

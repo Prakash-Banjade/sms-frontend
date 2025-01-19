@@ -33,7 +33,7 @@ export const teacherSchema = z.object({
         title: z.string({ required_error: 'Title is required' }).min(1, { message: 'Title is required' })
     })).optional(),
 
-    facultyIds: z.array(z.string({ required_error: 'Faculty is required' }).uuid({ message: 'Invalid faculty ID' })).optional(),
+    facultyIds: z.array(z.string({ required_error: 'Faculty is required' }).uuid({ message: 'Invalid faculty ID' })).min(1, { message: 'Select at least one department' }),
 
     profileImageId: z.string().nullish(),
 

@@ -35,6 +35,7 @@ function TeacherEditForm({ id }: { id: string }) {
             defaultValues={{
                 ...data,
                 profileImageId: data?.profileImage?.url ?? null,
+                facultyIds: data?.faculties.map(faculty => faculty.id) ?? []
             }}
             selectedDepartments={data?.faculties.map(faculty => ({ value: faculty.id, label: faculty.name })) ?? []}
         />
