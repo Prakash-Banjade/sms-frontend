@@ -11,7 +11,7 @@ export type TFacultyOption = {
 export const useFacultySearch = (queryString?: string) => {
     const { data, isLoading } = useFetchData<TFacultyOption[]>({
         endpoint: QueryKey.FACULTIES + '/' + QueryKey.OPTIONS,
-        queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS],
+        queryKey: queryString ? [QueryKey.FACULTIES, QueryKey.OPTIONS, queryString] : [QueryKey.FACULTIES, QueryKey.OPTIONS],
         queryString,
         options: {
             staleTime: Infinity,

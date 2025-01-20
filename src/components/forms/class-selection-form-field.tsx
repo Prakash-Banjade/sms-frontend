@@ -179,7 +179,7 @@ export default function ClassSelectionFormField({
                                         field.onChange(val === 'reset' ? "" : val)
                                     }}
                                     disabled={
-                                        !selectedFaculty?.classRooms?.length
+                                        !selectedClassRoom?.children?.length
                                         || isLoading
                                     }
                                     required={required?.sectionId}
