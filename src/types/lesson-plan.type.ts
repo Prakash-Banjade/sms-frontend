@@ -17,6 +17,7 @@ export type TLessonPlan = {
     parentClassName: string | null;
     createdByName: string;
     status: ELessonPlanStatus;
+    facultyName: string;
 }
 
 export type TLessonPlansResponse = {
@@ -51,6 +52,10 @@ export type TSingleLessonPlan = {
         parent: {
             id: string,
             name: string,
-        } | null
+        } | null,
+        faculty: {
+            id: string,
+            name: string,
+        }
     }[],
 }

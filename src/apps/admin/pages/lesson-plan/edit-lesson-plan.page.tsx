@@ -42,6 +42,7 @@ function LessonPlanEditForm({ id }: { id: string }) {
                 sectionIds: data.classRooms[0].parent?.id
                     ? data.classRooms?.map((classRoom) => classRoom.id)
                     : [],
+                facultyId: data.classRooms[0]?.faculty?.id
             }}
         />
     )

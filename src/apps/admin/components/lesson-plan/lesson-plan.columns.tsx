@@ -47,13 +47,17 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
                     : [];
 
             return (
-                <span className="whitespace-nowrap">
-                    {
-                        plan.parentClassName
-                            ? plan.parentClassName
-                            : classRooms?.[0]
-                    }
-                </span>
+                <p className="whitespace-nowrap">
+                    <span>
+                        {
+                            plan.parentClassName
+                                ? plan.parentClassName
+                                : classRooms?.[0]
+                        }
+                    </span>
+                    <br />
+                    <span className="text-muted-foreground text-xs">({row.original.facultyName})</span>
+                </p>
             )
         }
     },

@@ -67,7 +67,7 @@ export default function ClassRoomSearchFilterInputs({
         const sectionId = searchParams.get(SECTION_SEARCH_KEY);
 
         if (sectionId) {
-            const section = faculties?.find(f => f.classRooms?.find(c => c.id === sectionId))?.classRooms?.find(c => c.id === sectionId)?.children?.find(ch => ch.id === sectionId);
+            const section = faculties?.find(f => f.classRooms?.find(c => c.id === classRoomId))?.classRooms?.find(c => c.id === classRoomId)?.children?.find(ch => ch.id === sectionId);
             if (!section) {
                 setSearchParams(SECTION_SEARCH_KEY, undefined)
             }
