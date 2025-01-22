@@ -32,7 +32,7 @@ export default function ExamEvaluationPage() {
             title={`Exam Evaluation - ${exam?.examType.name}`}
             description={(
                 <Badge variant="outline" className="text-sm">
-                    {exam?.classRoom?.name}
+                    {exam?.classRoom?.name} - {exam?.classRoom?.faculty?.name}
                 </Badge>
             )}
         >

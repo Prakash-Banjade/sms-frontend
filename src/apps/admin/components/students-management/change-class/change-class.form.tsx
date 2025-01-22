@@ -1,11 +1,12 @@
 import AppForm from "@/components/forms/app-form"
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod"
-import { useGetClassRoomsOptions } from "../../class-rooms/actions";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
+import { createQueryString } from "@/utils/create-query-string";
 
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,20 +31,19 @@ const defaultValues: Partial<changeClassSchemaType> = {
 export type changeClassSchemaType = z.infer<typeof changeClassSchema>;
 
 export default function ChangeClassForm({ selectedStudentIds, setIsOpen }: Props) {
-    // fetching options outside to validate class room and sections
-    const { data, isLoading } = useGetClassRoomsOptions({ queryString: 'page=1&take=50' });
-
     const form = useForm<changeClassSchemaType>({
         resolver: zodResolver(changeClassSchema),
         defaultValues: defaultValues,
     })
 
     const { mutateAsync } = useAppMutation<changeClassSchemaType & { studentIds: string[] }, any>();
+    const { hasSection } = useFacultySearch(createQueryString({ include: "section" }));
 
     async function onSubmit(values: changeClassSchemaType) {
         // check if section is selected or not
-        if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionId) {
+        if (hasSection(values.classRoomId) && !values.sectionId) {
             form.setError("sectionId", { type: "required", message: "Section is required" });
+            form.setFocus("sectionId");
             return;
         }
 
@@ -66,7 +66,7 @@ export default function ChangeClassForm({ selectedStudentIds, setIsOpen }: Props
     return (
         <AppForm schema={changeClassSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ClassSectionFormField options={data ?? []} isLoading={isLoading} />
+                <ClassSelectionFormField include="section" required={{ facultyId: true, classRoomId: true }} />
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={() => setIsOpen(false)}>Cancel</AppForm.Cancel>

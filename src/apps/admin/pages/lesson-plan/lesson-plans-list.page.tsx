@@ -8,6 +8,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { lessonPlanColumns } from "../../components/lesson-plan/lesson-plan.columns";
 import LessonPlanSearchFilters from "../../components/lesson-plan/lesson-plan-filters";
 import { useNavigate } from "react-router-dom";
+import { CLASS_ROOM_SEARCH_KEY, FACULTY_SEARCH_KEY } from "@/components/search-components/class-room-search";
 
 export default function LessonPlansListPage() {
     const navigate = useNavigate();
@@ -34,8 +35,9 @@ function LessonPlansList() {
     const { data, isLoading } = useGetLessonPlans({
         queryString: createQueryString({
             search: searchParams.get("search"),
+            [FACULTY_SEARCH_KEY]: searchParams.get(FACULTY_SEARCH_KEY),
+            [CLASS_ROOM_SEARCH_KEY]: searchParams.get(CLASS_ROOM_SEARCH_KEY),
             subjectId: searchParams.get("subjectId"),
-            classRoomId: searchParams.get("classRoomId"),
             sectionId: searchParams.get("sectionId"),
             page: searchParams.get("page"),
             take: searchParams.get("take"),

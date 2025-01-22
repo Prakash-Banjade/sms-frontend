@@ -10,9 +10,12 @@ import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/uti
 import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
+import { SelectOption } from "@/types/global.type";
+import { format, subYears } from "date-fns";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
+    selectedDepartments?: SelectOption[];
 }
 
 export default function TeacherForm(props: Props) {
@@ -44,6 +47,7 @@ export default function TeacherForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 profileImageId: values.profileImageId ?? null,
+                facultyIds: values.facultyIds,
             },
             invalidateTags: [QueryKey.TEACHERS],
         });
@@ -59,7 +63,7 @@ export default function TeacherForm(props: Props) {
             form.setError(errObj.field, { message: errObj?.message });
             form.setFocus(errObj.field);
         }
-    }, [error])
+    }, [error]);
 
     return (
         <AppForm schema={teacherSchema} form={form}>
@@ -109,7 +113,8 @@ export default function TeacherForm(props: Props) {
                                 placeholder="Select date of birth"
                                 description="Date of birth of the teacher"
                                 required
-                                max={new Date().toISOString().split('T')[0]}
+                                min={format(subYears(new Date(), 80), "yyyy-MM-dd")}
+                                max={format(subYears(new Date(), 18), "yyyy-MM-dd")}
                             />
 
                             <AppForm.Select<teacherSchemaType>
@@ -159,6 +164,19 @@ export default function TeacherForm(props: Props) {
                             placeholder="eg. B.Tech"
                             description="Qualification of the teacher"
                             required
+                        />
+
+                        <AppForm.DynamicCombobox<teacherSchemaType>
+                            name="facultyIds"
+                            label="Departments"
+                            placeholder="Select departments"
+                            queryKey={QueryKey.FACULTIES}
+                            queryString="keyValue=true"
+                            multiple
+                            required
+                            emptyPlaceholder="No departments found"
+                            defaultSelected={props.selectedDepartments ?? []}
+                            description="Departments where the teacher belongs to. Select at least one department"
                         />
 
                         <AppForm.DatePicker<teacherSchemaType>

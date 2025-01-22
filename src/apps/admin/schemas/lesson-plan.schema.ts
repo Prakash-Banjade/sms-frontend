@@ -7,9 +7,11 @@ export const lessonPlanSchema = z.object({
     endDate: z.string({ required_error: 'End date is required' }).transform((value) => new Date(value).toISOString())
         .refine(date => isFuture(date), { message: "End date must be in the future" }),
     title: z.string()
-        .min(1, { message: "Title is required" }),
+        .min(1, { message: "Title is required" })
+        .max(100, { message: "Title should not exceed 100 characters" }),
     description: z.string()
-        .min(1, { message: "Description is required" }),
+        .min(1, { message: "Description is required" })
+        .max(500, { message: "Description should not exceed 500 characters" }),
     attachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(),
     subjectId: z.string()
         .uuid({ message: "Subject ID must be a valid UUID" }),
@@ -17,6 +19,7 @@ export const lessonPlanSchema = z.object({
         z.string({ required_error: "Section is required" })
             .uuid({ message: 'Select a section' })
     ).optional(),
+    facultyId: z.string({ required_error: "Faculty is required" }).uuid({ message: "Faculty ID must be a valid UUID" }),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Select a class room' }),
 }).superRefine((data, ctx) => {
@@ -40,4 +43,5 @@ export const lessonPlanDefaultValues: Partial<lessonPlanSchemaType> = {
     subjectId: undefined,
     sectionIds: [],
     classRoomId: undefined,
+    facultyId: undefined
 };

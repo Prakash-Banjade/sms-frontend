@@ -28,9 +28,11 @@ export type bookRenewFormSchemaType = z.infer<typeof bookRenewFormSchema>;
 
 export default function BookRenewForm({ setIsOpen, selectedTransactions, resetSelectedTransactions }: Props) {
     const minSelectableDueDate = useMemo(() => {
-        const dueDate = selectedTransactions.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())[0]?.dueDate
+        if (!selectedTransactions.length) return format(new Date(), 'yyyy-MM-dd');
 
-        return format(addDays(new Date(dueDate), 1), 'yyyy-MM-dd')
+        const dueDate = selectedTransactions.sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime())[0]?.dueDate
+
+        return format(addDays(new Date(dueDate), 1), 'yyyy-MM-dd');
     }, [selectedTransactions])
 
     const form = useForm<bookRenewFormSchemaType>({

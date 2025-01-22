@@ -50,3 +50,21 @@ export function getErrMsg(error: unknown): string | null {
     return null;
   }
 }
+
+export function calculateRatios(
+  totalStudents: number,
+  totalBoys: number,
+  totalGirls: number,
+  totalOthers: number
+) {
+  if (totalStudents === 0) {
+    // If totalStudents is 0, return zeros for all ratios to avoid division by zero
+    return [0, 0, 0];
+  }
+
+  return [
+    +(totalBoys / totalStudents).toFixed(2),
+    +(totalGirls / totalStudents).toFixed(2),
+    +(totalOthers / totalStudents).toFixed(2),
+  ];
+}

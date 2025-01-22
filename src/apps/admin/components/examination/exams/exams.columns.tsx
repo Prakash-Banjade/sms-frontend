@@ -32,6 +32,10 @@ export const examsColumns: ColumnDef<TExam>[] = [
         },
     },
     {
+        header: "Faculty",
+        accessorKey: "faculty",
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {

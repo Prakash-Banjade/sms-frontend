@@ -3,27 +3,56 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import CreateLiveClassForm from '../../online-classes/create-live-class-form/create-live-class-form'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { EOnlineClassStatus } from '../../../teacher/data-access/online-class-data-access'
+import { EOnlineClassStatus, useGetOnlineClasses } from '../../../teacher/data-access/online-class-data-access'
 import { useAuth } from '@/contexts/auth-provider'
 import { Role } from '@/types/global.type'
 import SearchInput from '@/components/search-components/search-input'
 import ClassRoomSearchFilterInputs from '@/components/search-components/class-room-search'
 import { FacetedFilter } from '@/components/data-table/faceted-filter'
 import OnlineClassesList from '../../online-classes/online-classes-list'
-import { Plus } from 'lucide-react'
+import { FileQuestion, Plus } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { createQueryString } from '@/utils/create-query-string'
+import { Card, CardContent } from '@/components/ui/card'
 
 export default function OnlineClassesPage() {
     const { payload } = useAuth();
+    const [searchParam] = useSearchParams();
+
+    const { data, isLoading } = useGetOnlineClasses({
+        queryString: createQueryString({
+            page: searchParam.get('page'),
+            take: searchParam.get('take'),
+            search: searchParam.get('search'),
+            classRoomId: searchParam.get('classRoomId'),
+            sectionId: searchParam.get('sectionId'),
+            skipPagination: true,
+            status: searchParam.get('status'),
+        })
+    });
+
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <ContainerLayout
             title="Live Classes"
             actionTrigger={payload?.role === Role.TEACHER && <CreateOnlineClassDialog />}
         >
-            <section className='@container space-y-4'>
-                <OnlineClassesSearchFilters />
-                <OnlineClassesList />
-            </section>
+            <OnlineClassesSearchFilters />
+            {
+                !!data?.data?.length ? (
+                    <section className='@container space-y-4'>
+                        <OnlineClassesList onlineClasses={data?.data ?? []} />
+                    </section>
+                ) : (
+                    <Card className="w-full my-16 flex flex-col items-center justify-center p-6 border-none">
+                        <CardContent className="text-center text-muted-foreground">
+                            <FileQuestion className="w-24 h-24 mx-auto mb-4" />
+                            <h2 className="md:text-2xl sm:text-xl text-base font-semibold mb-2">No Online Classes Found</h2>
+                        </CardContent>
+                    </Card>
+                )
+            }
         </ContainerLayout>
     )
 }

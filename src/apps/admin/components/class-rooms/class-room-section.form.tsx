@@ -4,6 +4,7 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
 import { SelectOption, EClassType } from "@/types/global.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
 type Props = {
@@ -21,8 +22,10 @@ type Props = {
 })
 
 export default function ClassSectionForm(props: Props) {
+    const queryClient = useQueryClient();
+    
     const form = useForm<classRoomFormSchemaType>({
-        resolver: zodResolver(classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, degreeLevel: true, facultyId: true })),
+        resolver: zodResolver(classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, facultyId: true })),
         defaultValues: {
             ...(props?.defaultValues ?? classRoomFormDefaultValues),
             admissionFee: 0,
@@ -51,6 +54,9 @@ export default function ClassSectionForm(props: Props) {
         });
 
         if (response?.data?.message) {
+            queryClient.invalidateQueries({
+                queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS],
+            })
             props.setIsOpen(false);
         }
     }

@@ -34,6 +34,7 @@ export type TExam = {
     examType: string,
     classRoom: string,
     classRoomId: string,
+    faculty: string,
 }
 
 export type TExamsResponse = {
@@ -51,6 +52,10 @@ export type TSingleExam = {
     classRoom: {
         id: string,
         name: string,
+        faculty: {
+            id: string,
+            name: string,
+        }
     },
     examSubjects: TExamSubject[];
 };

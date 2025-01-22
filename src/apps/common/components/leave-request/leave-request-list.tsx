@@ -83,10 +83,10 @@ export default function LeaveRequestList() {
             {
                 !data?.length && (
                     <Card className="w-full my-16 flex flex-col items-center justify-center p-6 border-none">
-                        <CardContent className="text-center">
+                        <CardContent className="text-center text-muted-foreground">
                             <FileQuestion className="w-24 h-24 mx-auto mb-4" />
-                            <h2 className="text-2xl font-semibold mb-2">No Leave Requests Found</h2>
-                            <p className="text-muted-foreground">You haven't submitted any leave requests yet.</p>
+                            <h2 className="md:text-2xl sm:text-xl text-base font-semibold mb-2">No Leave Requests Found</h2>
+                            <p className="text-muted-foreground sm:text-base text-sm">You haven't submitted any leave requests yet.</p>
                         </CardContent>
                     </Card>
                 )

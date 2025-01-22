@@ -3,14 +3,12 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
-import { EClassType, EDegreeLevel, SelectOption } from "@/types/global.type";
-import { createQueryString } from "@/utils/create-query-string";
+import { EClassType, SelectOption } from "@/types/global.type";
 import { getDirtyValues } from "@/utils/get-dirty-values";
-import { EDegreeLevelMappings } from "@/utils/labelToValueMappings";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 type Props = ({
     setIsOpen?: undefined;
@@ -24,14 +22,19 @@ type Props = ({
 
 export default function ClassRoomForm(props: Props) {
     const params = useParams();
+    const location = useLocation();
     const id = (!!props.setIsOpen && props.classRoomId) ? props.classRoomId : params.id;
+    const queryClient = useQueryClient();
 
     const navigate = useNavigate();
     const { payload } = useAuth();
 
     const form = useForm<classRoomFormSchemaType>({
-        resolver: zodResolver(id ? classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, degreeLevel: true, facultyId: true }) : classRoomFormSchema),
-        defaultValues: props?.defaultValues ?? classRoomFormDefaultValues,
+        resolver: zodResolver(id ? classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, facultyId: true }) : classRoomFormSchema),
+        defaultValues: props?.defaultValues ?? {
+            ...classRoomFormDefaultValues,
+            facultyId: location.state?.facultyId ?? classRoomFormDefaultValues.facultyId,
+        },
     })
 
     const { mutateAsync } = useAppMutation<Partial<classRoomFormSchemaType>, any>();
@@ -52,6 +55,9 @@ export default function ClassRoomForm(props: Props) {
         });
 
         if (response?.data?.message) {
+            queryClient.invalidateQueries({
+                queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS],
+            })
             onDialogClose();
             navigate(`/${payload?.role}/classes`);
         }
@@ -62,10 +68,6 @@ export default function ClassRoomForm(props: Props) {
         props.setIsOpen && props.setIsOpen(false);
     }
 
-    useEffect(() => {
-        !id && form.setValue('facultyId', '');
-    }, [form.watch('degreeLevel')])
-
     return (
         <AppForm schema={classRoomFormSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -73,14 +75,6 @@ export default function ClassRoomForm(props: Props) {
                     {
                         !id && (
                             <>
-                                <AppForm.Select<classRoomFormSchemaType>
-                                    name="degreeLevel"
-                                    label="Degree Level"
-                                    description="Select the degree level."
-                                    options={Object.entries(EDegreeLevel).map(([_, value]) => ({ label: EDegreeLevelMappings[value], value }))}
-                                    required
-                                />
-
                                 <AppForm.DynamicSelect<classRoomFormSchemaType>
                                     name="facultyId"
                                     label="Faculty"
@@ -88,14 +82,9 @@ export default function ClassRoomForm(props: Props) {
                                     description="Select the faculty"
                                     fetchOptions={{
                                         endpoint: QueryKey.FACULTIES + '/' + QueryKey.OPTIONS,
-                                        queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS, form.watch('degreeLevel')!],
-                                        queryString: createQueryString({
-                                            degreeLevel: form.watch('degreeLevel'),
-                                        }),
-                                        options: { enabled: !!form.watch('degreeLevel') }
+                                        queryKey: [QueryKey.FACULTIES, QueryKey.OPTIONS],
                                     }}
                                     disableOnNoOption
-                                    disabled={!form.watch('degreeLevel')}
                                     labelKey="name"
                                     required
                                 />

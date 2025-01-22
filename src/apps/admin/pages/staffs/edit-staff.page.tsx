@@ -5,9 +5,7 @@ import { useGetStaff } from "../../components/staffs/actions"
 import { staffSchema } from "../../schemas/staff.schema"
 import { useAuth } from "@/contexts/auth-provider"
 
-type Props = {}
-
-export default function EditStaffPage({ }: Props) {
+export default function EditStaffPage() {
     const params = useParams();
 
     return (

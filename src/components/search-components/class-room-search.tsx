@@ -1,27 +1,34 @@
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
-import { useGetClassRoomsOptions } from '@/apps/admin/components/class-rooms/actions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from '../ui/label';
 import { useGetSubjectOptions } from '@/apps/admin/components/subjects/data-access';
 import { createQueryString } from '@/utils/create-query-string';
+import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
+import { TClassRoomOptions } from '@/types/class.type';
+
+export const FACULTY_SEARCH_KEY = "facultyId"
+export const CLASS_ROOM_SEARCH_KEY = "classRoomId"
+export const SECTION_SEARCH_KEY = "sectionId"
 
 type Props = {
     onlyClassRoom?: boolean;
     classRoomKey?: string;
     withSubjet?: boolean;
+    include?: 'classRoom' | 'section';
 }
 
-export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, classRoomKey = "classRoomId", withSubjet = false }: Props) {
+export default function ClassRoomSearchFilterInputs({
+    onlyClassRoom = false,
+    classRoomKey = CLASS_ROOM_SEARCH_KEY,
+    withSubjet = false,
+    include = 'section',
+}: Props) {
     const { setSearchParams, searchParams } = useCustomSearchParams();
+    const [selectedFaculty, setSelectedFaculty] = useState<TFacultyOption>();
+    const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0]>();
 
-    const { data, isLoading } = useGetClassRoomsOptions({
-        queryString: createQueryString({
-            page: 1,
-            take: 50,
-            onlyPrimaryClass: onlyClassRoom ? 'true' : undefined,
-        }),
-    });
+    const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include }));
 
     const { data: subjects, isLoading: isLoadingSubjects } = useGetSubjectOptions({
         queryString: createQueryString({
@@ -30,45 +37,89 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
         options: {
             enabled: (!!searchParams.get(classRoomKey) && withSubjet),
         }
-    })
+    });
 
     useEffect(() => {
-        setSearchParams("sectionId", undefined)
-    }, [searchParams.get(classRoomKey)])
+        if (!faculties) return;
 
-    // remove invalid searchParams, like classRoomId=xyz and sectionId=xyz
-    useEffect(() => {
-        if (!data) return;
+        const facultyId = searchParams.get(FACULTY_SEARCH_KEY);
+
+        if (facultyId) {
+            const faculty = faculties.find((faculty) => faculty.id === facultyId);
+            if (!faculty) {
+                setSearchParams(FACULTY_SEARCH_KEY, undefined)
+            } else {
+                setSelectedFaculty(faculty);
+            }
+        }
 
         const classRoomId = searchParams.get(classRoomKey);
-        const isCorrectClassRoomId = data?.find((classRoom) => classRoom.id === classRoomId);
 
-        if (classRoomId && !isCorrectClassRoomId) {
-            setSearchParams(classRoomKey, undefined)
+        if (classRoomId) {
+            const classRoom = faculties?.find(f => f.classRooms?.find(c => c.id === classRoomId))?.classRooms?.find(c => c.id === classRoomId);
+            if (!classRoom) {
+                setSearchParams(classRoomKey, undefined)
+            } else {
+                setSelectedClassRoom(classRoom);
+            }
         }
 
-        const sectionId = searchParams.get("sectionId");
-        const isCorrectSectionId = isCorrectClassRoomId?.children?.find((section) => section.id === sectionId);
+        const sectionId = searchParams.get(SECTION_SEARCH_KEY);
 
-        if (sectionId && !isCorrectSectionId) {
-            setSearchParams("sectionId", undefined)
+        if (sectionId) {
+            const section = faculties?.find(f => f.classRooms?.find(c => c.id === classRoomId))?.classRooms?.find(c => c.id === classRoomId)?.children?.find(ch => ch.id === sectionId);
+            if (!section) {
+                setSearchParams(SECTION_SEARCH_KEY, undefined)
+            }
         }
-    }, [data])
+    }, [faculties])
 
     return (
         <>
+            <div className="space-y-2">
+                <Label>Faculty</Label>
+                <Select
+                    value={searchParams.get(FACULTY_SEARCH_KEY) ?? ''}
+                    onValueChange={val => {
+                        setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : val);
+                        setSearchParams(classRoomKey, undefined);
+                        setSearchParams(SECTION_SEARCH_KEY, undefined);
+                        setSelectedClassRoom(undefined);
+
+                        const faculty = faculties?.find((faculty) => faculty.id === val);
+                        setSelectedFaculty(faculty);
+                    }}
+                    disabled={!faculties?.length}
+                >
+                    <SelectTrigger className="min-w-[200px]">
+                        <SelectValue placeholder="Select a faculty" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectItem value="reset" className="text-xs text-muted-foreground">Select a faculty</SelectItem>
+                            {faculties?.map(faculty => (
+                                <SelectItem key={faculty.id} value={faculty.id}>{faculty.name}</SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
+
             <section className='relative space-y-2'>
-                <div className="">
-                    <Label className="">
-                        Class
-                    </Label>
-                </div>
+                <Label>Class</Label>
                 <Select
                     value={searchParams.get(classRoomKey) ?? ''}
                     onValueChange={val => {
-                        val === 'reset' ? setSearchParams(classRoomKey, undefined) : setSearchParams(classRoomKey, val)
+                        setSearchParams(classRoomKey, val === 'reset' ? undefined : val)
+                        setSearchParams(SECTION_SEARCH_KEY, undefined)
+
+                        const classRoom = selectedFaculty?.classRooms?.find((classRoom) => classRoom.id === val);
+                        setSelectedClassRoom(classRoom);
                     }}
-                    disabled={isLoading}
+                    disabled={
+                        !selectedFaculty?.classRooms?.length
+                        || isLoading
+                    }
                 >
                     <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Select a class" />
@@ -77,8 +128,13 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                         <SelectGroup>
                             <SelectItem value="reset" className='text-xs text-muted-foreground'>Select Class</SelectItem>
                             {
-                                data?.map((classRoom) => (
-                                    <SelectItem value={classRoom.id} key={classRoom.id}>{classRoom.name}</SelectItem>
+                                selectedFaculty?.classRooms?.map((classRoom) => (
+                                    <SelectItem
+                                        value={classRoom.id}
+                                        key={classRoom.id}
+                                    >
+                                        {classRoom.name}
+                                    </SelectItem>
                                 ))
                             }
                         </SelectGroup>
@@ -88,19 +144,14 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
 
             {
                 !onlyClassRoom && <section className='relative space-y-2'>
-                    <div className="">
-                        <Label className="">
-                            Section
-                        </Label>
-                    </div>
+                    <Label>Section</Label>
                     <Select
                         value={searchParams.get("sectionId") ?? ''}
                         onValueChange={val => {
                             val === 'reset' ? setSearchParams('sectionId', undefined) : setSearchParams('sectionId', val)
                         }}
                         disabled={
-                            !searchParams.get(classRoomKey)
-                            || !data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.length
+                            !selectedClassRoom?.children?.length
                             || isLoading
                         }
                     >
@@ -111,7 +162,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
                             <SelectGroup>
                                 <SelectItem value="reset" className='text-xs text-muted-foreground'>Select Section</SelectItem>
                                 {
-                                    data?.find((classRoom) => classRoom.id === searchParams.get(classRoomKey))?.children?.map((section) => (
+                                    selectedClassRoom?.children?.map((section) => (
                                         <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
                                     ))
                                 }
@@ -123,11 +174,7 @@ export default function ClassRoomSearchFilterInputs({ onlyClassRoom = false, cla
 
             {
                 withSubjet && <section className='relative space-y-2'>
-                    <div className="">
-                        <Label className="">
-                            Subject
-                        </Label>
-                    </div>
+                    <Label className="">Subject</Label>
                     <Select
                         value={searchParams.get("subjectId") ?? ''}
                         onValueChange={val => {

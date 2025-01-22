@@ -47,13 +47,17 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
                     : [];
 
             return (
-                <span>
-                    {
-                        plan.parentClassName
-                            ? plan.parentClassName
-                            : classRooms?.[0]
-                    }
-                </span>
+                <p className="whitespace-nowrap">
+                    <span>
+                        {
+                            plan.parentClassName
+                                ? plan.parentClassName
+                                : classRooms?.[0]
+                        }
+                    </span>
+                    <br />
+                    <span className="text-muted-foreground text-xs">({row.original.facultyName})</span>
+                </p>
             )
         }
     },
@@ -72,7 +76,7 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
                 <span className="flex gap-2 max-w-[300px] flex-wrap">
                     {
                         (!!classRooms?.length && plan.parentClassName) ? classRooms?.map((classRoom, i) => (
-                            <Badge variant={'secondary'} key={i}>{classRoom}</Badge>
+                            <Badge variant={'secondary'} key={i} className="whitespace-nowrap">{classRoom}</Badge>
                         )) : '-'
                     }
                 </span>

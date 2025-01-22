@@ -16,6 +16,7 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { useAuth } from "@/contexts/auth-provider";
 import { cn, isAdmin } from "@/lib/utils";
 import { compareAsc, parse } from "date-fns";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
 
 export function ClassRoutinesDisplayList() {
     const [searchParams] = useSearchParams();
@@ -102,6 +103,7 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
 function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const { getFacultyIdByClassRoomId } = useFacultySearch();
 
     const { mutateAsync, isPending } = useAppMutation();
 
@@ -113,6 +115,8 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
             invalidateTags: [QueryKey.CLASSROUTINE],
         });
     }
+
+    const classRoomId = classRoutine.classRoom?.parent?.id ?? classRoutine.classRoom?.id;
 
     return (
         <>
@@ -126,7 +130,8 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                     classRoutineId={classRoutine.id}
                     setIsOpen={setIsEditOpen}
                     defaultValues={{
-                        classRoomId: classRoutine.classRoom?.parent?.id ? classRoutine.classRoom?.parent?.id : classRoutine.classRoom?.id,
+                        facultyId: getFacultyIdByClassRoomId(classRoomId),
+                        classRoomId,
                         sectionId: classRoutine.classRoom?.parent?.id ? classRoutine.classRoom?.id : null,
                         subjectId: classRoutine.subject?.id,
                         startTime: classRoutine.startTime,

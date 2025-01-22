@@ -11,6 +11,11 @@ import { useAuth } from "@/contexts/auth-provider"
 
 export default function EnrollmentsPage() {
     const { payload } = useAuth();
+    const [searchParams] = useSearchParams();
+
+    const { data, isLoading } = useGetEnrollments({
+        queryString: searchParams.toString(),
+    });
 
     return (
         <ContainerLayout
@@ -25,27 +30,19 @@ export default function EnrollmentsPage() {
                 </Button>
             }
         >
-            <EnrollmentsList />
+            {
+                isLoading
+                    ? <div>Loading...</div>
+                    : (
+                        <DataTable
+                            columns={enrollmentsColumns}
+                            data={data?.data ?? []}
+                            meta={data?.meta}
+                            filters={<SearchFilters />}
+                        />
+                    )
+            }
         </ContainerLayout>
-    )
-}
-
-export const EnrollmentsList = () => {
-    const [searchParams] = useSearchParams();
-
-    const { data, isLoading } = useGetEnrollments({
-        queryString: searchParams.toString(),
-    });
-
-    if (isLoading) return <div>Loading...</div>;
-
-    return (
-        <DataTable
-            columns={enrollmentsColumns}
-            data={data?.data ?? []}
-            meta={data?.meta}
-            filters={<SearchFilters />}
-        />
     )
 }
 

@@ -3,8 +3,10 @@ import { DataTable } from "@/components/data-table/data-table"
 import { teachersColumns } from "../../components/teachers/teacher.columns"
 import { useSearchParams } from "react-router-dom"
 import { useGetTeachers } from "../../components/teachers/actions"
-import TeacherSearchFilters from "../../components/teachers/teacher-search-filters"
 import { createQueryString } from "@/utils/create-query-string"
+import SearchInput from "@/components/search-components/search-input"
+import { FacetedFilter } from "@/components/data-table/faceted-filter"
+import { useFacultySearch } from "@/hooks/useFacultySearch"
 
 export default function TeacherListPage() {
 
@@ -27,6 +29,7 @@ export const TeachersList = () => {
             teacherId: searchParams.get('teacherId'),
             page: searchParams.get('page'),
             take: searchParams.get('take'),
+            departmentIds: searchParams.get('departmentIds'),
         }),
     });
 
@@ -39,5 +42,20 @@ export const TeachersList = () => {
             meta={data?.meta}
             filters={<TeacherSearchFilters />}
         />
+    )
+}
+
+function TeacherSearchFilters() {
+    const { data } = useFacultySearch();
+
+    return (
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
+            <SearchInput placeholder="Search by name or ID" label="Name or ID" />
+            <FacetedFilter
+                title="Department"
+                searchKey="departmentIds"
+                options={data?.map(f => ({ label: f.name, value: f.id })) ?? []}
+            />
+        </section>
     )
 }

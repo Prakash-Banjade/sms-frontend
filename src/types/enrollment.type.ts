@@ -17,9 +17,13 @@ export type TEnrollment = {
         id: string,
         name: string,
         parent: {
-            id: true,
-            name: true,
+            id: string,
+            name: string,
         } | null;
+        faculty: {
+            id: string,
+            name: string
+        }
     },
     academicYear: {
         id: string,

@@ -1,5 +1,5 @@
 import AppForm from "@/components/forms/app-form";
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { Button } from "@/components/ui/button";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { QueryKey } from "@/react-query/queryKeys";
@@ -38,7 +38,7 @@ export default function GetExamReportBySubjectForm() {
             <AppForm schema={formSchema} form={form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
 
-                    <ClassSectionFormField noDescription noSection containerClassName='w-[200px]' required />
+                    <ClassSelectionFormField noDescription />
 
                     <AppForm.DynamicCombobox<TFormSchema>
                         name="examTypeId"

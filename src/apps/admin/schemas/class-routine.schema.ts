@@ -14,6 +14,7 @@ export const classRoutineSchema = z.object({
     type: z.nativeEnum(ERoutineType, {
         errorMap: () => ({ message: 'Invalid routine type' }),
     }),
+    facultyId: z.string().uuid({ message: 'Invalid faculty ID' }),
     classRoomId: z.string()
         .refine((val) => val === undefined || z.string().uuid().safeParse(val).success, {
             message: 'Invalid class room ID',

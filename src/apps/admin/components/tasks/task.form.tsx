@@ -1,5 +1,4 @@
 import AppForm from "@/components/forms/app-form"
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
@@ -9,7 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod"
-import { useGetClassRoomsOptions } from "../class-rooms/actions";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
 
 type Props = ({
     taskId?: undefined;
@@ -24,9 +24,10 @@ type Props = ({
 }
 
 const taskSchema = z.object({
-    title: z.string().min(3, { message: "Title is required" }),
-    description: z.string({ required_error: "Description is required" }),
+    title: z.string().min(3, { message: "Title is required" }).max(100, { message: "Title should not exceed 100 characters" }),
+    description: z.string({ required_error: "Description is required" }).max(500, { message: "Description should not exceed 500 characters" }),
     deadline: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }).transform((value) => new Date(value).toISOString()),
+    facultyId: z.string({ required_error: "Faculty is required" }).uuid(),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Select a class room' }),
     sectionIds: z.array(
@@ -57,9 +58,6 @@ export default function TaskForm(props: Props) {
     const navigate = useNavigate();
     const { payload } = useAuth();
 
-    // fetching options outside to validate class room and sections
-    const { data, isLoading } = useGetClassRoomsOptions({ queryString: 'page=1&take=50' });
-
     const form = useForm<taskSchemaType>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
@@ -68,12 +66,15 @@ export default function TaskForm(props: Props) {
         },
     })
 
+    const { hasSection } = useFacultySearch(createQueryString({ include: "section" }))
+
     const { mutateAsync } = useAppMutation<Partial<Omit<taskSchemaType, 'sectionIds'> & { classRoomIds: string[] }>, any>();
 
     async function onSubmit(values: taskSchemaType) {
         // check if section is selected or not
-        if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionIds?.length) {
-            form.setError("sectionIds", { type: "required", message: "Section is required" });
+        if (hasSection(values.classRoomId) && !values.sectionIds?.length) {
+            form.setError("sectionIds", { type: "required", message: "Please select at least one section" });
+            form.setFocus("sectionIds");
             return;
         }
 
@@ -108,7 +109,7 @@ export default function TaskForm(props: Props) {
                         required
                     />
 
-                    <ClassSectionFormField multipleSections options={data ?? []} isLoading={isLoading} />
+                    <ClassSelectionFormField include="section" multiSection />
 
                     <AppForm.DynamicSelect<taskSchemaType>
                         name="subjectId"

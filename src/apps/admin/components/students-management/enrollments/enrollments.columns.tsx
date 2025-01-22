@@ -31,12 +31,16 @@ export const enrollmentsColumns: ColumnDef<TEnrollment>[] = [
         cell: ({ row }) => {
             const classRoom = row.original.classRoom;
 
-            return <span className="capitalize">
-                {
-                    classRoom.parent ?
-                        `${classRoom.parent?.name} - ${classRoom.name}` : classRoom.name
-                }
-            </span>
+            return <p className="whitespace-nowrap">
+                <span>
+                    {
+                        classRoom.parent ?
+                            `${classRoom.parent?.name} - ${classRoom.name}` : classRoom.name
+                    }
+                </span>
+                <br />
+                <span className="text-muted-foreground text-xs">({classRoom.faculty?.name})</span>
+            </p>
         },
     },
     {

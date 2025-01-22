@@ -43,11 +43,17 @@ export const leaveRequestsColumns: ColumnDef<TStudentLeaveRequest>[] = [
     {
         header: "Class",
         cell: ({ row }) => {
-            const classRoomName = row.original?.account?.student?.classRoom?.parent?.name
-                ? `${row.original?.account?.student?.classRoom?.parent?.name} - ${row.original?.account?.student?.classRoom?.name}`
-                : `${row.original?.account?.student?.classRoom?.name}`
+            const classRoom = row.original?.account?.student?.classRoom;
 
-            return <span>{classRoomName}</span>
+            const classRoomName = classRoom?.parent?.name
+                ? `${classRoom?.parent?.name} - ${classRoom?.name}`
+                : `${classRoom?.name}`
+
+            return <p className="whitespace-nowrap">
+                <span>{classRoomName}</span>
+                <br />
+                <span className="text-muted-foreground text-xs">({classRoom.faculty?.name})</span>
+            </p>
         }
     },
     {

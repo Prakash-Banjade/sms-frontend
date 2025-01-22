@@ -1,5 +1,4 @@
 import AppForm from "@/components/forms/app-form"
-import { ClassSectionFormField } from "@/components/forms/class-section-form-field";
 import { useAuth } from "@/contexts/auth-provider";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
@@ -7,10 +6,11 @@ import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGetClassRoomsOptions } from "../class-rooms/actions";
 import { lessonPlanDefaultValues, lessonPlanSchema, lessonPlanSchemaType } from "../../schemas/lesson-plan.schema";
 import { IFileUploadResponse } from "@/types/global.type";
 import LoadingButton from "@/components/forms/loading-button";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
+import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 
 type Props = ({
     lessonPlanId?: undefined;
@@ -27,8 +27,7 @@ export default function LessonPlanForm(props: Props) {
     const location = useLocation();
     const { payload } = useAuth();
 
-    // fetching options outside to validate class room and sections
-    const { data, isLoading } = useGetClassRoomsOptions({ queryString: 'page=1&take=50' });
+    const { hasSection } = useFacultySearch(createQueryString({ include: "section" }))
 
     const form = useForm<lessonPlanSchemaType>({
         resolver: zodResolver(lessonPlanSchema),
@@ -41,8 +40,9 @@ export default function LessonPlanForm(props: Props) {
 
     async function onSubmit(values: lessonPlanSchemaType) {
         // check if section is selected or not
-        if (data?.find(classRoom => classRoom.id === values.classRoomId)?.children?.length && !values.sectionIds?.length) {
-            form.setError("sectionIds", { type: "required", message: "Section is required" });
+        if (hasSection(values.classRoomId) && !values.sectionIds?.length) {
+            form.setError("sectionIds", { type: "required", message: "Please select at least one section" });
+            form.setFocus("sectionIds");
             return;
         }
 
@@ -65,9 +65,6 @@ export default function LessonPlanForm(props: Props) {
         }
     }
 
-    console.log(form.formState.errors)
-    console.log(form.watch())
-
     return (
         <AppForm schema={lessonPlanSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -78,9 +75,10 @@ export default function LessonPlanForm(props: Props) {
                         placeholder="eg. Complete the lesson plan"
                         description={`Enter the title for lesson plan.`}
                         required
+                        max={100}
                     />
 
-                    <ClassSectionFormField multipleSections options={data ?? []} isLoading={isLoading} />
+                    <ClassSelectionFormField include="section" multiSection />
 
                     <AppForm.DynamicSelect<lessonPlanSchemaType>
                         name="subjectId"

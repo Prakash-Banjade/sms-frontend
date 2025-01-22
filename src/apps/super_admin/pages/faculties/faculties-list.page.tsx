@@ -5,10 +5,6 @@ import { useSearchParams } from "react-router-dom";
 import { DataTable } from "@/components/data-table/data-table";
 import { facultiesColumns } from "../../components/faculties/faculties-column";
 import SearchInput from "@/components/search-components/search-input";
-import { FacetedFilter } from "@/components/data-table/faceted-filter";
-import { EDegreeLevel } from "@/types/global.type";
-import { EDegreeLevelMappings } from "@/utils/labelToValueMappings";
-
 
 export default function FacultiesListPage() {
     return (
@@ -29,7 +25,6 @@ function FacultiesList() {
             search: searchParam.get('search'),
             take: searchParam.get('take'),
             page: searchParam.get('page'),
-            degreeLevels: searchParam.get('degreeLevels'),
         })
     });
 
@@ -42,7 +37,6 @@ function FacultiesList() {
             meta={data?.meta}
             filters={<section className="flex flex-wrap items-end lg:gap-5 gap-3 w-full">
                 <SearchInput placeholder="Search by name" label="Name" />
-                <FacetedFilter title="Degree Level" searchKey="degreeLevels" options={Object.entries(EDegreeLevel).map(([_, value]) => ({ label: EDegreeLevelMappings[value], value }))} />
             </section>}
         />
     )

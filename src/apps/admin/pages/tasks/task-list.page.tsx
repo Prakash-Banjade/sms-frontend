@@ -8,6 +8,7 @@ import { ETask } from "@/types/global.type";
 import TaskSearchFilters from "../../components/tasks/task-search-filters";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CLASS_ROOM_SEARCH_KEY, FACULTY_SEARCH_KEY, SECTION_SEARCH_KEY } from "@/components/search-components/class-room-search";
 
 type Props = {
     type: ETask;
@@ -38,9 +39,10 @@ function TasksList({ type }: Props) {
     const { data, isLoading } = useGetTasks({
         queryString: createQueryString({
             search: searchParams.get("search"),
+            [FACULTY_SEARCH_KEY]: searchParams.get(FACULTY_SEARCH_KEY),
+            [CLASS_ROOM_SEARCH_KEY]: searchParams.get(CLASS_ROOM_SEARCH_KEY),
+            [SECTION_SEARCH_KEY]: searchParams.get(SECTION_SEARCH_KEY),
             subjectId: searchParams.get("subjectId"),
-            classRoomId: searchParams.get("classRoomId"),
-            sectionId: searchParams.get("sectionId"),
             page: searchParams.get("page"),
             take: searchParams.get("take"),
             taskType: type,
