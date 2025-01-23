@@ -66,7 +66,7 @@ export default function ChangeClassForm({ selectedStudentIds, setIsOpen }: Props
     return (
         <AppForm schema={changeClassSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ClassSelectionFormField include="section" required={{ facultyId: true, classRoomId: true }} />
+                <ClassSelectionFormField include="section" required={{ facultyId: true, classRoomId: true, sectionId: true }} />
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={() => setIsOpen(false)}>Cancel</AppForm.Cancel>

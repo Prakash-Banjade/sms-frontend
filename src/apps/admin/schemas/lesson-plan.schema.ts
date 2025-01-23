@@ -2,9 +2,11 @@ import { isFuture, isToday } from "date-fns";
 import { z } from "zod";
 
 export const lessonPlanSchema = z.object({
-    startDate: z.string({ required_error: 'Start date is required' }).transform((value) => new Date(value).toISOString())
+    startDate: z.string({ required_error: 'Start date is required' })
+        .refine(date => !isNaN(Date.parse(date)), { message: "Invalid start date" })
         .refine(date => (isToday(date) || isFuture(date)), { message: "Start date cannot be in the past" }),
-    endDate: z.string({ required_error: 'End date is required' }).transform((value) => new Date(value).toISOString())
+    endDate: z.string({ required_error: 'End date is required' })
+        .refine(date => !isNaN(Date.parse(date)), { message: "Invalid end date" })
         .refine(date => isFuture(date), { message: "End date must be in the future" }),
     title: z.string()
         .min(1, { message: "Title is required" })

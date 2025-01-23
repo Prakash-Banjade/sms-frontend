@@ -2,7 +2,6 @@ import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
 import StaffForm from "../../components/staffs/staff.form"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetStaff } from "../../components/staffs/actions"
-import { staffSchema } from "../../schemas/staff.schema"
 import { useAuth } from "@/contexts/auth-provider"
 
 export default function EditStaffPage() {
@@ -32,14 +31,14 @@ function StaffEditForm({ id }: { id: string }) {
 
     if (!data) navigate(`/${payload?.role}/staffs`);
 
-    const { data: filteredValues } = staffSchema.safeParse(data);
-
     return (
         <StaffForm
             defaultValues={{
-                ...filteredValues,
+                ...data,
                 profileImageId: data?.profileImage?.url ?? null,
+                facultyIds: data?.faculties.map(faculty => faculty.id) ?? []
             }}
+            selectedDepartments={data?.faculties.map(faculty => ({ value: faculty.id, label: faculty.name })) ?? []}
         />
     )
 }

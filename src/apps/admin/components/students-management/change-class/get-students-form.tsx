@@ -11,7 +11,8 @@ type Props = {
 }
 
 const getstudentsSchema = z.object({
-    classRoomId: z.string().uuid({ message: "Select class" }).optional(),
+    facultyId: z.string().optional(),
+    classRoomId: z.string().optional(),
     sectionId: z.string().optional(),
     studentId: z.string().optional(),
 })
@@ -33,7 +34,9 @@ export default function GetstudentsForm({ setSearchQuery }: Props) {
             classRoomId: values.classRoomId,
             sectionId: values.sectionId,
             studentId: values.studentId,
+            facultyId: values.facultyId,
             skipPagination: 'true',
+            onlyBasicInfo: true,
         }))
     }
 

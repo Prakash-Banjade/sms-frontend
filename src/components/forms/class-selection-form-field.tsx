@@ -84,6 +84,7 @@ export default function ClassSelectionFormField({
                                 field.onChange(val === 'reset' ? "" : val)
                                 form.setValue(CLASS_ROOM_ID, "");
                                 form.setValue(SECTION_ID, "");
+                                form.setValue(SECTION_IDS, []);
 
                                 const faculty = faculties?.find((faculty) => faculty.id === val);
                                 setSelectedFaculty(faculty);
@@ -125,6 +126,7 @@ export default function ClassSelectionFormField({
                             onValueChange={val => {
                                 field.onChange(val === 'reset' ? "" : val)
                                 form.setValue(SECTION_ID, "");
+                                form.setValue(SECTION_IDS, []);
 
                                 const classRoom = selectedFaculty?.classRooms?.find((classRoom) => classRoom.id === val);
                                 setSelectedClassRoom(classRoom);
@@ -172,7 +174,7 @@ export default function ClassSelectionFormField({
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Section</FormLabel>
-                                {required?.sectionId && <RequiredAsterisk />}
+                                {required?.sectionId && !!selectedClassRoom?.children?.length && <RequiredAsterisk />}
                                 <Select
                                     value={field.value ?? ''}
                                     onValueChange={val => {
@@ -182,7 +184,7 @@ export default function ClassSelectionFormField({
                                         !selectedClassRoom?.children?.length
                                         || isLoading
                                     }
-                                    required={required?.sectionId}
+                                    required={required?.sectionId && !!selectedClassRoom?.children?.length}
                                 >
                                     <SelectTrigger className="min-w-[200px]">
                                         <SelectValue placeholder="Select a section" />
@@ -217,7 +219,7 @@ export default function ClassSelectionFormField({
                         values={form.watch('sectionIds') ?? []}
                         setValues={val => form.setValue('sectionIds', val)}
                         description='Select sections if available'
-                        required={required?.sectionIds}
+                        required={required?.sectionIds && !!selectedClassRoom?.children?.length}
                         disabled={
                             !selectedClassRoom?.children?.length
                             || isLoading

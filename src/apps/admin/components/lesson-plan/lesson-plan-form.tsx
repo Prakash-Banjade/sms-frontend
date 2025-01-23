@@ -78,7 +78,7 @@ export default function LessonPlanForm(props: Props) {
                         max={100}
                     />
 
-                    <ClassSelectionFormField include="section" multiSection />
+                    <ClassSelectionFormField include="section" multiSection required={{ classRoomId: true, facultyId: true, sectionIds: true }} />
 
                     <AppForm.DynamicSelect<lessonPlanSchemaType>
                         name="subjectId"

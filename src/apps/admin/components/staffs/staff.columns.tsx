@@ -1,11 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {
-    DropdownMenu,
-    DropdownMenuButtonItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
@@ -15,6 +9,7 @@ import { calculateExactAge } from "@/utils/calculate-age"
 import { TStaff } from "@/types/staff.type"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 export const staffsColumns: ColumnDef<TStaff>[] = [
     {
@@ -90,6 +85,25 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
             return <span>
                 {formatDate({ date: new Date(row.original.joinedDate) })}
             </span>
+        }
+    },
+    {
+        header: "Department",
+        accessorKey: "faculties",
+        cell: ({ row }) => {
+            const faculties = row.original.faculties;
+
+            if (faculties.length === 0) return <p className="text-center text-muted-foreground">N/A</p>;
+
+            return (
+                <ul>
+                    {faculties.map((faculty) => (
+                        <li key={faculty.id}>
+                            <Badge className="capitalize whitespace-nowrap" variant={'outline'}>{faculty.name}</Badge>
+                        </li>
+                    ))}
+                </ul>
+            )
         }
     },
     {

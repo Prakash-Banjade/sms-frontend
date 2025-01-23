@@ -11,9 +11,11 @@ import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
 import { format, subYears } from "date-fns";
+import { SelectOption } from "@/types/global.type";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;
+    selectedDepartments?: SelectOption[];
 }
 
 export default function StaffForm(props: Props) {
@@ -45,6 +47,7 @@ export default function StaffForm(props: Props) {
             data: {
                 ...getDirtyValues(values, form),
                 profileImageId: values.profileImageId ?? null,
+                facultyIds: values.facultyIds,
             },
             invalidateTags: [QueryKey.STAFFS],
         });
@@ -162,6 +165,19 @@ export default function StaffForm(props: Props) {
                             description="Type of the staff"
                             options={Object.entries(StaffTypeMappings).map(([key, value]) => ({ label: key, value }))}
                             required
+                        />
+
+                        <AppForm.DynamicCombobox<staffSchemaType>
+                            name="facultyIds"
+                            label="Departments"
+                            placeholder="Select departments"
+                            queryKey={QueryKey.FACULTIES}
+                            queryString="keyValue=true"
+                            multiple
+                            required
+                            emptyPlaceholder="No departments found"
+                            defaultSelected={props.selectedDepartments ?? []}
+                            description="Departments where the staff belongs to. Select at least one department"
                         />
 
                         <AppForm.Text<staffSchemaType>

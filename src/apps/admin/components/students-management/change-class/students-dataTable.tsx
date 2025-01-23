@@ -1,19 +1,6 @@
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
-
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { TStudent } from "@/types/student.type"
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { TStudent_BasicInfo } from "@/types/student.type"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -21,7 +8,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import ChangeClassForm from "./change-class.form"
 
 interface DataTableProps {
-    data: TStudent[],
+    data: TStudent_BasicInfo[],
 }
 
 export function ChangeClass_DataTable({
@@ -114,7 +101,7 @@ export function ChangeClass_DataTable({
     )
 }
 
-const columns: ColumnDef<TStudent>[] = [
+const columns: ColumnDef<TStudent_BasicInfo>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -145,14 +132,6 @@ const columns: ColumnDef<TStudent>[] = [
     },
     {
         header: "Class",
-        cell: ({ row }) => {
-            const student = row.original;
-
-            return <span>
-                {
-                    student.parentClass ? `${student.parentClass} - ${student.classRoom}` : `${student.classRoom}`
-                }
-            </span>
-        }
+        accessorKey: "classRoomName",
     },
 ]
