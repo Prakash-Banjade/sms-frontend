@@ -154,7 +154,9 @@ function SetupUI({ onSetupComplete }: SetupUIProps) {
             <VideoPreview />
             <div className="flex h-16 items-center gap-3">
                 <AudioVolumeIndicator />
-                <DeviceSettings />
+                {
+                    !micCamDisabled && <DeviceSettings />
+                }
             </div>
             <label className="flex items-center gap-2 font-medium">
                 <Checkbox

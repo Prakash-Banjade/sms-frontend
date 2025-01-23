@@ -1,8 +1,6 @@
-import {
-    Icon,
-    createSoundDetector,
-    useCallStateHooks,
-} from "@stream-io/video-react-sdk";
+import { Progress } from "@/components/ui/progress";
+import { createSoundDetector, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { Mic } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function AudioVolumeIndicator() {
@@ -27,16 +25,9 @@ export default function AudioVolumeIndicator() {
     if (!isEnabled) return null;
 
     return (
-        <div className="flex w-72 items-center gap-3 rounded-md bg-slate-900 p-4">
-            <Icon icon="mic" />
-            <div className="h-1.5 flex-1 rounded-md bg-white">
-                <div
-                    className="h-full w-full origin-left bg-blue-500"
-                    style={{
-                        transform: `scaleX(${audioLevel / 100})`,
-                    }}
-                />
-            </div>
+        <div className="flex w-72 items-center gap-3 rounded-md p-4">
+            <Mic size={24} />
+            <Progress value={audioLevel} className="h-2" />
         </div>
     );
 }
