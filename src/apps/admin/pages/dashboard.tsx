@@ -7,6 +7,7 @@ import { useGetAdminDashboard } from '../data-access/dashboard-data-access'
 import Dashboard_LeaveRequests from '../components/dashboard/leave-requests'
 import { useAuth } from '@/contexts/auth-provider'
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import TodayBirthDays from '../components/dashboard/today-birthdays'
 
 const financeData = Array.from({ length: 12 }).map((_, i) => ({
     month: i + 1,
@@ -92,7 +93,10 @@ export default function AdminDashboard() {
 
                 </section>
 
-                <Dashboard_LeaveRequests />
+                <section className='space-y-6'>
+                    <Dashboard_LeaveRequests />
+                    <TodayBirthDays />
+                </section>
             </div>
         </div>
     )

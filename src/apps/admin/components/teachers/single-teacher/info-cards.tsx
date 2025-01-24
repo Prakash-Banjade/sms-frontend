@@ -25,12 +25,12 @@ export default function PersonalInfoCard({ employee }: Props) {
                 <Table>
                     <TableBody>
                         <TableRow>
-                            <TableCell className="font-medium"><Cake className="w-4 h-4 inline mr-2" />Date of Birth</TableCell>
-                            <TableCell>{formatDate({ date: new Date(employee.dob) })}</TableCell>
-                        </TableRow>
-                        <TableRow>
                             <TableCell className="font-medium"><CalendarIcon className="w-4 h-4 inline mr-2" />Joined Date</TableCell>
                             <TableCell>{formatDate({ date: new Date(employee.joinedDate) })}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className="font-medium"><Cake className="w-4 h-4 inline mr-2" />Date of Birth</TableCell>
+                            <TableCell>{formatDate({ date: new Date(employee.dob) })}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium"><GraduationCap className="w-4 h-4 inline mr-2" />Qualification</TableCell>
@@ -38,7 +38,7 @@ export default function PersonalInfoCard({ employee }: Props) {
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium"><Heart className="w-4 h-4 inline mr-2" />Marital Status</TableCell>
-                            <TableCell>{employee.maritalStatus}</TableCell>
+                            <TableCell className="capitalize">{employee.maritalStatus}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell className="font-medium"><Droplet className="w-4 h-4 inline mr-2" />Blood Group</TableCell>
