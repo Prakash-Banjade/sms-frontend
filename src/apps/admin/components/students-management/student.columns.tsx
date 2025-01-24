@@ -1,11 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {
-    DropdownMenu,
-    DropdownMenuButtonItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
@@ -23,7 +17,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
     },
     {
-        accessorKey: "studentId",
+        accessorKey: "Student ID",
         header: ({ column }) => {
             return <DataTableColumnHeader column={column} title="Student ID" />
         },
@@ -63,7 +57,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         }
     },
     {
-        accessorKey: "rollNo",
+        accessorKey: "Roll No",
         header: ({ column }) => {
             return <DataTableColumnHeader column={column} title="Roll no." />
         },
@@ -96,7 +90,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         }
     },
     {
-        accessorKey: "dob",
+        accessorKey: "DOB",
         header: ({ column }) => {
             return <DataTableColumnHeader column={column} title="Date of birth" />
         },
@@ -110,7 +104,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         }
     },
     {
-        accessorKey: "routeStop",
+        accessorKey: "Route Stop",
         header: "Transport Route stop",
         cell: ({ row }) => {
             return row.original.routeStop ? <span>{row.original.routeStop}</span> : <span className="text-muted-foreground">-</span>

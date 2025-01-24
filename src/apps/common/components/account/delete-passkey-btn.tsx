@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { ResponsiveAlertDialog } from '@/components/ui/responsive-alert-dialog'
-import { TooltipWrapper } from '@/components/ui/tooltip'
 import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import { Trash2 } from 'lucide-react'
@@ -33,18 +32,18 @@ export default function DeletePassKeyBtn({ credentialId }: Props) {
                 action={handleDelete}
             />
 
-            <TooltipWrapper label="Remove this passkey" contentClassName="text-xs font-medium">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-destructive hover:text-destructive/80 hover:bg-destructive/10"
-                    type='button'
-                    onClick={() => setIsOpen(true)}
-                >
-                    <Trash2 />
-                    <span className="sr-only">Delete</span>
-                </Button>
-            </TooltipWrapper>
+            <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive hover:text-destructive/80 hover:bg-destructive/10"
+                type='button'
+                title='Remove this passkey'
+                aria-label='Remove this passkey'
+                onClick={() => setIsOpen(true)}
+            >
+                <Trash2 />
+                <span className="sr-only">Delete</span>
+            </Button>
         </>
     )
 }
