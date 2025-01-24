@@ -1,7 +1,6 @@
 import AppForm from '@/components/forms/app-form'
 import { Button } from '@/components/ui/button'
 import { ResponsiveDialog } from '@/components/ui/responsive-dialog'
-import { TooltipWrapper } from '@/components/ui/tooltip'
 import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -76,17 +75,17 @@ export default function EditPassKeyBtn({ credentialId, defaultName }: Props) {
                 </AppForm>
             </ResponsiveDialog>
 
-            <TooltipWrapper label="Edit passkey nickname" contentClassName="text-xs font-medium">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    type="button"
-                    onClick={() => setIsOpen(true)}
-                >
-                    <Pencil />
-                    <span className="sr-only">Edit</span>
-                </Button>
-            </TooltipWrapper>
+            <Button
+                variant="ghost"
+                size="icon"
+                type="button"
+                title='Edit passkey nickname'
+                aria-label='Edit passkey nickname'
+                onClick={() => setIsOpen(true)}
+            >
+                <Pencil />
+                <span className="sr-only">Edit</span>
+            </Button>
         </div>
     )
 }

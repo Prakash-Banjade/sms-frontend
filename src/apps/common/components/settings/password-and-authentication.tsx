@@ -19,7 +19,7 @@ export default function PasswordAndAuthentication() {
 
     return (
         <ScrollArea className='@5xl:h-[80vh] @5xl:overflow-hidden @5xl:pr-10'>
-            <section>
+            <section className='px-1'>
                 <h2 className="text-2xl font-medium mb-4">Change Password</h2>
 
                 <ChangePasswordForm />
@@ -27,9 +27,9 @@ export default function PasswordAndAuthentication() {
 
             <Separator className='my-12' />
 
-            <section>
-                <header className="flex justify-between items-center gap-10">
-                    <h2 className="text-2xl font-medium mb-4">Passkeys</h2>
+            <section className='px-1'>
+                <header className="flex justify-between items-center gap-10 mb-4">
+                    <h2 className="text-2xl font-medium">Passkeys</h2>
 
                     <Button
                         variant={'outline'}
@@ -79,7 +79,7 @@ function TwoFaSection() {
     }
 
     return (
-        <section>
+        <section className='px-1'>
             <h2 className="text-2xl font-medium mb-4">2-Step Verification</h2>
 
             <p className="@lg:text-sm text-xs text-muted-foreground">
