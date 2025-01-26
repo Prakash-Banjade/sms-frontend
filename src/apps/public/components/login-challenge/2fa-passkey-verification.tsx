@@ -5,7 +5,7 @@ import { useAxios } from '@/services/api';
 import { EPasskeyChallengeType } from '@/types/global.type';
 import { startAuthentication } from '@simplewebauthn/browser';
 import { jwtDecode } from 'jwt-decode';
-import { KeyRound } from 'lucide-react';
+import { KeyRound, LoaderCircle } from 'lucide-react';
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -21,9 +21,9 @@ export default function TwoFaPasskeyVerification({ isExternalPending, email }: P
     const { setAuth } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+    const [loadingText, setLoadingText] = useState<string>('Validating email...')
 
     const handleVerify = async () => {
-        console.log(1)
         setError(null);
         setIsPending(true);
         try {
@@ -37,7 +37,9 @@ export default function TwoFaPasskeyVerification({ isExternalPending, email }: P
             if (!challengePayload) throw new Error('Something seems wrong. Please try again.');
 
             try {
+                setLoadingText('Waiting for input from browser interaction...');
                 const authenticationResponse = await startAuthentication({ optionsJSON: challengePayload });
+                setLoadingText('Signing in...');
 
                 const response = await axios.post(`/${QueryKey.WEB_AUTHN}/verify-2fa`, {
                     authenticationResponse,
@@ -69,6 +71,7 @@ export default function TwoFaPasskeyVerification({ isExternalPending, email }: P
             setError(getErrMsg(e) || 'Something seems wrong. Please try again.')
         } finally {
             setIsPending(false);
+            setLoadingText('Validating email...');
         }
     }
 
@@ -80,12 +83,29 @@ export default function TwoFaPasskeyVerification({ isExternalPending, email }: P
                 disabled={isPending || isExternalPending}
                 onClick={handleVerify}
             >
-                <span className="flex items-center gap-4 font-medium">
-                    <KeyRound size={20} /> Use a passkey
-                </span>
-                <span className="text-sm ml-10 text-left text-muted-foreground">
-                    You have registered a passkey. You will be prompted to use it.
-                </span>
+                {
+                    isPending
+                        ? (
+                            <>
+                                <span className="flex items-center gap-4 font-medium">
+                                    <LoaderCircle size={20} className='animate-spin' /> Using passkey
+                                </span>
+                                <span className="text-sm ml-10 text-left text-muted-foreground">
+                                    {loadingText}
+                                </span>
+                            </>
+                        )
+                        : (
+                            <>
+                                <span className="flex items-center gap-4 font-medium">
+                                    <KeyRound size={20} /> Use a passkey
+                                </span>
+                                <span className="text-sm ml-10 text-left text-muted-foreground">
+                                    You have registered a passkey. You will be prompted to use it.
+                                </span>
+                            </>
+                        )
+                }
             </button>
             {
                 !!error && (

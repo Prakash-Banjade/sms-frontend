@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/forms/loading-button";
 import { useAuth } from "@/contexts/auth-provider";
 import { getErrMsg } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
@@ -17,6 +17,7 @@ export function ConfirmByPasskey({ setIsVerified }: Props) {
     const [error, setError] = useState<string | null>(null);
     const [isPending, setIsPending] = useState<boolean>(false);
     const { payload } = useAuth();
+    const [loadingText, setLoadingText] = useState<string>('Requesting...')
 
     const handleLoginWithPassKey = async () => {
         setError(null);
@@ -32,7 +33,9 @@ export function ConfirmByPasskey({ setIsVerified }: Props) {
             if (!challengePayload) throw new Error('Something seems wrong. Please try again.');
 
             try {
+                setLoadingText('Waiting for input from browser interaction...');
                 const authenticationResponse = await startAuthentication({ optionsJSON: challengePayload });
+                setLoadingText('Verifying...');
 
                 const res = await axios.post(`/${QueryKey.WEB_AUTHN}/verify-sudo`, {
                     authenticationResponse,
@@ -59,6 +62,7 @@ export function ConfirmByPasskey({ setIsVerified }: Props) {
             setError(getErrMsg(e) || 'Something seems wrong. Please try again.')
         } finally {
             setIsPending(false);
+            setLoadingText('Requesting...');
         }
     }
 
@@ -69,9 +73,16 @@ export function ConfirmByPasskey({ setIsVerified }: Props) {
             <p className="text-sm text-muted-foreground">
                 When you are ready, authenticate using the button below.
             </p>
-            <Button type="button" className="w-full" onClick={handleLoginWithPassKey} disabled={isPending}>
+            <LoadingButton
+                type="button"
+                isLoading={isPending}
+                loadingText={loadingText}
+                onClick={handleLoginWithPassKey}
+                className="w-full"
+                disabled={isPending}
+            >
                 Use passkey
-            </Button>
+            </LoadingButton>
             {
                 error && <p className="text-sm text-destructive">{error}</p>
             }

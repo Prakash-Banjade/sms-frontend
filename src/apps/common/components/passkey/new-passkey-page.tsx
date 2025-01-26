@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-provider';
 import { getErrMsg } from '@/lib/utils';
+import LoadingButton from '@/components/forms/loading-button';
 
 export default function NewPassKeyPage() {
     const axios = useAxios();
@@ -18,6 +19,7 @@ export default function NewPassKeyPage() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { payload } = useAuth();
+    const [loadingText, setLoadingText] = useState<string>('Prompting...')
 
     const handleAddPassKey = async () => {
         setError(null);
@@ -30,7 +32,9 @@ export default function NewPassKeyPage() {
             if (!challengePayload) throw new Error('Failed to register passkey'); // todo: show some error msg
 
             try {
+                setLoadingText('Waiting for input from browser interaction...');
                 const registrationResponse = await startRegistration({ optionsJSON: challengePayload, useAutoRegister: true });
+                setLoadingText('Adding passkey...');
 
                 const response = await axios.post(`/${QueryKey.WEB_AUTHN}/verify-register`, {
                     registrationResponse,
@@ -59,6 +63,7 @@ export default function NewPassKeyPage() {
             setError(getErrMsg(e) ?? 'Failed to register passkey');
         } finally {
             setIsPending(false);
+            setLoadingText('Prompting...');
         }
     }
 
@@ -89,14 +94,16 @@ export default function NewPassKeyPage() {
                         </p>
 
                         <section className="w-full mt-2">
-                            <Button
+                            <LoadingButton
                                 type="button"
+                                isLoading={isPending}
+                                loadingText={loadingText}
                                 onClick={handleAddPassKey}
                                 disabled={isPending}
                                 className='w-full'
                             >
                                 Add passkey
-                            </Button>
+                            </LoadingButton>
 
                             {
                                 error && (
