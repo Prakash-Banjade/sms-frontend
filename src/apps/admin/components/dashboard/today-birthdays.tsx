@@ -62,7 +62,7 @@ export default function TodayBirthDays() {
                             }
                         </section>
                     ) : (
-                        <p className="text-muted-foreground text-sm text-center">No birthdays today!</p>
+                        <p className="text-muted-foreground text-sm text-center py-6">No birthdays today!</p>
                     )
                 }
             </CardContent>

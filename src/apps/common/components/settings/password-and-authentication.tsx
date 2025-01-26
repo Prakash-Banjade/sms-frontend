@@ -94,6 +94,7 @@ function TwoFaSection() {
                 actionLabel='Yes, Disable'
                 description='Are you sure you want to disable 2-Step Verification? This will remove the 2-Step Verification from your account.'
                 isLoading={isPending}
+                loadingText='Disabling...'
             />
 
             {

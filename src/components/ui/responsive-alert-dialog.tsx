@@ -1,6 +1,5 @@
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -8,8 +7,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { LoaderCircle } from "lucide-react";
-import { buttonVariants } from "./button";
+import LoadingButton from "../forms/loading-button";
 
 export function ResponsiveAlertDialog({
     isOpen,
@@ -20,6 +18,7 @@ export function ResponsiveAlertDialog({
     action,
     actionLabel = "Sure",
     isLoading = false,
+    loadingText = "Deleting...",
 }: {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +28,7 @@ export function ResponsiveAlertDialog({
     action: Function;
     actionLabel?: string;
     isLoading?: boolean;
+    loadingText?: string;
 }) {
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -43,13 +43,15 @@ export function ResponsiveAlertDialog({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className={buttonVariants({ variant: "destructive" })} onClick={() => action()}>
-                        {
-                            isLoading
-                                ? <LoaderCircle className="h-4 w-4 animate-spin" />
-                                : actionLabel
-                        }
-                    </AlertDialogAction>
+                    <LoadingButton
+                        isLoading={isLoading}
+                        loadingText={loadingText}
+                        type="button"
+                        variant={"destructive"}
+                        onClick={() => action()}
+                    >
+                        {actionLabel}
+                    </LoadingButton>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

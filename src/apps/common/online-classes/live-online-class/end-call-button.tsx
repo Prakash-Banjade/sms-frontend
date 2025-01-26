@@ -51,6 +51,7 @@ export default function EndCallButton() {
                 description="This will end the call for every participants and mark the class as completed."
                 action={handleCallEnd}
                 actionLabel="End call"
+                loadingText="Ending call..."
                 isLoading={isPending}
             />
             <Button

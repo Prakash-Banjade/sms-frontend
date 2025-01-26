@@ -218,6 +218,7 @@ const CardActions = ({ onlineClass }: { onlineClass: TOnlineClass }) => {
                 description="This will remove the scheduled online class."
                 action={handleRemove}
                 actionLabel="Dismiss"
+                loadingText="Dismissing..."
                 isLoading={isPending}
             />
 

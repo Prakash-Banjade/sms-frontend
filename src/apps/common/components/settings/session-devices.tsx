@@ -101,6 +101,7 @@ const DeviceItem = ({ d }: { d: TLoginDevice }) => {
                                             title={`Sign out on ${deviceName ?? "this"} device?`}
                                             description={`You will no longer be signed in on ${deviceName ?? "this"} device.`}
                                             actionLabel='Sign Out'
+                                            loadingText='Signing out...'
                                             isLoading={isPending}
                                         />
                                         <Button type="button" variant='outline' size='sm' onClick={() => setIsOpen(true)}>
