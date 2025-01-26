@@ -14,7 +14,7 @@ const getstudentsSchema = z.object({
     facultyId: z.string().optional(),
     classRoomId: z.string().optional(),
     sectionId: z.string().optional(),
-    studentId: z.string().optional(),
+    search: z.string().optional(),
 })
 
 type TGetstudentsSchema = z.infer<typeof getstudentsSchema>
@@ -25,7 +25,7 @@ export default function GetstudentsForm({ setSearchQuery }: Props) {
         defaultValues: {
             classRoomId: undefined,
             sectionId: '',
-            studentId: '',
+            search: '',
         },
     })
 
@@ -33,7 +33,7 @@ export default function GetstudentsForm({ setSearchQuery }: Props) {
         setSearchQuery(createQueryString({
             classRoomId: values.classRoomId,
             sectionId: values.sectionId,
-            studentId: values.studentId,
+            search: values.search,
             facultyId: values.facultyId,
             skipPagination: 'true',
             onlyBasicInfo: true,
@@ -45,9 +45,9 @@ export default function GetstudentsForm({ setSearchQuery }: Props) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
 
                 <AppForm.Text<TGetstudentsSchema>
-                    name="studentId"
-                    label="Student ID"
-                    placeholder="eg. 123456"
+                    name="search"
+                    label="Student Name or ID"
+                    placeholder="Search by name or ID"
                     min={1}
                 />
 
