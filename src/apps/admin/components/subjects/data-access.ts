@@ -66,7 +66,7 @@ export const useGetSubjectOptions = ({
 }) => {
     const response = useFetchData<Pick<TSubject, 'id' | 'subjectName'>[]>({
         endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
-        queryKey: queryString ? [QueryKey.SUBJECTS, queryString] : [QueryKey.SUBJECTS],
+        queryKey: queryString ? [QueryKey.SUBJECTS, QueryKey.OPTIONS, queryString] : [QueryKey.SUBJECTS, QueryKey.OPTIONS],
         queryString,
         options,
     })

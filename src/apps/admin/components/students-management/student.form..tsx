@@ -108,7 +108,7 @@ export default function StudentForm(props: Props) {
                                 description="Date of birth of the student"
                                 required
                                 min={subYears(new Date(), 80).toISOString().split('T')[0]}
-                                max={subYears(new Date(), 20).toISOString().split('T')[0]}
+                                max={subYears(new Date(), 2).toISOString().split('T')[0]}
                             />
 
                             <AppForm.Select<studentSchemaType>

@@ -27,7 +27,7 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
                 <Link to={row.original.id} className="flex gap-4 items-center group">
                     <ProfileAvatar
                         name={row.original.firstName + ' ' + row.original.lastName}
-                        src={getImageUrl(row.original.profileImage?.url, "w=40")}
+                        src={getImageUrl(row.original.account?.profileImage?.url, "w=40")}
                         className="size-10"
                     />
                     <span className="group-hover:text-blue-500 group-hover:underline">{row.original.firstName + ' ' + row.original.lastName}</span>

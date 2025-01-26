@@ -34,7 +34,7 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
                 <Link to={row.original.id} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
                     <ProfileAvatar
                         name={row.original.firstName + ' ' + row.original.lastName}
-                        src={getImageUrl(row.original.profileImage?.url, "w=40")}
+                        src={getImageUrl(row.original.account?.profileImage?.url, "w=40")}
                         className="size-10"
                     />
                     {row.original.firstName + ' ' + row.original.lastName}

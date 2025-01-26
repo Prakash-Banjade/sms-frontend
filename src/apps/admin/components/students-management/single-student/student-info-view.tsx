@@ -28,7 +28,7 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
     return (
         <Card className="@container">
             <CardHeader className="flex @xs:flex-row flex-col items-center gap-4">
-                <ProfileAvatar src={getImageUrl(student.profileImage?.url, 'w=250')} name={`${student.firstName} ${student.lastName}`} className="@lg:size-36 size-24 text-4xl" />
+                <ProfileAvatar src={getImageUrl(student.account?.profileImage?.url, 'w=250')} name={`${student.firstName} ${student.lastName}`} className="@lg:size-36 size-24 text-4xl" />
                 <div>
                     <CardTitle className="text-2xl capitalize">{student.firstName} {student.lastName}</CardTitle>
                     <p className="text-muted-foreground">Student ID: {student.studentId}</p>

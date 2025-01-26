@@ -56,10 +56,6 @@ export type TSingleStudent = {
             name: string
         }
     },
-    profileImage: {
-        id: string,
-        url: string,
-    } | null,
     religion: EReligion,
     caste: string,
     isPhysicallyChallenged: boolean,
@@ -104,6 +100,10 @@ export type TSingleStudent = {
     } | null;
     account: {
         id: string;
+        profileImage: {
+            id: string,
+            url: string,
+        } | null,
     },
 }
 

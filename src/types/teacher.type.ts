@@ -12,12 +12,12 @@ export type Teacher = {
     phone: string,
     joinedDate: string,
     dob: string,
-    profileImage: {
-        id: string,
-        url: string
-    } | null,
     account: {
         id: string,
+        profileImage: {
+            id: string,
+            url: string
+        } | null,
     },
     faculties: {
         id: string,
