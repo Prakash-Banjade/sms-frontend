@@ -5,7 +5,7 @@ export default function StudentSearchFilters() {
 
     return (
         <section className="flex flex-wrap lg:gap-5 gap-3 w-full">
-            <SearchInput placeholder="Search by name or email or ID" label="Name or Email or ID" /> 
+            <SearchInput placeholder="Search by name or ID" label="Name or ID" /> 
             <ClassRoomSearchFilterInputs />
         </section>
     )

@@ -251,7 +251,6 @@ export default function StudentForm(props: Props) {
                             label="National ID Card No"
                             placeholder="eg. 1234567890"
                             description="National ID Card No of the student"
-                            required
                         />
 
                         <AppForm.Text<studentSchemaType>
