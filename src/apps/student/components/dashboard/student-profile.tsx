@@ -65,7 +65,7 @@ const ProfileCard = ({ student }: { student: TSingleStudent }) => {
             <CardHeader>
                 <div className="flex items-center space-x-4">
                     <ProfileAvatar
-                        src={getImageUrl(student.profileImage?.url, 'w=80')}
+                        src={getImageUrl(student.account?.profileImage?.url, 'w=80')}
                         className="size-20"
                         name={`${student.firstName} ${student.lastName}`}
                     />

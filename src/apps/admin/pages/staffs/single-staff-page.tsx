@@ -32,7 +32,7 @@ export default function SingleStaffPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
-                                <ProfileAvatar name={staff.firstName + ' ' + staff.lastName} src={getImageUrl(staff.profileImage?.url, 'w=200&q=80')} className="size-48" />
+                                <ProfileAvatar name={staff.firstName + ' ' + staff.lastName} src={getImageUrl(staff.account?.profileImage?.url, 'w=200&q=80')} className="size-48" />
                                 <div className="space-y-2">
                                     <h2 className="text-2xl font-bold">{staff.firstName + ' ' + staff.lastName}</h2>
                                     <Badge variant={'outline'} className="capitalize">{staff.type}</Badge>
@@ -54,7 +54,7 @@ export default function SingleStaffPage() {
                     </Card>
                     <PersonalInfoCard employee={{
                         ...staff,
-                        profileImageUrl: staff.profileImage?.url ?? null
+                        profileImageUrl: staff.account?.profileImage?.url ?? null
                     }} />
                     <FinancialInfoCard employee={staff} />
                 </section>
