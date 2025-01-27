@@ -65,7 +65,7 @@ export const useAxios = (): AxiosInstance => {
 
                     if (response?.status === 200) {
                         const newAccessToken = response.data.access_token;
-                        setAuth(newAccessToken);
+                        setAuth({ accessToken: newAccessToken, user: response.data.user });
 
                         axiosInstance.defaults.headers.Authorization = `Bearer ${newAccessToken}`;
                         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
