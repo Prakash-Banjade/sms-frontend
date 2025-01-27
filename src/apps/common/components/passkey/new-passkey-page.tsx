@@ -33,7 +33,7 @@ export default function NewPassKeyPage() {
 
             try {
                 setLoadingText('Waiting for input from browser interaction...');
-                const registrationResponse = await startRegistration({ optionsJSON: challengePayload, useAutoRegister: true });
+                const registrationResponse = await startRegistration({ optionsJSON: challengePayload });
                 setLoadingText('Adding passkey...');
 
                 const response = await axios.post(`/${QueryKey.WEB_AUTHN}/verify-register`, {

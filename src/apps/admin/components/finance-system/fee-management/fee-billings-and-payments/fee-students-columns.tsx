@@ -35,6 +35,15 @@ export const feeStudentsColumns: ColumnDef<TStudentsWithLedgerResponse['data'][0
     {
         header: "Class",
         accessorKey: "classRoomName",
+        cell: ({ row }) => {
+            return (
+                <p className="whitespace-nowrap">
+                    <span>{row.original.classRoomName}</span>
+                    <br />
+                    <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
+                </p>
+            )
+        }
     },
     {
         accessorKey: "ledgerAmount",

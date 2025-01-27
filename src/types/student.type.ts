@@ -7,6 +7,7 @@ export type TStudent_BasicInfo = {
     rollNo: number,
     studentId: number,
     classRoomName: string;
+    faculty: string;
 }
 
 export type TStudent_BasicInfoResponse = {

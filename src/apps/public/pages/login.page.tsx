@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { LoginForm as LoginByPasswordForm } from "../components/login-page/login-form"
-import { KeyRound } from "lucide-react"
+import { KeyRound, SquareAsterisk } from "lucide-react"
 import { Icons } from "@/components/ui/icons"
 import { useState } from "react"
 import LoginByPasskeyForm from "../components/login-page/login-by-passkey-form"
@@ -65,7 +65,7 @@ export default function LoginPage() {
               className="w-full"
               onClick={() => !isFormSubmitting && setSearchParams("method", "password")}
             >
-              <KeyRound className="h-4 w-4" />
+              <SquareAsterisk className="h-4 w-4" />
               Use password to login
             </Button>
           )

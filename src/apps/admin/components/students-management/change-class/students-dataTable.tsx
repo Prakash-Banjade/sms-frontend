@@ -133,5 +133,14 @@ const columns: ColumnDef<TStudent_BasicInfo>[] = [
     {
         header: "Class",
         accessorKey: "classRoomName",
+        cell: ({ row }) => {
+            return (
+                <p className="whitespace-nowrap">
+                    <span>{row.original.classRoomName}</span>
+                    <br />
+                    <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
+                </p>
+            )
+        }
     },
 ]

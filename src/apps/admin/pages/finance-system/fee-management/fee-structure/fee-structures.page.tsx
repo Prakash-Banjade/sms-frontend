@@ -29,7 +29,9 @@ export default function FeeStructuresPage() {
             description="Manage fee structures for fees of each class room"
         >
             <section className="flex justify-between gap-5 items-end">
-                <ClassRoomSearchFilterInputs onlyClassRoom />
+                <section className="flex gap-5">
+                    <ClassRoomSearchFilterInputs onlyClassRoom include="classRoom" />
+                </section>
 
                 {
                     searchParams.get("classRoomId") && (

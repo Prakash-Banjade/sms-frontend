@@ -150,6 +150,7 @@ export default function FeeInvoiceForm({ feeStudent: { chargeHeads, feeStructure
     }
 
     const includeAdHocCharge = (fs: feeInvoiceSchemaType['invoiceItems'][0]) => {
+        console.log(fs)
         form.reset({
             ...form.getValues(),
             invoiceItems: [

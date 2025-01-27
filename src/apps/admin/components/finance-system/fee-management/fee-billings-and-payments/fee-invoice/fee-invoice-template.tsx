@@ -30,11 +30,6 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                 {/* Header */}
                 <div className="mb-8 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        {/* <img
-                        src="/placeholder.svg?height=80&width=80"
-                        alt="School Logo"
-                        className="h-20 w-20"
-                    /> */}
                         <School size={80} />
 
                         <div>

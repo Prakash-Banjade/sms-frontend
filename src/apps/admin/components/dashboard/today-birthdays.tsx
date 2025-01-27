@@ -3,11 +3,11 @@ import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
 import { Link } from "react-router-dom"
 import { QueryKey } from "@/react-query/queryKeys"
-import LeaveRequestsLoadingSkeleton from "./leave-request-skeleton"
 import { useAuth } from "@/contexts/auth-provider"
 import { useFetchData } from "@/hooks/useFetchData"
 import { Role } from "@/types/global.type"
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type TBirthDayResponse = {
     totalCount: number;
@@ -29,7 +29,7 @@ export default function TodayBirthDays() {
     });
     const { payload } = useAuth()
 
-    if (isLoading) return <LeaveRequestsLoadingSkeleton />;
+    if (isLoading) return <LoadingSkeleton />;
 
     return (
         <Card className="w-full h-fit">
@@ -73,6 +73,32 @@ export default function TodayBirthDays() {
                     </CardFooter>
                 )
             }
+        </Card>
+    )
+}
+
+const LoadingSkeleton = () => {
+    return (
+        <Card className="w-full h-fit">
+            <CardHeader>
+                <CardTitle>
+                    <Skeleton className="h-7 w-48" />
+                </CardTitle>
+                <Skeleton className="h-5 max-w-96 w-[40%] mt-1" />
+            </CardHeader>
+            <CardContent>
+                <section className="flex gap-3 flex-wrap">
+                    {
+                        Array.from({ length: 2 }).map((_, index) => (
+                            <Card key={index} className="group p-3 px-5 border-none bg-secondary/20 flex flex-col items-center justify-center w-40">
+                                <Skeleton className="size-16 mb-2 rounded-full" />
+                                <Skeleton className="h-5 w-28" />
+                                <Skeleton className="h-4 w-20 mt-1" />
+                            </Card>
+                        ))
+                    }
+                </section>
+            </CardContent>
         </Card>
     )
 }

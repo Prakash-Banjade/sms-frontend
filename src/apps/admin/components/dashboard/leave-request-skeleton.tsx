@@ -9,7 +9,7 @@ export default function LeaveRequestsLoadingSkeleton() {
                 <CardTitle>
                     <Skeleton className="h-7 w-48" />
                 </CardTitle>
-                <Skeleton className="h-5 w-96 mt-1" />
+                <Skeleton className="h-5 max-w-96 w-[40%] mt-1" />
             </CardHeader>
             <CardContent>
                 <Tabs defaultValue="students" className="space-y-4">
@@ -20,15 +20,6 @@ export default function LeaveRequestsLoadingSkeleton() {
                     <TabsContent value="students" className="space-y-4">
                         {[...Array(2)].map((_, index) => (
                             <LeaveRequestItemSkeleton key={`student-${index}`} />
-                        ))}
-                        <div className="flex justify-between gap-5 items-center text-sm text-muted-foreground">
-                            <Skeleton className="h-4 w-20" />
-                            <Skeleton className="h-4 w-16" />
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="teachers" className="space-y-4">
-                        {[...Array(2)].map((_, index) => (
-                            <LeaveRequestItemSkeleton key={`teacher-${index}`} />
                         ))}
                         <div className="flex justify-between gap-5 items-center text-sm text-muted-foreground">
                             <Skeleton className="h-4 w-20" />
