@@ -46,8 +46,8 @@ export default function SettingsPage() {
                 tabsObj.map(tab => (
                   <TabsTrigger
                     className={cn(
-                      "capitalize @5xl:!w-full !block text-left !text-foreground py-2.5 hover:underline rounded-lg @5xl:pr-20",
-                      tab.name === data && "!bg-secondary hover:no-underline"
+                      "capitalize @5xl:!w-full !block text-left !text-foreground py-2.5 hover:underline rounded-lg @5xl:pr-20 hover:bg-primary/10",
+                      tab.name === data && "!bg-primary !text-primary-foreground hover:no-underline"
                     )}
                     key={tab.name}
                     value={tab.name}

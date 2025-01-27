@@ -33,9 +33,9 @@ export function AppSidebarHeader() {
                         <DropdownMenuTrigger asChild>
                             <SidebarMenuButton
                                 size="lg"
-                                className={cn(payload?.role === Role.SUPER_ADMIN ? "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground" : "pointer-events-none")}
+                                className={cn(payload?.role === Role.SUPER_ADMIN ? "data-[state=open]:bg-accent data-[state=open]:text-accent-foreground" : "pointer-events-none")}
                             >
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                                     <School className="size-5" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">

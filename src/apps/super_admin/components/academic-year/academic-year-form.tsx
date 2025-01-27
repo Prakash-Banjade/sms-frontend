@@ -59,13 +59,13 @@ export default function AcademicYearForm(props: Props) {
 
         if (response?.data?.message) {
             onDialogClose();
-            navigate(`/${payload?.role}/academic-years`);
         }
     }
 
     const onDialogClose = () => {
         form.reset();
         props.setIsOpen && props.setIsOpen(false);
+        navigate(`/${payload?.role}/academic-years`);
     }
 
     return (

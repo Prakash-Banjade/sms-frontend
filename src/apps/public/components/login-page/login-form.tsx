@@ -12,6 +12,7 @@ import { jwtDecode } from "jwt-decode"
 import RememberMe from "./remember-me"
 import { AuthMessage, EMAIL_REGEX } from "@/CONSTANTS"
 import toast from "react-hot-toast"
+import { buttonVariants } from "@/components/ui/button"
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {
     setIsFormSubmitting: React.Dispatch<React.SetStateAction<boolean>>
@@ -94,7 +95,7 @@ export function LoginForm({ className, setIsFormSubmitting, ...props }: LoginFor
                         <p className="text-sm text-muted-foreground mt-2 text-right">
                             <Link
                                 to="/auth/forgot-password"
-                                className="hover:underline"
+                                className={buttonVariants({ variant: 'link', className: '!p-0 h-fit' })}
                                 state={{
                                     email: EMAIL_REGEX.test(form.getValues('email')) ? form.getValues('email') : ''
                                 }}

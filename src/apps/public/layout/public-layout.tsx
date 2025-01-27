@@ -9,7 +9,9 @@ export default function PublicLayout() {
     return payload?.role ? (
         <Navigate to={`/${payload.role}/dashboard`} replace state={{ from: location }} />
     ) : (
-        <div className="relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 min-w-full">
+        <div
+            className="relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 min-w-full"
+        >
             <AuthSideView />
             <Outlet />
         </div>

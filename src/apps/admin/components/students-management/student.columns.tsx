@@ -107,7 +107,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     },
     {
         accessorKey: "Route Stop",
-        header: "Transport Route stop",
+        header: () => <span className="whitespace-nowrap">Transport Route stop</span>,
         cell: ({ row }) => {
             return row.original.routeStop ? <span>{row.original.routeStop}</span> : <span className="text-muted-foreground">-</span>
         }
