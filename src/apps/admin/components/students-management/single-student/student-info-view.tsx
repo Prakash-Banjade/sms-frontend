@@ -28,7 +28,7 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
     return (
         <Card className="@container">
             <CardHeader className="flex @xs:flex-row flex-col items-center gap-4">
-                <ProfileAvatar src={getImageUrl(student.account?.profileImage?.url, 'w=250')} name={`${student.firstName} ${student.lastName}`} className="@lg:size-36 size-24 text-4xl" />
+                <ProfileAvatar src={getImageUrl(student.account?.profileImage?.url, 'w=150')} name={`${student.firstName} ${student.lastName}`} className="@lg:size-36 size-24 text-4xl" />
                 <div>
                     <CardTitle className="text-2xl capitalize">{student.firstName} {student.lastName}</CardTitle>
                     <p className="text-muted-foreground">Student ID: {student.studentId}</p>
@@ -122,23 +122,31 @@ export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId
                     <div className="grid lg:grid-cols-2 gap-4">
                         <InfoItem label="National ID Card No" value={student.nationalIdCardNo} />
                         <InfoItem label="Birth Certificate Number" value={student.birthCertificateNumber} />
-                        <InfoItem label="Bank Name" value={student.bankName || 'N/A'} className="capitalize" />
-                        <InfoItem label="Bank Account Number" value={student.bankAccountNumber || 'N/A'} />
-                        <InfoItem label="IFSC Code" value={student.ifscCode || 'N/A'} />
-                        <div className="space-y-1">
-                            <p className="text-sm font-medium text-muted-foreground">Document Attachments</p>
-                            <ul>
-                                {
-                                    student.documentAttachments?.map(attachment => (
-                                        <li key={attachment.id}>
-                                            <a href={attachment.url} target="_blank" rel="noreferrer" className="text-blue-500 text-sm hover:underline">
-                                                {truncateFilename(attachment.originalName, 40)}
-                                            </a>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
+                        {
+                            student.bankName && (
+                                <>
+                                    <InfoItem label="Bank Name" value={student.bankName || 'N/A'} className="capitalize" />
+                                    <InfoItem label="Bank Account Name" value={student.bankAccountName || 'N/A'} />
+                                    <InfoItem label="Bank Account Number" value={student.bankAccountNumber || 'N/A'} />
+                                </>
+                            )
+                        }
+                        {
+                            student.documentAttachments?.length > 0 && <div className="space-y-1">
+                                <p className="text-sm font-medium text-muted-foreground">Document Attachments</p>
+                                <ul>
+                                    {
+                                        student.documentAttachments?.map(attachment => (
+                                            <li key={attachment.id}>
+                                                <a href={attachment.url} target="_blank" rel="noreferrer" className="text-blue-500 text-sm hover:underline">
+                                                    {truncateFilename(attachment.originalName, 40)}
+                                                </a>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
+                        }
                     </div>
                 </section>
 

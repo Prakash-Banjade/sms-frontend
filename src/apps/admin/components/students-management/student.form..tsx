@@ -82,6 +82,7 @@ export default function StudentForm(props: Props) {
                                 placeholder="eg. John"
                                 description="First name of the student"
                                 required
+                                max={20}
                             />
 
                             <AppForm.Text<studentSchemaType>
@@ -90,6 +91,7 @@ export default function StudentForm(props: Props) {
                                 placeholder="eg. Doe"
                                 description="Last name of the student"
                                 required
+                                max={50}
                             />
 
                             <AppForm.Select<studentSchemaType>
@@ -282,6 +284,7 @@ export default function StudentForm(props: Props) {
                             label="Bank Name"
                             placeholder="eg. ICICI Bank"
                             description="Bank name of the account. If not leave blank."
+                            max={50}
                         />
 
                         <AppForm.Text<studentSchemaType>
@@ -289,6 +292,7 @@ export default function StudentForm(props: Props) {
                             label="Account Name"
                             placeholder="eg. John Doe"
                             description="Account name of the account. If not leave blank."
+                            max={50}
                         />
 
                         <AppForm.Text<studentSchemaType>
@@ -308,6 +312,7 @@ export default function StudentForm(props: Props) {
                             label="Previous School Name"
                             placeholder="eg. St. Xavier's School"
                             description="Name of the previous school"
+                            max={80}
                         />
 
                         <AppForm.Textarea<studentSchemaType>

@@ -65,11 +65,10 @@ export type TSingleStudent = {
     permanentAddress: string,
     nationalIdCardNo: string,
     birthCertificateNumber: string,
-    additionalNotes: string | null,
     documentAttachments: IFileUploadResponse['files'],
     bankName: string,
+    bankAccountName: string,
     bankAccountNumber: string,
-    ifscCode: string,
     previousSchoolName: string,
     previousSchoolDetails: string | null,
     guardians: {
