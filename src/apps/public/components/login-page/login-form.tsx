@@ -91,6 +91,8 @@ export function LoginForm({ className, setIsFormSubmitting, ...props }: LoginFor
                             label="Password"
                             name="password"
                             placeholder="********"
+                            onPaste={(e) => e.preventDefault()}
+                            onCopy={(e) => e.preventDefault()}
                         />
                         <p className="text-sm text-muted-foreground mt-2 text-right">
                             <Link
