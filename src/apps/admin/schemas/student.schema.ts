@@ -5,8 +5,8 @@ import { z } from 'zod';
 
 const guardianSchema = z.object({
     id: z.string().uuid({ message: 'Invalid ID' }).optional(), // this is used to perform cascading in through student table in backend
-    firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),
-    lastName: z.string().min(1, { message: 'Last name is required' }).regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' }),
+    firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }).max(20, { message: 'First name seems too long. Max 20 characters.' }),
+    lastName: z.string().min(1, { message: 'Last name is required' }).regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' }).max(50, { message: 'Last name seems too long. Max 50 characters.' }),
     phone: z.string().regex(PHONE_NUMBER_REGEX, { message: 'Enter a valid phone number' }),
     relation: z.nativeEnum(EGuardianRelation, { message: 'Relation is required' }),
     email: z.string().refine(val => (!!val && EMAIL_REGEX.test(val)) || !val, { message: 'Invalid email' }).nullish(), // optional email field should be treated like this
@@ -43,8 +43,8 @@ export const studentSchema = z.object({
         .nullish(),
 
     // PERSONAL INFORMATION
-    firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }),
-    lastName: z.string().min(1, { message: 'Last name is required' }).regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' }),
+    firstName: z.string().min(1, { message: 'First name is required' }).regex(NAME_REGEX, { message: 'First name can only contain alphabets' }).max(20, { message: 'First name seems too long. Max 20 characters.' }),
+    lastName: z.string().min(1, { message: 'Last name is required' }).regex(NAME_WITH_SPACE_REGEX, { message: 'Seems like last name is invalid' }).max(50, { message: 'Last name seems too long. Max 50 characters.' }),
     gender: z.nativeEnum(Gender, { errorMap: () => ({ message: 'Invalid gender' }) }),
     dob: z.string()
         .refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date of birth' })
@@ -70,28 +70,27 @@ export const studentSchema = z.object({
     // DOCUMENT INFORMATION
     nationalIdCardNo: z.string().optional(),
     birthCertificateNumber: z.string().optional(),
-    additionalNotes: z.string().max(1000, { message: "Note is too long. Max 1000 characters." }).nullish(),
     documentAttachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(), // values can be URLs or UUIDs
 
     // BANK INFORMATION
-    bankName: z.string().optional(),
-    bankAccountNumber: z.string().optional(),
-    ifscCode: z.string().optional(),
+    bankName: z.string().max(80, { message: "Bank name is too long. Max 80 characters." }).optional(),
+    bankAccountName: z.string().max(80, { message: "Account name is too long. Max 80 characters." }).optional(),
+    bankAccountNumber: z.string().max(80, { message: "Account number is too long. Max 80 characters." }).optional(),
 
     // PREVIOUS SCHOOL INFORMATION
-    previousSchoolName: z.string().max(80, { message: "Name is too long. Max 80 characters." }).nullish(),
-    previousSchoolDetails: z.string().max(1000, { message: "Note is too long. Max 1000 characters." }).nullish(),
+    previousSchoolName: z.string().max(80, { message: "School name is too long. Max 80 characters." }).nullish(),
+    previousSchoolDetails: z.string().max(500, { message: "Note is too long. Max 500 characters." }).nullish(),
 })
 export type studentSchemaType = z.infer<typeof studentSchema>;
 
 export const createStudentSchema = studentSchema.superRefine((data, ctx) => {
     // Validate bank information: if any of the fields are provided, all must be provided
-    const { bankName, bankAccountNumber, ifscCode } = data;
-    if ((bankName || bankAccountNumber || ifscCode) && (!bankName || !bankAccountNumber || !ifscCode)) {
+    const { bankName, bankAccountNumber, bankAccountName } = data;
+    if ((bankName || bankAccountNumber || bankAccountName) && (!bankName || !bankAccountNumber || !bankAccountName)) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'Bank name, account number, and IFSC code are all required if any are provided',
-            path: !bankName ? ['bankName'] : !bankAccountNumber ? ['bankAccountNumber'] : ['ifscCode'],
+            path: !bankName ? ['bankName'] : !bankAccountNumber ? ['bankAccountNumber'] : ['bankAccountName'],
         });
     }
 });
@@ -144,13 +143,12 @@ export const studentFormDefaultValues: Partial<studentSchemaType> = {
     // DOCUMENT INFORMATION
     nationalIdCardNo: "",
     birthCertificateNumber: "",
-    additionalNotes: "",
     documentAttachmentIds: [],
 
     // BANK INFORMATION
     bankName: "",
     bankAccountNumber: "",
-    ifscCode: "",
+    bankAccountName: "",
 
     // PREVIOUS SCHOOL INFORMATION
     previousSchoolName: "",

@@ -19,7 +19,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     {
         accessorKey: "Student ID",
         header: ({ column }) => {
-            return <DataTableColumnHeader column={column} title="Student ID" />
+            return <DataTableColumnHeader column={column} title="Student ID" sortBy="studentId" />
         },
         cell: ({ row }) => row.original.studentId
     },
@@ -60,7 +60,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     {
         accessorKey: "Roll No",
         header: ({ column }) => {
-            return <DataTableColumnHeader column={column} title="Roll no." />
+            return <DataTableColumnHeader column={column} title="Roll no." sortBy="rollNo" />
         },
         cell: ({ row }) => row.original.rollNo,
     },
@@ -94,7 +94,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
     {
         accessorKey: "DOB",
         header: ({ column }) => {
-            return <DataTableColumnHeader column={column} title="Date of birth" />
+            return <DataTableColumnHeader column={column} title="Date of birth" sortBy="dob" />
         },
         cell: ({ row }) => {
             return <span>

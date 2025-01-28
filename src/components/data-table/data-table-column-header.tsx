@@ -28,12 +28,13 @@ enum Order {
 export function DataTableColumnHeader<TData, TValue>({
     column,
     title,
+    sortBy,
     className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
     const { setSearchParams } = useCustomSearchParams();
 
     const handleSort = (order: Order) => {
-        setSearchParams("sortBy", column.id);
+        setSearchParams("sortBy", sortBy ?? column.id);
         setSearchParams("order", order);
     }
 

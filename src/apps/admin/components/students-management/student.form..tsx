@@ -261,13 +261,6 @@ export default function StudentForm(props: Props) {
                             required
                         />
 
-                        <AppForm.Text<studentSchemaType>
-                            name="additionalNotes"
-                            label="Additional Notes"
-                            placeholder="eg. Note"
-                            description="Additional notes of the student"
-                        />
-
                         <AppForm.FileUpload<studentSchemaType>
                             name="documentAttachmentIds"
                             label="Document Attachments"
@@ -292,17 +285,17 @@ export default function StudentForm(props: Props) {
                         />
 
                         <AppForm.Text<studentSchemaType>
+                            name="bankAccountName"
+                            label="Account Name"
+                            placeholder="eg. John Doe"
+                            description="Account name of the account. If not leave blank."
+                        />
+
+                        <AppForm.Text<studentSchemaType>
                             name="bankAccountNumber"
                             label="Account Number"
                             placeholder="eg. 1234567890"
                             description="Account number of the account. If not leave blank."
-                        />
-
-                        <AppForm.Text<studentSchemaType>
-                            name="ifscCode"
-                            label="IFSC Code"
-                            placeholder="eg. 1234567890"
-                            description="IFSC code of the bank. If not leave blank."
                         />
                     </section>
                 </fieldset>

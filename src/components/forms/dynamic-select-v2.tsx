@@ -59,13 +59,16 @@ export function DynamicSelect_V2<T extends FieldValues>({
                             {label}
                             {(required && !isDisabled) && <span className="text-red-500">*</span>}
                         </FormLabel>
-                        {
-                            !required && !isDisabled && <span role="button" onClick={() => handleOnClear()} className="text-muted-foreground text-sm absolute right-0 mt-[2px]">
-                                Clear
-                            </span>
-                        }
                     </div>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={isDisabled || isLoading} {...props} required={(required && !isDisabled)}>
+                    <Select
+                        onValueChange={val => {
+                            val === "reset" ? handleOnClear() : field.onChange(val);
+                        }}
+                        value={field.value}
+                        disabled={isDisabled || isLoading}
+                        {...props}
+                        required={(required && !isDisabled)}
+                    >
                         <FormControl>
                             <SelectTrigger>
                                 {
@@ -74,6 +77,11 @@ export function DynamicSelect_V2<T extends FieldValues>({
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                            {
+                                !required && (
+                                    <SelectItem value="reset" className="text-xs text-muted-foreground">{placeholder}</SelectItem>
+                                )
+                            }
                             {
                                 options?.map(option => (
                                     <SelectItem key={option.value} value={option.value}>
