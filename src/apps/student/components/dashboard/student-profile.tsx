@@ -1,7 +1,6 @@
 import { ProfileAvatar } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList } from "@/components/ui/tabs";
 import { getImageUrl } from "@/lib/utils";
 import { TSingleStudent } from "@/types/student.type";
@@ -100,13 +99,6 @@ const PersonalInfo = ({ student }: { student: TSingleStudent }) => (
             <InfoItem label="National ID" value={student.nationalIdCardNo} />
             <InfoItem label="Birth Certificate" value={student.birthCertificateNumber} />
         </div>
-        {student.additionalNotes && (
-            <>
-                <Separator />
-                <Label>Additional Notes</Label>
-                <p className="mt-1 text-sm">{student.additionalNotes}</p>
-            </>
-        )}
     </div>
 );
 

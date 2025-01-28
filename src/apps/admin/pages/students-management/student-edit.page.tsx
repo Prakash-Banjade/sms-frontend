@@ -35,7 +35,6 @@ function StudentEditForm({ id }: { id: string }) {
             classRoomId: data?.classRoom?.parent?.id ? data?.classRoom?.parent?.id : data?.classRoom?.id,
             sectionId: data?.classRoom?.parent?.id ? data?.classRoom?.id : undefined,
             dormitoryRoomId: data?.dormitoryRoom?.id ?? undefined,
-            additionalNotes: data?.additionalNotes ?? undefined,
             previousSchoolDetails: data?.previousSchoolDetails ?? undefined,
             profileImageId: data?.account?.profileImage?.url ?? undefined,
             routeStopId: data?.routeStop?.id ?? undefined,
