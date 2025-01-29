@@ -1,11 +1,14 @@
 import { ISO_TIME } from "@/CONSTANTS";
 import { TAuthPayload } from "@/contexts/auth-provider";
+import { TClassRoutine } from "@/types/class-routine.type";
 import { Role } from "@/types/global.type";
 import { AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx"
-import { format } from "date-fns";
+import { format, isAfter, isBefore } from "date-fns";
 import { twMerge } from "tailwind-merge"
 import { ToWords } from 'to-words';
+import { compareAsc, parse } from "date-fns";
+import { isEqual } from "lodash";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -59,4 +62,43 @@ export function calculateRatios(
     +(totalGirls / totalStudents).toFixed(2),
     +(totalOthers / totalStudents).toFixed(2),
   ];
+}
+
+export function sortClassRoutines(classRoutines: TClassRoutine[]) {
+  if (!classRoutines?.length) return [];
+
+  return classRoutines.sort((a, b) => compareAsc(
+    parse(a.startTime, 'HH:mm', new Date()),
+    parse(b.startTime, 'HH:mm', new Date())
+  ));
+}
+
+type MilitaryTimeRange = {
+  startTime: string;
+  endTime: string;
+}
+
+/**
+ * @param ranges - List of existing ranges
+ * @param newRange - New range to check
+ * @description - Check if new range overlaps with any existing range
+ * @return True if new range overlaps with any existing range, False otherwise
+ */
+
+export const doesIntersect = (ranges: MilitaryTimeRange[], newRange: MilitaryTimeRange): boolean => {
+  const newStart = parse(newRange.startTime, "HH:mm", new Date());
+  const newEnd = parse(newRange.endTime, "HH:mm", new Date());
+
+  return ranges.some(({ startTime, endTime }) => {
+    const rangeStart = parse(startTime, "HH:mm", new Date());
+    const rangeEnd = parse(endTime, "HH:mm", new Date());
+
+    // If new range is completely outside the existing range, they are mutually exclusive.
+    const isMutuallyExclusive =
+      isBefore(newEnd, rangeStart) || isEqual(newEnd, rangeStart) || // newEnd is before or exactly at rangeStart
+      isAfter(newStart, rangeEnd) || isEqual(newStart, rangeEnd); // newStart is after or exactly at rangeEnd
+
+    // If it's NOT mutually exclusive, they must be overlapping.
+    return !isMutuallyExclusive;
+  });
 }

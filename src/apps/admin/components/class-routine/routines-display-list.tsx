@@ -9,13 +9,12 @@ import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import ClassRoutineForm from "./class-routine.form";
-import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DestructiveDropdownMenuButtonItem, DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 import { QueryKey } from "@/react-query/queryKeys";
 import { useAuth } from "@/contexts/auth-provider";
-import { cn, isAdmin } from "@/lib/utils";
-import { compareAsc, parse } from "date-fns";
+import { cn, isAdmin, sortClassRoutines } from "@/lib/utils";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
 
 export function ClassRoutinesDisplayList() {
@@ -25,17 +24,11 @@ export function ClassRoutinesDisplayList() {
         queryString: createQueryString({
             ...Object.fromEntries(searchParams.entries()),
             dayOfTheWeek: searchParams.get("dayOfTheWeek") ?? EDayOfWeek.MONDAY,
+            skipPagination: true
         }),
     });
 
-    const sortedSchedule = useMemo(() => {
-        if (!data?.data?.length) return [];
-
-        return data.data.sort((a, b) => compareAsc(
-            parse(a.startTime, 'HH:mm', new Date()),
-            parse(b.startTime, 'HH:mm', new Date())
-        ));
-    }, [data]);
+    const sortedSchedule = useMemo(() => sortClassRoutines(data?.data ?? []), [data]);
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -50,14 +43,14 @@ export function ClassRoutinesDisplayList() {
     )
 }
 
-function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
+export function ClassRoutineCard({ classRoutine, className }: { classRoutine: TClassRoutine, className?: string }) {
     const { payload } = useAuth();
 
     const subjectTeacher = classRoutine?.teacher
         ? classRoutine.teacher.firstName + " " + classRoutine.teacher.lastName
         : "**Not Assigned**";
 
-    const className = classRoutine.classRoom?.parent
+    const classRoomName = classRoutine.classRoom?.parent
         ? classRoutine.classRoom?.parent?.name
         : classRoutine.classRoom?.name;
 
@@ -68,7 +61,8 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
     return (
         <Card className={cn(
             "flex flex-col min-w-56",
-            classRoutine.type === ERoutineType.BREAK && "bg-secondary"
+            classRoutine.type === ERoutineType.BREAK && "bg-secondary",
+            className
         )}>
             <CardContent className="p-4 flex flex-col justify-between flex-grow">
                 <div>
@@ -91,7 +85,7 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
                 <div className="mt-2">
                     <p className="font-medium">{classRoutine.startTime} - {classRoutine.endTime}</p>
                     <p className="text-sm text-muted-foreground">
-                        {className}
+                        {classRoomName}
                         {sectionName ? ` - ${sectionName}` : ""}
                     </p>
                 </div>
@@ -103,7 +97,7 @@ function ClassRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
 function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const { getFacultyIdByClassRoomId } = useFacultySearch();
+    const { getFacultyIdByClassRoomId } = useFacultySearch(createQueryString({ include: "section" }));
 
     const { mutateAsync, isPending } = useAppMutation();
 
@@ -162,9 +156,9 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                     <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                         <span>Edit Routine</span>
                     </DropdownMenuButtonItem>
-                    <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
+                    <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                         <span>Delete</span>
-                    </DropdownMenuButtonItem>
+                    </DestructiveDropdownMenuButtonItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </>

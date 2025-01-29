@@ -3,19 +3,26 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { classRoutineDefaultValues, classRoutineSchema, classRoutineSchemaType } from "../../schemas/class-routine.schema";
 import { DayOfWeekMappings, RoutineTypeMappings } from "@/utils/labelToValueMappings";
 import { createQueryString } from "@/utils/create-query-string";
 import { ERoutineType, SelectOption } from "@/types/global.type";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/contexts/auth-provider";
+import { useGetClassRoutines } from "./actions";
+import { doesIntersect } from "@/lib/utils";
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
 
 type Props = ({
     setIsOpen?: undefined;
+    setQueryString: React.Dispatch<React.SetStateAction<string>>;
 } | {
     classRoutineId?: string;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setQueryString?: undefined;
 }) & {
     defaultValues?: Partial<classRoutineSchemaType>;
     selectedTeacher?: SelectOption;
@@ -23,6 +30,9 @@ type Props = ({
 
 export default function ClassRoutineForm(props: Props) {
     const params = useParams();
+    const navigate = useNavigate();
+    const { payload } = useAuth();
+    const [confirmIntersectionOpen, setConfirmIntersectionOpen] = useState(false);
     const id = (!!props.setIsOpen && props.classRoutineId) ? props.classRoutineId : params.id;
 
     const form = useForm<classRoutineSchemaType>({
@@ -32,9 +42,23 @@ export default function ClassRoutineForm(props: Props) {
 
     const { hasSection } = useFacultySearch(createQueryString({ include: "section" }));
 
+    // this is to check if class routine time intersects with any existing class routine
+    const { data: existingClassRoutines } = useGetClassRoutines({
+        queryString: createQueryString({
+            classRoomId: form.getValues("classRoomId"),
+            sectionId: form.getValues("sectionId"),
+            dayOfTheWeek: form.getValues("dayOfTheWeek"),
+            skipPagination: true,
+        }),
+        options: {
+            enabled: !!form.getValues("classRoomId") && !!form.getValues("dayOfTheWeek"),
+        }
+    });
+
     const { mutateAsync } = useAppMutation<Partial<classRoutineSchemaType>, any>();
 
     async function onSubmit(values: classRoutineSchemaType) {
+        console.log(values)
         if (hasSection(values.classRoomId) && !values.sectionId) {
             form.setError("sectionId", { type: "required", message: "Section is required" });
             form.setFocus("sectionId");
@@ -47,6 +71,21 @@ export default function ClassRoutineForm(props: Props) {
             return;
         }
 
+        // check if new class routine time intersects with any existing class routine
+        if (existingClassRoutines?.data?.length) {
+            const newRange = { startTime: values.startTime, endTime: values.endTime };
+            const routines = id ? existingClassRoutines?.data?.filter(routine => routine.id !== id) : existingClassRoutines?.data;
+
+            if (doesIntersect(routines, newRange)) {
+                return setConfirmIntersectionOpen(true);
+            }
+        }
+
+        await submit(values);
+    }
+
+    async function submit(values: classRoutineSchemaType) {
+        console.log(values)
         const response = await mutateAsync({
             method: !!id ? "patch" : "post",
             endpoint: QueryKey.CLASSROUTINE,
@@ -66,6 +105,15 @@ export default function ClassRoutineForm(props: Props) {
     const onDialogClose = () => {
         props.setIsOpen && props.setIsOpen(false);
     }
+
+    // setting query string to show existing schedules
+    useEffect(() => {
+        props?.setQueryString && props?.setQueryString(createQueryString({
+            classRoomId: form.watch('classRoomId'),
+            sectionId: form.watch('sectionId'),
+            dayOfTheWeek: form.watch('dayOfTheWeek'),
+        }));
+    }, [form.watch('classRoomId'), form.watch('sectionId'), form.watch('dayOfTheWeek')])
 
     return (
         <AppForm schema={classRoutineSchema} form={form}>
@@ -159,7 +207,10 @@ export default function ClassRoutineForm(props: Props) {
                 </section>
 
                 <section className="flex gap-4 justify-end">
-                    <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
+                    <AppForm.Cancel action={() => {
+                        onDialogClose();
+                        !props.setIsOpen && navigate(`/${payload?.role}/class-routines`);
+                    }}>Cancel</AppForm.Cancel>
                     <AppForm.Submit>
                         {
                             !!id ? "Save changes" : "Add routine"
@@ -167,6 +218,18 @@ export default function ClassRoutineForm(props: Props) {
                     </AppForm.Submit>
                 </section>
             </form>
+
+            <ResponsiveAlertDialog
+                title="Time range conflice"
+                description="Class routine time intersects with an existing class routine"
+                isOpen={confirmIntersectionOpen}
+                setIsOpen={setConfirmIntersectionOpen}
+                action={form.handleSubmit(submit)}
+                actionLabel="Yes, Add"
+                isLoading={form.formState.isSubmitting}
+                loadingText="Adding..."
+            />
+
         </AppForm>
     )
 }
