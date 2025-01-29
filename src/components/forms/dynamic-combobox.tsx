@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useFormContext, FieldValues } from 'react-hook-form'
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Check, ChevronsUpDown } from 'lucide-react'
@@ -10,7 +10,6 @@ import { TFormFieldProps } from './app-form'
 import { useFetchData } from '@/hooks/useFetchData'
 import { SelectOption } from '@/types/global.type'
 import { QueryKey } from '@/react-query/queryKeys'
-import { createQueryString } from '@/utils/create-query-string';
 import { UseQueryOptions } from '@tanstack/react-query';
 
 interface AppFormDynamicComboboxProps<T> extends TFormFieldProps<T> {
@@ -56,12 +55,12 @@ export function DynamicCombobox<T extends FieldValues>({
 
     const debouncedValue = useDebounce(search, 500);
 
+    const combinedQueryString = useMemo(() => (!!queryString ? `${queryString}` : '') + (!!debouncedValue ? `&search=${debouncedValue}` : ''), [queryString, debouncedValue]);
+
     const { data: options, isLoading } = useFetchData<SelectOption[]>({
-        queryKey: [queryKey, debouncedValue],
+        queryKey: [queryKey, debouncedValue, combinedQueryString],
         endpoint: queryKey + '/' + QueryKey.OPTIONS,
-        queryString: createQueryString({
-            search: debouncedValue,
-        }) + (!!queryString ? `&${queryString}` : ''),
+        queryString: combinedQueryString,
         options: queryOptions,
     });
 
