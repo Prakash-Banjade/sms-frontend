@@ -1,6 +1,7 @@
 import AppForm from "@/components/forms/app-form";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { Button } from "@/components/ui/button";
+import { useFacultySearch } from "@/hooks/useFacultySearch";
 import { QueryKey } from "@/react-query/queryKeys";
 import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +14,8 @@ type Props = {
 
 const getPastStudentsSchema = z.object({
     academicYearId: z.string().uuid({ message: "Select academic year" }),
-    classRoomId: z.string().uuid({ message: "Select class" }).optional(),
+    facultyId: z.string().uuid({ message: "Select faculty" }),
+    classRoomId: z.string().uuid({ message: "Select class" }),
     sectionId: z.string().optional(),
     search: z.string().optional(),
 })
@@ -31,8 +33,17 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
         },
     })
 
+    const { hasSection } = useFacultySearch(createQueryString({ include: "section" }));
+
     const onSubmit = (values: TGetPastStudentsSchema) => {
+        if (hasSection(values.classRoomId) && !values.sectionId) {
+            form.setError("sectionId", { type: "required", message: "Section is required" });
+            form.setFocus("sectionId");
+            return;
+        }
+
         setSearchQuery(createQueryString({
+            facultyId: values.facultyId,
             classRoomId: values.classRoomId,
             sectionId: values.sectionId,
             search: values.search,
@@ -43,11 +54,11 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
 
     return (
         <AppForm schema={getPastStudentsSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6 flex-wrap">
                 <AppForm.Text<TGetPastStudentsSchema>
                     name="search"
                     label="Student Name or ID"
-                    placeholder="eg. Search by name or ID"
+                    placeholder="Search..."
                     min={1}
                 />
 
@@ -65,7 +76,7 @@ export default function GetPastStudents({ setSearchQuery }: Props) {
                     containerClassName="min-w-[200px]"
                 />
 
-                <ClassSelectionFormField include="section" noDescription />
+                <ClassSelectionFormField include="section" required={{ classRoomId: true, sectionId: true, facultyId: true }} noDescription />
 
                 <Button type="submit" className="self-end" disabled={!form.watch('academicYearId')}>
                     Search

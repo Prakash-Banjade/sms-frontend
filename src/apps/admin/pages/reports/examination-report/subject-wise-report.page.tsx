@@ -27,11 +27,12 @@ export default function ExaminationReport_SubjectWise() {
 function ReportSection() {
     const { searchParams } = useCustomSearchParams();
 
-    const { examTypeId, classRoomId, examSubjectId } = useMemo(() => {
+    const { examTypeId, classRoomId, examSubjectId, academicYearId } = useMemo(() => {
         return {
             classRoomId: searchParams.get('classRoomId'),
             examSubjectId: searchParams.get('subjectId'),
             examTypeId: searchParams.get('examTypeId'),
+            academicYearId: searchParams.get('academicYearId'),
         }
     }, [searchParams]);
 
@@ -39,6 +40,7 @@ function ReportSection() {
         queryString: createQueryString({
             classRoomId,
             examSubjectId,
+            academicYearId,
             examTypeId,
             page: searchParams.get('page'),
             take: searchParams.get('take'),

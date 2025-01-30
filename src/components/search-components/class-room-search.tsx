@@ -6,6 +6,7 @@ import { useGetSubjectOptions } from '@/apps/admin/components/subjects/data-acce
 import { createQueryString } from '@/utils/create-query-string';
 import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
 import { TClassRoomOptions } from '@/types/class.type';
+import { StaticCombobox } from '../ui/static-combobox';
 
 export const FACULTY_SEARCH_KEY = "facultyId"
 export const CLASS_ROOM_SEARCH_KEY = "classRoomId"
@@ -78,7 +79,22 @@ export default function ClassRoomSearchFilterInputs({
         <>
             <div className="space-y-2">
                 <Label>Faculty</Label>
-                <Select
+                <section>
+                    <StaticCombobox
+                        options={faculties?.map(faculty => ({ label: faculty.name, value: faculty.id })) ?? []}
+                        placeholder="Select a faculty"
+                        onSelectChange={(val) => {
+                            setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : val);
+                            setSearchParams(classRoomKey, undefined);
+                            setSearchParams(SECTION_SEARCH_KEY, undefined);
+                            setSelectedClassRoom(undefined);
+
+                            const faculty = faculties?.find((faculty) => faculty.id === val);
+                            setSelectedFaculty(faculty);
+                        }}
+                    />
+                </section>
+                {/* <Select
                     value={searchParams.get(FACULTY_SEARCH_KEY) ?? ''}
                     onValueChange={val => {
                         setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : val);
@@ -102,7 +118,7 @@ export default function ClassRoomSearchFilterInputs({
                             ))}
                         </SelectGroup>
                     </SelectContent>
-                </Select>
+                </Select> */}
             </div>
 
             <section className='relative space-y-2'>

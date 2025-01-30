@@ -120,7 +120,7 @@ export default function ClassSelectionFormField({
                 render={({ field }) => (
                     <FormItem>
                         <FormLabel>Class</FormLabel>
-                        {required?.classRoomId && <RequiredAsterisk />}
+                        {required?.classRoomId && !!selectedFaculty?.classRooms?.length && <RequiredAsterisk />}
                         <Select
                             value={field.value ?? ''}
                             onValueChange={val => {
@@ -135,7 +135,7 @@ export default function ClassSelectionFormField({
                                 !selectedFaculty?.classRooms?.length
                                 || isLoading
                             }
-                            required={required?.classRoomId}
+                            required={required?.classRoomId && !!selectedFaculty?.classRooms?.length}
                         >
                             <SelectTrigger className="min-w-[200px]">
                                 <SelectValue placeholder="Select a class" />
