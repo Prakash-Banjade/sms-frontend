@@ -5,11 +5,11 @@ import { MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
-import { calculateExactAge } from "@/utils/calculate-age"
 import { TStaff } from "@/types/staff.type"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { differenceInYears } from "date-fns"
 
 export const staffsColumns: ColumnDef<TStaff>[] = [
     {
@@ -66,7 +66,7 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
             return <span>
                 {formatDate({ date: new Date(row.original.dob) })}&nbsp;
                 <span className="text-xs text-muted-foreground">
-                    ({calculateExactAge(new Date(row.original.dob))} Y)
+                    ({differenceInYears(new Date(), new Date(row.original.dob))} Y)
                 </span>
             </span>
         }

@@ -5,11 +5,11 @@ import { MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
-import { calculateExactAge } from "@/utils/calculate-age"
 import { TStudent } from "@/types/student.type"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
+import { differenceInYears } from "date-fns"
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
     {
@@ -100,7 +100,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
             return <span>
                 {formatDate({ date: new Date(row.original.dob) })}&nbsp;
                 <span className="text-xs text-muted-foreground">
-                    ({calculateExactAge(new Date(row.original.dob))} Y)
+                    ({differenceInYears(new Date(), new Date(row.original.dob))} Y)
                 </span>
             </span>
         }
