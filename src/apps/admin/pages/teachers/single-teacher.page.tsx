@@ -1,9 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { User, Phone, Mail, School } from "lucide-react"
+import { User, Phone, Mail } from "lucide-react"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import { useFetchData } from "@/hooks/useFetchData"
-import { TSingleTeacherDetail } from "@/types/teacher.type"
+import { SingleTeacherAssignedclass, TSingleTeacherDetail } from "@/types/teacher.type"
 import { useParams } from "react-router-dom"
 import { QueryKey } from "@/react-query/queryKeys"
 import { getImageUrl } from "@/lib/utils"
@@ -63,18 +62,7 @@ export default function SingleTeacherPage() {
                             <CardTitle>Assigned Classes</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex flex-wrap gap-2">
-                                {
-                                    teacher.assignedClassRooms?.filter(Boolean)?.length
-                                        ? teacher.assignedClassRooms?.filter(Boolean)?.map((cls, index) => (
-                                            <Badge key={index} variant="secondary">
-                                                <School className="w-4 h-4 mr-2 inline" />
-                                                {cls}
-                                            </Badge>
-                                        ))
-                                        : <span className="text-muted-foreground">No class assigned</span>
-                                }
-                            </div>
+                            <AssignedClassRoomsContent classes={teacher.assignedClassRooms} />
                         </CardContent>
                     </Card>
                 </section>
@@ -82,5 +70,27 @@ export default function SingleTeacherPage() {
 
             <TeacherClassSchecule />
         </div>
+    )
+}
+
+const AssignedClassRoomsContent = ({ classes }: { classes: TSingleTeacherDetail["assignedClassRooms"] }) => {
+    const classesArray = (
+        typeof classes === 'string'
+            ? JSON.parse(classes) as SingleTeacherAssignedclass[]
+            : classes
+    ).filter(Boolean);
+
+    return (
+        <ul className="flex flex-wrap gap-3 flex-col">
+            {
+                classesArray.length > 0
+                    ? classesArray.map((cls, index) => (
+                        <li key={index} className="list-disc list-inside">
+                            {cls?.classRoomName} <span className="text-muted-foreground text-sm">({cls?.facultyName})</span>
+                        </li>
+                    ))
+                    : <span className="text-muted-foreground">No class assigned</span>
+            }
+        </ul>
     )
 }
