@@ -4,6 +4,7 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
 import { EClassType, SelectOption } from "@/types/global.type";
+import { createQueryString } from "@/utils/create-query-string";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -138,6 +139,12 @@ export default function ClassRoomForm(props: Props) {
                         description='Select the class teacher'
                         queryKey={QueryKey.TEACHERS}
                         defaultSelected={props.selectedClassTeacherOption}
+                        queryString={createQueryString({
+                            facultyId: form.watch('facultyId'),
+                        })}
+                        options={{
+                            enabled: !!form.watch('facultyId'),
+                        }}
                     />
 
                 </section>

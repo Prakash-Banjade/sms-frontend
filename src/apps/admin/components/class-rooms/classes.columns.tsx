@@ -115,7 +115,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
                             defaultValues={{
                                 ...row.original,
                                 classTeacherId: row.original.classTeacherId,
-                                facultyId: row.original.id, // mock to pass the schema, not neede for backend
+                                facultyId: row.original.facultyId, // mock to pass the schema, not neede for backend
                             }}
                             selectedClassTeacherOption={
                                 (row.original.classTeacherId && row.original.classTeacherName)
