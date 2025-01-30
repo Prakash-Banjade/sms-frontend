@@ -39,7 +39,8 @@ export function DynamicCombobox<T extends FieldValues>({
     onChange: onChangeProp,
     queryString,
     multiple = false,
-    options: queryOptions
+    options: queryOptions,
+    disableOnNoOption = false,
 }: AppFormDynamicComboboxProps<T>) {
     const { control } = useFormContext();
     const [selectedValues, setSelectedValues] = useState<SelectOption[] | null>(
@@ -84,7 +85,7 @@ export function DynamicCombobox<T extends FieldValues>({
                                 role="combobox"
                                 aria-expanded={open}
                                 className="w-full justify-between h-max min-h-10 overflow-hidden disabled:!cursor-not-allowed disabled:pointer-events-auto"
-                                disabled={disabled || isLoading}
+                                disabled={disabled || isLoading || (disableOnNoOption && !options?.length)}
                             >
                                 {
                                     selectedValues?.length

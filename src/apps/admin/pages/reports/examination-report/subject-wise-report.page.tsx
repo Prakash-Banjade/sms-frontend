@@ -50,7 +50,7 @@ function ReportSection() {
 
     if (isLoading) return <div className="mt-20 text-center">Loading...</div>;
 
-    if (!examTypeId || !classRoomId || !examSubjectId) return <div className="mt-20 text-center">Select class room, subject and exam type to view report</div>;
+    if (!examTypeId || !classRoomId || !examSubjectId) return <div className="mt-20 text-center text-muted-foreground">Select class room, subject and exam type to view report</div>;
 
     if (!data) return <div className="mt-20 text-center text-muted-foreground">No data found</div>;
 
