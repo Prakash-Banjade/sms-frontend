@@ -1,5 +1,5 @@
 .fc {
-  @apply font-sans bg-background text-foreground !important;
+  @apply font-sans bg-card text-foreground !important;
 }
 
 /* Toolbar Styles */
@@ -141,13 +141,8 @@
   @apply opacity-50 cursor-not-allowed !important;
 }
 
-/* Dark mode specific overrides */
-.dark .fc {
-  @apply bg-background !important;
-}
-
-.dark .fc th {
-  @apply bg-background border-border !important;
+.fc th {
+  @apply bg-secondary border-border !important;
 }
 
 .dark .fc td {

@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-    :root {
+    :root.orange {
         --background: 0 0% 100%;
         --foreground: 20 14.3% 4.1%;
         --card: 0 0% 100%;
@@ -44,7 +42,7 @@
         --warning-foreground: 0 0% 10%;
     }
 
-    .dark {
+    .dark.orange {
         --background: 20 14.3% 4.1%;
         --foreground: 60 9.1% 97.8%;
         --card: 20 14.3% 4.1%;
@@ -83,17 +81,12 @@
     }
 }
 
-* {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-}
-
 @layer base {
-    * {
-        @apply border-border;
-    }
+  * {
+    @apply border-border;
+  }
 
-    body {
-        @apply bg-background text-foreground;
-    }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

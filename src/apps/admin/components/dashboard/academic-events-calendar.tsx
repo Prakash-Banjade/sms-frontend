@@ -127,7 +127,7 @@ export function AcademicYearCalendar() {
         />
       </ResponsiveDialog>
 
-      <div className="rounded-xl p-6 shadow-sm border border-border">
+      {/* <div className="rounded-xl p-6 shadow-sm border border-border"> */}
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -161,7 +161,7 @@ export function AcademicYearCalendar() {
           eventContent={renderEventContent}
           eventDrop={handleEventDrop}
         />
-      </div>
+      {/* </div> */}
     </>
   );
 }

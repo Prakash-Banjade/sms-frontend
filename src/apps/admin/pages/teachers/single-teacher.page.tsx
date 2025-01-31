@@ -31,10 +31,20 @@ export default function SingleTeacherPage() {
                         <CardHeader>
                             <CardTitle className="text-2xl font-bold">Teacher Information</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                            <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
-                                <ProfileAvatar name={teacher.fullName} src={getImageUrl(teacher.profileImageUrl, 'w=200&q=80')} className="size-48" />
-                                <div className="space-y-2">
+                        <CardContent className="@container/parent">
+                            <div className="flex flex-col @xl/parent:flex-row items-center @5xl/parent:items-start @xl/parent:items-center space-y-4 @xl/parent:space-y-0 @xl/parent:space-x-6">
+                                <ProfileAvatar
+                                    name={teacher.fullName}
+                                    src={getImageUrl(teacher.profileImageUrl, 'w=200&q=80')}
+                                    className="@xl/parent:size-48 @lg/parent:size-40 @sm/parent:size-36 size-28 text-4xl"
+                                    style={{
+                                        boxShadow: `
+                                        0 0 0 3px hsl(var(--card)),   
+                                        0 0 0 5px hsl(var(--primary)) 
+                                    `
+                                    }}
+                                />
+                                <div className="flex flex-col gap-2 items-center @xl/parent:items-start">
                                     <h2 className="text-2xl font-bold">{teacher.fullName}</h2>
                                     <p className="text-muted-foreground flex items-center">
                                         <User className="w-4 h-4 mr-2" />
@@ -78,7 +88,7 @@ const AssignedClassRoomsContent = ({ classes }: { classes: TSingleTeacherDetail[
         typeof classes === 'string'
             ? JSON.parse(classes) as SingleTeacherAssignedclass[]
             : classes
-    ).filter(Boolean);
+    ).filter(cls => !!cls.classRoomName && !!cls.facultyName);
 
     return (
         <ul className="flex flex-wrap gap-3 flex-col">
@@ -89,7 +99,7 @@ const AssignedClassRoomsContent = ({ classes }: { classes: TSingleTeacherDetail[
                             {cls?.classRoomName} <span className="text-muted-foreground text-sm">({cls?.facultyName})</span>
                         </li>
                     ))
-                    : <span className="text-muted-foreground">No class assigned</span>
+                    : <span className="text-muted-foreground">No class assigned!</span>
             }
         </ul>
     )

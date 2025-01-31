@@ -87,9 +87,11 @@ export default function AdminDashboard() {
                         </CardContent>
                     </Card>
 
-                    <section className='mt-6'>
-                        <AcademicYearCalendar />
-                    </section>
+                    <Card className='mt-6'>
+                        <CardContent className='p-6'>
+                            <AcademicYearCalendar />
+                        </CardContent>
+                    </Card>
 
                 </section>
 
@@ -98,6 +100,6 @@ export default function AdminDashboard() {
                     <TodayBirthDays />
                 </section>
             </div>
-        </div>
+        </div >
     )
 }

@@ -46,8 +46,8 @@ export type TeacherWithAttendanceResponse = (TEntityWithAttendance & {})[]
 export type TeacherWithAttendanceUpdate = (TEntityWithAttendanceUpdate & {})[]
 
 export type SingleTeacherAssignedclass = {
-    classRoomName: string,
-    facultyName: string
+    classRoomName: string | null,
+    facultyName: string | null,
 }
 
 export type TSingleTeacherDetail = {
@@ -68,7 +68,7 @@ export type TSingleTeacherDetail = {
     shortDescription: string | null;
     accountId: string;
     profileImageUrl: string | null;
-    assignedClassRooms: SingleTeacherAssignedclass[] | string | null[];
+    assignedClassRooms: SingleTeacherAssignedclass[] | string;
 }
 
 export type TeacherClassSchedule = {
