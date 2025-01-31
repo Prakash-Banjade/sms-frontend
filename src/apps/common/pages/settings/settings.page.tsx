@@ -1,80 +1,72 @@
 import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
-import { cn } from "@/lib/utils";
 import { z } from "zod";
 import PersonalInfo from "../../components/settings/personal-info";
 import PasswordAndAuthentication from "../../components/settings/password-and-authentication";
 import SessionDevices from "../../components/settings/session-devices";
+import SettingTabs from "../../components/settings/setting-tabs";
+import { useMemo } from "react";
+import Appearance from "../../components/settings/appearance/appearance";
 
-const tabsObj = [
+export const settignsTabs = [
   {
+    id: 0,
     name: 'personal-info',
-    label: 'Personal Info',
+    label: 'My Info',
     content: <PersonalInfo />,
   },
   {
+    id: 1,
+    name: 'appearance',
+    label: 'Appearance',
+    content: <Appearance />,
+  },
+  {
+    id: 2,
     name: 'password-and-authentication',
     label: 'Password and Authentication',
     content: <PasswordAndAuthentication />,
   },
   {
+    id: 3,
     name: 'device-activity',
     label: 'Your Devices',
     content: <SessionDevices />,
   }
 ]
 
-const tabsSchema = z.enum(["personal-info", "password-and-authentication", "device-activity"]);
+const tabsSchema = z.enum(["personal-info", "appearance", "password-and-authentication", "device-activity"]);
 
 export default function SettingsPage() {
   const { searchParams, setSearchParams } = useCustomSearchParams();
 
-  const { success, data } = tabsSchema.safeParse(searchParams.get('tab') || tabsObj[0].name);
+  const activeTab: typeof settignsTabs[0]['id'] = useMemo(() => {
+    const defaultTab = settignsTabs[0].id;
+    const { success, data } = tabsSchema.safeParse(searchParams.get('tab') || settignsTabs[0].name);
 
+    if (!success) {
+      setSearchParams('tab', settignsTabs[0].name);
+      return defaultTab;
+    }
+
+    return settignsTabs.find(tab => tab.name === data)?.id ?? defaultTab;
+  }, [searchParams]);
 
   return (
     <ContainerLayout
       title="Settings"
       description="Manage your account settings."
     >
-      <Tabs value={success ? data : tabsObj[0].name} className="w-full @container">
-        <div className="flex @5xl:flex-row flex-col @5xl:gap-20 gap-10">
-          <nav className="border-b @5xl:border-b-0">
-            <TabsList className="flex @5xl:flex-col flex-wrap justify-start gap-4 h-full bg-transparent">
-              {
-                tabsObj.map(tab => (
-                  <TabsTrigger
-                    className={cn(
-                      "capitalize @5xl:!w-full !block text-left !text-foreground py-2.5 hover:underline rounded-lg @5xl:pr-20 hover:bg-primary/10",
-                      tab.name === data && "!bg-primary !text-primary-foreground hover:no-underline"
-                    )}
-                    key={tab.name}
-                    value={tab.name}
-                    onClick={() => setSearchParams('tab', tab.name)}
-                  >
-                    {tab.label}
-                  </TabsTrigger>
-                ))
-              }
-            </TabsList>
-          </nav>
 
-          <div className="w-full @5xl:max-w-[800px]">
-            {
-              tabsObj.map(tab => (
-                <TabsContent
-                  className="!min-w-full"
-                  key={tab.name}
-                  value={tab.name}
-                >
-                  {tab.content}
-                </TabsContent>
-              ))
-            }
-          </div>
-        </div>
-      </Tabs>
+      <section className="max-w-full overflow-x-auto">
+        <SettingTabs defaultActive={activeTab} />
+      </section>
+
+      <div className="max-w-screen-lg w-full mx-auto">
+        {
+          settignsTabs.find(tab => tab.id === activeTab)?.content
+        }
+      </div>
     </ContainerLayout>
   )
 }

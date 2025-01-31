@@ -2,9 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import usePersist from "@/hooks/usePersist"
 
-type Props = {}
-
-export default function RememberMe({ }: Props) {
+export default function RememberMe() {
     const { persist, setPersist } = usePersist();
 
     return (
