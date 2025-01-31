@@ -10,7 +10,7 @@ export default function AuthSideView() {
             </div>
             <Link
                 to="/auth/login"
-                className="absolute left-4 top-4 md:left-8 md:top-8 z-20 flex items-center text-lg font-medium text-white"
+                className="absolute left-4 top-4 md:left-8 md:top-8 z-20 flex items-center text-lg font-medium text-primary"
             >
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-white mr-2">
                     <School className="size-5" />
@@ -20,7 +20,7 @@ export default function AuthSideView() {
             <div
                 className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"
                 style={{
-                    backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)), url('/auth-bg.jpeg')",
+                    backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0)), url('/auth-bg.jpg')",
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                 }}
