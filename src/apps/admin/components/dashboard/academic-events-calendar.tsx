@@ -13,7 +13,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import { startOfDayString } from '@/lib/utils';
-import { format, subDays } from 'date-fns';
+import { addSeconds, format, subDays } from 'date-fns';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -128,39 +128,39 @@ export function AcademicYearCalendar() {
       </ResponsiveDialog>
 
       {/* <div className="rounded-xl p-6 shadow-sm border border-border"> */}
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: 'prev,next today',
-            right: 'title',
-          }}
-          initialView="dayGridMonth"
-          editable={true}
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
-          weekends={true}
-          events={events?.data?.map(event => ({
-            id: event.id,
-            title: event.title,
-            start: event.dateFrom,
-            end: new Date(event.dateTo),
-            description: event.description,
-            eventLocation: event.eventLocation,
-            members: event.members,
-            dateFrom: event.dateFrom,
-            dateTo: event.dateTo,
-            createdAt: event.createdAt,
-            beginTime: event.beginTime,
-            endingTime: event.endingTime,
-          }))}
-          select={handleDateSelect}
-          eventClick={handleEventClick}
-          height="auto"
-          datesSet={handleDatesSet}
-          eventContent={renderEventContent}
-          eventDrop={handleEventDrop}
-        />
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        headerToolbar={{
+          left: 'prev,next today',
+          right: 'title',
+        }}
+        initialView="dayGridMonth"
+        editable={true}
+        selectable={true}
+        selectMirror={true}
+        dayMaxEvents={true}
+        weekends={true}
+        events={events?.data?.map(event => ({
+          id: event.id,
+          title: event.title,
+          start: event.dateFrom,
+          end: event.dateTo === event.dateFrom ? addSeconds(event.dateTo, 1) : event.dateTo,
+          description: event.description,
+          eventLocation: event.eventLocation,
+          members: event.members,
+          dateFrom: event.dateFrom,
+          dateTo: event.dateTo,
+          createdAt: event.createdAt,
+          beginTime: event.beginTime,
+          endingTime: event.endingTime,
+        }))}
+        select={handleDateSelect}
+        eventClick={handleEventClick}
+        height="auto"
+        datesSet={handleDatesSet}
+        eventContent={renderEventContent}
+        eventDrop={handleEventDrop}
+      />
       {/* </div> */}
     </>
   );

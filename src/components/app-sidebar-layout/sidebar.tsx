@@ -9,6 +9,7 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
+    useSidebar,
 } from "@/components/ui/sidebar"
 import { Link, useLocation } from "react-router-dom"
 import {
@@ -23,6 +24,7 @@ import { useAuth } from "@/contexts/auth-provider"
 import { useMemo } from "react"
 import { ScrollArea } from "../ui/scroll-area"
 import { cn } from "@/lib/utils"
+import { filterSidebarMenu } from "./filter-sidebarMenu"
 
 export type TSidebarMenuItem = {
     title: string,
@@ -37,13 +39,19 @@ export type TGroupMenuItem = {
 }
 
 export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
+    const { search } = useSidebar();
+
+    const filteredMenuItems = useMemo(() => {
+        return filterSidebarMenu(menuItems, search);
+    }, [search])
+
     return (
         <Sidebar variant="floating" collapsible="icon">
             <AppSidebarHeader />
             <SidebarContent className="overflow-hidden">
                 <ScrollArea className="max-h-full overflow-auto">
                     {
-                        menuItems.map((item) => (
+                        filteredMenuItems.map((item) => (
                             <SidebarGroup key={item.groupLabel}>
                                 <SidebarGroupLabel>{item.groupLabel}</SidebarGroupLabel>
                                 <SidebarMenu>
@@ -54,6 +62,14 @@ export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
                                 </SidebarMenu>
                             </SidebarGroup>
                         ))
+                    }
+
+                    {
+                        filteredMenuItems.length === 0 && (
+                            <SidebarGroup>
+                                <SidebarGroupLabel>No results found!</SidebarGroupLabel>
+                            </SidebarGroup>
+                        )
                     }
                 </ScrollArea>
             </SidebarContent>
@@ -81,10 +97,12 @@ export function NonCollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
 export function CollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
     const location = useLocation();
     const { payload } = useAuth();
+    const { search } = useSidebar();
 
     const defaultOpen = useMemo<boolean>(() => {
+        if (search.length > 0) return true;
         return !!item.items?.some((subItem) => `/${payload?.role}/${item.url}${!!subItem.url ? `/${subItem.url}` : ''}` === location.pathname)
-    }, [location, payload])
+    }, [location, payload, search])
 
     return (
         <Collapsible

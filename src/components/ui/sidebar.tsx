@@ -16,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -23,6 +24,7 @@ const SIDEBAR_WIDTH = "18rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
+const SIDEBAR_SEARCH_KEY = "s"
 
 type SidebarContext = {
   state: "expanded" | "collapsed"
@@ -32,6 +34,8 @@ type SidebarContext = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  search: string
+  setSearch: (value: string) => void
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null)
@@ -67,6 +71,11 @@ const SidebarProvider = React.forwardRef<
   ) => {
     const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = React.useState(false)
+    const { searchParams, setSearchParams } = useCustomSearchParams();
+
+    const setSearch = React.useCallback((value: string) => {
+      setSearchParams(SIDEBAR_SEARCH_KEY, value);
+    }, [setSearchParams]);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
@@ -124,8 +133,10 @@ const SidebarProvider = React.forwardRef<
         openMobile,
         setOpenMobile,
         toggleSidebar,
+        search: searchParams.get(SIDEBAR_SEARCH_KEY) || '',
+        setSearch
       }),
-      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, setSearch]
     )
 
     return (
@@ -613,7 +624,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-accent-foreground md:opacity-0",
+        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-accent-foreground md:opacity-0",
         className
       )}
       {...props}

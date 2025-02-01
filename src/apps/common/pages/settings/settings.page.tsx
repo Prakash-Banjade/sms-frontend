@@ -67,6 +67,7 @@ export default function SettingsPage() {
           settignsTabs.find(tab => tab.id === activeTab)?.content
         }
       </div>
+      <section className='h-20'></section>
     </ContainerLayout>
   )
 }

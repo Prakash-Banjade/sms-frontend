@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useTheme } from "next-themes"
 
 const appearanceFormSchema = z.object({
-    theme: z.enum(["light", "dark"], {
+    theme: z.enum(["light", "dark", "system"], {
         required_error: "Please select a theme.",
     })
 })
@@ -14,12 +14,14 @@ const appearanceFormSchema = z.object({
 type AppearanceFormValues = z.infer<typeof appearanceFormSchema>
 
 export function ThemeToggle() {
-    const { setTheme, theme } = useTheme()
+    const { theme } = useTheme();
+
+    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
     const form = useForm<AppearanceFormValues>({
         resolver: zodResolver(appearanceFormSchema),
         defaultValues: {
-            theme: theme === "dark" ? "dark" : "light",
+            theme: theme === "dark" ? "dark" : theme === "system" ? "system" : "light",
         },
     });
 
@@ -34,29 +36,27 @@ export function ThemeToggle() {
                             <RadioGroup
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
-                                className="grid max-w-md grid-cols-2 gap-8 pt-2"
+                                className="grid max-w-2xl grid-cols-3 gap-8 pt-2"
                             >
+                                <FormItem>
+                                    <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+                                        <FormControl>
+                                            <RadioGroupItem value="system" className="sr-only" />
+                                        </FormControl>
+                                        {
+                                            isSystemDark ? <DarkThemeBtn theme="system" /> : <LightThemeBtn theme="system" />
+                                        }
+                                        <span className="block w-full p-2 text-center font-normal">
+                                            System
+                                        </span>
+                                    </FormLabel>
+                                </FormItem>
                                 <FormItem>
                                     <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
                                         <FormControl>
                                             <RadioGroupItem value="light" className="sr-only" />
                                         </FormControl>
-                                        <div role="button" className="items-center rounded-md border-2 border-muted p-1 hover:border-accent" onClick={() => setTheme('light')}>
-                                            <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
-                                                <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
-                                                    <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
-                                                    <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                                                </div>
-                                                <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                                                    <div className="h-4 w-4 rounded-full bg-[#ecedef]" />
-                                                    <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                                                </div>
-                                                <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
-                                                    <div className="h-4 w-4 rounded-full bg-[#ecedef]" />
-                                                    <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <LightThemeBtn />
                                         <span className="block w-full p-2 text-center font-normal">
                                             Light
                                         </span>
@@ -67,22 +67,7 @@ export function ThemeToggle() {
                                         <FormControl>
                                             <RadioGroupItem value="dark" className="sr-only" />
                                         </FormControl>
-                                        <div role="button" className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground" onClick={() => setTheme('dark')}>
-                                            <div className="space-y-2 rounded-sm bg-slate-950 p-2">
-                                                <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                                                    <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
-                                                    <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-                                                </div>
-                                                <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                                                    <div className="h-4 w-4 rounded-full bg-slate-400" />
-                                                    <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-                                                </div>
-                                                <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
-                                                    <div className="h-4 w-4 rounded-full bg-slate-400" />
-                                                    <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <DarkThemeBtn />
                                         <span className="block w-full p-2 text-center font-normal">
                                             Dark
                                         </span>
@@ -94,5 +79,51 @@ export function ThemeToggle() {
                 />
             </form>
         </Form>
+    )
+}
+
+function LightThemeBtn({ theme = "light" }: { theme?: string }) {
+    const { setTheme } = useTheme();
+
+    return (
+        <div role="button" className="items-center rounded-md border-2 border-muted p-1 hover:border-accent" onClick={() => setTheme(theme)}>
+            <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
+                <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
+                    <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
+                    <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
+                </div>
+                <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
+                    <div className="h-4 w-4 rounded-full bg-[#ecedef]" />
+                    <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
+                </div>
+                <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm">
+                    <div className="h-4 w-4 rounded-full bg-[#ecedef]" />
+                    <div className="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function DarkThemeBtn({ theme = "dark" }: { theme?: string }) {
+    const { setTheme } = useTheme();
+
+    return (
+        <div role="button" className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground" onClick={() => setTheme(theme)}>
+            <div className="space-y-2 rounded-sm bg-slate-950 p-2">
+                <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
+                    <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
+                    <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
+                </div>
+                <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
+                    <div className="h-4 w-4 rounded-full bg-slate-400" />
+                    <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
+                </div>
+                <div className="flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm">
+                    <div className="h-4 w-4 rounded-full bg-slate-400" />
+                    <div className="h-2 w-[100px] rounded-lg bg-slate-400" />
+                </div>
+            </div>
+        </div>
     )
 }

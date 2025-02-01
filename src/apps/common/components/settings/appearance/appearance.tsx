@@ -96,13 +96,18 @@ export default function Appearance() {
 
             <section className="md:space-y-12 space-y-8">
                 <section>
-                    <h3 className="text-lg font-medium">Theme</h3>
-
+                    <header>
+                        <h3 className="text-lg font-medium">Theme</h3>
+                        <p className="text-muted-foreground text-sm">Toggle between the light and dark themes.</p>
+                    </header>
                     <ThemeToggle />
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-medium">Primary Color</h3>
+                    <header>
+                        <h3 className="text-lg font-medium">Primary Color</h3>
+                        <p className="text-muted-foreground text-sm">Choose a primary color for your theme.</p>
+                    </header>
 
                     <div className="flex flex-wrap gap-4 mt-2">
                         {themeColors.map((color) => (
@@ -126,7 +131,10 @@ export default function Appearance() {
                 </section>
 
                 <section>
-                    <h3 className="text-lg font-medium">Curve Radius</h3>
+                    <header>
+                        <h3 className="text-lg font-medium">Curve Radius</h3>
+                        <p className="text-muted-foreground text-sm">Adjust the curve radius of the components.</p>
+                    </header>
 
                     <RadiusSelector />
                 </section>

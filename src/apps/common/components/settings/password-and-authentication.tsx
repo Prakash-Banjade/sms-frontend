@@ -53,8 +53,6 @@ export default function PasswordAndAuthentication() {
             <Separator className='my-12' />
 
             <TwoFaSection />
-
-            <section className='h-20'></section>
         </ScrollArea>
     )
 }

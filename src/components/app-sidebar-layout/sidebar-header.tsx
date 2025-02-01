@@ -10,9 +10,10 @@ import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
 import { CookieKey } from "@/CONSTANTS";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { SidebarSearchForm } from "./sidebar-search-form";
 
 export function AppSidebarHeader() {
-    const { isMobile } = useSidebar();
+    const { isMobile, open } = useSidebar();
     const { payload } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -124,6 +125,7 @@ export function AppSidebarHeader() {
                     </DropdownMenu>
                 </SidebarMenuItem>
             </SidebarMenu>
+            {open && <SidebarSearchForm />}
         </SidebarHeader>
     )
 }
