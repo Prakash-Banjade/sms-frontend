@@ -23,14 +23,14 @@ export const useGetNotice = ({
     return response;
 }
 
-export const useGetNoticees = ({
+export const useGetNoticees = <T = TNoticesResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TNoticesResponse>
+    options?: UseQueryOptions<T>
 }) => {
-    const response = useFetchData<TNoticesResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.NOTICES,
         queryKey: queryString ? [QueryKey.NOTICES, queryString] : [QueryKey.NOTICES],
         queryString,

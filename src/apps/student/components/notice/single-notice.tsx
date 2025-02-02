@@ -19,7 +19,7 @@ const SingleNotice = ({ notice }: {
         No notice found!!
     </div>
     return (
-        <ScrollArea className="max-h-[70vh]  border-t-2  mr-4 lg:prose-lg prose max-w-[1000px] dark:prose-invert mx-auto ">
+        <ScrollArea className="max-h-[70vh]  border-t-2  mr-4 prose max-w-[1000px] dark:prose-invert mx-auto ">
             <div className="flex flex-start text-sm text-muted-foreground py-4"> <Calendar className="mr-1 h-4 w-4" />
                 {formatDate({ date: new Date(data.createdAt) })}</div>
 
