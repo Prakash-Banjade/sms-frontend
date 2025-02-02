@@ -24,7 +24,7 @@ export default function RecentNotices() {
     });
 
     return (
-        <Card className="w-full h-fit">
+        <Card className="w-full h-full">
             <CardHeader>
                 <CardTitle className="justify-between flex items-center">
                     <span>Recent Notices</span>
@@ -59,6 +59,9 @@ export default function RecentNotices() {
                             )
                         })
                     }
+                    {notices?.data?.length === 0 && (
+                        <p className="text-muted-foreground text-sm text-center py-8">No notice found!</p>
+                    )}
                 </section>
             </CardContent>
         </Card>

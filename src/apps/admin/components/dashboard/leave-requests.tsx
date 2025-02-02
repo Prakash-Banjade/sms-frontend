@@ -31,7 +31,7 @@ export default function Dashboard_LeaveRequests() {
     if (isLoading) return <LeaveRequestsLoadingSkeleton />;
 
     return (
-        <Card className="w-full h-fit">
+        <Card className="w-full h-full">
             <CardHeader>
                 <CardTitle>Pending Leave Requests</CardTitle>
                 <CardDescription className="text-muted-foreground">Review and manage leave requests from students and teachers</CardDescription>
@@ -93,7 +93,7 @@ export default function Dashboard_LeaveRequests() {
                                         </Link>
                                     </div>
                                 </div>
-                                : <p className="p-8 text-center text-muted-foreground text-sm">No pending leave requests</p>
+                                : <p className="py-8 text-center text-muted-foreground text-sm">No pending leave requests</p>
                         }
                     </TabsContent>
                     <TabsContent value="teachers" className="space-y-4">
@@ -144,7 +144,7 @@ export default function Dashboard_LeaveRequests() {
                                         </Link>
                                     </div>
                                 </div>
-                                : <p className="p-8 text-center text-muted-foreground text-sm">No pending leave requests</p>
+                                : <p className="py-8 text-center text-muted-foreground text-sm">No pending leave requests</p>
                         }
                     </TabsContent>
                 </Tabs>

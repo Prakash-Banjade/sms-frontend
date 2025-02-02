@@ -32,7 +32,7 @@ export default function TodayBirthDays() {
     if (isLoading) return <LoadingSkeleton />;
 
     return (
-        <Card className="w-full h-fit">
+        <Card className="w-full h-full">
             <CardHeader>
                 <CardTitle>Today Brithday Members</CardTitle>
                 <CardDescription className="text-muted-foreground">Let's celebrate the brithday of our members</CardDescription>
@@ -62,7 +62,7 @@ export default function TodayBirthDays() {
                             }
                         </section>
                     ) : (
-                        <p className="text-muted-foreground text-sm text-center py-6">No birthdays today!</p>
+                        <p className="text-muted-foreground text-sm text-center py-8">No birthdays today!</p>
                     )
                 }
             </CardContent>

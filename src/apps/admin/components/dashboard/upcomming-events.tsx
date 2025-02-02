@@ -15,7 +15,7 @@ export default function UpcommingEvents() {
     });
 
     return (
-        <Card className="w-full h-fit">
+        <Card className="w-full h-full">
             <CardHeader>
                 <CardTitle>Upcomming Events</CardTitle>
                 <CardDescription className="text-muted-foreground">Stay tuned for upcoming events</CardDescription>
@@ -66,6 +66,9 @@ export default function UpcommingEvents() {
                             )
                         })
                     }
+                    {events?.data?.length === 0 && (
+                        <p className="text-muted-foreground text-sm text-center py-8">No upcoming events!</p>
+                    )}
                 </section>
             </CardContent>
         </Card>
