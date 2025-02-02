@@ -7,9 +7,9 @@ import { startOfDayString } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { differenceInMinutes, isAfter, parse } from "date-fns";
+import { differenceInMinutes, isAfter, isPast, isToday, parse } from "date-fns";
 import { Trash } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -85,6 +85,8 @@ export default function EventForm(props: Props) {
     const { mutateAsync: deleteMutateAsync, isPending: isDeletePending } = useAppMutation<void, { message: string }>();
 
     async function onSubmit(values: eventSchemaType) {
+        if (isDateFromPast) return;
+
         const response = await mutateAsync({
             method: props.eventId ? "patch" : "post",
             endpoint: QueryKey.EVENTS,
@@ -123,6 +125,10 @@ export default function EventForm(props: Props) {
         props.setIsOpen && props.setIsOpen(false);
     }
 
+    const isDateFromPast = useMemo(() => {
+        return (!isToday(form.getValues("dateFrom")) && isPast(form.getValues("dateFrom")));
+    }, [form.watch("dateFrom")])
+
     return (
         <AppForm schema={eventSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -133,6 +139,7 @@ export default function EventForm(props: Props) {
                         placeholder="eg. Parents Meeting"
                         description="Enter the title for event"
                         required
+                        readOnly={isDateFromPast}
                     />
 
                     <AppForm.TimePicker<eventSchemaType>
@@ -141,6 +148,7 @@ export default function EventForm(props: Props) {
                         placeholder="Select start time"
                         required
                         description="Start time of the event"
+                        readOnly={isDateFromPast}
                     />
 
                     <AppForm.TimePicker<eventSchemaType>
@@ -149,6 +157,7 @@ export default function EventForm(props: Props) {
                         placeholder="Select end time"
                         required
                         description="End time of the event"
+                        readOnly={isDateFromPast}
                     />
 
                     <AppForm.Text<eventSchemaType>
@@ -156,6 +165,7 @@ export default function EventForm(props: Props) {
                         label="Event Location"
                         placeholder="eg. Main Hall"
                         description="Enter the location of the event"
+                        readOnly={isDateFromPast}
                     />
 
                     <AppForm.MultiSelect
@@ -163,7 +173,8 @@ export default function EventForm(props: Props) {
                         name="members"
                         placeholder="Select members"
                         description="Select the members"
-                        options={[
+                        disableOnNoOption
+                        options={isDateFromPast ? [] : [
                             { value: 'all', label: 'All' },
                             { value: 'admins', label: 'Admins' },
                             { value: 'students', label: 'Students' },
@@ -184,22 +195,26 @@ export default function EventForm(props: Props) {
                     description="Any description for the event?"
                 />
 
-                <section className="flex gap-4">
-                    {
-                        !!id && <Button variant={'destructive'} type="button" onClick={() => setIsDeleteOpen(true)}>
-                            <Trash />
-                            Delete
-                        </Button>
-                    }
-                    <div className="flex gap-4 ml-auto">
-                        <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
-                        <AppForm.Submit>
+                {
+                    !isDateFromPast && (
+                        <section className="flex gap-4">
                             {
-                                !!id ? "Save changes" : "Add event"
+                                !!id && <Button variant={'destructive'} type="button" onClick={() => setIsDeleteOpen(true)}>
+                                    <Trash />
+                                    Delete
+                                </Button>
                             }
-                        </AppForm.Submit>
-                    </div>
-                </section>
+                            <div className="flex gap-4 ml-auto">
+                                <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>
+                                <AppForm.Submit>
+                                    {
+                                        !!id ? "Save changes" : "Add event"
+                                    }
+                                </AppForm.Submit>
+                            </div>
+                        </section>
+                    )
+                }
             </form>
 
             <ResponsiveAlertDialog

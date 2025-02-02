@@ -106,7 +106,7 @@
 
 /* Selected Date Style */
 .fc .fc-highlight {
-  @apply bg-accent bg-opacity-75 !important;
+  @apply bg-accent/50 !important;
 }
 
 /* More Events Popover */

@@ -13,7 +13,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import { startOfDayString } from '@/lib/utils';
-import { addSeconds, format, subDays } from 'date-fns';
+import { addSeconds, format, isPast, isToday, subDays } from 'date-fns';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -38,6 +38,8 @@ export function AcademicYearCalendar() {
     const { start, end } = selectInfo;
 
     if (!start || !end) return;
+
+    if (!isToday(start.toString()) && isPast(start.toString())) return;
 
     // end date is being 1 day greater so need to reduce one day
     setSelectedDate({
@@ -161,7 +163,6 @@ export function AcademicYearCalendar() {
         eventContent={renderEventContent}
         eventDrop={handleEventDrop}
       />
-      {/* </div> */}
     </>
   );
 }
