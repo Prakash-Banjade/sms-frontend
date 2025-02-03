@@ -28,6 +28,7 @@ export default function ClassRoomSearchFilterInputs({
     const { setSearchParams, searchParams } = useCustomSearchParams();
     const [selectedFaculty, setSelectedFaculty] = useState<TFacultyOption>();
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0]>();
+    const [selectedSection, setSelectedSection] = useState<TClassRoomOptions[0]["children"][0]>();
 
     const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include }));
 
@@ -71,9 +72,11 @@ export default function ClassRoomSearchFilterInputs({
             const section = faculties?.find(f => f.classRooms?.find(c => c.id === classRoomId))?.classRooms?.find(c => c.id === classRoomId)?.children?.find(ch => ch.id === sectionId);
             if (!section) {
                 setSearchParams(SECTION_SEARCH_KEY, undefined)
+            } else {
+                setSelectedSection(section);
             }
         }
-    }, [faculties])
+    }, [faculties]);
 
     return (
         <>
@@ -81,17 +84,20 @@ export default function ClassRoomSearchFilterInputs({
                 <Label>Faculty</Label>
                 <section>
                     <StaticCombobox
-                        options={faculties?.map(faculty => ({ label: faculty.name, value: faculty.id })) ?? []}
+                        options={faculties?.map(faculty => ({ label: faculty.name, value: faculty.name })) ?? []}
                         placeholder="Select a faculty"
+                        value={selectedFaculty?.name ?? ''}
                         onSelectChange={(val) => {
-                            setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : val);
+                            const faculty = faculties?.find((faculty) => faculty.name === val);
+
+                            setSearchParams(FACULTY_SEARCH_KEY, val === 'reset' ? undefined : faculty?.id);
                             setSearchParams(classRoomKey, undefined);
                             setSearchParams(SECTION_SEARCH_KEY, undefined);
                             setSelectedClassRoom(undefined);
 
-                            const faculty = faculties?.find((faculty) => faculty.id === val);
                             setSelectedFaculty(faculty);
                         }}
+                        disabled={!faculties?.length || isLoading}
                     />
                 </section>
                 {/* <Select
@@ -123,7 +129,28 @@ export default function ClassRoomSearchFilterInputs({
 
             <section className='relative space-y-2'>
                 <Label>Class</Label>
-                <Select
+
+                <div>
+                    <StaticCombobox
+                        options={selectedFaculty?.classRooms?.map(classRoom => ({ label: classRoom.name, value: classRoom.name })) ?? []}
+                        placeholder="Select a class"
+                        value={selectedClassRoom?.name ?? ''}
+                        onSelectChange={(val) => {
+                            const classRoom = selectedFaculty?.classRooms?.find((classRoom) => classRoom.name === val);
+
+                            setSearchParams(classRoomKey, val === 'reset' ? undefined : classRoom?.id)
+                            setSearchParams(SECTION_SEARCH_KEY, undefined)
+
+                            setSelectedClassRoom(classRoom);
+                        }}
+                        disabled={
+                            !selectedFaculty?.classRooms?.length
+                            || isLoading
+                        }
+                    />
+                </div>
+
+                {/* <Select
                     value={searchParams.get(classRoomKey) ?? ''}
                     onValueChange={val => {
                         setSearchParams(classRoomKey, val === 'reset' ? undefined : val)
@@ -155,13 +182,30 @@ export default function ClassRoomSearchFilterInputs({
                             }
                         </SelectGroup>
                     </SelectContent>
-                </Select>
+                </Select> */}
             </section>
 
             {
                 !onlyClassRoom && <section className='relative space-y-2'>
                     <Label>Section</Label>
-                    <Select
+                    <div>
+                        <StaticCombobox
+                            options={selectedClassRoom?.children?.map(section => ({ label: section.name, value: section.name })) ?? []}
+                            placeholder="Select a section"
+                            value={selectedSection?.name ?? ''}
+                            onSelectChange={(val) => {
+                                const section = selectedClassRoom?.children?.find((section) => section.name === val);
+                                setSearchParams('sectionId', val === 'reset' ? undefined : section?.id)
+                                setSelectedSection(section);
+                            }}
+                            disabled={
+                                !selectedClassRoom?.children?.length
+                                || isLoading
+                            }
+                        />
+                    </div>
+
+                    {/* <Select
                         value={searchParams.get("sectionId") ?? ''}
                         onValueChange={val => {
                             val === 'reset' ? setSearchParams('sectionId', undefined) : setSearchParams('sectionId', val)
@@ -184,7 +228,7 @@ export default function ClassRoomSearchFilterInputs({
                                 }
                             </SelectGroup>
                         </SelectContent>
-                    </Select>
+                    </Select> */}
                 </section>
             }
 

@@ -10,16 +10,19 @@ type TStaticComboboxProps = {
     options: { label: string; value: string }[],
     placeholder?: string;
     emptyOptionsPlaceholder?: string;
-    onSelectChange: (val: string) => void
+    onSelectChange: (val: string) => void,
+    value: string,
+    disabled?: boolean
 }
 export function StaticCombobox({
     options,
     placeholder = "Select option...",
     emptyOptionsPlaceholder = "No options found",
-    onSelectChange
+    onSelectChange,
+    value = "",
+    disabled = false
 }: TStaticComboboxProps) {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -29,9 +32,10 @@ export function StaticCombobox({
                     role="combobox"
                     aria-expanded={open}
                     className="min-w-[200px] justify-between"
+                    disabled={disabled}
                 >
                     {value
-                        ? options.find((option) => option.value === value)?.label
+                        ? (options.find((option) => option.value === value)?.label ?? placeholder)
                         : placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -47,7 +51,6 @@ export function StaticCombobox({
                                     key={option.value}
                                     value={option.value}
                                     onSelect={(currentValue) => {
-                                        setValue(currentValue === value ? "" : currentValue)
                                         setOpen(false)
                                         onSelectChange(currentValue === value ? "" : currentValue)
                                     }}
