@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Prakash Banjade",
+  "contributors": [
+    "Prakash Banjade (https://github.com/prakash-banjade)"
+  ],
+  "homepage": "https://github.com/Prakash-Banjade/sms-frontend.git",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
