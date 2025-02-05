@@ -130,6 +130,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         title="Add Section"
                     >
                         <ClassSectionForm
+                            facultyId={row.original.facultyId}
                             parentClassId={row.original.id}
                             setIsOpen={setIsSectionFormOpen}
                         />

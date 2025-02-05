@@ -93,6 +93,7 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                         <ClassSectionForm
                             classRoomId={row.original.id}
                             setIsOpen={setIsEditOpen}
+                            facultyId={row.original.facultyId}
                             defaultValues={{
                                 name: row.original.name,
                                 monthlyFee: row.original.monthlyFee,

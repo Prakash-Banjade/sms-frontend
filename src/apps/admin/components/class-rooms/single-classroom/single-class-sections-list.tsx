@@ -14,9 +14,10 @@ import { TClass } from "@/types/class.type";
 
 type Props = {
     classRoomId: string;
+    facultyId: string;
 }
 
-export default function SingleClassSectionsList({ classRoomId }: Props) {
+export default function SingleClassSectionsList({ classRoomId, facultyId }: Props) {
     const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
 
     const { data, isLoading } = useGetClasses({
@@ -42,6 +43,7 @@ export default function SingleClassSectionsList({ classRoomId }: Props) {
                         title="Add Section"
                     >
                         <ClassSectionForm
+                            facultyId={facultyId}
                             parentClassId={classRoomId}
                             setIsOpen={setIsSectionFormOpen}
                         />
@@ -68,7 +70,7 @@ export default function SingleClassSectionsList({ classRoomId }: Props) {
                                             <div className="text-sm text-muted-foreground">
                                                 Males: {section.totalMaleStudentsCount} •
                                                 Females: {section.totalFemaleStudentsCount} •
-                                                Others: {+section.totalStudentsCount - +section.totalMaleStudentsCount - +section.totalFemaleStudentsCount} 
+                                                Others: {+section.totalStudentsCount - +section.totalMaleStudentsCount - +section.totalFemaleStudentsCount}
                                             </div>
                                             <div className="font-medium">
                                                 Total: {section.totalStudentsCount}
@@ -103,6 +105,7 @@ function TableActionCell({ section }: { section: TClass }) {
                 <ClassSectionForm
                     classRoomId={section.id}
                     setIsOpen={setIsEditOpen}
+                    facultyId={section.facultyId}
                     defaultValues={{
                         name: section.name,
                         monthlyFee: section.monthlyFee,

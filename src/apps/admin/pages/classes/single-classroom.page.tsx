@@ -91,7 +91,9 @@ export default function SingleClassRoomPage() {
                     : <ClassDetailsCard classRoom={classRoom} />
             }
 
-            <SingleClassSectionsList classRoomId={params.id!} />
+            {
+                classRoom && (<SingleClassSectionsList classRoomId={params.id!} facultyId={classRoom?.facultyId} />)
+            }
 
             <ClassRoomAttendanceChart />
 

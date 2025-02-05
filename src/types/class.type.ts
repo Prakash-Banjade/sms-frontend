@@ -49,5 +49,7 @@ export type TSingleClassRoom = {
     classTeacherName: string | null,
     totalStudentsCount: number,
     totalMaleStudentsCount: number,
-    totalFemaleStudentsCount: number
+    totalFemaleStudentsCount: number,
+    facultyName: string,
+    facultyId: string,
 }
