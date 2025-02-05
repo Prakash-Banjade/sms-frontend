@@ -9,15 +9,17 @@ export default function LibraryOverviewPage() {
     const { data: count, isLoading } = useGetLibraryOverviewCount();
 
     return (
-        <div className="container mx-auto @container">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
-                <DashboardCountCard title="Total Books" count={count?.booksCount || 0} icon={BookOpen} navigateTo="books" isLoading={isLoading} />
-                <DashboardCountCard title="Total Transactions" count={count?.transactionCount || 0} icon={ArrowLeftRight} isLoading={isLoading} />
-                <DashboardCountCard title="Currently Issued" count={count?.issuedCount || 0} icon={UserCheck} isLoading={isLoading} />
-                <DashboardCountCard title="Overdue Books" count={count?.overdueCount || 0} icon={Calendar} isLoading={isLoading} />
-            </div>
+        <div className="container mx-auto @container/main">
+            <section className="@container">
+                <div className="grid gap-6 @sm:grid-cols-2 @4xl:grid-cols-4 mb-6">
+                    <DashboardCountCard title="Total Books" count={count?.booksCount || 0} icon={BookOpen} navigateTo="books" isLoading={isLoading} />
+                    <DashboardCountCard title="Total Transactions" count={count?.transactionCount || 0} icon={ArrowLeftRight} isLoading={isLoading} />
+                    <DashboardCountCard title="Currently Issued" count={count?.issuedCount || 0} icon={UserCheck} isLoading={isLoading} />
+                    <DashboardCountCard title="Overdue Books" count={count?.overdueCount || 0} icon={Calendar} isLoading={isLoading} />
+                </div>
+            </section>
 
-            <section className="mb-6 grid grid-cols-1 @7xl:grid-cols-3 @7xl:gap-x-6 gap-y-6">
+            <section className="mb-6 grid grid-cols-1 @7xl/main:grid-cols-3 @7xl/main:gap-x-6 gap-y-6">
                 <div className="col-span-2">
                     <RecentLibraryBookTransactions />
                 </div>

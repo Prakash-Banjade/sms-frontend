@@ -33,15 +33,17 @@ export default function AdminDashboard() {
     const { payload } = useAuth();
 
     return (
-        <div className='@container'>
-            <div className="grid @7xl:grid-cols-3 grid-cols-1 gap-6">
-                <section className='@7xl:col-span-2'>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                        <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/students`} />
-                        <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/teachers`} />
-                        <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} footer='Including sections' navigateTo={`/${payload?.role}/classes`} />
-                        <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} navigateTo={`/${payload?.role}/staffs`} />
-                    </div>
+        <div className='@container/main'>
+            <div className="grid @7xl/main:grid-cols-3 grid-cols-1 gap-6">
+                <section className='@7xl/main:col-span-2'>
+                    <section className='@container'>
+                        <div className="grid gap-6 @sm:grid-cols-2 @4xl:grid-cols-4">
+                            <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/students`} />
+                            <DashboardCountCard title="Total Teachers" count={dashboard?.teachersCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/teachers`} />
+                            <DashboardCountCard title="Total Classrooms" count={dashboard?.classRoomsCount} icon={PieChart} isLoading={isLoading} footer='Including sections' navigateTo={`/${payload?.role}/classes`} />
+                            <DashboardCountCard title="Total Staffs" count={dashboard?.staffsCount} icon={Users2} isLoading={isLoading} navigateTo={`/${payload?.role}/staffs`} />
+                        </div>
+                    </section>
 
                     {/* Income vs Expense Chart */}
                     <Card className="mt-6">
@@ -54,10 +56,10 @@ export default function AdminDashboard() {
                                 <LineChart
                                     accessibilityLayer
                                     data={financeData}
-                                    margin={{
-                                        left: 12,
-                                        right: 12,
-                                    }}
+                                    // margin={{
+                                    //     left: 12,
+                                    //     right: 12,
+                                    // }}
                                 >
                                     <CartesianGrid vertical={false} />
                                     <YAxis />
@@ -97,8 +99,8 @@ export default function AdminDashboard() {
 
                 </section>
 
-                <section className='@container/parent'>
-                    <section className='grid @5xl/parent:grid-cols-2 grid-cols-1 gap-6'>
+                <section className='@container'>
+                    <section className='grid @5xl:grid-cols-2 grid-cols-1 gap-6'>
                         <Dashboard_LeaveRequests />
                         <UpcommingEvents />
                         <RecentNotices />
