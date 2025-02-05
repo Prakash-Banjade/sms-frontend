@@ -3,12 +3,14 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
 import { classRoomFormDefaultValues, classRoomFormSchema, classRoomFormSchemaType } from "@/schemas/class-room.schema";
 import { SelectOption, EClassType } from "@/types/global.type";
+import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    facultyId: string;
 } & ({ // for update
     classRoomId: string;
     defaultValues: Partial<classRoomFormSchemaType>;
@@ -23,7 +25,7 @@ type Props = {
 
 export default function ClassSectionForm(props: Props) {
     const queryClient = useQueryClient();
-    
+
     const form = useForm<classRoomFormSchemaType>({
         resolver: zodResolver(classRoomFormSchema.omit({ admissionFee: true, monthlyFee: true, facultyId: true })),
         defaultValues: {
@@ -87,6 +89,9 @@ export default function ClassSectionForm(props: Props) {
                         description='Select the class teacher'
                         queryKey={QueryKey.TEACHERS}
                         defaultSelected={props.selectedClassTeacherOption}
+                        queryString={createQueryString({
+                            facultyId: props.facultyId,
+                        })}
                     />
                 </section>
 
