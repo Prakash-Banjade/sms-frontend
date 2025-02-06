@@ -46,9 +46,9 @@ export function StaticCombobox({
                     <CommandList>
                         <CommandEmpty>{emptyOptionsPlaceholder}</CommandEmpty>
                         <CommandGroup>
-                            {options.map((option) => (
+                            {options.map((option, index) => (
                                 <CommandItem
-                                    key={option.value}
+                                    key={option.value + '+' + index}
                                     value={option.value}
                                     onSelect={(currentValue) => {
                                         setOpen(false)

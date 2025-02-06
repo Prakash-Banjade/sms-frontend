@@ -8,9 +8,10 @@ import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
 import { TClassRoomOptions } from '@/types/class.type';
 import { StaticCombobox } from '../ui/static-combobox';
 
-export const FACULTY_SEARCH_KEY = "facultyId"
-export const CLASS_ROOM_SEARCH_KEY = "classRoomId"
-export const SECTION_SEARCH_KEY = "sectionId"
+export const FACULTY_SEARCH_KEY = "facultyId" as const;
+export const CLASS_ROOM_SEARCH_KEY = "classRoomId" as const;
+export const SECTION_SEARCH_KEY = "sectionId" as const;
+export const SEARCH_QUERY_RESET = "searchQueryReset" as const;
 
 type Props = {
     onlyClassRoom?: boolean;
@@ -77,6 +78,18 @@ export default function ClassRoomSearchFilterInputs({
             }
         }
     }, [faculties]);
+
+    useEffect(() => { // this is to reset the combobox when the search query is reset from datatable, because the state of combobox is managed by useState()
+        const handleReset = () => {
+            setSelectedFaculty(undefined);
+            setSelectedClassRoom(undefined);
+            setSelectedSection(undefined);
+        };
+
+        window.addEventListener(SEARCH_QUERY_RESET, handleReset);
+
+        return () => window.removeEventListener(SEARCH_QUERY_RESET, handleReset);
+    }, [])
 
     return (
         <>

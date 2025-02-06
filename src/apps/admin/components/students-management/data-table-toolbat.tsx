@@ -5,6 +5,7 @@ import { DataTableViewOptions } from '@/components/data-table/data-table-view-op
 import { PropsWithChildren } from 'react'
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { FACULTY_SEARCH_KEY, SEARCH_QUERY_RESET } from '@/components/search-components/class-room-search'
 
 export interface DataTableToolbarProps<TData> extends PropsWithChildren {
     table: Table<TData>,
@@ -22,6 +23,15 @@ export function DataTableToolbar<TData>({
 
     const { searchParams } = useCustomSearchParams();
 
+    const handleReset = () => {
+        navigate({ pathname: location.pathname, search: '' });
+
+        if (location.search?.includes(FACULTY_SEARCH_KEY)) {
+            const event = new CustomEvent(SEARCH_QUERY_RESET);
+            window.dispatchEvent(event); // to reset
+        }
+    }
+
     return (
         <div className='flex items-end justify-between mb-3'>
             <div className='flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2'>
@@ -32,7 +42,7 @@ export function DataTableToolbar<TData>({
                 {searchParams.size > 0 && !(searchParams.size === 1 && searchParams.has('search')) && reset && (
                     <Button
                         variant='ghost'
-                        onClick={() => navigate({ pathname: location.pathname, search: '' })}
+                        onClick={handleReset}
                         className='h-8 px-2 lg:px-3'
                     >
                         Reset
