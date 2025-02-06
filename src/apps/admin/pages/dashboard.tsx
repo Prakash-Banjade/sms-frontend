@@ -1,32 +1,13 @@
 import { PieChart, Users, Users2 } from 'lucide-react'
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import DashboardCountCard from '@/components/dashboard/dashboard-count-card'
 import { AcademicYearCalendar } from '../components/dashboard/academic-events-calendar'
 import { useGetAdminDashboard } from '../data-access/dashboard-data-access'
 import Dashboard_LeaveRequests from '../components/dashboard/leave-requests'
 import { useAuth } from '@/contexts/auth-provider'
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import TodayBirthDays from '../components/dashboard/today-birthdays'
 import UpcommingEvents from '../components/dashboard/upcomming-events'
 import RecentNotices from '../components/dashboard/recent-notices'
-
-const financeData = Array.from({ length: 12 }).map((_, i) => ({
-    month: i + 1,
-    income: 2700 + Math.random() * 900,
-    expense: 1800 + Math.random() * 900,
-}))
-
-const chartConfig = {
-    income: {
-        label: "Income",
-        color: "hsl(var(--chart-1))",
-    },
-    expense: {
-        label: "Expense",
-        color: "hsl(var(--chart-2))",
-    },
-} satisfies ChartConfig
+import Dashboard_IncomeExpenseChart from '../components/dashboard/income-expense-chart'
 
 export default function AdminDashboard() {
     const { data: dashboard, isLoading } = useGetAdminDashboard({});
@@ -36,6 +17,7 @@ export default function AdminDashboard() {
         <div className='@container/main'>
             <div className="grid @7xl/main:grid-cols-3 grid-cols-1 gap-6">
                 <section className='@7xl/main:col-span-2'>
+
                     <section className='@container'>
                         <div className="grid gap-6 @sm:grid-cols-2 @4xl:grid-cols-4">
                             <DashboardCountCard title="Total Students" count={dashboard?.studentsCount} icon={Users} isLoading={isLoading} navigateTo={`/${payload?.role}/students`} />
@@ -45,57 +27,13 @@ export default function AdminDashboard() {
                         </div>
                     </section>
 
-                    {/* Income vs Expense Chart */}
-                    <Card className="mt-6">
-                        <CardHeader>
-                            <CardTitle>Income vs Expense</CardTitle>
-                            <CardDescription>Monthly financial overview</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ChartContainer config={chartConfig} className='w-full h-auto'>
-                                <LineChart
-                                    accessibilityLayer
-                                    data={financeData}
-                                    // margin={{
-                                    //     left: 12,
-                                    //     right: 12,
-                                    // }}
-                                >
-                                    <CartesianGrid vertical={false} />
-                                    <YAxis />
-                                    <XAxis
-                                        dataKey="month"
-                                        tickLine={false}
-                                        axisLine={false}
-                                        tickMargin={8}
-                                        tickFormatter={(value) => value}
-                                    />
-                                    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                    <ChartLegend content={<ChartLegendContent />} />
-                                    <Line
-                                        dataKey="income"
-                                        type="monotone"
-                                        stroke="hsl(var(--success))"
-                                        strokeWidth={2}
-                                        dot={false}
-                                    />
-                                    <Line
-                                        dataKey="expense"
-                                        type="monotone"
-                                        stroke="hsl(var(--destructive))"
-                                        strokeWidth={2}
-                                        dot={false}
-                                    />
-                                </LineChart>
-                            </ChartContainer>
-                        </CardContent>
-                    </Card>
+                    <section className="mt-6">
+                        <Dashboard_IncomeExpenseChart />
+                    </section>
 
-                    <Card className='mt-6'>
-                        <CardContent className='p-6'>
-                            <AcademicYearCalendar />
-                        </CardContent>
-                    </Card>
+                    <section className="mt-6">
+                        <AcademicYearCalendar />
+                    </section>
 
                 </section>
 
@@ -108,6 +46,6 @@ export default function AdminDashboard() {
                     </section>
                 </section>
             </div>
-        </div >
+        </div>
     )
 }

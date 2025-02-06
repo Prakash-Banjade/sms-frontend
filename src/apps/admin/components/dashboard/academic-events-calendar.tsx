@@ -14,6 +14,7 @@ import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import { startOfDayString } from '@/lib/utils';
 import { addSeconds, format, isPast, isToday, subDays } from 'date-fns';
+import { Card, CardContent } from '@/components/ui/card';
 
 export function AcademicYearCalendar() {
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -99,71 +100,73 @@ export function AcademicYearCalendar() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <>
-      <ResponsiveDialog
-        isOpen={isAddOpen}
-        setIsOpen={setIsAddOpen}
-        title={
-          `Create New Event (${(selectedDate?.startDate && selectedDate?.endDate)
-          && (
-            selectedDate?.startDate === selectedDate?.endDate
-              ? format(selectedDate.startDate, 'MMM dd, yyyy')
-              : `${format(selectedDate.startDate, 'MMM dd, yyyy')} - ${format(selectedDate.endDate, 'MMM dd, yyyy')}`
-          )})`
-        }
-        className="w-[97%] max-w-[800px]"
-      >
-        <EventForm setIsOpen={setIsAddOpen} defaultValues={{ ...eventFormDefaultValues, dateFrom: selectedDate?.startDate, dateTo: selectedDate?.endDate }} />
-      </ResponsiveDialog>
+    <Card>
+      <CardContent className='p-6'>
+        <ResponsiveDialog
+          isOpen={isAddOpen}
+          setIsOpen={setIsAddOpen}
+          title={
+            `Create New Event (${(selectedDate?.startDate && selectedDate?.endDate)
+            && (
+              selectedDate?.startDate === selectedDate?.endDate
+                ? format(selectedDate.startDate, 'MMM dd, yyyy')
+                : `${format(selectedDate.startDate, 'MMM dd, yyyy')} - ${format(selectedDate.endDate, 'MMM dd, yyyy')}`
+            )})`
+          }
+          className="w-[97%] max-w-[800px]"
+        >
+          <EventForm setIsOpen={setIsAddOpen} defaultValues={{ ...eventFormDefaultValues, dateFrom: selectedDate?.startDate, dateTo: selectedDate?.endDate }} />
+        </ResponsiveDialog>
 
-      <ResponsiveDialog
-        isOpen={isEditOpen}
-        setIsOpen={setIsEditOpen}
-        title="Edit Event"
-        className="w-[97%] max-w-[800px]"
-      >
-        <EventForm
+        <ResponsiveDialog
+          isOpen={isEditOpen}
           setIsOpen={setIsEditOpen}
-          eventId={selectedEvent?.id!}
-          defaultValues={selectedEvent!}
-        />
-      </ResponsiveDialog>
+          title="Edit Event"
+          className="w-[97%] max-w-[800px]"
+        >
+          <EventForm
+            setIsOpen={setIsEditOpen}
+            eventId={selectedEvent?.id!}
+            defaultValues={selectedEvent!}
+          />
+        </ResponsiveDialog>
 
-      {/* <div className="rounded-xl p-6 shadow-sm border border-border"> */}
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        headerToolbar={{
-          left: 'prev,next today',
-          right: 'title',
-        }}
-        initialView="dayGridMonth"
-        editable={true}
-        selectable={true}
-        selectMirror={true}
-        dayMaxEvents={true}
-        weekends={true}
-        events={events?.data?.map(event => ({
-          id: event.id,
-          title: event.title,
-          start: event.dateFrom,
-          end: event.dateTo === event.dateFrom ? addSeconds(event.dateTo, 1) : event.dateTo,
-          description: event.description,
-          eventLocation: event.eventLocation,
-          members: event.members,
-          dateFrom: event.dateFrom,
-          dateTo: event.dateTo,
-          createdAt: event.createdAt,
-          beginTime: event.beginTime,
-          endingTime: event.endingTime,
-        }))}
-        select={handleDateSelect}
-        eventClick={handleEventClick}
-        height="auto"
-        datesSet={handleDatesSet}
-        eventContent={renderEventContent}
-        eventDrop={handleEventDrop}
-      />
-    </>
+        {/* <div className="rounded-xl p-6 shadow-sm border border-border"> */}
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          headerToolbar={{
+            left: 'prev,next today',
+            right: 'title',
+          }}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          weekends={true}
+          events={events?.data?.map(event => ({
+            id: event.id,
+            title: event.title,
+            start: event.dateFrom,
+            end: event.dateTo === event.dateFrom ? addSeconds(event.dateTo, 1) : event.dateTo,
+            description: event.description,
+            eventLocation: event.eventLocation,
+            members: event.members,
+            dateFrom: event.dateFrom,
+            dateTo: event.dateTo,
+            createdAt: event.createdAt,
+            beginTime: event.beginTime,
+            endingTime: event.endingTime,
+          }))}
+          select={handleDateSelect}
+          eventClick={handleEventClick}
+          height="auto"
+          datesSet={handleDatesSet}
+          eventContent={renderEventContent}
+          eventDrop={handleEventDrop}
+        />
+      </CardContent>
+    </Card>
   );
 }
 
