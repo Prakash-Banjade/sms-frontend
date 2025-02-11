@@ -68,8 +68,8 @@ export const studentSchema = z.object({
     permanentAddress: z.string().min(1, { message: "Address is required" }).max(80, { message: "Address seems too long. Max 80 characters." }),
 
     // DOCUMENT INFORMATION
-    nationalIdCardNo: z.string().optional(),
-    birthCertificateNumber: z.string().optional(),
+    nationalIdCardNo: z.string().nullish(),
+    birthCertificateNumber: z.string().nullish(),
     documentAttachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(), // values can be URLs or UUIDs
 
     // BANK INFORMATION

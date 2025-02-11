@@ -14,6 +14,7 @@ import ImageUpload from "@/components/forms/image-upload";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
 import { subYears } from "date-fns";
+import { useEffect } from "react";
 
 type Props = {
     defaultValues?: undefined;
@@ -36,7 +37,7 @@ export default function StudentForm(props: Props) {
         defaultValues: props?.defaultValues ?? studentFormDefaultValues,
     });
 
-    const { mutateAsync } = useAppMutation<Partial<studentSchemaType>, any>();
+    const { mutateAsync, error } = useAppMutation<Partial<studentSchemaType>, any>();
     const { hasSection } = useFacultySearch();
 
     async function onSubmit(values: studentSchemaType) {
@@ -67,6 +68,14 @@ export default function StudentForm(props: Props) {
             navigate(`/${payload?.role}/students`);
         }
     }
+
+    useEffect(() => { // show error directly in form field if send by server
+        const errObj = (error as any)?.response?.data?.message;
+        if (!!errObj?.field) {
+            form.setError(errObj.field, { message: errObj?.message });
+            form.setFocus(errObj.field);
+        }
+    }, [error]);
 
     return (
         <AppForm schema={createStudentSchema} form={form}>
