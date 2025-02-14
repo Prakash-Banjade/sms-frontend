@@ -85,7 +85,6 @@ export default function ClassRoutineForm(props: Props) {
     }
 
     async function submit(values: classRoutineSchemaType) {
-        console.log(values)
         const response = await mutateAsync({
             method: !!id ? "patch" : "post",
             endpoint: QueryKey.CLASSROUTINE,
@@ -220,8 +219,8 @@ export default function ClassRoutineForm(props: Props) {
             </form>
 
             <ResponsiveAlertDialog
-                title="Time range conflice"
-                description="Class routine time intersects with an existing class routine"
+                title="Time range conflicts"
+                description="Class routine time intersects with an existing class routine. Do you want to add the class routine anyway?"
                 isOpen={confirmIntersectionOpen}
                 setIsOpen={setConfirmIntersectionOpen}
                 action={form.handleSubmit(submit)}
