@@ -1,5 +1,5 @@
 import { MILITARY_TIME_REGEX } from "@/CONSTANTS";
-import { differenceInDays, isFuture, isToday } from "date-fns";
+import { differenceInDays, isFuture } from "date-fns";
 import { z } from "zod";
 
 const examSubjectSchema = z.object({
@@ -10,7 +10,7 @@ const examSubjectSchema = z.object({
         z.string()
             .refine((date) => (
                 !isNaN(Date.parse(date))
-                && (isFuture(new Date(date)) || isToday(new Date(date)))
+                && (isFuture(new Date(date)))
                 && differenceInDays(new Date(date), new Date()) <= 90
             ),
                 { message: "Exam date must be in the future" })

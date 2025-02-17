@@ -1,5 +1,5 @@
 import AppForm from '@/components/forms/app-form';
-import { NUMBER_REGEX_STRING } from '@/CONSTANTS';
+import { ISO_TIME, NUMBER_REGEX_STRING } from '@/CONSTANTS';
 import { TSubject } from '@/types/subject.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ import toast from 'react-hot-toast';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-provider';
 import { addDays } from 'date-fns';
+import { formatDateNumeric } from '@/utils/format-date';
 
 type Props = {
     subjects: TSubject[];
@@ -174,8 +175,18 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
                                                             type="date"
                                                             {...field}
                                                             required
+                                                            value={!!field.value ? formatDateNumeric({ date: new Date(field.value) }) : ''}
+                                                            onChange={e => {
+                                                                const val = e.target.value;
+
+                                                                if (val) {
+                                                                    field.onChange(val + ISO_TIME);
+                                                                } else {
+                                                                    field.onChange('');
+                                                                }
+                                                            }}
                                                             disabled={!form.getValues(`examSubjects.${index}.isChecked`)}
-                                                            min={new Date().toISOString().split("T")[0]}
+                                                            min={addDays(new Date(), 1).toISOString().split("T")[0]}
                                                             max={addDays(new Date(), 90).toISOString().split("T")[0]}
                                                         />
                                                     </FormControl>
