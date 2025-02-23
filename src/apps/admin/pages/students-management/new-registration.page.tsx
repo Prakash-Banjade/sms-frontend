@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
 import StudentForm from "../../components/students-management/student.form."

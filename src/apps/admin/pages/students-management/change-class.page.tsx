@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import GetstudentsForm from "../../components/students-management/change-class/get-students-form";
 import { useState } from "react";
 import { useGetStudents } from "../../components/students-management/student-actions";

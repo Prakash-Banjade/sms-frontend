@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useForm } from "react-hook-form";
 import { generalSettingsDefaultValues, generalSettingsFormSchema, TGeneralSettingsFormType } from "../../schemas/general-settings.schema";
 import { zodResolver } from "@hookform/resolvers/zod";

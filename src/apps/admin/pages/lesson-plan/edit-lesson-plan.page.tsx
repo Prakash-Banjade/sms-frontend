@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Navigate, useParams } from "react-router-dom"
 import { useGetLessonPlan } from "../../components/lesson-plan/data-access";
 import LessonPlanForm from "../../components/lesson-plan/lesson-plan-form";

@@ -1,5 +1,5 @@
 import { useGetFeeStructures } from "@/apps/admin/components/finance-system/fee-management/data-access";
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search";
 import { createQueryString } from "@/utils/create-query-string";
 import { useMemo, useState } from "react";

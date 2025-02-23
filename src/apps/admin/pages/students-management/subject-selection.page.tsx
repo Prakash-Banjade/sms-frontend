@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useMemo } from "react";
 import { useGetStudents } from "../../components/students-management/student-actions";

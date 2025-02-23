@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import LeaveRequestList from "../../components/leave-request/leave-request-list";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";

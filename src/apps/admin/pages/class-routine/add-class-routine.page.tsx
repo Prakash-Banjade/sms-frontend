@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import ClassRoutineForm from '../../components/class-routine/class-routine.form'
-import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
+import ContainerLayout from '@/components/page-layouts/container-layout'
 import { useGetClassRoutines } from '../../components/class-routine/actions';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ClassRoutineCard } from '../../components/class-routine/routines-display-list';

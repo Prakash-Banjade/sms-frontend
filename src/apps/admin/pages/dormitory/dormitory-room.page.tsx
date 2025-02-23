@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { useState } from "react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import DormitoryRoomForm from "../../components/dormitory/dormitory-room.form";

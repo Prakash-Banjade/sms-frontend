@@ -6,7 +6,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import SearchInput from "@/components/search-components/search-input"
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
 import { feeStudentsColumns } from "@/apps/admin/components/finance-system/fee-management/fee-billings-and-payments/fee-students-columns"
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 
 export default function FeeBillingAndPaymentsPage() {
     return (

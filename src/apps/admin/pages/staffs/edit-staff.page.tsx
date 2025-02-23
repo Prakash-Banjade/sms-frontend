@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import StaffForm from "../../components/staffs/staff.form"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetStaff } from "../../components/staffs/actions"

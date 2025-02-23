@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useEffect, useMemo, useState } from "react";
 import { useGetPastStudents } from "../../components/students-management/student-actions";
 import PromotionStudentsTable from "../../components/students-management/promotion/promotion-students-table";

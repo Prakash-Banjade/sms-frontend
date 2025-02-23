@@ -1,6 +1,6 @@
 import { useGetExamReportBySubject } from "@/apps/admin/components/examination/data-access";
 import GetExamReportBySubjectForm from "@/apps/admin/components/report/examination-report/subject-wise-report/generate-report-form";
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useMemo } from "react";
 import { createQueryString } from "@/utils/create-query-string";

@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { z } from "zod";
 import PersonalInfo from "../../components/settings/personal-info";

@@ -1,4 +1,4 @@
-import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
+import ContainerLayout from '@/components/page-layouts/container-layout'
 import LessonPlanForm from '../../components/lesson-plan/lesson-plan-form'
 
 export default function AddLessonPlanPage() {

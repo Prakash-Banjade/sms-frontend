@@ -1,6 +1,6 @@
 import { useGetSalaryStructures } from "@/apps/admin/components/finance-system/salary-management/data-access";
 import { salaryStructureColumns } from "@/apps/admin/components/finance-system/salary-management/salary-structures/salary-structures.columns";
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { DataTable } from "@/components/data-table/data-table";
 import { FacetedFilter } from "@/components/data-table/faceted-filter";
 import SearchInput from "@/components/search-components/search-input";

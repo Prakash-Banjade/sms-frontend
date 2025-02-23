@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/data-table/data-table"
 import { Link, useSearchParams } from "react-router-dom"
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { useGetLibraryBookes } from "../../components/library/actions"
 import { libraryBooksColumns } from "../../components/library/library-books.columns"
 import LibraryBooksSearchFilters from "../../components/library/library-bok-search-filters"

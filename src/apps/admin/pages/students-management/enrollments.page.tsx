@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { DataTable } from "@/components/data-table/data-table"
 import { Link, useSearchParams } from "react-router-dom"
 import { useGetEnrollments } from "../../components/students-management/enrollments/enrollments.action"

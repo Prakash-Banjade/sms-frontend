@@ -1,5 +1,5 @@
 import ClassRoomForm from '../../components/class-rooms/class-room.form'
-import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
+import ContainerLayout from '@/components/page-layouts/container-layout'
 
 export default function AddClassPage() {
 

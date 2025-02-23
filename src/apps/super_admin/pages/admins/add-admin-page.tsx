@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import AdminForm from "../../components/users/admin-form";
 
 export default function AddAdminPage() {

@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useGetFaculties } from "../../data-access/faculties-data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { useSearchParams } from "react-router-dom";

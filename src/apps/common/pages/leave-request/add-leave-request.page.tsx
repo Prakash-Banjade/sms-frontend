@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import LeaveRequestForm from "../../components/leave-request/leave-request-form"
 
 const AddLeaveRequestPage = () => {

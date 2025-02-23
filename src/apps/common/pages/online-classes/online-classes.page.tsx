@@ -1,4 +1,4 @@
-import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
+import ContainerLayout from '@/components/page-layouts/container-layout'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import CreateLiveClassForm from '../../online-classes/create-live-class-form/create-live-class-form'

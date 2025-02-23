@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TeachersAttendanceList from "../../components/teachers/attendance-list";
 import StaffsAttendanceList from "../../components/staffs/attendance-list";

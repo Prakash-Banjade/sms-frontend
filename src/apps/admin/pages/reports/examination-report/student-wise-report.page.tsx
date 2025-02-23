@@ -1,7 +1,7 @@
 import { useGetExamReportByStudent } from "@/apps/admin/components/examination/data-access";
 import GetExamReportByStudentForm from "@/apps/admin/components/report/examination-report/get-exam-report-by-student-form";
 import StudentExamReportSummary from "@/apps/admin/components/report/examination-report/student-exam-report-summary";
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

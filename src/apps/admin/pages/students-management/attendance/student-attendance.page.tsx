@@ -1,7 +1,7 @@
 import AttendanceTable from "@/apps/admin/components/students-management/attendance/attendance-table"
 import GetAttendancesForm from "@/apps/admin/components/students-management/attendance/get-attendances-form"
 import { useGetStudentsWithAttendances } from "@/apps/admin/components/students-management/student-actions"
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { TStudentsWithAttendenceUpdate } from "@/types/student.type"
 import { useEffect, useState } from "react"
 import _ from 'lodash';

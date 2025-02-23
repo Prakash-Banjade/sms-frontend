@@ -4,7 +4,7 @@ import { createQueryString } from "@/utils/create-query-string"
 import { sectionsColumns } from "../../components/class-rooms/sections.columns"
 import ClassRoomSearchFilterInputs, { FACULTY_SEARCH_KEY } from "@/components/search-components/class-room-search"
 import SearchInput from "@/components/search-components/search-input"
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { useGetClasses } from "../../components/class-rooms/actions"
 import { EClassType } from "@/types/global.type"
 

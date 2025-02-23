@@ -1,7 +1,7 @@
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { createQueryString } from "@/utils/create-query-string"
 import { DataTable } from "@/components/data-table/data-table"
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout"
+import ContainerLayout from "@/components/page-layouts/container-layout"
 import { useGetEmployees } from "@/apps/admin/components/finance-system/salary-management/data-access"
 import { SalaryStructureSearchFilters } from "../salary-structures/salary-structures.page"
 import { employeesColumns } from "@/apps/admin/components/finance-system/salary-management/employees.columns"

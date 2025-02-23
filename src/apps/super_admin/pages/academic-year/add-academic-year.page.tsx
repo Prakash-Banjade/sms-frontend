@@ -1,6 +1,6 @@
 import { AlertCircle } from 'lucide-react'
 import AcademicYearForm from '../../components/academic-year/academic-year-form'
-import ContainerLayout from '@/components/aside-layout.tsx/container-layout'
+import ContainerLayout from '@/components/page-layouts/container-layout'
 
 export default function AddAcademicYear() {
 

@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom"
 import { useGetExam, useGetExamStudents } from "../../components/examination/data-access";
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Badge } from "@/components/ui/badge";
 import ExamEvaluationForm from "../../components/examination/exam-evaluation/exam-evaluation-form";
 import { createQueryString } from "@/utils/create-query-string";

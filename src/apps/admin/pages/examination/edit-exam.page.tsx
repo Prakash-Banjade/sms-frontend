@@ -1,4 +1,4 @@
-import ContainerLayout from "@/components/aside-layout.tsx/container-layout";
+import ContainerLayout from "@/components/page-layouts/container-layout";
 import ExamSetupForm from "../../components/examination/exams/exam-setup.form";
 import { Navigate, useParams } from "react-router-dom";
 import { useGetExam } from "../../components/examination/data-access";
