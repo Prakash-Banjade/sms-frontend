@@ -9,16 +9,26 @@ import { truncateFilename } from "@/utils/truncate-file-name";
 import { getImageUrl } from "@/lib/utils";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/auth-provider";
+import { useSidebar } from "@/components/ui/sidebar";
 
 export const StudentInfoView = ({ id, setAccountId }: { id: string, setAccountId: React.Dispatch<React.SetStateAction<string | undefined>> }) => {
     const { payload } = useAuth();
+    const { setDynamicBreadcrumb } = useSidebar();
     const { data: student, isLoading } = useGetStudent({
         id,
         options: { enabled: !!id }
     });
 
     useEffect(() => {
-        if (student?.account?.id) setAccountId(student.account.id);
+        if (student?.account?.id) {
+            setAccountId(student.account.id);
+            setDynamicBreadcrumb([
+                {
+                    label: student.firstName + ' ' + student.lastName,
+                    url: `/${payload?.role}/students/${id}`,
+                }
+            ]);
+        };
     }, [student])
 
     if (isLoading) return <div className="p-5">Loading the student info...</div>

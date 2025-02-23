@@ -3,6 +3,8 @@ import TeacherForm from "../../components/teachers/teacher.form"
 import { useNavigate, useParams } from "react-router-dom"
 import { useGetTeacher } from "../../components/teachers/actions"
 import { useAuth } from "@/contexts/auth-provider"
+import { useEffect } from "react"
+import { useSidebar } from "@/components/ui/sidebar"
 
 export default function EditTeacherPage() {
     const params = useParams();
@@ -20,15 +22,28 @@ export default function EditTeacherPage() {
 function TeacherEditForm({ id }: { id: string }) {
     const navigate = useNavigate();
     const { payload } = useAuth();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data, isLoading } = useGetTeacher({
         id,
         options: { enabled: !!id }
     })
 
+    useEffect(() => {
+        if (data) {
+            setDynamicBreadcrumb([
+                {
+                    label: data?.firstName + ' ' + data?.lastName,
+                    url: `/teachers/${data?.id}`,
+                    isEdit: true,
+                }
+            ]);
+        }
+    }, [data]);
+
     if (isLoading) return <div className="p-5">Loading the teacher info...</div>
 
-    if (!data) navigate(`/${payload?.role}/teachers`)
+    if (!data) navigate(`/${payload?.role}/teachers`);
 
     return (
         <TeacherForm

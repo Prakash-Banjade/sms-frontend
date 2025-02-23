@@ -9,15 +9,27 @@ import { getImageUrl } from "@/lib/utils"
 import PersonalInfoCard, { FinancialInfoCard } from "../../components/teachers/single-teacher/info-cards"
 import SingleAttendanceView from "../../components/students-management/single-student/single-attendance-view"
 import TeacherClassSchecule from "../../components/teachers/single-teacher/teacher-class-schedule"
+import { useEffect } from "react"
+import { useSidebar } from "@/components/ui/sidebar"
 
 export default function SingleTeacherPage() {
     const params = useParams();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data: teacher, isLoading } = useFetchData<TSingleTeacherDetail>({
         endpoint: QueryKey.TEACHERS + '/' + params.id! + '/details',
         queryKey: [QueryKey.TEACHERS, params.id!, 'details'],
         options: { enabled: !!params.id }
     });
+
+    useEffect(() => {
+        setDynamicBreadcrumb([
+            {
+                label: teacher?.fullName ?? '',
+                url: `/teachers/${teacher?.id}`,
+            }
+        ]);
+    }, [teacher]);
 
     if (isLoading) return <div>Loading...</div>;
 

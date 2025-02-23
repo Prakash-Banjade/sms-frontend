@@ -7,9 +7,12 @@ import SingleAttendanceView from "../../components/students-management/single-st
 import { useGetStaff } from "../../components/staffs/actions"
 import PersonalInfoCard, { FinancialInfoCard } from "../../components/teachers/single-teacher/info-cards"
 import { Badge } from "@/components/ui/badge"
+import { useEffect } from "react"
+import { useSidebar } from "@/components/ui/sidebar"
 
 export default function SingleStaffPage() {
     const params = useParams();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data: staff, isLoading } = useGetStaff({
         id: params.id!,
@@ -17,6 +20,17 @@ export default function SingleStaffPage() {
             enabled: !!params.id,
         }
     });
+
+    useEffect(() => {
+        if (staff) {
+            setDynamicBreadcrumb([
+                {
+                    label: staff?.firstName + ' ' + staff?.lastName,
+                    url: `/teachers/${staff?.id}`,
+                }
+            ]);
+        }
+    }, [staff]);
 
     if (isLoading) return <div>Loading...</div>;
 

@@ -27,6 +27,7 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 export const SIDEBAR_SEARCH_KEYBOARD_SHORTCUT = "k"
 const SIDEBAR_SEARCH_KEY = "s"
 
+type TDynamicBreadCrumbItem = { label: string, url: string, isEdit?: boolean };
 type SidebarContext = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -36,7 +37,9 @@ type SidebarContext = {
   isMobile: boolean
   toggleSidebar: () => void
   search: string
-  setSearch: (value: string) => void
+  setSearch: (value: string) => void,
+  dynamicBreadcrumb: TDynamicBreadCrumbItem[],
+  setDynamicBreadcrumb: React.Dispatch<React.SetStateAction<TDynamicBreadCrumbItem[]>>
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null)
@@ -77,6 +80,8 @@ const SidebarProvider = React.forwardRef<
     const setSearch = React.useCallback((value: string) => {
       setSearchParams(SIDEBAR_SEARCH_KEY, value);
     }, [setSearchParams]);
+
+    const [dynamicBreadcrumb, setDynamicBreadcrumb] = React.useState<TDynamicBreadCrumbItem[]>([]);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
@@ -135,9 +140,11 @@ const SidebarProvider = React.forwardRef<
         setOpenMobile,
         toggleSidebar,
         search: searchParams.get(SIDEBAR_SEARCH_KEY) || '',
-        setSearch
+        setSearch,
+        dynamicBreadcrumb,
+        setDynamicBreadcrumb
       }),
-      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, setSearch]
+      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, setSearch, dynamicBreadcrumb, setDynamicBreadcrumb]
     )
 
     return (

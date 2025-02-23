@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom"
 import { createStudentSchema } from "../../schemas/student.schema"
 import { useGetStudent } from "../../components/students-management/student-actions";
 import StudentForm from "../../components/students-management/student.form.";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useAuth } from "@/contexts/auth-provider";
+import { useSidebar } from "@/components/ui/sidebar";
 
 type Props = {}
 
@@ -24,6 +25,7 @@ export default function EditStudentPage({ }: Props) {
 function StudentEditForm({ id }: { id: string }) {
     const navigate = useNavigate();
     const { payload } = useAuth();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data, isLoading } = useGetStudent({ id });
 
@@ -40,7 +42,19 @@ function StudentEditForm({ id }: { id: string }) {
             routeStopId: data?.routeStop?.id ?? undefined,
             documentAttachmentIds: data?.documentAttachments?.map(attachment => attachment.id) ?? [],
         });
-    }, [data])
+    }, [data]);
+
+    useEffect(() => {
+        if (data) {
+            setDynamicBreadcrumb([
+                {
+                    label: data?.firstName + ' ' + data?.lastName,
+                    url: `/students/${id}`,
+                    isEdit: true,
+                }
+            ]);
+        }
+    }, [data]);
 
     if (error) console.log(error, filteredValues); // TODO: handle the error and remove log, use schema.partial() to get only the valid fields
 

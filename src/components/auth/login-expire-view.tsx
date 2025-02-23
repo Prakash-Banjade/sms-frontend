@@ -29,7 +29,7 @@ export default function LoginExpireView() {
                             Log In Again
                         </Button>
                         <p className="text-center text-sm text-muted-foreground">
-                            Need help? <a href="#" className="text-primary hover:underline">Contact support</a>
+                            Need help? <a href="/" className="text-primary hover:underline">Contact support</a>
                         </p>
                     </div>
                 </div>
