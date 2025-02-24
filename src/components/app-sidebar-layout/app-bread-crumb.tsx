@@ -17,16 +17,25 @@ export default function AppBreadCrumb({ menuItems }: { menuItems: TGroupMenuItem
             ?.menuItems?.find(item => location.pathname.includes(`/${payload?.role}/${item.url}`))
 
         const item = menuItem?.items?.length
-            ? menuItem.items.find(item => location.pathname.includes(`/${payload?.role}/${menuItem.url}${!!item.url ? `/${item.url}` : ''}`))
+            ? (
+                menuItem.items.find(item => {
+                    return location.pathname === (`/${payload?.role}/${menuItem.url}${!!item.url ? `/${item.url}` : ''}`)
+                })
+                || menuItem.items.find(item => {
+                    return location.pathname.includes(`/${payload?.role}/${menuItem.url}${!!item.url ? `/${item.url}` : ''}`)
+                })
+            )
             : undefined;
 
         return { menuItem, item };
     }, [location, menuItems]);
 
+    console.log(active)
+
     useEffect(() => {
         setDynamicBreadcrumb(prev => [
             ...prev.filter(breadcrumb => {
-                return location.pathname.includes(breadcrumb.url);
+                return breadcrumb.url && location.pathname.includes(breadcrumb.url);
             })
         ])
     }, [location]);
@@ -35,17 +44,17 @@ export default function AppBreadCrumb({ menuItems }: { menuItems: TGroupMenuItem
         <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbPage className="text-muted-foreground">
-                        {active.item?.title}
+                    <BreadcrumbPage className="text-muted-foreground line-clamp-1">
+                        {active.menuItem?.title}
                     </BreadcrumbPage>
                 </BreadcrumbItem>
                 {
                     active.item && <>
                         <BreadcrumbSeparator className="hidden md:block" />
                         <BreadcrumbItem>
-                            <BreadcrumbLink asChild>
-                                <Link to={`/${payload?.role}/${active.menuItem?.url}`}>
-                                    {active.menuItem?.title}
+                            <BreadcrumbLink asChild className="line-clamp-1">
+                                <Link to={`/${payload?.role}/${active.menuItem?.url}/${active.item?.url}`}>
+                                    {active.item?.title}
                                 </Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
@@ -60,12 +69,12 @@ export default function AppBreadCrumb({ menuItems }: { menuItems: TGroupMenuItem
                                     {
                                         item.isEdit ? (
                                             <BreadcrumbLink asChild>
-                                                <Link to={`/${payload?.role}${item.url}`}>
+                                                <Link to={`/${payload?.role}${item.url}`} className="line-clamp-1">
                                                     {item.label}
                                                 </Link>
                                             </BreadcrumbLink>
                                         ) : (
-                                            <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                                            <BreadcrumbPage className="line-clamp-1">{item.label}</BreadcrumbPage>
                                         )
                                     }
                                 </BreadcrumbItem>

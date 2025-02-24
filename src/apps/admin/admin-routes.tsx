@@ -137,7 +137,7 @@ export const AdminRoutesGroup = () => {
                     <Route index element={<TasksPage type={ETask.HOMEWORK} />} />
                     <Route path='new' element={<AddTaskPage type={ETask.HOMEWORK} />} />
                     <Route path=":id">
-                        <Route index element={<SingleTaskPage />} />
+                        <Route index element={<SingleTaskPage type={ETask.HOMEWORK} />} />
                         <Route path="edit" element={<EditTaskPage type={ETask.HOMEWORK} />} />
                     </Route>
                 </Route>
@@ -145,7 +145,7 @@ export const AdminRoutesGroup = () => {
                     <Route index element={<TasksPage type={ETask.ASSIGNMENT} />} />
                     <Route path='new' element={<AddTaskPage type={ETask.ASSIGNMENT} />} />
                     <Route path=":id">
-                        <Route index element={<SingleTaskPage />} />
+                        <Route index element={<SingleTaskPage type={ETask.ASSIGNMENT} />} />
                         <Route path="edit" element={<EditTaskPage type={ETask.ASSIGNMENT} />} />
                     </Route>
                 </Route>

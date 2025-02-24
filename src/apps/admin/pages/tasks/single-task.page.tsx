@@ -3,11 +3,26 @@ import { useGetTask } from "../../components/tasks/action";
 import SingleTaskDetailsCard from "../../components/tasks/single-task-details-card";
 import TaskSubmissionStatisticsCard from "../../components/tasks/task-submission-statistics-card";
 import TaskSubmissionsCard from "../../components/tasks/task-submissions-card";
+import { useEffect } from "react";
+import { useSidebar } from "@/components/ui/sidebar";
+import { ETask } from "@/types/global.type";
 
-export default function SingleTaskPage() {
+export default function SingleTaskPage({ type }: { type: ETask }) {
     const { id } = useParams();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data: task, isLoading } = useGetTask({ id: id! }); // this component is used in a dynamic route, so used not null 
+
+    useEffect(() => {
+        if (task) {
+            setDynamicBreadcrumb([
+                {
+                    label: task.title,
+                    url: `/tasks/${type}s/${task.id}`,
+                }
+            ])
+        }
+    }, [task]);
 
     if (isLoading) return <div>Loading...</div>;
 

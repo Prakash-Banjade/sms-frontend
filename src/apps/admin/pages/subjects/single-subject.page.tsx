@@ -5,6 +5,8 @@ import { useGetSubject } from "../../components/subjects/data-access";
 import SubjectChapterList from "./subject-chapter-list";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/auth-provider";
+import { useEffect } from "react";
+import { useSidebar } from "@/components/ui/sidebar";
 
 export default function SingleSubjectPage() {
     const params = useParams();
@@ -19,10 +21,22 @@ export default function SingleSubjectPage() {
 
 function SubjectOverview({ subjectId }: { subjectId: string }) {
     const { payload } = useAuth();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data: subject, isLoading } = useGetSubject({
         id: subjectId,
-    })
+    });
+
+    useEffect(() => {
+        if (subject) {
+            setDynamicBreadcrumb([
+                {
+                    label: subject.subjectName,
+                    url: `/subjects/${subject.id}`,
+                }
+            ])
+        }
+    }, [subject])
 
     if (isLoading) return <div>Loading...</div>;
 

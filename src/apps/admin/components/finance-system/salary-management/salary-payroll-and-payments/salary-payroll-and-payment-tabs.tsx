@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import PayrollTabContent from "./payroll/payroll-tab-content";
 import SalaryPayment from "./payment/salary-payment";
 import SalaryPaymentsTable from "./all-payments/salary-payments-table";
+import { useEffect } from "react";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const tabs = [
     {
@@ -31,6 +33,7 @@ const tabs = [
 
 export default function SalaryPayrollAndPaymentTabs() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data, isLoading } = useGetSalaryEmployee({
         id: searchParams.get('employeeID')!,
@@ -38,6 +41,17 @@ export default function SalaryPayrollAndPaymentTabs() {
             enabled: !!searchParams.get('employeeID'),
         }
     });
+
+    useEffect(() => {
+        if (data) {
+            setDynamicBreadcrumb([
+                {
+                    label: data.employee.fullName,
+                    url: `/finance/salary-management/payroll-and-payments/employee?employeeID=${data.employee?.employeeId}`
+                }
+            ]);
+        }
+    }, [data, searchParams.get('tab')]);
 
     if (!searchParams.get('employeeID')) return <div className="h-[400px] grid place-items-center text-muted-foreground">Enter employee ID to view salary details</div>
 

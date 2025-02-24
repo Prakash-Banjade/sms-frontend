@@ -10,6 +10,8 @@ import FeeInvoiceForm from "./fee-invoice/fee-invoice-form";
 import StudentLedgerView from "./fee-ledger/student-ledger-view";
 import FeePaymentForm from "./fee-payment.tsx/fee-payment-form";
 import LibraryFinePayment from "./library-fine/library-fine-payment";
+import { useSidebar } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 
 const tabs = [
     {
@@ -36,6 +38,7 @@ const tabs = [
 
 export default function FeeBillingAndPaymentTabs() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data, isLoading } = useGetFeeStudent({
         id: searchParams.get('studentID')!,
@@ -43,6 +46,17 @@ export default function FeeBillingAndPaymentTabs() {
             enabled: !!searchParams.get('studentID'),
         }
     });
+
+    useEffect(() => {
+        if (data) {
+            setDynamicBreadcrumb([
+                {
+                    label: data.student.name,
+                    url: `/finance/fee-management/billing-and-payments/student?studentID=${data.student.studentId}`,
+                }
+            ])
+        }
+    }, [data, searchParams.get('tab')])
 
     if (!searchParams.get('studentID')) return <div className="h-[400px] grid place-items-center text-muted-foreground">Enter student ID to view transactions</div>
 

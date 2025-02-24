@@ -11,6 +11,8 @@ import { ClassDetailsLoadingSkeleton } from "../../components/class-rooms/single
 import { useGetClass } from "../../components/class-rooms/actions"
 import { useParams } from "react-router-dom"
 import SingleClassSectionsList from "../../components/class-rooms/single-classroom/single-class-sections-list"
+import { useEffect } from "react"
+import { useSidebar } from "@/components/ui/sidebar"
 
 // Extended mock data for the class
 const classData = {
@@ -78,8 +80,21 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
 export default function SingleClassRoomPage() {
     const params = useParams();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data: classRoom, isLoading } = useGetClass({ id: params.id! }); // this component is used in a dynamic route, so used not null
+
+    useEffect(() => {
+        if (classRoom) {
+            console.log(1)
+            setDynamicBreadcrumb([
+                {
+                    label: classRoom.name,
+                    url: `/classes/${classRoom.id}`,
+                }
+            ]);
+        }
+    }, [classRoom]);
 
     if (!classRoom && !isLoading) return <div>Class not found</div>;
 

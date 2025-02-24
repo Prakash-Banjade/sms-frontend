@@ -11,17 +11,29 @@ import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
 import LoadingButton from '@/components/forms/loading-button'
 import { useAuth } from '@/contexts/auth-provider'
+import { useEffect } from 'react'
+import { useSidebar } from '@/components/ui/sidebar'
 
 export default function SingleLessonPlanPage() {
     const params = useParams();
     const { payload } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { setDynamicBreadcrumb } = useSidebar();
 
     const { data: lessonPlan, isLoading } = useGetLessonPlan({
         id: params.id!,
         options: { enabled: !!params.id }
     });
+
+    useEffect(() => {
+        setDynamicBreadcrumb([
+            {
+                label: lessonPlan?.title ?? '',
+                url: `/lesson-plans/${lessonPlan?.id}`,
+            }
+        ])
+    }, [lessonPlan]);
 
     const { mutateAsync, isPending } = useAppMutation();
 

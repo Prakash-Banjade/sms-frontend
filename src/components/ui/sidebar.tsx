@@ -27,7 +27,15 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 export const SIDEBAR_SEARCH_KEYBOARD_SHORTCUT = "k"
 const SIDEBAR_SEARCH_KEY = "s"
 
-type TDynamicBreadCrumbItem = { label: string, url: string, isEdit?: boolean };
+type TDynamicBreadCrumbItem = {
+  label: string,
+  /**
+   * No need to provide role prefix, eg: `/students/${id}`
+   */
+  url: string,
+  isEdit?: boolean
+};
+
 type SidebarContext = {
   state: "expanded" | "collapsed"
   open: boolean

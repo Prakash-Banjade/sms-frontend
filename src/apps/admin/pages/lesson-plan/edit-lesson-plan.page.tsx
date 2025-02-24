@@ -3,6 +3,8 @@ import { Navigate, useParams } from "react-router-dom"
 import { useGetLessonPlan } from "../../components/lesson-plan/data-access";
 import LessonPlanForm from "../../components/lesson-plan/lesson-plan-form";
 import { useAuth } from "@/contexts/auth-provider";
+import { useSidebar } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 
 
 export default function EditLessonPlanPage() {
@@ -19,7 +21,18 @@ export default function EditLessonPlanPage() {
 
 function LessonPlanEditForm({ id }: { id: string }) {
     const { payload } = useAuth();
+    const { setDynamicBreadcrumb } = useSidebar();
     const { data, isLoading } = useGetLessonPlan({ id });
+
+    useEffect(() => {
+        setDynamicBreadcrumb([
+            {
+                label: data?.title ?? '',
+                url: `/lesson-plans/${data?.id}`,
+                isEdit: true,
+            }
+        ])
+    }, [data]);
 
     if (isLoading) return <div>Loading...</div>;
 
