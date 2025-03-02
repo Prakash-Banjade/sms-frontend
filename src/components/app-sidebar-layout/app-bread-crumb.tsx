@@ -30,8 +30,6 @@ export default function AppBreadCrumb({ menuItems }: { menuItems: TGroupMenuItem
         return { menuItem, item };
     }, [location, menuItems]);
 
-    console.log(active)
-
     useEffect(() => {
         setDynamicBreadcrumb(prev => [
             ...prev.filter(breadcrumb => {

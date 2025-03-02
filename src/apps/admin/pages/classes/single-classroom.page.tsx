@@ -86,7 +86,6 @@ export default function SingleClassRoomPage() {
 
     useEffect(() => {
         if (classRoom) {
-            console.log(1)
             setDynamicBreadcrumb([
                 {
                     label: classRoom.name,

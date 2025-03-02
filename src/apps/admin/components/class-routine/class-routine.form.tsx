@@ -58,7 +58,6 @@ export default function ClassRoutineForm(props: Props) {
     const { mutateAsync } = useAppMutation<Partial<classRoutineSchemaType>, any>();
 
     async function onSubmit(values: classRoutineSchemaType) {
-        console.log(values)
         if (hasSection(values.classRoomId) && !values.sectionId) {
             form.setError("sectionId", { type: "required", message: "Section is required" });
             form.setFocus("sectionId");
