@@ -1,41 +1,50 @@
 import LoadingButton from "@/components/forms/loading-button";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAppMutation } from "@/hooks/useAppMutation";
+import { useServerErrorInField } from "@/hooks/useServerErrorInField";
 import { QueryKey } from "@/react-query/queryKeys";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
-import React from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { z } from "zod";
+
+const formSchema = z.object({
+    email: z.string().email(),
+});
 
 export default function ForgotPasswordForm() {
-    const [responseMsg, setResponseMsg] = React.useState<string | null>(null);
+    const [responseMsg, setResponseMsg] = useState<string | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { mutateAsync, isPending } = useAppMutation<{ email: string }, { message: string }>();
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: location?.state?.email ?? "",
+        }
+    })
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const { mutateAsync, isPending, error } = useAppMutation<{ email: string }, { message: string }>();
 
-        const email = new FormData(e.currentTarget).get('email') as string;
-
-        if (!email) return;
-
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const response = await mutateAsync({
             method: "post",
             endpoint: QueryKey.AUTH_FORGOT_PASSWORD,
-            data: {
-                email,
-            },
+            data: values,
             toastOnSuccess: false,
         });
 
         if (response?.data?.message) {
             setResponseMsg(response?.data?.message);
         }
-
     };
+
+    // show error directly in form field if send by server
+    useServerErrorInField(error, form);
 
     return (
         <>
@@ -61,25 +70,27 @@ export default function ForgotPasswordForm() {
                         <p className="text-sm text-muted-foreground text-center mt-2">
                             Enter your email address and we'll send you a link to reset your password.
                         </p>
-                        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-                            <div className="space-y-2 text-left">
-                                <Label htmlFor="email">
-                                    Email
-                                </Label>
-                                <Input
-                                    id="email"
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-6">
+                                <FormField
+                                    control={form.control}
                                     name="email"
-                                    type="email"
-                                    defaultValue={location?.state?.email}
-                                    placeholder="Enter your email address"
-                                    required
+                                    render={({ field }) => (
+                                        <FormItem className="text-left">
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input type="email" placeholder="Enter your email address" required {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                            </div>
 
-                            <LoadingButton isLoading={isPending} loadingText="Sending..." type="submit" className="w-full">
-                                Send Reset Link
-                            </LoadingButton>
-                        </form>
+                                <LoadingButton isLoading={isPending} loadingText="Sending..." type="submit" className="w-full">
+                                    Send Reset Link
+                                </LoadingButton>
+                            </form>
+                        </Form>
 
                         <p className="mt-6 text-center text-muted-foreground text-sm">
                             Remember your password?{' '}

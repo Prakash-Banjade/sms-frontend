@@ -14,7 +14,7 @@ import ImageUpload from "@/components/forms/image-upload";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
 import { subYears } from "date-fns";
-import { useEffect } from "react";
+import { useServerErrorInField } from "@/hooks/useServerErrorInField";
 
 type Props = {
     defaultValues?: undefined;
@@ -69,13 +69,8 @@ export default function StudentForm(props: Props) {
         }
     }
 
-    useEffect(() => { // show error directly in form field if send by server
-        const errObj = (error as any)?.response?.data?.message;
-        if (!!errObj?.field) {
-            form.setError(errObj.field, { message: errObj?.message });
-            form.setFocus(errObj.field);
-        }
-    }, [error]);
+    // show error directly in form field if send by server
+    useServerErrorInField(error, form);
 
     return (
         <AppForm schema={createStudentSchema} form={form}>

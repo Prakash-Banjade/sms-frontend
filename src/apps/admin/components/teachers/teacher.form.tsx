@@ -7,11 +7,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { teacherFormDefaultValues, teacherSchema, teacherSchemaType } from "../../schemas/teacher.schema";
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
-import { useEffect } from "react";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
 import { SelectOption } from "@/types/global.type";
 import { format, subYears } from "date-fns";
+import { useServerErrorInField } from "@/hooks/useServerErrorInField";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
@@ -57,13 +57,8 @@ export default function TeacherForm(props: Props) {
         }
     }
 
-    useEffect(() => { // show error directly in form field if send by server
-        const errObj = (error as any)?.response?.data?.message;
-        if (!!errObj?.field) {
-            form.setError(errObj.field, { message: errObj?.message });
-            form.setFocus(errObj.field);
-        }
-    }, [error]);
+    // show error directly in form field if send by server
+    useServerErrorInField(error, form);
 
     return (
         <AppForm schema={teacherSchema} form={form}>

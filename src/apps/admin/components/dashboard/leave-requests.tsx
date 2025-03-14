@@ -59,27 +59,31 @@ export default function Dashboard_LeaveRequests() {
                                                 : `${difference + 1} day leave (${leaveFromDate})`;
 
                                             return (
-                                                <div className="flex gap-4 rounded-lg p-4 bg-secondary/20" key={leaveRequest.id}>
-                                                    <ProfileAvatar className="size-12" name={leaveRequest.studentName} src={getImageUrl(leaveRequest.profileImageUrl, 'w=48')} />
-                                                    <div className="flex-1 space-y-1">
-                                                        <div className="flex items-center gap-1 flex-wrap">
-                                                            <p className="font-medium">{leaveRequest.studentName}</p>
-                                                            <span className="text-sm text-muted-foreground">{leaveRequest.classRoomName}</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <CalendarOff className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">{leaveDaysString}</p>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <Clock className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(new Date(leaveRequest.requestedOn))} ago</p>
+                                                <section className="@container/card" key={leaveRequest.id}>
+                                                    <div className="flex gap-4 flex-col @lg/card:flex-row rounded-lg p-4 bg-secondary/20">
+                                                        <section className="flex gap-4">
+                                                            <ProfileAvatar className="size-20" name={leaveRequest.studentName} src={getImageUrl(leaveRequest.profileImageUrl, 'w=80')} />
+                                                            <div className="flex-1 space-y-1">
+                                                                <div className="flex items-center gap-1 flex-wrap">
+                                                                    <p className="font-medium">{leaveRequest.studentName}</p>
+                                                                    <span className="text-sm text-muted-foreground">{leaveRequest.classRoomName}</span>
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <CalendarOff className="size-4 text-muted-foreground" />
+                                                                    <p className="text-sm text-muted-foreground">{leaveDaysString}</p>
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <Clock className="size-4 text-muted-foreground" />
+                                                                    <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(new Date(leaveRequest.requestedOn))} ago</p>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <div className="flex gap-1 @lg:flex-col @lg/card:ml-auto">
+                                                            <Button type="button" variant={'outline'} size={'sm'} className="grow" onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.REJECTED)}>Reject</Button>
+                                                            <Button type="button" size={'sm'} className="grow" onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.APPROVED)}>Approve</Button>
                                                         </div>
                                                     </div>
-                                                    <div className="flex gap-1 flex-col">
-                                                        <Button type="button" variant={'ghost'} size={'sm'} onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.REJECTED)}>Reject</Button>
-                                                        <Button type="button" size={'sm'} onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.APPROVED)}>Approve</Button>
-                                                    </div>
-                                                </div>
+                                                </section>
                                             )
                                         })
                                     }
@@ -113,24 +117,28 @@ export default function Dashboard_LeaveRequests() {
                                                 : `${difference + 1} day leave (${leaveFromDate})`;
 
                                             return (
-                                                <div className="flex gap-4 rounded-lg p-4 bg-secondary/20" key={leaveRequest.id}>
-                                                    <ProfileAvatar className="size-12" name={leaveRequest.teacherName} src={getImageUrl(leaveRequest.profileImageUrl, 'w=48')} />
-                                                    <div className="flex-1 space-y-1">
-                                                        <p className="font-medium">{leaveRequest.teacherName}</p>
-                                                        <div className="flex items-center gap-2">
-                                                            <CalendarOff className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">{leaveDaysString}</p>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <Clock className="size-4 text-muted-foreground" />
-                                                            <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(new Date(leaveRequest.requestedOn))} ago</p>
+                                                <section className="@container/card" key={leaveRequest.id}>
+                                                    <div className="flex gap-4 flex-col @lg/card:flex-row rounded-lg p-4 bg-secondary/20">
+                                                        <section className="flex gap-4">
+                                                            <ProfileAvatar className="size-20" name={leaveRequest.teacherName} src={getImageUrl(leaveRequest.profileImageUrl, 'w=48')} />
+                                                            <div className="flex-1 space-y-1">
+                                                                <p className="font-medium">{leaveRequest.teacherName}</p>
+                                                                <div className="flex items-center gap-2">
+                                                                    <CalendarOff className="size-4 text-muted-foreground" />
+                                                                    <p className="text-sm text-muted-foreground">{leaveDaysString}</p>
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <Clock className="size-4 text-muted-foreground" />
+                                                                    <p className="text-sm text-muted-foreground">Requested {formatDistanceToNow(new Date(leaveRequest.requestedOn))} ago</p>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <div className="flex gap-1 @lg:flex-col @lg/card:ml-auto">
+                                                            <Button type="button" variant={'outline'} size={'sm'} className="grow" onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.REJECTED)}>Reject</Button>
+                                                            <Button type="button" size={'sm'} className="grow" onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.APPROVED)}>Approve</Button>
                                                         </div>
                                                     </div>
-                                                    <div className="flex gap-1 flex-col">
-                                                        <Button type="button" variant={'ghost'} size={'sm'} onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.REJECTED)}>Reject</Button>
-                                                        <Button type="button" size={'sm'} onClick={() => handleUpdateStatus(leaveRequest.id, ELeaveRequestStatus.APPROVED)}>Approve</Button>
-                                                    </div>
-                                                </div>
+                                                </section>
                                             )
                                         })
                                     }

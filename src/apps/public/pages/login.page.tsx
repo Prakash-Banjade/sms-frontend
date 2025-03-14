@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { LoginForm as LoginByPasswordForm } from "../components/login-page/login-form"
 import { KeyRound, SquareAsterisk } from "lucide-react"
-import { Icons } from "@/components/ui/icons"
 import { useState } from "react"
 import LoginByPasskeyForm from "../components/login-page/login-by-passkey-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
@@ -70,16 +69,6 @@ export default function LoginPage() {
             </Button>
           )
         }
-
-        <Button
-          variant="outline"
-          type="button"
-          className="w-full"
-          disabled={isFormSubmitting}
-        >
-          <Icons.gitHub className="h-4 w-4" />
-          Continue with GitHub
-        </Button>
       </section>
     </div>
   )
