@@ -5,8 +5,8 @@ import { useAppMutation } from "@/hooks/useAppMutation";
 import { TCurrentUser, useAuth } from "@/contexts/auth-provider";
 import { QueryKey } from "@/react-query/queryKeys";
 import usePersist from "@/hooks/usePersist";
-import AppLoadingSkeleton from "../app-sidebar-layout/app-loading-skeleton";
 import LoginExpireView from "./login-expire-view";
+import RefreshLoadingSkeleton from "../app-sidebar-layout/refresh-loading-skeleton/refresh-loading-skeleton";
 
 const PersistLogin = () => {
     const { persist } = usePersist();
@@ -48,7 +48,7 @@ const PersistLogin = () => {
     } else if (isPending) {
         //persist: yes, token: no
         // console.log("loading");
-        content = <AppLoadingSkeleton />;
+        content = <RefreshLoadingSkeleton />;
     } else if (isError) {
         //persist: yes, token: no
 

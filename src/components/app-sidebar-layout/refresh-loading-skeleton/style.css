@@ -1,0 +1,19 @@
+@keyframes loader-indicator {
+    0% {
+        left: -50%;
+        scale: .5
+    }
+
+    50% {
+        scale: 1;
+    }
+
+    to {
+        left: 120%;
+        scale: 0;
+    }
+}
+
+.loader_indicator {
+    animation: 1s ease-in infinite alternate loader-indicator;
+}
