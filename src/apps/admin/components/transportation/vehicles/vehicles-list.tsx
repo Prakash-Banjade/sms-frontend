@@ -5,9 +5,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { vehiclesColumns } from './vehicles.columns';
 import VehiclesSearchFilters from './vehicles-list-filters';
 
-type Props = {}
-
-export default function VehiclesList({ }: Props) {
+export default function VehiclesList() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetVehicles({

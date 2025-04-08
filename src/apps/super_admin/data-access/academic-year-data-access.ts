@@ -63,7 +63,7 @@ export const useGetActiveAcademicYear = ({
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<{ id: string, name: string }>
+    options?: Partial<UseQueryOptions<{ id: string, name: string }>>
 }) => {
     const response = useFetchData<{ id: string, name: string }>({
         endpoint: QueryKey.ACADEMIC_YEARS + '/' + 'active',

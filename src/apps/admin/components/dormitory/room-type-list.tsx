@@ -3,9 +3,7 @@ import { useGetRoomTypes } from './actions';
 import { DataTable } from '@/components/data-table/data-table';
 import { roomTypesColumns } from './room-type.columns';
 
-type Props = {}
-
-export default function RoomTypeList({ }: Props) {
+export default function RoomTypeList() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetRoomTypes({

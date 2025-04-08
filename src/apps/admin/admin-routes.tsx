@@ -38,7 +38,6 @@ const EmployeeAttendancePage = lazy(() => import('./pages/attendances/employee-a
 const LibraryBookListPage = lazy(() => import('./pages/library/library-book-list.page'));
 const AddLibraryBookPage = lazy(() => import('./pages/library/add-library-book.page'));
 const IssuesAndReturnsPage = lazy(() => import('./pages/library/issuesAndReturns.page'));
-const LibraryMembersPage = lazy(() => import('./pages/library/library-members.page'));
 const LibraryOverviewPage = lazy(() => import('./pages/library/library-overview.page'));
 const BookCategoriesPage = lazy(() => import('./pages/library/book-categories.page'));
 const SingleSubjectPage = lazy(() => import('./pages/subjects/single-subject.page'));
@@ -206,7 +205,6 @@ export const AdminRoutesGroup = () => {
                     <Route path="new" element={<AddLibraryBookPage />} />
                 </Route>
                 <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
-                <Route path="members" element={<LibraryMembersPage />} />
             </Route>
             <Route path='finance'>
                 <Route path="fee-management">

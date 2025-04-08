@@ -17,8 +17,6 @@ import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { Badge } from "@/components/ui/badge"
 import { useQueryClient } from "@tanstack/react-query"
-import { setCookie } from "@/utils/cookie"
-import { CookieKey } from "@/CONSTANTS"
 
 export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
     {
@@ -43,7 +41,7 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
         header: "Status",
         accessorKey: "isActive",
         cell: ({ row }) => {
-            return row.original.isActive
+            return row.index === 0 // first item is the current academic year
                 ? <Badge variant="success">Active</Badge>
                 : <Badge variant="outline">Inactive</Badge>
         },
@@ -59,12 +57,6 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
             const { mutateAsync } = useAppMutation<academicYearFormSchemaType, any>();
 
             async function changeActive() {
-                setCookie(CookieKey.ACADEMICYEAR_ID, academicYear.id, {
-                    sameSite: import.meta.env.VITE_API_ENV === 'production' ? 'None' : 'Lax',
-                    secure: import.meta.env.VITE_API_ENV === 'production',
-                    domain: import.meta.env.VITE_API_DOMAIN,
-                });
-
                 await mutateAsync({
                     method: "patch",
                     endpoint: `${QueryKey.ACADEMIC_YEARS}/${academicYear.id}/change-active`,
@@ -93,16 +85,13 @@ export const academicYearColumns: ColumnDef<TAcademicYear>[] = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {
-                                !academicYear.isActive && <DropdownMenuButtonItem onClick={changeActive}>
+                                row.index !== 0 && <DropdownMenuButtonItem onClick={changeActive}>
                                     <span>Set Active</span>
                                 </DropdownMenuButtonItem>
                             }
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
-                            {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
-                                <span>Delete</span>
-                            </DropdownMenuButtonItem> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

@@ -5,9 +5,7 @@ import { useGetExamTypes } from '../data-access';
 import { examTypesColumns } from './exam-type.column';
 import SearchInput from '@/components/search-components/search-input';
 
-type Props = {}
-
-export default function ExamTypesList({ }: Props) {
+export default function ExamTypesList() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetExamTypes({

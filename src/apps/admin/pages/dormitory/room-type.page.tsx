@@ -1,9 +1,7 @@
 import RoomTypeList from "../../components/dormitory/room-type-list"
 import RoomTypeForm from "../../components/dormitory/room-type.form"
 
-type Props = {}
-
-export default function RoomTypePage({ }: Props) {
+export default function RoomTypePage() {
     return (
         <section className="@container">
             <div className="flex @7xl:flex-nowrap gap-12 flex-wrap">

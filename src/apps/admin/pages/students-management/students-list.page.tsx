@@ -5,9 +5,7 @@ import { useGetStudents } from "../../components/students-management/student-act
 import { studentsColumns } from "../../components/students-management/student.columns"
 import StudentsListFilters from "../../components/students-management/student-list-filter"
 
-type Props = {}
-
-export default function StudentsListPage({ }: Props) {
+export default function StudentsListPage() {
     return (
         <ContainerLayout
             title="All Students"

@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 import { z } from "zod"
 
-type Props = {}
-
 const classRoutineSearchFilterSchema = z.object({
     classRoomId: z.string().optional(),
     sectionId: z.string().optional(),
@@ -14,7 +12,7 @@ const classRoutineSearchFilterSchema = z.object({
 
 type TClassRoutineSearchFilter = z.infer<typeof classRoutineSearchFilterSchema>
 
-export default function ClassRoutineSearchFilters({ }: Props) {
+export default function ClassRoutineSearchFilters() {
     const [searchParams] = useSearchParams();
 
     const form = useForm<TClassRoutineSearchFilter>({

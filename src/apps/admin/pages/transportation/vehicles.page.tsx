@@ -5,7 +5,7 @@ export default function VehiclesPage() {
     return (
         <section className="@container">
             <div className="flex @7xl:flex-nowrap gap-12 flex-wrap">
-                <section>
+                <section className="grow">
                     <section className='space-y-2 mb-5'>
                         <h1 className="text-2xl font-bold">Add Vehicle</h1>
                         <p className="text-muted-foreground">Add a new vehicle by filling out the form below.</p>

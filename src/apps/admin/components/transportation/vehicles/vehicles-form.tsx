@@ -103,62 +103,64 @@ export default function VehicleForm(props: Props) {
 
     return (
         <AppForm schema={vehicleSchema} form={form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <AppForm.Text<vehicleFormType>
-                    name="vehicleNumber"
-                    label="Vehicle Number"
-                    placeholder={`e.g. LU 1 KHA 2280`}
-                    description="Enter the vehicle number."
-                    required
-                />
-                <AppForm.Text<vehicleFormType>
-                    name="vehicleModel"
-                    label="Vehicle Model"
-                    description="Enter the vehicle model."
-                    required
-                    placeholder="e.g. AKA339"
-                />
-                <AppForm.Select<vehicleFormType>
-                    name="type"
-                    label="Type"
-                    description="Select the vehicle type."
-                    placeholder="Select vehicle type"
-                    options={Object.entries(EVehicleType).map(([key, value]) => ({ label: key, value }))}
-                    required
-                />
-                <AppForm.Number<vehicleFormType>
-                    name="capacity"
-                    label="Capacity"
-                    description="Enter the vehicle capacity."
-                    placeholder="eg. 30"
-                    required
-                />
-                <AppForm.Text<vehicleFormType>
-                    name="yearMade"
-                    label="Year Made"
-                    description="Enter the year made."
-                    placeholder="eg. 2020"
-                    required
-                />
-                <AppForm.DynamicSelect<vehicleFormType>
-                    name="driverId"
-                    label="Driver"
-                    placeholder="Select driver"
-                    description="Select the driver of the vehicle. Can be assigned later."
-                    fetchOptions={{
-                        endpoint: QueryKey.STAFFS + '/' + QueryKey.OPTIONS,
-                        queryKey: [QueryKey.STAFFS],
-                        queryString: `type=${EStaff.DRIVER}&take=50`,
-                    }}
-                    disableOnNoOption
-                />
-                <AppForm.Textarea<vehicleFormType>
-                    containerClassName="grow"
-                    name="note"
-                    label="Note"
-                    description="Any additional notes or comments."
-                    placeholder="eg. The vehicle is in good condition."
-                />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="@container space-y-6">
+                <section className="grid @4xl:grid-cols-2 gap-6">
+                    <AppForm.Text<vehicleFormType>
+                        name="vehicleNumber"
+                        label="Vehicle Number"
+                        placeholder={`e.g. LU 1 KHA 2280`}
+                        description="Enter the vehicle number."
+                        required
+                    />
+                    <AppForm.Text<vehicleFormType>
+                        name="vehicleModel"
+                        label="Vehicle Model"
+                        description="Enter the vehicle model."
+                        required
+                        placeholder="e.g. AKA339"
+                    />
+                    <AppForm.Select<vehicleFormType>
+                        name="type"
+                        label="Type"
+                        description="Select the vehicle type."
+                        placeholder="Select vehicle type"
+                        options={Object.entries(EVehicleType).map(([key, value]) => ({ label: key, value }))}
+                        required
+                    />
+                    <AppForm.Number<vehicleFormType>
+                        name="capacity"
+                        label="Capacity"
+                        description="Enter the vehicle capacity."
+                        placeholder="eg. 30"
+                        required
+                    />
+                    <AppForm.Text<vehicleFormType>
+                        name="yearMade"
+                        label="Year Made"
+                        description="Enter the year made."
+                        placeholder="eg. 2020"
+                        required
+                    />
+                    <AppForm.DynamicSelect<vehicleFormType>
+                        name="driverId"
+                        label="Driver"
+                        placeholder="Select driver"
+                        description="Select the driver of the vehicle. Can be assigned later."
+                        fetchOptions={{
+                            endpoint: QueryKey.STAFFS + '/' + QueryKey.OPTIONS,
+                            queryKey: [QueryKey.STAFFS],
+                            queryString: `type=${EStaff.DRIVER}&take=50`,
+                        }}
+                        disableOnNoOption
+                    />
+                    <AppForm.Textarea<vehicleFormType>
+                        containerClassName="grow"
+                        name="note"
+                        label="Note"
+                        description="Any additional notes or comments."
+                        placeholder="eg. The vehicle is in good condition."
+                    />
+                </section>
 
                 <section className="flex gap-4 justify-end">
                     <AppForm.Cancel action={onDialogClose}>Cancel</AppForm.Cancel>

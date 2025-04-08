@@ -5,10 +5,6 @@ export type TAcademicYear = {
     name: string;
     startDate: string;
     endDate: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    isActive: boolean;
 }
 
 export type TAcademicYearsResponse = {

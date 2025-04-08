@@ -6,9 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import DormitoryRoomsList from "../../components/dormitory/dormitory-room-list";
 
-type Props = {}
-
-export default function DormitoryPage({ }: Props) {
+export default function DormitoryPage() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

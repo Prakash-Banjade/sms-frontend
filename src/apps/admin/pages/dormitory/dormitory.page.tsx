@@ -1,9 +1,7 @@
 import DormitoriesList from "../../components/dormitory/dormitories-list"
 import DormitoryForm from "../../components/dormitory/dormitory.form"
 
-type Props = {}
-
-export default function DormitoryPage({ }: Props) {
+export default function DormitoryPage() {
     return (
         <section className="@container">
             <div className="flex @7xl:flex-nowrap gap-12 flex-wrap">  

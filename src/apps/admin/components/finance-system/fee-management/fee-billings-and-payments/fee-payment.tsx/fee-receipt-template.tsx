@@ -42,7 +42,7 @@ export const ReceiptTemplate = React.forwardRef<HTMLDivElement, Props>(
                         <School size={80} />
 
                         <div>
-                            <h1 className="text-2xl font-bold">Abhyam Academy</h1>
+                            <h1 className="text-2xl font-bold">Abhyam SMS</h1>
                             <p className="text-gray-600">Comming Soon..</p>
                             <p className="text-gray-600">Phone: (123) 456-7890</p>
                         </div>

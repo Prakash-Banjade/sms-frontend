@@ -1,9 +1,7 @@
 import ContainerLayout from "@/components/page-layouts/container-layout"
 import NoticeForm from "../../components/notices/notice.form"
 
-type Props = {}
-
-export default function AddNoticePage({ }: Props) {
+export default function AddNoticePage() {
     return (
         <ContainerLayout
             title="Add Notice"

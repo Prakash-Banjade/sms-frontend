@@ -25,5 +25,4 @@ export const RESEND_OTP_TIME_SEC = 60;
 
 export enum CookieKey {
     BRANCH_ID = 'branchId',
-    ACADEMICYEAR_ID = 'academicYearId',
 }

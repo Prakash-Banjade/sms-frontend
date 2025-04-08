@@ -1,9 +1,7 @@
 import ContainerLayout from "@/components/page-layouts/container-layout"
 import TeacherForm from "../../components/teachers/teacher.form"
 
-type Props = {}
-
-export default function AddTeacherPage({ }: Props) {
+export default function AddTeacherPage() {
     return (
         <ContainerLayout
             title="Add a new teacher"

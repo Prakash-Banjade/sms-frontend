@@ -8,9 +8,15 @@ import { useGetActiveAcademicYear } from "@/apps/super_admin/data-access/academi
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
 import AppBreadCrumb from "./app-bread-crumb";
+import { useAuth } from "@/contexts/auth-provider";
+import { isAdmin } from "@/lib/utils";
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
-    const { data, isLoading } = useGetActiveAcademicYear({});
+    const { payload } = useAuth();
+
+    const { data, isLoading } = useGetActiveAcademicYear({
+        options: { enabled: isAdmin(payload) }
+    });
 
     return (
         <SidebarProvider>
@@ -22,11 +28,15 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                     <AppBreadCrumb menuItems={menuItems} />
 
                     <div className="ml-auto flex items-center gap-10">
-                        <span>
-                            {
-                                isLoading ? <Skeleton className="h-4 w-4" /> : <Badge variant="outline" className="text-sm">{data?.name}</Badge>
-                            }
-                        </span>
+                        {
+                            isAdmin(payload) && (
+                                <span>
+                                    {
+                                        isLoading ? <Skeleton className="h-4 w-4" /> : <Badge variant="outline" className="text-sm">{data?.name}</Badge>
+                                    }
+                                </span>
+                            )
+                        }
 
                         <ThemeToggleBtn />
                     </div>

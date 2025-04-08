@@ -1,9 +1,7 @@
 import ContainerLayout from "@/components/page-layouts/container-layout"
 import StaffForm from "../../components/staffs/staff.form"
 
-type Props = {}
-
-export default function AddStaffPage({ }: Props) {
+export default function AddStaffPage() {
     return (
         <ContainerLayout
             title="Add a new staff"

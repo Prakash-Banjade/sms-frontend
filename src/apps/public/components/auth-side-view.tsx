@@ -15,7 +15,7 @@ export default function AuthSideView() {
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground mr-2">
                     <School className="size-5" />
                 </div>
-                ABHYAM ACADEMY
+                ABHYAM SMS
             </Link>
             <div
                 className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"

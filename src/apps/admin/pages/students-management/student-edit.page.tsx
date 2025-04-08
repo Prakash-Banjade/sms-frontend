@@ -7,9 +7,7 @@ import { useEffect, useMemo } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { useSidebar } from "@/components/ui/sidebar";
 
-type Props = {}
-
-export default function EditStudentPage({ }: Props) {
+export default function EditStudentPage() {
     const params = useParams();
 
     return (

@@ -17,7 +17,7 @@ export default function LoginChallengePage() {
                     2-Step Verification
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                    To help keep your account safe, Abhyam Academy wants to make sure it&apos;s really you trying to sign in
+                    To help keep your account safe, Abhyam SMS wants to make sure it&apos;s really you trying to sign in
                 </p>
                 <TwoFAOptions />
             </div>

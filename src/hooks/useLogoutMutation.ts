@@ -15,7 +15,7 @@ export function useLogoutMutation() {
 
     const { mutateAsync, isPending } = useMutation<any, any>({
         mutationFn: async () => {
-            await axios.post(`${import.meta.env.VITE_API_URL}/${QueryKey.AUTH_LOGOUT}`);
+            await axios.post(`/${QueryKey.AUTH_LOGOUT}`);
         },
         onSuccess: () => {
             localStorage.removeItem("persist");

@@ -3,9 +3,7 @@ import { DataTable } from '@/components/data-table/data-table';
 import { useGetDormitoryRooms } from './actions';
 import { dormitoryRoomsColumns } from './dormitory-room.columns';
 
-type Props = {}
-
-export default function DormitoryRoomsList({ }: Props) {
+export default function DormitoryRoomsList() {
     const [searchParams] = useSearchParams();
 
     const { data, isLoading } = useGetDormitoryRooms({
