@@ -1,6 +1,6 @@
 import { ExamRoutineTable } from "@/apps/admin/pages/examination/exam-routine.page";
 import { Button } from "@/components/ui/button";
-import { TExamSubject_Raw } from "@/types/examination.type"
+import { TExamSubject_Raw } from "@/apps/admin/types/examination.type"
 import { Printer } from "lucide-react";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";

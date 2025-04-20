@@ -1,4 +1,4 @@
-import { EDormitoryType, TMeta } from "./global.type"
+import { EDormitoryType, TMeta } from "../../../types/global.type"
 
 export type TRoomType = {
     id: string,

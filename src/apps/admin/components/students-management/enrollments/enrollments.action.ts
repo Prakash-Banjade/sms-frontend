@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TEnrollmentsResponse } from "@/types/enrollment.type";
+import { TEnrollmentsResponse } from "@/apps/admin/types/enrollment.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetEnrollments = ({

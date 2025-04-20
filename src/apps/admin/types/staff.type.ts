@@ -1,5 +1,5 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
-import { EStaff, TMeta } from "./global.type";
+import { EStaff, TMeta } from "../../../types/global.type";
 import { Teacher, TSingleTeacher } from "./teacher.type";
 
 export type TStaff = Omit<Teacher, 'teacherId' | 'teacherFullName'> & {

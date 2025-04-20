@@ -1,7 +1,7 @@
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useGetStudents } from "@/apps/admin/components/students-management/student-actions"
 import { createQueryString } from "@/utils/create-query-string"
-import { TStudentsWithLedgerResponse } from "@/types/student.type"
+import { TStudentsWithLedgerResponse } from "@/apps/admin/types/student.type"
 import { DataTable } from "@/components/data-table/data-table"
 import SearchInput from "@/components/search-components/search-input"
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"

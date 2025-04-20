@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { TooltipWrapper } from "@/components/ui/tooltip";
-import { TNotice } from "@/types/notice.type";
+import { TNotice } from "@/apps/admin/types/notice.type";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/utils/format-date";
 

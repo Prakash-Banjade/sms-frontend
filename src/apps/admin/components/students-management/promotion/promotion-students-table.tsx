@@ -2,7 +2,7 @@ import { IStudenIdtWithRoll } from "@/apps/admin/pages/students-management/stude
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { TStudent_BasicInfo } from "@/types/student.type"
+import { TStudent_BasicInfo } from "@/apps/admin/types/student.type"
 
 type Props = {
     students: TStudent_BasicInfo[];

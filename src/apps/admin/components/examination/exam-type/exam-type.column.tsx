@@ -13,7 +13,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import { TExamType } from "@/types/examination.type"
+import { TExamType } from "@/apps/admin/types/examination.type"
 import ExamTypeForm, { examTypeFormType } from "./exam-type.form"
 
 export const examTypesColumns: ColumnDef<TExamType>[] = [

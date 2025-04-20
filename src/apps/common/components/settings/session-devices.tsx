@@ -1,5 +1,5 @@
 import { useGetSessionDevices } from '../../data-access/account-data-access'
-import { TLoginDevice } from '@/types/account/account.type';
+import { TLoginDevice } from '@/apps/admin/types/account/account.type';
 import { Card } from '@/components/ui/card';
 import { UAParser } from 'ua-parser-js'
 import { Chrome, CircleCheck, Globe, Laptop, LogOut, Smartphone } from 'lucide-react';

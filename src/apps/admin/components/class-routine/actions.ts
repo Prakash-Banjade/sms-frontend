@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TClassRoutineResponse } from "@/types/class-routine.type";
+import { TClassRoutineResponse } from "@/apps/admin/types/class-routine.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetClassRoutines = ({

@@ -1,4 +1,4 @@
-import { EDayOfWeek, ERoutineType, TMeta } from "./global.type";
+import { EDayOfWeek, ERoutineType, TMeta } from "../../../types/global.type";
 
 export type TClassRoutine = {
     id: string,

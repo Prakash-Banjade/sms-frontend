@@ -1,6 +1,6 @@
 import { ProfileAvatar } from '@/components/ui/avatar'
 import { getImageUrl } from '@/lib/utils'
-import { TExamReportByStudent } from '@/types/examination.type'
+import { TExamReportByStudent } from '@/apps/admin/types/examination.type'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Phone, Mail, User, BookOpen, Printer, MapPin } from "lucide-react"
 import { StudentDetailedMarksTable } from './student-detailed-marks-table'

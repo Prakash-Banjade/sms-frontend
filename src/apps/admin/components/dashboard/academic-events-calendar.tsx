@@ -7,7 +7,7 @@ import { ResponsiveDialog } from '@/components/ui/responsive-dialog';
 import EventForm, { eventFormDefaultValues } from '../events/events-form';
 import { EventContentArg, EventDropArg, EventInput } from '@fullcalendar/core/index.js';
 import { useGetEvents } from '../events/data-access';
-import { TEvent } from '@/types/event.type';
+import { TEvent } from '@/apps/admin/types/event.type';
 import { DateRange } from '@fullcalendar/core/internal';
 import { createQueryString } from '@/utils/create-query-string';
 import { useAppMutation } from '@/hooks/useAppMutation';

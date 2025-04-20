@@ -1,6 +1,6 @@
 import { useGetNotice } from "@/apps/admin/components/notices/action"
 import { Skeleton } from "@/components/ui/skeleton"
-import { TNotice } from "@/types/notice.type"
+import { TNotice } from "@/apps/admin/types/notice.type"
 import { formatDate } from "@/utils/format-date"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
 import DOMPurify from "dompurify"

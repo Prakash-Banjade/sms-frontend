@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TLibraryStudent, TSingleStudent, TStudent_BasicInfoResponse, TStudentsResponse, TStudentsWithAttendenceResponse } from "@/types/student.type";
+import { TLibraryStudent, TSingleStudent, TStudent_BasicInfoResponse, TStudentsResponse, TStudentsWithAttendenceResponse } from "@/apps/admin/types/student.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetStudent = ({

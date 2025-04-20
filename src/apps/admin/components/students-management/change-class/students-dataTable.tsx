@@ -1,6 +1,6 @@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { TStudent_BasicInfo } from "@/types/student.type"
+import { TStudent_BasicInfo } from "@/apps/admin/types/student.type"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"

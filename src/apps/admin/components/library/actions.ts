@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TLibraryBook, TLibraryBookesResponse, TLibraryBookTransactionsResponse, TLibraryOverviewCount, TStudentTransactionsResponse, TUnpaidTransaction } from "@/types/library-book.type";
+import { TLibraryBook, TLibraryBookesResponse, TLibraryBookTransactionsResponse, TLibraryOverviewCount, TStudentTransactionsResponse, TUnpaidTransaction } from "@/apps/admin/types/library-book.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetLibraryBook = ({

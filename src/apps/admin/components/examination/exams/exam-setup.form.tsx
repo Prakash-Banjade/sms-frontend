@@ -1,6 +1,6 @@
 import AppForm from '@/components/forms/app-form';
 import { ISO_TIME, NUMBER_REGEX_STRING } from '@/CONSTANTS';
-import { TSubject } from '@/types/subject.type';
+import { TSubject } from '@/apps/admin/types/subject.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"

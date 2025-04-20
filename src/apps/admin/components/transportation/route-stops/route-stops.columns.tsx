@@ -13,7 +13,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import { TRouteStop } from "@/types/route-stop.type"
+import { TRouteStop } from "@/apps/admin/types/route-stop.type"
 import RouteStopForm, { routeFormType } from "./route-stop.form"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 

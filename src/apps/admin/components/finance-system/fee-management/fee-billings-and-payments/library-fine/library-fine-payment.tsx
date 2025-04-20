@@ -1,4 +1,4 @@
-import { TFeeStudent } from "@/types/finance-system/fee-management.types";
+import { TFeeStudent } from "@/apps/admin/types/finance-system/fee-management.types";
 import { useGetUnpaidBookTransactions } from "../../../../library/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { differenceInDays, startOfDay } from "date-fns";

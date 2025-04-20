@@ -1,6 +1,6 @@
 import { useGetLibraryOverviewCount } from "@/apps/admin/components/library/actions"
 import DashboardCountCard from "@/components/dashboard/dashboard-count-card"
-import { TSt_TrasactionCount } from "@/types/library-book.type"
+import { TSt_TrasactionCount } from "@/apps/admin/types/library-book.type"
 import { AlertTriangle, Book, BookOpen } from "lucide-react"
 
 

@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TAcademicYear, TAcademicYearsResponse } from "@/types/academic-year.type"
+import { TAcademicYear, TAcademicYearsResponse } from "@/apps/admin/types/academic-year.type"
 import { SelectOption } from "@/types/global.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 

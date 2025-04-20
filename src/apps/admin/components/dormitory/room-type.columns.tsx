@@ -12,7 +12,7 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TRoomType } from "@/types/dormitory.type"
+import { TRoomType } from "@/apps/admin/types/dormitory.type"
 import RoomTypeForm, { roomTypeFormType } from "./room-type.form"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 

@@ -11,7 +11,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { useState } from "react";
 import ChargeHeadFrom from "../../../components/finance-system/fee-management/charge-heads/charge-head-form";
 import { FacetedFilter } from "@/components/data-table/faceted-filter";
-import { EChargeHeadType } from "@/types/finance-system/fee-management.types";
+import { EChargeHeadType } from "@/apps/admin/types/finance-system/fee-management.types";
 
 export default function ChargeHeadsPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);

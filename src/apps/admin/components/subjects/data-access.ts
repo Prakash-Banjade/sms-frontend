@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TSubject, TSubjectChaptersResponse, TSubjectsResponse } from "@/types/subject.type";
+import { TSubject, TSubjectChaptersResponse, TSubjectsResponse } from "@/apps/admin/types/subject.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSubject = ({

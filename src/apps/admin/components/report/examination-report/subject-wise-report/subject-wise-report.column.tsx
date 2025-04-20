@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { TExamReportBySubject } from "@/types/examination.type"
+import { TExamReportBySubject } from "@/apps/admin/types/examination.type"
 import { ColumnDef } from "@tanstack/react-table"
 
 export const subjectWiseReportColumns: ColumnDef<TExamReportBySubject['data'][0]>[] = [

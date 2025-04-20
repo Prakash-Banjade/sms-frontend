@@ -1,4 +1,4 @@
-import { EClassType, TMeta } from "./global.type"
+import { EClassType, TMeta } from "../../../types/global.type"
 
 export type TClass = {
     id: string,

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Check, LoaderCircle, Plus, Trash, X } from "lucide-react";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { Input } from "@/components/ui/input";
-import { TFeeStructure } from "@/types/finance-system/fee-management.types";
+import { TFeeStructure } from "@/apps/admin/types/finance-system/fee-management.types";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/ui/tooltip";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";

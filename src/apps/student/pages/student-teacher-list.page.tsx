@@ -1,7 +1,7 @@
 import { useGetTeachers } from "@/apps/admin/components/teachers/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import TeacherList from "../components/teacher/teacher-card";
-import { St_TeacherResponse } from "@/types/teacher.type";
+import { St_TeacherResponse } from "@/apps/admin/types/teacher.type";
 
 
 const StudentTeacherListPage = () => {

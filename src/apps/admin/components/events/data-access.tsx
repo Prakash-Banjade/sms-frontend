@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TEvent, TEventsResponse } from "@/types/event.type";
+import { TEvent, TEventsResponse } from "@/apps/admin/types/event.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetEvent = ({

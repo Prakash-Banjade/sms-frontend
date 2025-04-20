@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TExamReportByStudent, TExamReportBySubject, TExamReportsResponse, TExamsResponse, TExamStudent, TExamSubjectsResponse_Raw, TExamTypesResponse, TMarkGradesResponse, TSingleExam } from "@/types/examination.type";
+import { TExamReportByStudent, TExamReportBySubject, TExamReportsResponse, TExamsResponse, TExamStudent, TExamSubjectsResponse_Raw, TExamTypesResponse, TMarkGradesResponse, TSingleExam } from "@/apps/admin/types/examination.type";
 import { SelectOption } from "@/types/global.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 

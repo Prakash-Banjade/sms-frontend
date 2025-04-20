@@ -10,7 +10,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { Badge } from "@/components/ui/badge"
 import { DataTablePagination } from "@/components/data-table/data-table-pagination"
 import { Library_CurrentIssueTable } from "./current-issues-table"
-import { TStudentTransaction } from "@/types/library-book.type"
+import { TStudentTransaction } from "@/apps/admin/types/library-book.type"
 
 type Props = {
     selectedTransactions: TStudentTransaction[];

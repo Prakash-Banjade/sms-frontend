@@ -11,7 +11,7 @@ import { Check } from 'lucide-react';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import LoadingButton from '@/components/forms/loading-button';
 import _ from 'lodash';
-import { TExamStudent, TExamSubject } from '@/types/examination.type';
+import { TExamStudent, TExamSubject } from '@/apps/admin/types/examination.type';
 import { examEvaluationsSchema, TExamEvaluationsSchema } from '@/apps/admin/schemas/exam-evaluation.schema';
 import toast from 'react-hot-toast';
 import { QueryKey } from '@/react-query/queryKeys';

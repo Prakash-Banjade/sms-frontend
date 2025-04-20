@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList } from "@/components/ui/tabs";
 import { getImageUrl } from "@/lib/utils";
-import { TSingleStudent } from "@/types/student.type";
+import { TSingleStudent } from "@/apps/admin/types/student.type";
 import { formatDate } from "@/utils/format-date";
 import { TabsContent, TabsTrigger } from "@radix-ui/react-tabs";
 

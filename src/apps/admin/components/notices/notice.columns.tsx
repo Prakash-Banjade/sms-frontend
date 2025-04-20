@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
-import { TNotice } from "@/types/notice.type"
+import { TNotice } from "@/apps/admin/types/notice.type"
 import { formatDate } from "@/utils/format-date"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { Link, useNavigate } from "react-router-dom"

@@ -1,6 +1,6 @@
 import { FacetedFilter } from "@/components/data-table/faceted-filter"
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search"
-import { ELessonPlanStatus } from "@/types/lesson-plan.type"
+import { ELessonPlanStatus } from "@/apps/admin/types/lesson-plan.type"
 
 export default function LessonPlanSearchFilters() {
 

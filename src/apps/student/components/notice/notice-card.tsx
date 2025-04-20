@@ -1,7 +1,7 @@
 
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TNotice } from "@/types/notice.type"
+import { TNotice } from "@/apps/admin/types/notice.type"
 import { Calendar } from "lucide-react"
 import { useState } from "react"
 import SingleNotice from "./single-notice"

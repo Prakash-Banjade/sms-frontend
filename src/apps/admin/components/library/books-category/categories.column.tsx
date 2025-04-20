@@ -13,7 +13,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import { TBookCategory } from "@/types/library-book.type"
+import { TBookCategory } from "@/apps/admin/types/library-book.type"
 import BookCategoryForm, { bookCategoryFormSchemaType } from "./book-category-form"
 
 

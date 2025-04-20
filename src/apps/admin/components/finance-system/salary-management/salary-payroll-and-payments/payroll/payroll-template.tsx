@@ -2,7 +2,7 @@ import { CalendarIcon, HelpCircleIcon } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Separator } from "@/components/ui/separator"
-import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from '@/types/finance-system/salary-management.types'
+import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from '@/apps/admin/types/finance-system/salary-management.types'
 import React from 'react'
 import { addMonths, format, lastDayOfMonth, startOfMonth } from 'date-fns'
 import { toWords } from '@/lib/utils'

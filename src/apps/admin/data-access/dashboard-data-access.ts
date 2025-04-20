@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TAdminDashboardCount, TDashboardLeaveRequests } from "@/types/dashboard.type";
+import { TAdminDashboardCount, TDashboardLeaveRequests } from "@/apps/admin/types/dashboard.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetAdminDashboard = ({

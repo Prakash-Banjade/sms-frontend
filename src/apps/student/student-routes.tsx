@@ -9,7 +9,6 @@ const MyLeaveRequestsPage = lazy(() => import("../common/pages/leave-request/my-
 const AddLeaveRequestPage = lazy(() => import("../common/pages/leave-request/add-leave-request.page"));
 import StreamClientProvider from "../teacher/layout/stream-client-provider";
 const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
-const StudentAttendenceListPage = lazy(() => import("./pages/academics/attendence.page"));
 const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
@@ -44,7 +43,6 @@ const StudentRoutes = () => {
               </Route>
             </Route>
           </Route>
-          <Route path="attendance" element={<StudentAttendenceListPage />} />
           <Route path="class-routine" element={<ClassRoutineListPage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
           <Route path='trasports' element={<StudentVechicleDetailsPage />} />

@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TLastInvoice, TSingleInvoice, TSinglePayment, TStudentLedgerResponse } from "@/types/finance-system/fee-management.types";
+import { TChargeHeadsResponse, TFeeStructuresResponse, TFeeStudent, TLastInvoice, TSingleInvoice, TSinglePayment, TStudentLedgerResponse } from "@/apps/admin/types/finance-system/fee-management.types";
 import { SelectOption } from "@/types/global.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 

@@ -1,4 +1,4 @@
-import { ETask, ETaskSubmissionStatus, TMeta } from "./global.type"
+import { ETask, ETaskSubmissionStatus, TMeta } from "../../../types/global.type"
 
 export type Task = {
     id: string,

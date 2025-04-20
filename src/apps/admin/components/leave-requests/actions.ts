@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TEmployeeLeaveRequestsResponse, TStudentLeaveRequestsResponse } from "@/types/leave-request.type";
+import { TEmployeeLeaveRequestsResponse, TStudentLeaveRequestsResponse } from "@/apps/admin/types/leave-request.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetStudentsLeaveRequests = ({

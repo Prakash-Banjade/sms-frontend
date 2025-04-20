@@ -1,4 +1,4 @@
-import { ESubjectChapterPriority, ESubjectType, TMeta } from "./global.type";
+import { ESubjectChapterPriority, ESubjectType, TMeta } from "../../../types/global.type";
 
 export type TSubject = {
     id: string,

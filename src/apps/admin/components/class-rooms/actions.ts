@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TClassesResponse, TClassRoomOptions, TSingleClassRoom } from "@/types/class.type";
+import { TClassesResponse, TClassRoomOptions, TSingleClassRoom } from "@/apps/admin/types/class.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetClass = ({

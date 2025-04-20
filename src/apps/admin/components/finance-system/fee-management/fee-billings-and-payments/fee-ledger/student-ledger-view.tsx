@@ -12,7 +12,7 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import RePrintInvoice from "./re-print-invoice";
 import RePrintPayment from "./re-print-payment";
-import { ELedgerItemType, TLedger_FeeInvoice, TLedger_FeePayment } from "@/types/finance-system/fee-management.types";
+import { ELedgerItemType, TLedger_FeeInvoice, TLedger_FeePayment } from "@/apps/admin/types/finance-system/fee-management.types";
 import RePrintLibraryFinePayment from "./re-print-library-fine-payment";
 import RefreshBtn from "../refresh-btn";
 import { DateRangeFilter } from "@/components/search-components/date-range-filter";

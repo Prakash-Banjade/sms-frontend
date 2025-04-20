@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Users, User, UserCircle2, MapPin } from "lucide-react"
-import { TSingleClassRoom } from "@/types/class.type";
+import { TSingleClassRoom } from "@/apps/admin/types/class.type";
 
 export default function ClassDetailsCard({ classRoom }: { classRoom: TSingleClassRoom | undefined }) {
     if (!classRoom) return null;

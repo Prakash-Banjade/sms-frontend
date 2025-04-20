@@ -1,7 +1,7 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
 import { SelectOption } from "@/types/global.type";
-import { StaffWithAttendanceResponse, TSingleStaff, TStaffsResponse } from "@/types/staff.type";
+import { StaffWithAttendanceResponse, TSingleStaff, TStaffsResponse } from "@/apps/admin/types/staff.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetStaff = <T = TSingleStaff>({

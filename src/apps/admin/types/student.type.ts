@@ -1,5 +1,5 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
-import { EBloodGroup, EGuardianRelation, EReligion, Gender, IFileUploadResponse, TMeta } from "./global.type";
+import { EBloodGroup, EGuardianRelation, EReligion, Gender, IFileUploadResponse, TMeta } from "../../../types/global.type";
 
 export type TStudent_BasicInfo = {
     id: string,

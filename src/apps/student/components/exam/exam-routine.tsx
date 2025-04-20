@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { TExamSubject_Raw } from '@/types/examination.type'
+import { TExamSubject_Raw } from '@/apps/admin/types/examination.type'
 import { format, parse } from "date-fns";
 
 type Props = {

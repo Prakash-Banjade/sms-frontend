@@ -4,7 +4,7 @@ import { ProfileAvatar } from "@/components/ui/avatar";
 import { getImageUrl } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HandCoins, NotebookText, ReceiptText } from "lucide-react";
-import { TSalaryEmployee } from "@/types/finance-system/salary-management.types";
+import { TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types";
 import { useGetSalaryEmployee } from "../data-access";
 import { Badge } from "@/components/ui/badge";
 import PayrollTabContent from "./payroll/payroll-tab-content";

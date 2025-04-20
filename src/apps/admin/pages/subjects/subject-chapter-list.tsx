@@ -9,7 +9,7 @@ import SubjectChapterForm from "../../components/subjects/subject-chapter-form"
 import SubjectChapterCard from "./subject-chapter-card"
 import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { TSubjectChapter } from "@/types/subject.type"
+import { TSubjectChapter } from "@/apps/admin/types/subject.type"
 import _ from "lodash"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"

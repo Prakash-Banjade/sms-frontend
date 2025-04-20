@@ -12,7 +12,7 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import { TMarkGrade } from "@/types/examination.type"
+import { TMarkGrade } from "@/apps/admin/types/examination.type"
 import { markGradeFormType } from "./mark-grade.form"
 
 export const markGradesColumns: ColumnDef<TMarkGrade>[] = [

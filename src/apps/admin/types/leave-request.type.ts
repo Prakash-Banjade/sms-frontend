@@ -1,4 +1,4 @@
-import { ELeaveRequestStatus, TMeta } from "./global.type";
+import { ELeaveRequestStatus, TMeta } from "../../../types/global.type";
 
 export type TStudentLeaveRequest = {
     id: string,

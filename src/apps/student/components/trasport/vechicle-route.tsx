@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { TRouteStop } from "@/types/route-stop.type";
+import { TRouteStop } from "@/apps/admin/types/route-stop.type";
 
 type Props = {
     routes: TRouteStop[];

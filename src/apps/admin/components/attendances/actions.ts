@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TAttendenceCounts, TAttendencesResponse } from "@/types/attendence.type";
+import { TAttendenceCounts, TAttendencesResponse } from "@/apps/admin/types/attendence.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetAttendances = ({

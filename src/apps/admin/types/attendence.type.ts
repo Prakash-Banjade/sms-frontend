@@ -1,5 +1,5 @@
 
-import { EAttendanceStatus, TMeta } from "./global.type";
+import { EAttendanceStatus, TMeta } from "../../../types/global.type";
 
 export enum NepaliMonths {
     Baishakh = "Baishakh",

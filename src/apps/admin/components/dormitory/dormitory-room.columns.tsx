@@ -12,7 +12,7 @@ import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TDormitoryRoom } from "@/types/dormitory.type"
+import { TDormitoryRoom } from "@/apps/admin/types/dormitory.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import {
     HoverCard,

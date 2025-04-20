@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TeacherClassSchedule, TeachersResponse, TeacherWithAttendanceResponse, TSingleTeacher } from "@/types/teacher.type";
+import { TeacherClassSchedule, TeachersResponse, TeacherWithAttendanceResponse, TSingleTeacher } from "@/apps/admin/types/teacher.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetTeacher = <T = TSingleTeacher>({

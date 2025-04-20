@@ -1,5 +1,5 @@
 import AppForm from "@/components/forms/app-form"
-import { ESalaryAdjustmentType, TSalaryEmployee } from "@/types/finance-system/salary-management.types"
+import { ESalaryAdjustmentType, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { addMonths, format } from "date-fns"
 import { useFieldArray, useForm } from "react-hook-form"

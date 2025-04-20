@@ -1,5 +1,5 @@
 import { EMonth } from "@/apps/admin/components/finance-system/fee-management/fee-billings-and-payments/fee-invoice/fee-invoice-form";
-import { EPaymentMethod, TMeta } from "../global.type";
+import { EPaymentMethod, TMeta } from "../../../../types/global.type";
 
 export enum EChargeHeadPeriod {
     Monthly = 'monthly',

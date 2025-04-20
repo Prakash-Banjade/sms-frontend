@@ -15,7 +15,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { useQueryClient } from "@tanstack/react-query"
-import { ELessonPlanStatus, TLessonPlan } from "@/types/lesson-plan.type"
+import { ELessonPlanStatus, TLessonPlan } from "@/apps/admin/types/lesson-plan.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useLocation, useNavigate } from "react-router-dom"
 

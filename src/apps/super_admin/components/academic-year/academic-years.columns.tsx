@@ -1,4 +1,4 @@
-import { TAcademicYear } from "@/types/academic-year.type"
+import { TAcademicYear } from "@/apps/admin/types/academic-year.type"
 import { formatDate } from "@/utils/format-date"
 import { ColumnDef } from "@tanstack/react-table"
 import {

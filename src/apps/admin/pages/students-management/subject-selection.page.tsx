@@ -6,7 +6,7 @@ import { createQueryString } from "@/utils/create-query-string";
 import ClassRoomSearchFilterInputs from "@/components/search-components/class-room-search";
 import { useGetOptionalSubjects } from "../../components/students-management/subject-selection/data-access";
 import SearchInput from "@/components/search-components/search-input";
-import { TStudent_BasicInfoResponse } from "@/types/student.type";
+import { TStudent_BasicInfoResponse } from "@/apps/admin/types/student.type";
 import SubjectSelectionForm from "../../components/students-management/subject-selection/subject-selection.form";
 
 export default function SubjectSelectionPage() {

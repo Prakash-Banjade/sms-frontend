@@ -4,7 +4,7 @@ import { format } from "date-fns"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { TSingleTask } from "@/types/task.type"
+import { TSingleTask } from "@/apps/admin/types/task.type"
 
 export default function SingleTaskDetailsCard({ task }: { task: TSingleTask }) {
 

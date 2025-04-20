@@ -2,7 +2,7 @@ import AttendanceTable from "@/apps/admin/components/students-management/attenda
 import GetAttendancesForm from "@/apps/admin/components/students-management/attendance/get-attendances-form"
 import { useGetStudentsWithAttendances } from "@/apps/admin/components/students-management/student-actions"
 import ContainerLayout from "@/components/page-layouts/container-layout"
-import { TStudentsWithAttendenceUpdate } from "@/types/student.type"
+import { TStudentsWithAttendenceUpdate } from "@/apps/admin/types/student.type"
 import { useEffect, useState } from "react"
 import _ from 'lodash';
 import { Button } from "@/components/ui/button"

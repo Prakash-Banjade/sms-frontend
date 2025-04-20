@@ -3,7 +3,7 @@ import { useGetLibraryStudent } from "../../students-management/student-actions"
 import Library_StudentBasicInfo from "./student-basic-info"
 import Library_StudentTransactionTable from "./student-transaction-table"
 import { useState } from "react"
-import { TStudentTransaction } from "@/types/library-book.type"
+import { TStudentTransaction } from "@/apps/admin/types/library-book.type"
 
 export default function Library_StudentTransactionInfo() {
     const { searchParams } = useCustomSearchParams();

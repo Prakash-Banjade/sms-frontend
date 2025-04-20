@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { TVehicle } from "@/types/vehicle.type"
+import { TVehicle } from "@/apps/admin/types/vehicle.type"
 import { Calendar, Clipboard, Phone, Truck, User } from "lucide-react"
 
 type Props = {

@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { EChargeHeadPeriod, EChargeHeadType } from "@/types/finance-system/fee-management.types";
+import { EChargeHeadPeriod, EChargeHeadType } from "@/apps/admin/types/finance-system/fee-management.types";
 import { createQueryString } from "@/utils/create-query-string";
 import { Check, Plus } from "lucide-react"
 import { useState } from "react";

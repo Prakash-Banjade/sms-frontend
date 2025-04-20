@@ -1,4 +1,4 @@
-import { TFeeStudent } from "@/types/finance-system/fee-management.types";
+import { TFeeStudent } from "@/apps/admin/types/finance-system/fee-management.types";
 import { format } from "date-fns";
 import { School } from "lucide-react"
 import React, { useMemo } from "react";

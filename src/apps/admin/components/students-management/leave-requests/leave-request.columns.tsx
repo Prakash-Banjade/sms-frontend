@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Check, LoaderCircle, MoreHorizontal, Trash, X } from "lucide-react"
 import { formatDateNumeric } from "@/utils/format-date"
-import { TStudentLeaveRequest } from "@/types/leave-request.type"
+import { TStudentLeaveRequest } from "@/apps/admin/types/leave-request.type"
 import { Badge } from "@/components/ui/badge"
 import { ELeaveRequestStatus } from "@/types/global.type"
 import { useAppMutation } from "@/hooks/useAppMutation"

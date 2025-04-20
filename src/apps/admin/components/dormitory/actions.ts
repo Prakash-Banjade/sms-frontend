@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TDormitoryResponse, TDormitoryRoomResponse, TRoomTypeResponse } from "@/types/dormitory.type";
+import { TDormitoryResponse, TDormitoryRoomResponse, TRoomTypeResponse } from "@/apps/admin/types/dormitory.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetRoomTypes = ({

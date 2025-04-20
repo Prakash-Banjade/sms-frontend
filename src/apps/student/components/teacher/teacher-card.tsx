@@ -1,7 +1,7 @@
 import { ProfileAvatar } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getImageUrl } from '@/lib/utils'
-import { St_Teacher } from '@/types/teacher.type'
+import { St_Teacher } from '@/apps/admin/types/teacher.type'
 import { Book, Mail, Phone } from 'lucide-react'
 
 type Props = {

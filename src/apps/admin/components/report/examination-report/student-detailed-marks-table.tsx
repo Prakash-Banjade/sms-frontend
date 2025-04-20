@@ -1,4 +1,4 @@
-import { TExamReportByStudent } from "@/types/examination.type";
+import { TExamReportByStudent } from "@/apps/admin/types/examination.type";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ESubjectType } from "@/types/global.type";
 

@@ -1,5 +1,5 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
-import { EBloodGroup, EDayOfWeek, EMaritalStatus, Gender, TMeta } from "./global.type";
+import { EBloodGroup, EDayOfWeek, EMaritalStatus, Gender, TMeta } from "../../../types/global.type";
 
 export type Teacher = {
     id: string,

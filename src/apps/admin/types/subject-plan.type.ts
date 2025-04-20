@@ -1,5 +1,5 @@
 
-import { TMeta } from "./global.type";
+import { TMeta } from "../../../types/global.type";
 import { Teacher } from "./teacher.type";
 
 export enum EDaysOfWeek {

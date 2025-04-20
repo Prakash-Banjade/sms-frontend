@@ -1,6 +1,6 @@
 import { QueryKey } from "@/react-query/queryKeys";
 import { useFetchData } from "./useFetchData";
-import { TClassRoomOptions } from "@/types/class.type";
+import { TClassRoomOptions } from "@/apps/admin/types/class.type";
 
 export type TFacultyOption = {
     id: string;

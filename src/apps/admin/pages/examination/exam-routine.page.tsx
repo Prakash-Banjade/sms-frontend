@@ -5,7 +5,7 @@ import { useGetExamSubjects } from "../../components/examination/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { format, parse } from "date-fns";
-import { TExamSubject_Raw } from "@/types/examination.type";
+import { TExamSubject_Raw } from "@/apps/admin/types/examination.type";
 import ExamRoutinePrint from "../../components/examination/exam-routine/exam-routine-print-preview";
 import { useSearchParams } from "react-router-dom";
 

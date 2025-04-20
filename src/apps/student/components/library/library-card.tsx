@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { TLibraryBookTransaction } from '@/types/library-book.type'
+import { TLibraryBookTransaction } from '@/apps/admin/types/library-book.type'
 import { formatDate } from '@/utils/format-date'
 import { differenceInDays } from 'date-fns'
 import { Calendar, Clock } from 'lucide-react'

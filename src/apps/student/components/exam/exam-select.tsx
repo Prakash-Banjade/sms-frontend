@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { TExamType } from "@/types/examination.type";
+import { TExamType } from "@/apps/admin/types/examination.type";
 
 interface ExamTypeSelectProps {
     data: TExamType[];

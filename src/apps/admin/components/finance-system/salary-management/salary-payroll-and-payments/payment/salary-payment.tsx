@@ -1,4 +1,4 @@
-import { TLastPayroll } from '@/types/finance-system/salary-management.types';
+import { TLastPayroll } from '@/apps/admin/types/finance-system/salary-management.types';
 import { useGetLastPayroll } from '../../data-access';
 import { format } from 'date-fns';
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"

@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { TEnrollment } from "@/types/enrollment.type"
+import { TEnrollment } from "@/apps/admin/types/enrollment.type"
 import { formatDate } from "@/utils/format-date";
 
 export const enrollmentsColumns: ColumnDef<TEnrollment>[] = [

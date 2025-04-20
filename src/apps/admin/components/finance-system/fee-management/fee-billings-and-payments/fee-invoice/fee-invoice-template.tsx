@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { EMonth, feeInvoiceSchemaType } from "./fee-invoice-form";
-import { TFeeStudent } from "@/types/finance-system/fee-management.types";
+import { TFeeStudent } from "@/apps/admin/types/finance-system/fee-management.types";
 import { toWords } from "@/lib/utils";
 import { School } from "lucide-react";
 import React from "react";

@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import { Teacher } from "@/types/teacher.type"
+import { Teacher } from "@/apps/admin/types/teacher.type"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
 import { ProfileAvatar } from "@/components/ui/avatar"

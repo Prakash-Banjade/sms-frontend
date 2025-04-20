@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
-import { TClass } from "@/types/class.type"
+import { TClass } from "@/apps/admin/types/class.type"
 import ClassSectionForm from "./class-room-section.form"
 import { calculateRatios } from "@/lib/utils"
 

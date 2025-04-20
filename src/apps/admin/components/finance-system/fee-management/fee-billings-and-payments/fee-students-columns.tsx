@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { TStudentsWithLedgerResponse } from "@/types/student.type"
+import { TStudentsWithLedgerResponse } from "@/apps/admin/types/student.type"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { Link } from "react-router-dom"
 

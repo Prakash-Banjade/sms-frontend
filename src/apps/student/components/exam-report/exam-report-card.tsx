@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { BookOpen, AlertTriangle, TrendingDown, GraduationCap, MapPin, Phone, Mail } from 'lucide-react'
-import { TExamReportByStudent } from "@/types/examination.type"
+import { TExamReportByStudent } from "@/apps/admin/types/examination.type"
 import { getImageUrl } from "@/lib/utils"
 import { ProfileAvatar } from "@/components/ui/avatar"
 import ReportCardPrintBtn from "@/apps/admin/components/report/examination-report/report-card-print-preview"

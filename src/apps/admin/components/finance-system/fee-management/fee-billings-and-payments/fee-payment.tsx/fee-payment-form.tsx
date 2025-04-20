@@ -19,7 +19,7 @@ import { useReactToPrint } from "react-to-print";
 import { ArrowRight, Banknote, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ReceiptTemplate } from "./fee-receipt-template";
-import { TFeeStudent } from "@/types/finance-system/fee-management.types";
+import { TFeeStudent } from "@/apps/admin/types/finance-system/fee-management.types";
 import RefreshBtn from "../refresh-btn";
 
 type Props = {

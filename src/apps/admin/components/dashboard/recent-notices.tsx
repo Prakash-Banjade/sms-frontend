@@ -4,7 +4,7 @@ import { CalendarDays } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetNoticees } from "../notices/action";
-import { TNoticesResponse } from "@/types/notice.type";
+import { TNoticesResponse } from "@/apps/admin/types/notice.type";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-provider";

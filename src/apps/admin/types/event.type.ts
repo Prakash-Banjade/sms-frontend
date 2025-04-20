@@ -1,4 +1,4 @@
-import { TMeta } from "./global.type";
+import { TMeta } from "../../../types/global.type";
 
 export type TEvent = {
     id: string,

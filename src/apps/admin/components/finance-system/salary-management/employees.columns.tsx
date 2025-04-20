@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
-import { TEmployees } from "@/types/finance-system/salary-management.types"
+import { TEmployees } from "@/apps/admin/types/finance-system/salary-management.types"
 import { Link } from "react-router-dom"
 
 export const employeesColumns: ColumnDef<TEmployees['data'][0]>[] = [

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createQueryString } from '@/utils/create-query-string';
 import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
-import { TClassRoomOptions } from '@/types/class.type';
+import { TClassRoomOptions } from '@/apps/admin/types/class.type';
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { MultiSectionSelect } from './multi-sections-select';
 

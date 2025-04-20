@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TBookCategoryesResponse } from "@/types/library-book.type";
+import { TBookCategoryesResponse } from "@/apps/admin/types/library-book.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetBookCategories = ({

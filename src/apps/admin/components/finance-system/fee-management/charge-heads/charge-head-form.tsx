@@ -1,7 +1,7 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
-import { EChargeHeadPeriod, EChargeHeadType } from "@/types/finance-system/fee-management.types";
+import { EChargeHeadPeriod, EChargeHeadType } from "@/apps/admin/types/finance-system/fee-management.types";
 import { getDirtyValues } from "@/utils/get-dirty-values";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";

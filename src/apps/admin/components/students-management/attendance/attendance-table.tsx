@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { EAttendanceStatus } from "@/types/global.type"
-import { TStudentsWithAttendenceUpdate } from "@/types/student.type"
+import { TStudentsWithAttendenceUpdate } from "@/apps/admin/types/student.type"
 import { CalendarX, CheckCircle2, Clock, XCircle } from "lucide-react"
 
 type Props = {

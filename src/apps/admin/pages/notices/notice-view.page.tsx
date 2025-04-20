@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom"
 import { useGetNotice } from "../../components/notices/action"
-import { TSingleNotice } from "@/types/notice.type";
+import { TSingleNotice } from "@/apps/admin/types/notice.type";
 import NoticeForm from "../../components/notices/notice.form";
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Button } from "@/components/ui/button";

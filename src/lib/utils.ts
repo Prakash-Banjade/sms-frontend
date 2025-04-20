@@ -1,6 +1,6 @@
 import { ISO_TIME } from "@/CONSTANTS";
 import { TAuthPayload } from "@/contexts/auth-provider";
-import { TClassRoutine } from "@/types/class-routine.type";
+import { TClassRoutine } from "@/apps/admin/types/class-routine.type";
 import { Role } from "@/types/global.type";
 import { AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx"

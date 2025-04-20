@@ -1,7 +1,7 @@
 import AppForm from "@/components/forms/app-form"
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TStudentTransaction } from "@/types/library-book.type";
+import { TStudentTransaction } from "@/apps/admin/types/library-book.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, differenceInDays, format, startOfDay } from "date-fns";
 import { useMemo } from "react";

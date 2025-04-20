@@ -1,4 +1,4 @@
-import { EPaymentMethod, Role, TMeta } from "../global.type";
+import { EPaymentMethod, Role, TMeta } from "../../../../types/global.type";
 
 export enum ESalaryAdjustmentType {
     Bonus = 'bonus',

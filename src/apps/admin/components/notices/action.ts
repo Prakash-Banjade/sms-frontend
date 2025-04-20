@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TNoticesResponse, TSingleNotice } from "@/types/notice.type";
+import { TNoticesResponse, TSingleNotice } from "@/apps/admin/types/notice.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetNotice = ({

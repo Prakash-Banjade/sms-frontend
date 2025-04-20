@@ -13,7 +13,7 @@ import { QueryKey } from "@/react-query/queryKeys"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
-import { TExam } from "@/types/examination.type"
+import { TExam } from "@/apps/admin/types/examination.type"
 
 export const examsColumns: ColumnDef<TExam>[] = [
     {

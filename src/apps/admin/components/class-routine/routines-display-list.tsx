@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { TClassRoutine } from "@/types/class-routine.type";
+import { TClassRoutine } from "@/apps/admin/types/class-routine.type";
 import { useSearchParams } from "react-router-dom";
 import { useGetClassRoutines } from "./actions";
 import { createQueryString } from "@/utils/create-query-string";

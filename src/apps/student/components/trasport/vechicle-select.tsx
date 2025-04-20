@@ -1,4 +1,4 @@
-import { TVehicle } from "@/types/vehicle.type";
+import { TVehicle } from "@/apps/admin/types/vehicle.type";
 import {
     Select,
     SelectContent,

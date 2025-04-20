@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TLessonPlansResponse, TSingleLessonPlan } from "@/types/lesson-plan.type";
+import { TLessonPlansResponse, TSingleLessonPlan } from "@/apps/admin/types/lesson-plan.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetLessonPlan = ({

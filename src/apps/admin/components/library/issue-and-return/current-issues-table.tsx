@@ -6,7 +6,7 @@ import { createQueryString } from "@/utils/create-query-string";
 import { formatDate } from "@/utils/format-date";
 import { differenceInDays, startOfDay } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TStudentTransaction } from "@/types/library-book.type";
+import { TStudentTransaction } from "@/apps/admin/types/library-book.type";
 
 type Props = {
     selectedTransactions: TStudentTransaction[];

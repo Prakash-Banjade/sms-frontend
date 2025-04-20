@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import { LoaderCircle } from "lucide-react"
-import { StaffWithAttendanceResponse } from "@/types/staff.type"
+import { StaffWithAttendanceResponse } from "@/apps/admin/types/staff.type"
 import EmployeeAttendanceTable from "../attendances/employee-attendance-table";
 import GetEmployeesAttendancesForm from "../attendances/get-employee-attendances-form";
 import { useGetStaffsWithAttendances } from "./actions";

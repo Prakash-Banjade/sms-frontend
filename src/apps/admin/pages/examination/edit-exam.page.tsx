@@ -6,7 +6,7 @@ import { useGetSubjects } from "../../components/subjects/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form";
 import { formatDateNumeric } from "@/utils/format-date";
-import { TSingleExam } from "@/types/examination.type";
+import { TSingleExam } from "@/apps/admin/types/examination.type";
 import { TExamSubjectsSchema } from "../../schemas/exam-setup.schema";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/auth-provider";

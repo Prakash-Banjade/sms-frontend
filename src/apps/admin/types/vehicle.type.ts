@@ -1,4 +1,4 @@
-import { EVehicleType, TMeta } from "./global.type"
+import { EVehicleType, TMeta } from "../../../types/global.type"
 
 export type TVehicle = {
     id: string,

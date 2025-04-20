@@ -1,4 +1,4 @@
-import { ESubjectType, TMeta } from "./global.type";
+import { ESubjectType, TMeta } from "../../../types/global.type";
 import { TStudent } from "./student.type";
 
 export type TExamType = {

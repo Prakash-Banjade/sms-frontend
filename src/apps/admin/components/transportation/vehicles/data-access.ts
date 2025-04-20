@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TSingleVehicle, TVehiclesResponse } from "@/types/vehicle.type";
+import { TSingleVehicle, TVehiclesResponse } from "@/apps/admin/types/vehicle.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetVehicle = ({

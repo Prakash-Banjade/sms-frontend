@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TRouteStop, TRouteStopsResponse } from "@/types/route-stop.type";
+import { TRouteStop, TRouteStopsResponse } from "@/apps/admin/types/route-stop.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetRouteStop = ({

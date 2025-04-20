@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenu
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EClassType } from "@/types/global.type";
-import { TClass } from "@/types/class.type";
+import { TClass } from "@/apps/admin/types/class.type";
 
 type Props = {
     classRoomId: string;

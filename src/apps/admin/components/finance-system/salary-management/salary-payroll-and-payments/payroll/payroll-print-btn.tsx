@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 import { PayrollTemplate } from "./payroll-template";
-import { TSalaryEmployee } from "@/types/finance-system/salary-management.types";
+import { TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types";
 import { useGetLastPayroll } from "../../data-access";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";

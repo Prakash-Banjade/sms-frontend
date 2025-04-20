@@ -2,7 +2,7 @@ import { CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CalendarIcon, FileIcon, Highlighter } from "lucide-react";
 import { formatDate } from "date-fns";
-import { TSingleTask } from "@/types/task.type";
+import { TSingleTask } from "@/apps/admin/types/task.type";
 type Props = {
     task: TSingleTask
 }

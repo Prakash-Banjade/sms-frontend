@@ -8,7 +8,7 @@ import { ISO_TIME, NUMBER_REGEX_STRING } from "@/CONSTANTS";
 import { useAppMutation } from "@/hooks/useAppMutation";
 import { cn, toWords } from "@/lib/utils";
 import { QueryKey } from "@/react-query/queryKeys";
-import { EChargeHeadPeriod, TFeeStudent } from "@/types/finance-system/fee-management.types";
+import { EChargeHeadPeriod, TFeeStudent } from "@/apps/admin/types/finance-system/fee-management.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";

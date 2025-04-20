@@ -5,7 +5,7 @@ import { Label } from '../ui/label';
 import { useGetSubjectOptions } from '@/apps/admin/components/subjects/data-access';
 import { createQueryString } from '@/utils/create-query-string';
 import { TFacultyOption, useFacultySearch } from '@/hooks/useFacultySearch';
-import { TClassRoomOptions } from '@/types/class.type';
+import { TClassRoomOptions } from '@/apps/admin/types/class.type';
 import { StaticCombobox } from '../ui/static-combobox';
 
 export const FACULTY_SEARCH_KEY = "facultyId" as const;

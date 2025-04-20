@@ -1,6 +1,6 @@
 import AppForm from "@/components/forms/app-form";
-import { TStudent_BasicInfo } from "@/types/student.type"
-import { TOptionalSubject } from "@/types/subject.type";
+import { TStudent_BasicInfo } from "@/apps/admin/types/student.type"
+import { TOptionalSubject } from "@/apps/admin/types/subject.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";

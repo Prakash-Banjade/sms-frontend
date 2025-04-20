@@ -1,4 +1,4 @@
-import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from "@/types/finance-system/salary-management.types"
+import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PayrollForm from "./payroll-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"

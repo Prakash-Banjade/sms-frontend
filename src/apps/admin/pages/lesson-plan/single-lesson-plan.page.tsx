@@ -1,7 +1,7 @@
 import { CalendarIcon, FileIcon, UserIcon, BookOpenIcon, UsersIcon, PencilIcon, CheckCircleIcon, CalendarCheck, TrendingUp, ListRestart } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ELessonPlanStatus } from '@/types/lesson-plan.type'
+import { ELessonPlanStatus } from '@/apps/admin/types/lesson-plan.type'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import LessonPlanSkeleton from '../../components/lesson-plan/single-lesson-plan-loading'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'

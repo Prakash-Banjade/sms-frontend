@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { TEntityWithAttendanceUpdate } from "@/types/attendence.type"
+import { TEntityWithAttendanceUpdate } from "@/apps/admin/types/attendence.type"
 import { EAttendanceStatus } from "@/types/global.type"
 import { format } from "date-fns"
 import React from "react"

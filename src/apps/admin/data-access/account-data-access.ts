@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TWebAuthnCredential } from "@/types/account/account.type";
+import { TWebAuthnCredential } from "@/apps/admin/types/account/account.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetWebAuthnCredentials = ({
