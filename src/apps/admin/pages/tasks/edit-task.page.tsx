@@ -33,9 +33,10 @@ function TaskEditForm({ type, id }: { id: string, type: ETask }) {
             taskType={type}
             taskId={id}
             type={type}
-            attachments={data.attachments}
+            attachments={data.attachments ?? []}
             defaultValues={{
                 description: data.description,
+                attachmentIds: data.attachments?.map((attachment) => attachment.id) ?? [],
                 title: data.title,
                 deadline: data.deadline,
                 marks: data.marks ?? 0,

@@ -5,7 +5,7 @@ import { useGetSubject } from "../../components/subjects/data-access";
 import SubjectChapterList from "./subject-chapter-list";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/auth-provider";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
 
 export default function SingleSubjectPage() {
@@ -68,7 +68,10 @@ function SubjectOverview({ subjectId }: { subjectId: string }) {
                                 Teachers : {
                                     subject.teachers?.length > 0 ? (
                                         subject.teachers?.map((teacher, ind) => (
-                                            <span key={ind} className="mr-2">{teacher.firstName} {teacher.lastName}</span>
+                                            <React.Fragment key={ind}>
+                                                <span>{teacher.firstName} {teacher.lastName}</span>
+                                                {ind !== subject.teachers.length - 1 && <span>, </span>}
+                                            </React.Fragment>
                                         ))
                                     ) : <span className="text-muted-foreground">N/A</span>
                                 }

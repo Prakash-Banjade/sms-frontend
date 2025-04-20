@@ -5,8 +5,8 @@ export type TClassRoutine = {
     createdAt: string,
     updatedAt: string,
     dayOfTheWeek: EDayOfWeek,
-    startTime: string,
-    endTime: string,
+    startTime: `${string}:${string}`,
+    endTime: `${string}:${string}`,
     type: ERoutineType,
     classRoom: {
         id: string,

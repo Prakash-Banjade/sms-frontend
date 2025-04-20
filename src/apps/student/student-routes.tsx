@@ -8,6 +8,8 @@ import { CommonRoutes, OnlineClassesRoutes } from "../common/common-routes";
 const MyLeaveRequestsPage = lazy(() => import("../common/pages/leave-request/my-leave-requests.page"));
 const AddLeaveRequestPage = lazy(() => import("../common/pages/leave-request/add-leave-request.page"));
 import StreamClientProvider from "../teacher/layout/stream-client-provider";
+import MySubjectsPage from "./pages/academics/my-subjects.page";
+import SingleSubjectPage from "../admin/pages/subjects/single-subject.page";
 const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
 const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
@@ -42,6 +44,10 @@ const StudentRoutes = () => {
                 <Route index element={<SingleStudentTask />} />
               </Route>
             </Route>
+          </Route>
+          <Route path="subjects">
+            <Route index element={<MySubjectsPage />} />
+            <Route path=":id" element={<SingleSubjectPage />} />
           </Route>
           <Route path="class-routine" element={<ClassRoutineListPage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />

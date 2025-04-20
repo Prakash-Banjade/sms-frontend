@@ -51,6 +51,7 @@ export function FileUpload<T>({
             return response.data;
         },
         onSuccess: (data) => {
+            console.log(getValues(name as string))
             if (data && data?.files && !!data?.files.length) {
                 setValue(name as string, (
                     multiple ? [...getValues(name as string), ...data.files.map(file => file.id)] : [...getValues(name as string), data.files[0].id] // handling single and multiple uploads

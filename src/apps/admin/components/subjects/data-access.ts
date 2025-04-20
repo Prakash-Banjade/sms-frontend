@@ -23,14 +23,14 @@ export const useGetSubject = ({
     return response;
 }
 
-export const useGetSubjects = ({
+export const useGetSubjects = <T = TSubjectsResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: Partial<UseQueryOptions<TSubjectsResponse>>
+    options?: Partial<UseQueryOptions<T>>
 }) => {
-    const response = useFetchData<TSubjectsResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.SUBJECTS,
         queryKey: queryString ? [QueryKey.SUBJECTS, queryString] : [QueryKey.SUBJECTS],
         queryString,

@@ -14,12 +14,15 @@ import _ from "lodash"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
 import LoadingButton from "@/components/forms/loading-button"
+import { isAdmin } from "@/lib/utils"
+import { useAuth } from "@/contexts/auth-provider"
 
 type Props = {
     subjectId: string;
 }
 
 export default function SubjectChapterList({ subjectId }: Props) {
+    const { payload } = useAuth();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [items, setItems] = useState<TSubjectChapter[]>([]); // used to track the chapters list that may change due to drag and drop
 
@@ -54,42 +57,48 @@ export default function SubjectChapterList({ subjectId }: Props) {
         })
     }
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return null;
 
     return (
         <Card className="mb-8">
             <CardHeader className="pb-2 flex flex-row justify-between gap-10">
                 <CardTitle className="text-xl font-medium">Chapters</CardTitle>
 
-                <ResponsiveDialog
-                    isOpen={isAddOpen}
-                    setIsOpen={setIsAddOpen}
-                    title="Add chapter"
-                    className="max-w-[800px]"
-                >
-                    <SubjectChapterForm setIsOpen={setIsAddOpen} />
-                </ResponsiveDialog>
+                {
+                    isAdmin(payload) && (
+                        <>
+                            <ResponsiveDialog
+                                isOpen={isAddOpen}
+                                setIsOpen={setIsAddOpen}
+                                title="Add chapter"
+                                className="max-w-[800px]"
+                            >
+                                <SubjectChapterForm setIsOpen={setIsAddOpen} />
+                            </ResponsiveDialog>
 
-                <section className="space-x-2">
-                    {
-                        !!_.differenceWith(items, (data?.data ?? []), _.isEqual)?.length && (
-                            <>
-                                <Button variant={'outline'} onClick={() => setItems(data?.data ?? [])}>
-                                    Cancel
+                            <section className="space-x-2">
+                                {
+                                    !!_.differenceWith(items, (data?.data ?? []), _.isEqual)?.length && (
+                                        <>
+                                            <Button variant={'outline'} onClick={() => setItems(data?.data ?? [])}>
+                                                Cancel
+                                            </Button>
+                                            <LoadingButton isLoading={isPending} variant={'secondary'} onClick={saveChapterNo} loadingText="Saving...">
+                                                <Save />
+                                                Save
+                                            </LoadingButton>
+                                        </>
+                                    )
+                                }
+
+                                <Button className="" onClick={() => setIsAddOpen(true)}>
+                                    <Plus className="mr-1 h-4 w-4" />
+                                    Add Chapter
                                 </Button>
-                                <LoadingButton isLoading={isPending} variant={'secondary'} onClick={saveChapterNo} loadingText="Saving...">
-                                    <Save />
-                                    Save
-                                </LoadingButton>
-                            </>
-                        )
-                    }
-
-                    <Button className="" onClick={() => setIsAddOpen(true)}>
-                        <Plus className="mr-1 h-4 w-4" />
-                        Add Chapter
-                    </Button>
-                </section>
+                            </section>
+                        </>
+                    )
+                }
             </CardHeader>
 
             <CardContent className="mt-5">
