@@ -23,14 +23,14 @@ export const useGetTask = ({
     return response;
 }
 
-export const useGetTasks = ({
+export const useGetTasks = <T = TasksResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TasksResponse>
+    options?: UseQueryOptions<T>
 }) => {
-    const response = useFetchData<TasksResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.TASKS,
         queryKey: queryString ? [QueryKey.TASKS, queryString] : [QueryKey.TASKS],
         queryString,
@@ -59,14 +59,14 @@ export const useGetTaskStatistics = ({
     return response;
 }
 
-export const useGetTaskSubmissions = ({
+export const useGetTaskSubmissions = <T = TaskSubmissionsResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TaskSubmissionsResponse>
+    options?: UseQueryOptions<T>
 }) => {
-    const response = useFetchData<TaskSubmissionsResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.TASK_SUBMISSIONS,
         queryKey: queryString ? [QueryKey.TASK_SUBMISSIONS, queryString] : [QueryKey.TASK_SUBMISSIONS],
         queryString,

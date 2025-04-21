@@ -26,7 +26,7 @@ type Props = ({
 const taskSchema = z.object({
     title: z.string().min(3, { message: "Title is required" }).max(100, { message: "Title should not exceed 100 characters" }),
     description: z.string({ required_error: "Description is required" }).max(500, { message: "Description should not exceed 500 characters" }),
-    deadline: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }).transform((value) => new Date(value).toISOString()),
+    deadline: z.string({ required_error: "Submission date is required" }).min(10, { message: "Submission date is required" }),
     facultyId: z.string({ required_error: "Faculty is required" }).uuid(),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Select a class room' }),

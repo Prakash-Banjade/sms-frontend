@@ -3,6 +3,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
 
 type Props = {
     label?: string;
@@ -30,13 +31,16 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
     return !!label ? (
         <div className="space-y-2">
             <Label htmlFor="search">{label ?? "Search"}</Label>
-            <Input
-                type="search"
-                placeholder={placeholder ?? "Search..."}
-                value={searchTerm}
-                onChange={handleInputChange}
-                className={cn("min-w-[300px]", className)}
-            />
+            <section className="relative flex items-center">
+                <Search className="absolute left-3 text-muted-foreground" size={18} />
+                <Input
+                    type="search"
+                    placeholder={placeholder ?? "Search..."}
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    className={cn("min-w-[300px] !pl-10", className)}
+                />
+            </section>
         </div>
     ) : (
         <Input

@@ -27,17 +27,14 @@ export function MultiSectionSelect({ required, disabled, options, description, v
     const handleSetValue = (val: string) => {
         if (values.includes(val)) {
             values.splice(values.indexOf(val), 1);
-
             const updatedValues = values.filter((item) => item !== val);
 
             setValues(updatedValues);
             form.setValue("sectionIds", updatedValues);
         } else {
-            setValues(prevValue => {
-                const updatedValues = [...prevValue, val];
-                form.setValue("sectionIds", updatedValues);
-                return updatedValues;
-            });
+            const updatedValues = [...values, val];
+            form.setValue("sectionIds", updatedValues);
+            setValues(updatedValues);
         }
     }
 

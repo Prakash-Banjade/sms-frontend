@@ -1,14 +1,14 @@
 import { useGetSubjects } from "@/apps/admin/components/subjects/data-access";
 import ContainerLayout from "@/components/page-layouts/container-layout";
-import { TMySubject } from "../../types/my-subject.type";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Users } from "lucide-react";
-import { getFormattedUpcomingDate, getNearestSchedule } from "../../utils/utils";
 import { Badge } from "@/components/ui/badge";
 import { ESubjectType } from "@/types/global.type";
 import NotAvailable from "@/components/ui/not-available";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { TMySubject } from "../types/my-subject.type";
+import { getFormattedUpcomingDate, getNearestSchedule } from "../utils/utils";
 
 export default function MySubjectsPage() {
 

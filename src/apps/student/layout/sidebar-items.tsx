@@ -27,11 +27,11 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 items: [
                     {
                         title: "Homeworks",
-                        url: "tasks/homeworks",
+                        url: "homeworks",
                     },
                     {
                         title: "Assignments",
-                        url: "tasks/assignments",
+                        url: "assignments",
                     }
                 ]
             },

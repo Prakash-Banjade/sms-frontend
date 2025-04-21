@@ -86,8 +86,8 @@ export const taskColumns: ColumnDef<Task>[] = [
         }
     },
     {
-        header: "Submission Date",
-        accessorKey: "submissionDate",
+        header: "Deadline",
+        accessorKey: "deadline",
         cell: ({ row }) => <p>{formatDate({ date: new Date(row.original.deadline) })}</p>,
     },
     {

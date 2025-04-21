@@ -8,13 +8,13 @@ import { CommonRoutes, OnlineClassesRoutes } from "../common/common-routes";
 const MyLeaveRequestsPage = lazy(() => import("../common/pages/leave-request/my-leave-requests.page"));
 const AddLeaveRequestPage = lazy(() => import("../common/pages/leave-request/add-leave-request.page"));
 import StreamClientProvider from "../teacher/layout/stream-client-provider";
-import MySubjectsPage from "./pages/academics/my-subjects.page";
 import SingleSubjectPage from "../admin/pages/subjects/single-subject.page";
-const StudentTaskPage = lazy(() => import("./pages/academics/assigment.page"));
+import TasksPage from "./pages/tasks/tasks.page";
+import MySubjectsPage from "./pages/my-subjects.page";
+import TaskSubmitPage from "./pages/tasks/task-submit.page";
 const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
-const SingleStudentTask = lazy(() => import("./components/task/assignments/single-assignment"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
 const StudentVechicleDetailsPage = lazy(() => import("./pages/student-vechicle-details.page"));
 const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
@@ -30,24 +30,20 @@ const StudentRoutes = () => {
       <Route element={<RequireAuth authorizedRoles={[Role.STUDENT]} />}>
         <Route element={<AppRootLayout menuItems={studentSidebarMenuItems} />}>
           <Route path="dashboard" element={<StudentDashboardPage />} />
-          <Route path="tasks">
-            <Route index element={<Navigate to="homeworks" />} />
-            <Route path="homeworks">
-              <Route index element={<StudentTaskPage type={ETask.HOMEWORK} />} />
-              <Route path=":id">
-                <Route index element={<SingleStudentTask />} />
-              </Route>
-            </Route>
-            <Route path="assignments">
-              <Route index element={<StudentTaskPage type={ETask.ASSIGNMENT} />} />
-              <Route path=":id">
-                <Route index element={<SingleStudentTask />} />
-              </Route>
-            </Route>
-          </Route>
           <Route path="subjects">
             <Route index element={<MySubjectsPage />} />
             <Route path=":id" element={<SingleSubjectPage />} />
+          </Route>
+          <Route path="tasks">
+            <Route index element={<Navigate to="homeworks" />} />
+            <Route path='homeworks' element={<TasksPage type={ETask.HOMEWORK} />} />
+            <Route path='assignments'>
+              <Route index element={<TasksPage type={ETask.ASSIGNMENT} />} />
+              <Route path="submit"> {/* Only assignments are submitted, not homeworks */}
+                <Route index element={<Navigate to={`/${Role.STUDENT}/tasks/homeworks`} />} />
+                <Route path=":id" element={<TaskSubmitPage type={ETask.ASSIGNMENT} />} />
+              </Route>
+            </Route>
           </Route>
           <Route path="class-routine" element={<ClassRoutineListPage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
