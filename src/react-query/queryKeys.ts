@@ -42,6 +42,7 @@ export enum QueryKey {
     NOTICES = "notices",
     TASKS = "tasks",
     TASK_SUBMISSIONS = "task-submissions",
+    TASK_EVALUATIONS = "task-evaluations",
     DETAILS = "details",
     VEHICLES = "vehicles",
     ROUTE_STOPS = "route-stops",

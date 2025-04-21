@@ -6,12 +6,13 @@ import { differenceInCalendarDays, differenceInDays, formatDate, isToday, isTomo
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
-import { useGetTasks, useGetTaskSubmissions } from '@/apps/admin/components/tasks/action'
+import { useGetTaskEvaluations, useGetTasks, useGetTaskSubmissions } from '@/apps/admin/components/tasks/action'
 import { createQueryString } from '@/utils/create-query-string'
 import { Task_StudentResponse, TaskSubmissionsResponse } from '../../data-access/tasks-data-access'
 import { ETask, ETaskSubmissionStatus } from '@/types/global.type'
 import { Link } from 'react-router-dom'
 import { DataTablePagination } from '@/components/data-table/data-table-pagination'
+import { TaskEvaluationsResponse } from '@/apps/admin/types/task.type'
 
 export function getRelativeDayLabel(date: Date): string {
     if (isToday(date)) return 'Today';
@@ -92,7 +93,7 @@ function PendingTaskCard({ task }: { task: Task_StudentResponse['data'][0] }) {
                 </div>
             </CardHeader>
             <CardContent className={cn('transition-all origin-top overflow-hidden', isExpanded ? 'h-auto' : 'h-0 py-0')}>
-                <p className="text-sm text-gray-600 pb-2 max-w-[600px]">
+                <p className="text-sm text-gray-600 pb-2 max-w-[600px] mt-5">
                     {task.description}
                 </p>
                 {
@@ -163,7 +164,7 @@ export function SubmittedTasks() {
                         </div>
                     </CardHeader>
                     <CardContent className={cn('transition-all origin-top overflow-hidden', isExpanded ? 'h-auto' : 'h-0 py-0')}>
-                        <p className="text-sm text-gray-600 pb-2 max-w-[600px]">
+                        <p className="text-sm text-gray-600 pb-2 max-w-[600px] mt-5">
                             {submission.note}
                         </p>
                         {
@@ -194,17 +195,64 @@ export function SubmittedTasks() {
 }
 
 export function EvaluatedTasks() {
-    const { data, isLoading } = useGetTasks<Task_StudentResponse>({});
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const { data, isLoading } = useGetTaskEvaluations<TaskEvaluationsResponse>({});
 
     if (isLoading) return <div>Loading...</div>;
 
     if (!data || data.data.length === 0) return (
         <div className="flex flex-col items-center justify-center py-12">
             <CheckCircle2 className="h-12 w-12 text-student-primary mb-3" />
-            <h3 className="text-lg font-medium">No graded assignments</h3>
+            <h3 className="text-lg font-medium">No evaluated assignments</h3>
             <p className="text-sm text-gray-500 mt-1">
-                Your submissions are still being graded.
+                Your submissions are still being evaluated.
             </p>
+        </div>
+    )
+
+    return (
+        <div className="space-y-4">
+            {data.data.map((evaluation) => (
+                <Card key={evaluation.id}>
+                    <CardHeader className={cn("pb-2", !isExpanded && 'pb-6')}>
+                        <div className="flex items-start justify-between">
+                            <div>
+                                <CardTitle className="text-lg hover:underline" role='button' onClick={() => setIsExpanded(!isExpanded)}>
+                                    {evaluation.submission?.task?.title}
+                                </CardTitle>
+                                <div className="flex flex-wrap gap-2 text-sm mt-1">
+                                    <Badge variant="outline">{evaluation.submission?.task?.subject?.subjectName}</Badge>
+                                    <span className="text-sm text-gray-500">
+                                        Submitted on {new Date(evaluation.submission?.createdAt as string).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            </div>
+                            {
+                                !!evaluation.submission?.task?.marks && (
+                                    <div className="text-right">
+                                        <p>Score</p>
+                                        <div className="mt-1 text-sm font-medium">{evaluation.score} / {evaluation.submission?.task?.marks}</div>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </CardHeader>
+                    <CardContent className={cn('transition-all origin-top overflow-hidden space-y-3', isExpanded ? 'h-auto' : 'h-0 py-0')}>
+                        <section className='mt-5'>
+                            <h4 className='font-semibold'>Evaluated by</h4>
+                            <p className='text-sm'>{evaluation.evaluator?.firstName} {evaluation.evaluator?.lastName}</p>
+                        </section>
+
+                        <section>
+                            <h4 className='font-semibold'>Feedback</h4>
+                            <p className="text-sm text-gray-600 pb-2 max-w-[600px]">
+                                {evaluation.feedback}
+                            </p>
+                        </section>
+                    </CardContent>
+                </Card>
+            ))}
         </div>
     )
 }

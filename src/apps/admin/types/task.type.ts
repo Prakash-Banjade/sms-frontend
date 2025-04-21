@@ -101,3 +101,30 @@ export type TaskSubmissionsResponse = {
     meta: TMeta;
 }
 
+export type TaskEvaluationsResponse = {
+    data: {
+        id: string,
+        createdAt: string,
+        score: number,
+        feedback: string,
+        submission: {
+            id: string,
+            createdAt: string,
+            task: {
+                id: string
+                title: string
+                marks: number,
+                subject: {
+                    id: string
+                    subjectName: string
+                }
+            }
+        },
+        evaluator: {
+            id: string,
+            firstName: string,
+            lastName: string
+        }
+    }[],
+    meta: TMeta
+}

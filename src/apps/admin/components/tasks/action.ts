@@ -75,3 +75,20 @@ export const useGetTaskSubmissions = <T = TaskSubmissionsResponse>({
 
     return response;
 }
+
+export const useGetTaskEvaluations = <T>({
+    queryString,
+    options,
+}: {
+    queryString?: string;
+    options?: UseQueryOptions<T>
+}) => {
+    const response = useFetchData<T>({
+        endpoint: QueryKey.TASK_EVALUATIONS,
+        queryKey: queryString ? [QueryKey.TASK_EVALUATIONS, queryString] : [QueryKey.TASK_EVALUATIONS],
+        queryString,
+        options,
+    })
+
+    return response;
+}
