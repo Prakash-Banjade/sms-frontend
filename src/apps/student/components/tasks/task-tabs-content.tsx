@@ -77,7 +77,7 @@ function PendingTaskCard({ task }: { task: Task_StudentResponse['data'][0] }) {
                         <div className="flex flex-wrap gap-2 text-sm mt-1">
                             <Badge variant="outline">{task.subjectName}</Badge>
                             <span className={`text-sm ${isNear ? 'text-destructive' : 'text-student-warning'}`}>
-                                Due {isNear ? getRelativeDayLabel(new Date(task.deadline)) : formatDate(task.deadline, 'ddd dd MMM yyyy')}
+                                Deadline: {isNear ? getRelativeDayLabel(new Date(task.deadline)) : formatDate(task.deadline, 'EEE dd MMM yyyy')}
                             </span>
                         </div>
                     </div>
@@ -122,9 +122,11 @@ function PendingTaskCard({ task }: { task: Task_StudentResponse['data'][0] }) {
 }
 
 export function SubmittedTasks() {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    const { data, isLoading } = useGetTaskSubmissions<TaskSubmissionsResponse>({});
+    const { data, isLoading } = useGetTaskSubmissions<TaskSubmissionsResponse>({
+        queryString: createQueryString({
+            notEvaluated: true
+        })
+    });
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -140,63 +142,67 @@ export function SubmittedTasks() {
 
     return (
         <div className="space-y-4">
-            {data.data?.map((submission) => (
-                <Card key={submission.id}>
-                    <CardHeader className={cn("pb-2", !isExpanded && 'pb-6')}>
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <CardTitle className="text-lg hover:underline" role='button' onClick={() => setIsExpanded(!isExpanded)}>
-                                    {submission.task?.title}
-                                </CardTitle>
-                                <div className="flex flex-wrap gap-2 text-sm mt-1">
-                                    <Badge variant="outline">{submission.task?.subject?.subjectName}</Badge>
-                                    <span className="text-sm text-gray-500">
-                                        Submitted on {new Date(submission.createdAt).toLocaleDateString()}
-                                    </span>
-                                </div>
-                            </div>
-                            <Badge
-                                variant={submission.status === ETaskSubmissionStatus.Submitted ? 'success' : 'destructive'}
-                                className='capitalize'
-                            >
-                                {submission.status}
-                            </Badge>
-                        </div>
-                    </CardHeader>
-                    <CardContent className={cn('transition-all origin-top overflow-hidden', isExpanded ? 'h-auto' : 'h-0 py-0')}>
-                        <p className="text-sm text-gray-600 pb-2 max-w-[600px] mt-5">
-                            {submission.note}
-                        </p>
-                        {
-                            !!submission?.attachments?.length && (
-                                <>
-                                    <Separator />
-                                    <div className='mt-2'>
-                                        <h3 className="font-semibold mb-2">Attachments:</h3>
-                                        <ul className="space-y-2">
-                                            {submission.attachments.map((attachment: any, index: number) => (
-                                                <li key={index}>
-                                                    <a href={attachment.url} target="_blank" rel="noreferrer" className="text-sm flex gap-2 items-center w-fit text-blue-500 hover:text-blue-600 hover:underline">
-                                                        <FileIcon className="h-4 w-4 mr-2" />
-                                                        {attachment.originalName}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </>
-                            )
-                        }
-                    </CardContent>
-                </Card>
-            ))}
+            {data.data?.map((submission) => <SubmittedTaskCard key={submission.id} submission={submission} />)}
         </div>
     )
 }
 
-export function EvaluatedTasks() {
+function SubmittedTaskCard({ submission }: { submission: TaskSubmissionsResponse['data'][0] }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
+    return (
+        <Card>
+            <CardHeader className={cn("pb-2", !isExpanded && 'pb-6')}>
+                <div className="flex items-start justify-between">
+                    <div>
+                        <CardTitle className="text-lg hover:underline" role='button' onClick={() => setIsExpanded(!isExpanded)}>
+                            {submission.task?.title}
+                        </CardTitle>
+                        <div className="flex flex-wrap gap-2 text-sm mt-1">
+                            <Badge variant="outline">{submission.task?.subject?.subjectName}</Badge>
+                            <span className="text-sm text-gray-500">
+                                Submitted on {new Date(submission.createdAt).toLocaleDateString()}
+                            </span>
+                        </div>
+                    </div>
+                    <Badge
+                        variant={submission.status === ETaskSubmissionStatus.Submitted ? 'success' : 'destructive'}
+                        className='capitalize'
+                    >
+                        {submission.status}
+                    </Badge>
+                </div>
+            </CardHeader>
+            <CardContent className={cn('transition-all origin-top overflow-hidden', isExpanded ? 'h-auto' : 'h-0 py-0')}>
+                <p className="text-sm text-gray-600 pb-2 max-w-[600px] mt-5">
+                    {submission.note}
+                </p>
+                {
+                    !!submission?.attachments?.length && (
+                        <>
+                            <Separator />
+                            <div className='mt-2'>
+                                <h3 className="font-semibold mb-2">Attachments:</h3>
+                                <ul className="space-y-2">
+                                    {submission.attachments.map((attachment: any, index: number) => (
+                                        <li key={index}>
+                                            <a href={attachment.url} target="_blank" rel="noreferrer" className="text-sm flex gap-2 items-center w-fit text-blue-500 hover:text-blue-600 hover:underline">
+                                                <FileIcon className="h-4 w-4 mr-2" />
+                                                {attachment.originalName}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </>
+                    )
+                }
+            </CardContent>
+        </Card>
+    )
+}
+
+export function EvaluatedTasks() {
     const { data, isLoading } = useGetTaskEvaluations<TaskEvaluationsResponse>({});
 
     if (isLoading) return <div>Loading...</div>;
@@ -213,46 +219,52 @@ export function EvaluatedTasks() {
 
     return (
         <div className="space-y-4">
-            {data.data.map((evaluation) => (
-                <Card key={evaluation.id}>
-                    <CardHeader className={cn("pb-2", !isExpanded && 'pb-6')}>
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <CardTitle className="text-lg hover:underline" role='button' onClick={() => setIsExpanded(!isExpanded)}>
-                                    {evaluation.submission?.task?.title}
-                                </CardTitle>
-                                <div className="flex flex-wrap gap-2 text-sm mt-1">
-                                    <Badge variant="outline">{evaluation.submission?.task?.subject?.subjectName}</Badge>
-                                    <span className="text-sm text-gray-500">
-                                        Submitted on {new Date(evaluation.submission?.createdAt as string).toLocaleDateString()}
-                                    </span>
-                                </div>
-                            </div>
-                            {
-                                !!evaluation.submission?.task?.marks && (
-                                    <div className="text-right">
-                                        <p>Score</p>
-                                        <div className="mt-1 text-sm font-medium">{evaluation.score} / {evaluation.submission?.task?.marks}</div>
-                                    </div>
-                                )
-                            }
-                        </div>
-                    </CardHeader>
-                    <CardContent className={cn('transition-all origin-top overflow-hidden space-y-3', isExpanded ? 'h-auto' : 'h-0 py-0')}>
-                        <section className='mt-5'>
-                            <h4 className='font-semibold'>Evaluated by</h4>
-                            <p className='text-sm'>{evaluation.evaluator?.firstName} {evaluation.evaluator?.lastName}</p>
-                        </section>
-
-                        <section>
-                            <h4 className='font-semibold'>Feedback</h4>
-                            <p className="text-sm text-gray-600 pb-2 max-w-[600px]">
-                                {evaluation.feedback}
-                            </p>
-                        </section>
-                    </CardContent>
-                </Card>
-            ))}
+            {data.data.map((evaluation) => <EvaluatedTaskCard key={evaluation.id} evaluation={evaluation} />)}
         </div>
+    )
+}
+
+function EvaluatedTaskCard({ evaluation }: { evaluation: TaskEvaluationsResponse['data'][0] }) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    return (
+        <Card>
+            <CardHeader className={cn("pb-2", !isExpanded && 'pb-6')}>
+                <div className="flex items-start justify-between">
+                    <div>
+                        <CardTitle className="text-lg hover:underline" role='button' onClick={() => setIsExpanded(!isExpanded)}>
+                            {evaluation.submission?.task?.title}
+                        </CardTitle>
+                        <div className="flex flex-wrap gap-2 text-sm mt-1">
+                            <Badge variant="outline">{evaluation.submission?.task?.subject?.subjectName}</Badge>
+                            <span className="text-sm text-gray-500">
+                                Submitted on {new Date(evaluation.submission?.createdAt as string).toLocaleDateString()}
+                            </span>
+                        </div>
+                    </div>
+                    {
+                        !!evaluation.submission?.task?.marks && (
+                            <div className="text-right">
+                                <p>Score</p>
+                                <div className="mt-1 text-sm font-medium">{evaluation.score} / {evaluation.submission?.task?.marks}</div>
+                            </div>
+                        )
+                    }
+                </div>
+            </CardHeader>
+            <CardContent className={cn('transition-all origin-top overflow-hidden space-y-3', isExpanded ? 'h-auto' : 'h-0 py-0')}>
+                <section className='mt-5'>
+                    <h4 className='font-semibold'>Evaluated by</h4>
+                    <p className='text-sm'>{evaluation.evaluator?.firstName} {evaluation.evaluator?.lastName}</p>
+                </section>
+
+                <section>
+                    <h4 className='font-semibold'>Feedback</h4>
+                    <p className="text-sm text-gray-600 pb-2 max-w-[600px]">
+                        {evaluation.feedback}
+                    </p>
+                </section>
+            </CardContent>
+        </Card>
     )
 }
