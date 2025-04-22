@@ -50,14 +50,6 @@ export function ClassRoutineCard({ classRoutine, className }: { classRoutine: TC
         ? classRoutine.teacher.firstName + " " + classRoutine.teacher.lastName
         : "**Not Assigned**";
 
-    const classRoomName = classRoutine.classRoom?.parent
-        ? classRoutine.classRoom?.parent?.name
-        : classRoutine.classRoom?.name;
-
-    const sectionName = classRoutine.classRoom?.parent
-        ? classRoutine.classRoom?.name
-        : undefined;
-
     return (
         <Card className={cn(
             "flex flex-col min-w-56",
@@ -84,10 +76,7 @@ export function ClassRoutineCard({ classRoutine, className }: { classRoutine: TC
                 </div>
                 <div className="mt-2">
                     <p className="font-medium">{classRoutine.startTime} - {classRoutine.endTime}</p>
-                    <p className="text-sm text-muted-foreground">
-                        {classRoomName}
-                        {sectionName ? ` - ${sectionName}` : ""}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{classRoutine.classRoom?.fullName}</p>
                 </div>
             </CardContent>
         </Card>

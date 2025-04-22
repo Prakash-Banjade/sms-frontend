@@ -12,15 +12,15 @@ import SingleSubjectPage from "../admin/pages/subjects/single-subject.page";
 import TasksPage from "./pages/tasks/tasks.page";
 import MySubjectsPage from "./pages/my-subjects.page";
 import TaskSubmitPage from "./pages/tasks/task-submit.page";
-const ClassRoutineListPage = lazy(() => import("../admin/pages/class-routine/class-routine-list.page"));
+import ClassRoutinePage from "./pages/class-routine.page";
+import StudentExamRoutinePage from "./pages/examination/student-exam-routine.page";
+import StudentExamReportPage from "./pages/examination/student-exam-report.page";
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
 const StudentVechicleDetailsPage = lazy(() => import("./pages/student-vechicle-details.page"));
 const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
 const StudentDormitoryPage = lazy(() => import("./pages/academics/stu-dormitory.page"));
-const StudentExamRoutinePage = lazy(() => import("./pages/academics/st-exam-routine.page"));
-const StudentExamReportPage = lazy(() => import("./pages/academics/stu-exam-report.page"));
 const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
 const OnlineClassesPage = lazy(() => import("../common/pages/online-classes/online-classes.page"));
 
@@ -45,13 +45,15 @@ const StudentRoutes = () => {
               </Route>
             </Route>
           </Route>
-          <Route path="class-routine" element={<ClassRoutineListPage />} />
+          <Route path="class-routine" element={<ClassRoutinePage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
           <Route path='trasports' element={<StudentVechicleDetailsPage />} />
           <Route path='library' element={<StudentLibraryDetailsPage />} />
           <Route path='dormitory' element={<StudentDormitoryPage />} />
-          <Route path='exam-routine' element={<StudentExamRoutinePage />} />
-          <Route path='exam-report' element={<StudentExamReportPage />} />
+          <Route path="examination">
+            <Route path='routine' element={<StudentExamRoutinePage />} />
+            <Route path='report' element={<StudentExamReportPage />} />
+          </Route>
           <Route path="live-classes" element={<StreamClientProvider />}>
             <Route index element={<OnlineClassesPage />} />
           </Route>

@@ -10,11 +10,10 @@ export type TClassRoutine = {
     type: ERoutineType,
     classRoom: {
         id: string,
-        name: string,
+        fullName: string,
         parent: {
-            id: string,
-            name: string
-        } | null,
+            id: string
+        } | null
     },
     subject: {
         id: string,

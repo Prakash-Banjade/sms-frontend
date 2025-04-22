@@ -12,7 +12,7 @@ type Schedule = {
     } | null
 };
 
-const dayOrder: Record<EDayOfWeek, number> = {
+export const dayOrder: Record<EDayOfWeek, number> = {
     [EDayOfWeek.SUNDAY]: 0,
     [EDayOfWeek.MONDAY]: 1,
     [EDayOfWeek.TUESDAY]: 2,
