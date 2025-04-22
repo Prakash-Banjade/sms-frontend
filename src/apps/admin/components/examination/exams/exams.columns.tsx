@@ -14,6 +14,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TExam } from "@/apps/admin/types/examination.type"
+import { Badge } from "@/components/ui/badge"
 
 export const examsColumns: ColumnDef<TExam>[] = [
     {
@@ -36,11 +37,19 @@ export const examsColumns: ColumnDef<TExam>[] = [
         accessorKey: "faculty",
     },
     {
+        header: "Result Status",
+        accessorKey: "isReportPublished",
+        cell: ({ row }) => {
+            return row.original.isReportPublished ? <Badge variant="success">Published</Badge> : <Badge variant="outline">Not Published</Badge>;
+        },
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
             const navigate = useNavigate();
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+            const [isPublishOpen, setIsPublishOpen] = useState(false);
 
             const { mutateAsync, isPending } = useAppMutation();
 
@@ -48,6 +57,14 @@ export const examsColumns: ColumnDef<TExam>[] = [
                 await mutateAsync({
                     method: "delete",
                     endpoint: `${QueryKey.EXAMS}/${row.original.id}`,
+                    invalidateTags: [QueryKey.EXAMS],
+                });
+            }
+
+            async function handlePublishResult() {
+                await mutateAsync({
+                    method: "patch",
+                    endpoint: `${QueryKey.EXAMS}/${row.original.id}/publish?publish=${!row.original.isReportPublished}`,
                     invalidateTags: [QueryKey.EXAMS],
                 });
             }
@@ -61,6 +78,16 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         description={`Are you sure you want to delete this exam?`}
                         action={() => handleDelete()}
                         actionLabel="Yes, Delete"
+                        isLoading={isPending}
+                    />
+
+                    <ResponsiveAlertDialog
+                        isOpen={isPublishOpen}
+                        setIsOpen={setIsPublishOpen}
+                        title={`Publish exam results`}
+                        description={`Are you sure you want to publish the exam results?`}
+                        action={() => handlePublishResult()}
+                        actionLabel="Yes, Publish"
                         isLoading={isPending}
                     />
 
@@ -79,6 +106,18 @@ export const examsColumns: ColumnDef<TExam>[] = [
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.id + '/evaluation')}>
                                 <span>Evaluation</span>
                             </DropdownMenuButtonItem>
+                            {
+                                row.original.isReportPublished
+                                    ? (
+                                        <DropdownMenuButtonItem onClick={() => handlePublishResult()}>
+                                            <span>Unpublish Result</span>
+                                        </DropdownMenuButtonItem>
+                                    ) : (
+                                        <DropdownMenuButtonItem onClick={() => setIsPublishOpen(true)}>
+                                            <span>Publish Result</span>
+                                        </DropdownMenuButtonItem>
+                                    )
+                            }
                             <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
                                 <span>Delete</span>
                             </DropdownMenuButtonItem>

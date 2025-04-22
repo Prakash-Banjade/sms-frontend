@@ -53,6 +53,7 @@ export default function StudentExamReportSummary({ failedSubjects, gpa, percenta
                         <AlertCircle className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
+                        {weakSubjects.length === 0 && <div className="font-medium text-muted-foreground">None</div>}
                         <div className="text-2xl font-bold">{weakSubjects.join(', ')}</div>
                     </CardContent>
                 </Card>

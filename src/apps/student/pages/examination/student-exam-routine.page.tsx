@@ -13,7 +13,7 @@ export default function StudentExamRoutinePage() {
 
     function academicYear() {
         return isLoading
-            ? <div className="h-4 w-36 bg-secondary animate-pulse"></div>
+            ? <div className="h-4 w-56 rounded-md bg-secondary animate-pulse"></div>
             : <span>Academic year <strong>{data?.name}</strong></span>
     }
 

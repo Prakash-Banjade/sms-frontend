@@ -35,6 +35,7 @@ export type TExam = {
     classRoom: string,
     classRoomId: string,
     faculty: string,
+    isReportPublished: 1 | 0,
 }
 
 export type TExamsResponse = {
