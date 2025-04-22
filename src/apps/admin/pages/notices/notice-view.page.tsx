@@ -10,6 +10,7 @@ import { TooltipWrapper } from "@/components/ui/tooltip";
 import DOMPurify from 'dompurify';
 import { formatDate } from "@/utils/format-date";
 import { useAuth } from "@/contexts/auth-provider";
+import { isAdmin } from "@/lib/utils";
 
 export default function NoticeViewPage() {
   const params = useParams();
@@ -46,14 +47,18 @@ function NoticeView({ id }: { id: string }) {
         <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data?.description) ?? '' }} />
 
         {/* action */}
-        <div className="absolute top-0 right-0">
-          <TooltipWrapper label={'Edit notice'}>
-            <Button variant={'outline'} size={'icon'} onClick={() => setSearchParams('edit', 'true')}>
-              <span className="sr-only">Edit</span>
-              <Pencil className="h-4 w-4" />
-            </Button>
-          </TooltipWrapper>
-        </div>
+        {
+          isAdmin(payload) && (
+            <div className="absolute top-0 right-0">
+              <TooltipWrapper label={'Edit notice'}>
+                <Button variant={'outline'} size={'icon'} onClick={() => setSearchParams('edit', 'true')}>
+                  <span className="sr-only">Edit</span>
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              </TooltipWrapper>
+            </div>
+          )
+        }
       </section>
     )
 }

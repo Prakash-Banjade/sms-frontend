@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import ExamTypeSelect from "./exam-type-select";
+import ExamTypeSelect from "../../components/examination/exam-type-select";
 import { useMemo } from "react";
 import { useGetExamSubjects } from "@/apps/admin/components/examination/data-access";
 import { createQueryString } from "@/utils/create-query-string";
