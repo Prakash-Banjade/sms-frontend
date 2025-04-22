@@ -36,48 +36,48 @@ function SubjectsList() {
     }
 
     return (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {data.data.map((subject) => {
-                const upcommingSchedule = getNearestSchedule(subject.classRoutines);
-                const scheduleDate = getFormattedUpcomingDate(upcommingSchedule) ?? null;
-                const teacherName = upcommingSchedule?.teacher ? (upcommingSchedule?.teacher?.firstName + " " + upcommingSchedule?.teacher?.lastName) : <NotAvailable />
+        <section className="@container">
+            <div className="grid grid-cols-1 gap-6 @lg:grid-cols-2 @4xl:grid-cols-3">
+                {data.data.map((subject) => {
+                    const upcommingSchedule = getNearestSchedule(subject.classRoutines);
+                    const scheduleDate = getFormattedUpcomingDate(upcommingSchedule) ?? null;
+                    const teacherName = upcommingSchedule?.teacher ? (upcommingSchedule?.teacher?.firstName + " " + upcommingSchedule?.teacher?.lastName) : <NotAvailable />
 
-                return (
-                    <Card key={subject.id} className="overflow-hidden">
-                        <CardHeader>
-                            <div className="flex justify-between">
-                                <div>
-                                    <CardTitle>{subject.subjectName}</CardTitle>
-                                    <p className="text-sm text-gray-500">{subject.subjectCode}</p>
-                                </div>
+                    return (
+                        <Card key={subject.id} className="overflow-hidden">
+                            <CardHeader>
+                                <div className="flex justify-between">
+                                    <div>
+                                        <CardTitle>{subject.subjectName}</CardTitle>
+                                        <p className="text-sm text-gray-500">{subject.subjectCode}</p>
+                                    </div>
 
-                                <div>
-                                    <Badge variant={subject.type === ESubjectType.Regular ? "secondary" : "outline"} className="capitalize">{subject.type}</Badge>
+                                    <div>
+                                        <Badge variant={subject.type === ESubjectType.Regular ? "secondary" : "outline"} className="capitalize">{subject.type}</Badge>
+                                    </div>
                                 </div>
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <section className="space-y-3 pt-2">
-                                <div className="flex items-center gap-2 text-sm">
-                                    <Users className="h-4 w-4 text-gray-500" />
-                                    <span>{teacherName}</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-sm">
-                                    <Calendar className="h-4 w-4 text-gray-500" />
-                                    <span>Next class: {scheduleDate || <NotAvailable />}</span>
-                                </div>
-                                <Button variant={'default'} className="w-full" asChild>
-                                    <Link to={subject.id}>
-                                        View Subject
-                                    </Link>
-                                </Button>
-                            </section>
-                        </CardContent>
-                    </Card>
-                )
-            })}
-        </div>
+                            </CardHeader>
+                            <CardContent>
+                                <section className="space-y-3 pt-2">
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <Users className="h-4 w-4 text-gray-500" />
+                                        <span>{teacherName}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <Calendar className="h-4 w-4 text-gray-500" />
+                                        <span>Next class: {scheduleDate || <NotAvailable />}</span>
+                                    </div>
+                                    <Button variant={'default'} className="w-full" asChild>
+                                        <Link to={subject.id}>
+                                            View Subject
+                                        </Link>
+                                    </Button>
+                                </section>
+                            </CardContent>
+                        </Card>
+                    )
+                })}
+            </div>
+        </section>
     )
-
-
 }

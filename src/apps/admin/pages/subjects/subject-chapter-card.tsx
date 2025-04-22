@@ -17,6 +17,8 @@ import { TSubjectChapter } from "@/apps/admin/types/subject.type"
 import { Badge } from "@/components/ui/badge"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+import { isAdmin } from "@/lib/utils"
+import { useAuth } from "@/contexts/auth-provider"
 
 type Props = {
     chapter: TSubjectChapter
@@ -25,6 +27,8 @@ type Props = {
 }
 
 export default function SubjectChapterCard({ chapter, subjectId, forceDragging }: Props) {
+    const { payload } = useAuth();
+
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -66,14 +70,18 @@ export default function SubjectChapterCard({ chapter, subjectId, forceDragging }
         <Card className="mb-4" key={chapter.id} ref={setNodeRef} style={parentStyles}>
             <CardHeader className="flex flex-row items-center justify-between py-2">
                 <CardTitle className="text-md flex items-center">
-                    <div
-                        ref={setActivatorNodeRef}
-                        style={draggableStyles}
-                        {...attributes}
-                        {...listeners}
-                    >
-                        <GripVertical className="mr-2 h-5 w-5 text-muted-foreground" />
-                    </div>
+                    {
+                        isAdmin(payload) && (
+                            <div
+                                ref={setActivatorNodeRef}
+                                style={draggableStyles}
+                                {...attributes}
+                                {...listeners}
+                            >
+                                <GripVertical className="mr-2 h-5 w-5 text-muted-foreground" />
+                            </div>
+                        )
+                    }
                     Chapter {chapter.chapterNo}: {chapter.title}
                     <span className="ml-5">
                         <Badge variant="outline" className="text-xs capitalize">
@@ -84,46 +92,53 @@ export default function SubjectChapterCard({ chapter, subjectId, forceDragging }
 
                 {/* dropdown menu */}
 
-                <ResponsiveDialog
-                    isOpen={isEditOpen}
-                    setIsOpen={setIsEditOpen}
-                    title="Edit chapter"
-                    className="max-w-[800px]"
-                >
-                    <SubjectChapterForm setIsOpen={setIsEditOpen} subjectChapterId={chapter.id} defaultValues={{
-                        title: chapter.title,
-                        content: chapter.content,
-                        priority: chapter.priority,
-                        subjectId,
-                    }} />
-                </ResponsiveDialog>
+                {
+                    isAdmin(payload) && (
+                        <>
+                            <ResponsiveDialog
+                                isOpen={isEditOpen}
+                                setIsOpen={setIsEditOpen}
+                                title="Edit chapter"
+                                className="max-w-[800px]"
+                            >
+                                <SubjectChapterForm setIsOpen={setIsEditOpen} subjectChapterId={chapter.id} defaultValues={{
+                                    title: chapter.title,
+                                    content: chapter.content,
+                                    priority: chapter.priority,
+                                    subjectId,
+                                }} />
+                            </ResponsiveDialog>
 
-                <ResponsiveAlertDialog
-                    isOpen={isDeleteOpen}
-                    setIsOpen={setIsDeleteOpen}
-                    title="Delete Class Routine"
-                    description="Are you sure you want to delete this class routine?"
-                    action={() => handleDelete(chapter.id)}
-                    actionLabel="Yes, Delete"
-                    isLoading={isPending}
-                />
+                            <ResponsiveAlertDialog
+                                isOpen={isDeleteOpen}
+                                setIsOpen={setIsDeleteOpen}
+                                title="Delete Class Routine"
+                                description="Are you sure you want to delete this class routine?"
+                                action={() => handleDelete(chapter.id)}
+                                actionLabel="Yes, Delete"
+                                isLoading={isPending}
+                            />
 
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <EllipsisVertical className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                            <span>Edit</span>
-                        </DropdownMenuButtonItem>
-                        <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
-                            <span>Delete</span>
-                        </DropdownMenuButtonItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                        <span className="sr-only">Open menu</span>
+                                        <EllipsisVertical className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
+                                        <span>Edit</span>
+                                    </DropdownMenuButtonItem>
+                                    <DropdownMenuButtonItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
+                                        <span>Delete</span>
+                                    </DropdownMenuButtonItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </>
+                    )
+                }
+
 
             </CardHeader>
             <CardContent>

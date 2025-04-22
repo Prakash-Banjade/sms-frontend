@@ -38,12 +38,14 @@ export default function OnlineClassesPage() {
             title="Live Classes"
             actionTrigger={payload?.role === Role.TEACHER && <CreateOnlineClassDialog />}
         >
-            <OnlineClassesSearchFilters />
             {
                 !!data?.data?.length ? (
-                    <section className='@container space-y-4'>
-                        <OnlineClassesList onlineClasses={data?.data ?? []} />
-                    </section>
+                    <>
+                        <OnlineClassesSearchFilters />
+                        <section className='@container space-y-4'>
+                            <OnlineClassesList onlineClasses={data?.data ?? []} />
+                        </section>
+                    </>
                 ) : (
                     <Card className="w-full my-16 flex flex-col items-center justify-center p-6 border-none">
                         <CardContent className="text-center text-muted-foreground">

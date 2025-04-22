@@ -10,7 +10,7 @@ import { useGetTaskEvaluations, useGetTasks, useGetTaskSubmissions } from '@/app
 import { createQueryString } from '@/utils/create-query-string'
 import { Task_StudentResponse, TaskSubmissionsResponse } from '../../data-access/tasks-data-access'
 import { ETask, ETaskSubmissionStatus } from '@/types/global.type'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { DataTablePagination } from '@/components/data-table/data-table-pagination'
 import { TaskEvaluationsResponse } from '@/apps/admin/types/task.type'
 
@@ -27,10 +27,14 @@ export function getRelativeDayLabel(date: Date): string {
 }
 
 export function PendingTasks({ type }: { type: ETask }) {
+    const [searchParams] = useSearchParams();
+
     const { data, isLoading } = useGetTasks<Task_StudentResponse>({
         queryString: createQueryString({
             taskType: type,
-            category: 'pending'
+            category: 'pending',
+            take: searchParams.get('take'),
+            page: searchParams.get('page'),
         })
     });
 
@@ -122,9 +126,13 @@ function PendingTaskCard({ task }: { task: Task_StudentResponse['data'][0] }) {
 }
 
 export function SubmittedTasks() {
+    const [searchParams] = useSearchParams();
+
     const { data, isLoading } = useGetTaskSubmissions<TaskSubmissionsResponse>({
         queryString: createQueryString({
-            notEvaluated: true
+            notEvaluated: true,
+            take: searchParams.get('take'),
+            page: searchParams.get('page'),
         })
     });
 
@@ -143,6 +151,8 @@ export function SubmittedTasks() {
     return (
         <div className="space-y-4">
             {data.data?.map((submission) => <SubmittedTaskCard key={submission.id} submission={submission} />)}
+
+            <DataTablePagination meta={data?.meta} />
         </div>
     )
 }
@@ -203,7 +213,14 @@ function SubmittedTaskCard({ submission }: { submission: TaskSubmissionsResponse
 }
 
 export function EvaluatedTasks() {
-    const { data, isLoading } = useGetTaskEvaluations<TaskEvaluationsResponse>({});
+    const [searchParams] = useSearchParams();
+
+    const { data, isLoading } = useGetTaskEvaluations<TaskEvaluationsResponse>({
+        queryString: createQueryString({
+            take: searchParams.get('take'),
+            page: searchParams.get('page'),
+        })
+    });
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -220,6 +237,8 @@ export function EvaluatedTasks() {
     return (
         <div className="space-y-4">
             {data.data.map((evaluation) => <EvaluatedTaskCard key={evaluation.id} evaluation={evaluation} />)}
+
+            <DataTablePagination meta={data?.meta} />
         </div>
     )
 }
