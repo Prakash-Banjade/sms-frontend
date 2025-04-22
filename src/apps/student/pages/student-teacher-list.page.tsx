@@ -1,11 +1,24 @@
 import { useGetTeachers } from "@/apps/admin/components/teachers/actions";
 import { createQueryString } from "@/utils/create-query-string";
-import TeacherList from "../components/teacher/teacher-card";
 import { St_TeacherResponse } from "@/apps/admin/types/teacher.type";
+import ContainerLayout from "@/components/page-layouts/container-layout";
+import { ProfileAvatar } from '@/components/ui/avatar'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getImageUrl } from '@/lib/utils'
+import { Book, Mail, Phone } from 'lucide-react'
 
+export default function StudentTeacherList() {
 
-const StudentTeacherListPage = () => {
+  return (
+    <ContainerLayout
+      title="My Teachers"
+    >
+      <TeachersView />
+    </ContainerLayout>
+  )
+}
 
+function TeachersView() {
   const { data, isLoading } = useGetTeachers<St_TeacherResponse>({
     queryString: createQueryString({
       skipPagination: 'true',
@@ -13,6 +26,7 @@ const StudentTeacherListPage = () => {
   });
 
   if (isLoading) return <div>Loading...</div>;
+
   if (!data || data?.data.length === 0) {
     return (
       <div className="h-[50vh] flex items-center justify-center font-semibold text-muted-foreground">
@@ -23,10 +37,44 @@ const StudentTeacherListPage = () => {
 
   return (
     <div className="container mx-auto flex flex-col gap-8">
-      <h2 className="text-lg font-semibold">My Teachers</h2>
-      <TeacherList teachers={data.data} />
-    </div >
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+        {data?.data?.map((teacher, ind) => {
+          const subjects = Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects);
+
+          return (
+            <Card key={ind} className="flex flex-col h-full">
+              <CardHeader className="flex-grow">
+                <div className="flex items-center space-x-4">
+                  <ProfileAvatar name={teacher.teacherFullName} src={getImageUrl(teacher.profileImageUrl, 'w=40')} className="size-10" />
+                  <CardTitle className="text-lg">{teacher.teacherFullName}</CardTitle>
+
+                </div>
+              </CardHeader>
+              <CardContent className='flex flex-col gap-3'>
+                <div className='flex gap-2 items-center '>
+                  <Book className=" h-4 w-4" />
+                  <span className='text-muted-foreground'> {subjects.map((s: any) => s.subjectName).join(', ')}</span>
+                </div>
+                <a
+                  href={`mailto:${teacher.email}`}
+                  className="hover:underline hover:text-blue-500 flex items-center"
+                >
+                  <Mail className="mr-2 h-4 w-4" />
+                  <span className='text-muted-foreground'> {teacher.email}</span>
+                </a>
+                <a
+                  href={`tel:${teacher.email}`}
+                  className="hover:underline hover:text-blue-500 flex items-center"
+                >
+                  <Phone className="mr-2 h-4 w-4" />
+                  <span className='text-muted-foreground'> {teacher.phone}</span>
+                </a>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
-export default StudentTeacherListPage
