@@ -15,12 +15,12 @@ import TaskSubmitPage from "./pages/tasks/task-submit.page";
 import ClassRoutinePage from "./pages/class-routine.page";
 import StudentExamRoutinePage from "./pages/examination/student-exam-routine.page";
 import StudentExamReportPage from "./pages/examination/student-exam-report.page";
+import MyAttendancePage from "./pages/my-attendance.page";
+import MyDormitoryPage from "./pages/my-dormitory.page";
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
-const StudentVechicleDetailsPage = lazy(() => import("./pages/student-vechicle-details.page"));
 const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
-const StudentDormitoryPage = lazy(() => import("./pages/academics/stu-dormitory.page"));
 const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
 const OnlineClassesPage = lazy(() => import("../common/pages/online-classes/online-classes.page"));
 
@@ -47,9 +47,8 @@ const StudentRoutes = () => {
           </Route>
           <Route path="class-routine" element={<ClassRoutinePage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
-          <Route path='trasports' element={<StudentVechicleDetailsPage />} />
           <Route path='library' element={<StudentLibraryDetailsPage />} />
-          <Route path='dormitory' element={<StudentDormitoryPage />} />
+          <Route path='dormitory' element={<MyDormitoryPage />} />
           <Route path="examination">
             <Route path='routine' element={<StudentExamRoutinePage />} />
             <Route path='report' element={<StudentExamReportPage />} />
@@ -61,6 +60,7 @@ const StudentRoutes = () => {
             <Route index element={<MyLeaveRequestsPage />} />
             <Route path="new" element={<AddLeaveRequestPage />} />
           </Route>
+          <Route path="attendance" element={<MyAttendancePage />} />
           <Route path="notices">
             <Route index element={<NoticePage />} />
             <Route path=":id" element={<NoticeViewPage />} />

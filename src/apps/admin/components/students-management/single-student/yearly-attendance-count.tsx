@@ -9,6 +9,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useGetAttendanceCounts } from "../../attendances/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { CountsLoadingSkeleton } from "./monthly-attendance-count";
+import { getPercentage } from "@/lib/utils";
 
 const years = Array.from({ length: 5 }, (_, i) => (new Date().getFullYear() - i)).reverse();
 
@@ -21,13 +22,7 @@ export default function YearlyAttendanceCount({accountId }: { accountId: string 
             accountId,
         }),
         options: { enabled: !!accountId && searchParams.get('tab') === 'yearly' } // fetch this data only when tab is yearly
-    })
-
-    const getPercentage = (count: number, total: number) => {
-        if (total === 0) return 0;
-        
-        return ((count / total) * 100).toFixed(2);
-    }
+    });
 
     return (
         <div className="space-y-4">

@@ -13,7 +13,16 @@ export type TMyDormitoryRoom = {
         lastName: string,
         classRoom: {
             id: string,
-            fullName: string
+            fullName: string,
+        },
+        phone: string;
+        account: {
+            id: string;
+            email: string;
+            profileImage: {
+                id: string;
+                url: string;
+            } | null
         }
     }[],
     dormitory: {

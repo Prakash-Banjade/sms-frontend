@@ -75,6 +75,13 @@ export default function SingleAttendanceView({ accountId, employee = false }: { 
                                 onSelect={date => date && setSelectedDate(date)}
                                 onMonthChange={handleMonthChange}
                                 className="rounded-md border"
+                                classNames={{
+                                    cell: "size-12",
+                                    day: "size-[45px] rounded-md",
+                                    caption_label: "text-lg",
+                                    day_selected: "border-2 border-primary",
+                                    head_cell: "text-sm font-normal grow",
+                                }}
                                 modifiers={{
                                     [EAttendanceStatus.PRESENT]: (date) => getAttendanceStatus(date)?.status === EAttendanceStatus.PRESENT,
                                     [EAttendanceStatus.ABSENT]: (date) => getAttendanceStatus(date)?.status === EAttendanceStatus.ABSENT,

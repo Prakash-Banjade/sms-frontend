@@ -9,6 +9,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { useGetAttendanceCounts } from "../../attendances/actions";
 import { createQueryString } from "@/utils/create-query-string";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getPercentage } from "@/lib/utils";
 
 const months: Record<number, string> = {
     1: "January",
@@ -37,13 +38,7 @@ export default function MonthlyAttendanceCount({ accountId }: { accountId: strin
             accountId
         }),
         options: { enabled: !!accountId && searchParams.get('tab') === 'monthly' } // fetch this data only when tab is monthly
-    })
-
-    const getPercentage = (count: number, total: number) => {
-        if (total === 0) return 0;
-        
-        return ((count / total) * 100).toFixed(2);
-    }
+    });
 
     return (
         <div className="space-y-4">

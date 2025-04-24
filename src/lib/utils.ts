@@ -14,6 +14,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export const getPercentage = (count: number, total: number) => {
+  if (total === 0) return 0;
+
+  return ((count / total) * 100).toFixed(2);
+}
+
 export function getImageUrl(url: string | undefined | null, query: string) {
   if (!url) return undefined;
   return `${url}?${query}`

@@ -21,6 +21,16 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 icon: BookA,
             },
             {
+                title: "Teachers",
+                url: "teachers",
+                icon: Users,
+            },
+            {
+                title: "Class Routine",
+                url: "class-routine",
+                icon: Shapes,
+            },
+            {
                 title: "Tasks",
                 url: "tasks",
                 icon: SquareCheckBig,
@@ -39,16 +49,6 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Attendance",
                 url: "attendance",
                 icon: FileCheck2,
-            },
-            {
-                title: "Class Routine",
-                url: "class-routine",
-                icon: Shapes,
-            },
-            {
-                title: "Teachers",
-                url: "teachers",
-                icon: Users,
             },
             {
                 title: "Leave Request",
@@ -89,12 +89,7 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Dormitory",
                 url: "dormitory",
                 icon: Bus,
-            },
-            {
-                title: "Bus Info",
-                url: "trasports",
-                icon: Bus,
-            },
+            }
         ],
     },
     {
