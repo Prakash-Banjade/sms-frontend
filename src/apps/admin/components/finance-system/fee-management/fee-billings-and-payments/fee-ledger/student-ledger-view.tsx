@@ -16,12 +16,16 @@ import { ELedgerItemType, TLedger_FeeInvoice, TLedger_FeePayment } from "@/apps/
 import RePrintLibraryFinePayment from "./re-print-library-fine-payment";
 import RefreshBtn from "../refresh-btn";
 import { DateRangeFilter } from "@/components/search-components/date-range-filter";
+import { useAuth } from "@/contexts/auth-provider";
+import { cn, isAdmin } from "@/lib/utils";
 type Props = {
-    studentId: string;
+    studentId?: string;
+    className?: string;
 }
 
-export default function StudentLedgerView({ studentId }: Props) {
+export default function StudentLedgerView({ studentId, className }: Props) {
     const { searchParams } = useCustomSearchParams();
+    const { payload } = useAuth();
 
     const { data, isLoading, refetch, isRefetching } = useGetStudentLedger({
         queryString: createQueryString({
@@ -31,24 +35,28 @@ export default function StudentLedgerView({ studentId }: Props) {
             page: searchParams.get('page'),
             take: searchParams.get('take'),
         }),
-        options: { enabled: !!studentId }
+        options: { enabled: !isAdmin(payload) || !!studentId }
     });
 
-    if (!studentId) return null;
+    if (!studentId && isAdmin(payload)) return null;
 
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <section className="space-y-4 mt-10">
+        <section className={cn("space-y-4 mt-10", className)}>
             <header className="flex justify-between items-end gap-10">
                 <section>
                     <DateRangeFilter />
                 </section>
 
-                <section className="flex flex-col gap-2 items-end">
-                    <div>Current Due: <strong>Rs. {(data?.ledgerAmount ?? 0)?.toLocaleString()}</strong></div>
-                    <RefreshBtn refetch={refetch} isRefetching={isRefetching} />
-                </section>
+                {
+                    isAdmin(payload) && ( // this is done to hide this content when student is viewing their ledger
+                        <section className="flex flex-col gap-2 items-end">
+                            <div>Current Due: <strong>Rs. {(data?.ledgerAmount ?? 0)?.toLocaleString()}</strong></div>
+                            <RefreshBtn refetch={refetch} isRefetching={isRefetching} />
+                        </section>
+                    )
+                }
             </header>
 
             <Table>

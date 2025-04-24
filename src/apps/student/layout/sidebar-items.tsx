@@ -120,11 +120,6 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 url: "library",
                 icon: Library,
             },
-            // {
-            //     title: "Gallery",
-            //     url: "gallery",
-            //     icon: Images,
-            // },
         ],
     },
 

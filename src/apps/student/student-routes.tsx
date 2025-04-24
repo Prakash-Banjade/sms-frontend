@@ -17,6 +17,7 @@ import StudentExamRoutinePage from "./pages/examination/student-exam-routine.pag
 import StudentExamReportPage from "./pages/examination/student-exam-report.page";
 import MyAttendancePage from "./pages/my-attendance.page";
 import MyDormitoryPage from "./pages/my-dormitory.page";
+import MyFeesPage from "./pages/my-fees.page";
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
@@ -65,6 +66,7 @@ const StudentRoutes = () => {
             <Route index element={<NoticePage />} />
             <Route path=":id" element={<NoticeViewPage />} />
           </Route>
+          <Route path="fees" element={<MyFeesPage />} />
           {CommonRoutes()}
         </Route>
       </Route>

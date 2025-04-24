@@ -13,15 +13,19 @@ type Props = {
     isLoading?: boolean;
     footer?: string;
     className?: string;
+    classNames?: {
+        title?: string;
+        count?: string;
+    }
 }
 
-export default function DashboardCountCard({ count, title, icon: Icon, navigateTo, footer, isLoading = false, className }: Props) {
+export default function DashboardCountCard({ count, title, icon: Icon, navigateTo, footer, isLoading = false, className, classNames }: Props) {
     const navigate = useNavigate();
 
     return (
         <Card className={cn(navigateTo && 'cursor-pointer hover:bg-card/90 transition-colors', className)} onClick={() => navigateTo && navigate(`${navigateTo}`)}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{title}</CardTitle>
+                <CardTitle className={cn("text-sm font-medium", classNames?.title)}>{title}</CardTitle>
                 {Icon && <Icon className="h-6 w-6 text-muted-foreground" />}
             </CardHeader>
             <CardContent>
@@ -35,7 +39,7 @@ export default function DashboardCountCard({ count, title, icon: Icon, navigateT
                         </>
                     ) : (
                         <>
-                            <div className="text-2xl font-bold">{count}</div>
+                            <div className={cn("text-2xl font-bold", classNames?.count)}>{count}</div>
                             {
                                 footer && <CardFooter className='text-xs text-muted-foreground p-0'>{footer}</CardFooter>
                             }
