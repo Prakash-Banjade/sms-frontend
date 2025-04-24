@@ -1,8 +1,10 @@
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useGetMyDormitoryRoom } from "../data-access/dormitory-data-access";
 import { Card, CardContent, CardHeader, CardTitle, } from "@/components/ui/card";
-import { Home, Users, Bed, Banknote, School, BookUser } from "lucide-react";
+import { Bed, Banknote, School, BookUser } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { ProfileAvatar } from "@/components/ui/avatar";
+import { cn, getImageUrl } from "@/lib/utils";
 
 export default function MyDormitoryPage() {
 
@@ -70,24 +72,28 @@ function DormitoryDetailsView() {
 
             {/* Roommates Card */}
             <Card className="border rounded-lg shadow-sm">
-                <CardHeader className="border-b pb-2">
-                    <CardTitle className="flex items-center text-lg font-semibold">
-                        <Users className="mr-2 text-muted-foreground" />
-                        Your Roommates
-                    </CardTitle>
+                <CardHeader>
+                    <CardTitle>Your Roommates</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4 py-4">
+                <Separator />
+                <CardContent className="py-6 flex gap-6 flex-wrap">
                     {data.students?.length > 0 ? (
                         data.students.map((student) => (
-                            <div key={student.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted-foreground/10">
+                            <div key={student.id} className="flex items-center gap-3 p-4 rounded-lg bg-secondary grow">
+                                <ProfileAvatar
+                                    name={student.firstName + ' ' + student.lastName}
+                                    src={getImageUrl(student.account?.profileImage?.url, "w=64")}
+                                    className={cn("size-16", !student.account?.profileImage?.url && "border-primary border")}
+                                />
                                 <div>
-                                    <p className="font-medium">{student.firstName} {student.lastName}</p>
-                                    <p className="text-md text-foreground">{student.classRoom.fullName}</p>
+                                    <p className="font-medium text-lg">{student.firstName} {student.lastName}</p>
+                                    <p className="text-sm">Class: <span className="text-muted-foreground">{student.classRoom.fullName}</span></p>
+                                    <p className="text-sm">Phone: <span className="text-muted-foreground">{student.phone}</span></p>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p className="text-muted-foreground">No roommates assigned</p>
+                        <p className="text-muted-foreground">No roommates</p>
                     )}
                 </CardContent>
             </Card>
