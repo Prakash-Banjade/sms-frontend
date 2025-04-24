@@ -5,7 +5,7 @@ import ContainerLayout from "@/components/page-layouts/container-layout";
 import { ProfileAvatar } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getImageUrl } from '@/lib/utils'
-import { Book, Mail, Phone } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react'
 
 export default function StudentTeacherList() {
 
@@ -39,7 +39,7 @@ function TeachersView() {
     <div className="container mx-auto flex flex-col gap-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {data?.data?.map((teacher, ind) => {
-          const subjects = Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects);
+          // const subjectsNames: string[] = Array.from(new Set((Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects)).map((s: any) => s.subjectName))); // Remove duplicate subjects, it shouldn't be done in frontend
 
           return (
             <Card key={ind} className="flex flex-col h-full">
@@ -51,10 +51,10 @@ function TeachersView() {
                 </div>
               </CardHeader>
               <CardContent className='flex flex-col gap-3'>
-                <div className='flex gap-2 items-center '>
+                {/* <div className='flex gap-2 items-center '>
                   <Book className=" h-4 w-4" />
-                  <span className='text-muted-foreground'> {subjects.map((s: any) => s.subjectName).join(', ')}</span>
-                </div>
+                  <span className='text-muted-foreground'> {subjectsNames.join(', ')}</span>
+                </div> */}
                 <a
                   href={`mailto:${teacher.email}`}
                   className="hover:underline hover:text-blue-500 flex items-center"

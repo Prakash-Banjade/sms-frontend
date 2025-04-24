@@ -35,7 +35,7 @@ function ClassRoutineView() {
 
     if (isLoading) return <div>Loading...</div>;
 
-    const groupedSchedule = _.groupBy(data?.data, "dayOfTheWeek");
+    const groupedSchedule = Object.entries(_.groupBy(data?.data, "dayOfTheWeek")).sort((a, b) => dayOrder[a[0] as EDayOfWeek] - dayOrder[b[0] as EDayOfWeek]);
 
     return (
         <>
@@ -61,7 +61,7 @@ function ClassRoutineView() {
                 view === 'week' ? (
                     <section className="flex flex-wrap gap-4">
                         {
-                            Object.entries(groupedSchedule).map(([day, schedules]) => {
+                            groupedSchedule.map(([day, schedules]) => {
                                 const isTodayDay = dayOrder[day as EDayOfWeek] === new Date().getDay();
 
                                 return (
@@ -115,6 +115,8 @@ function SingleRoutineCard({ classRoutine }: { classRoutine: TClassRoutine }) {
 
 function DayView({ classRoutines }: { classRoutines: TClassRoutine[] }) {
     const todayRoutines = classRoutines.filter(classRoutine => dayOrder[classRoutine.dayOfTheWeek as EDayOfWeek] === new Date().getDay());
+
+    if (todayRoutines.length === 0) return <div className="mt-16 text-muted-foreground text-center">**No class routines available for today.**</div>;
 
     return (
         <Card className="max-w-[800px]">

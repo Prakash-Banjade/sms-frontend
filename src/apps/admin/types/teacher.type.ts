@@ -92,10 +92,10 @@ export type St_Teacher = {
     email: string
     phone: string
     profileImageUrl: string | null
-    subjects: {
-        subjectId: string,
-        subjectName: string
-    }[] | string
+    // subjects: {
+    //     subjectId: string,
+    //     subjectName: string
+    // }[] | string
 };
 
 export type St_TeacherResponse = {
