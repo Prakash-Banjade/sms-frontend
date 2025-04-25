@@ -36,7 +36,7 @@ export default function RecentNotices() {
             </CardHeader>
             <CardContent>
                 <section className="space-y-3">
-                    {isLoading && [...Array(3)].map((_, index) => <EventsLoadingSkeleton key={index} />)}
+                    {isLoading && [...Array(2)].map((_, index) => <EventsLoadingSkeleton key={index} />)}
                     {
                         notices?.data.map((notice) => {
 

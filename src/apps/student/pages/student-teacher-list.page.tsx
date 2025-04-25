@@ -36,31 +36,30 @@ function TeachersView() {
   }
 
   return (
-    <div className="container mx-auto flex flex-col gap-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="@container">
+      <div className="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 @5xl:grid-cols-4 gap-4">
         {data?.data?.map((teacher, ind) => {
           // const subjectsNames: string[] = Array.from(new Set((Array.isArray(teacher.subjects) ? teacher.subjects : JSON.parse(teacher.subjects)).map((s: any) => s.subjectName))); // Remove duplicate subjects, it shouldn't be done in frontend
 
           return (
             <Card key={ind} className="flex flex-col h-full">
               <CardHeader className="flex-grow">
-                <div className="flex items-center space-x-4">
-                  <ProfileAvatar name={teacher.teacherFullName} src={getImageUrl(teacher.profileImageUrl, 'w=40')} className="size-10" />
-                  <CardTitle className="text-lg">{teacher.teacherFullName}</CardTitle>
-
+                <div className="flex items-center justify-center space-x-4">
+                  <ProfileAvatar name={teacher.teacherFullName} src={getImageUrl(teacher.profileImageUrl, 'w=120')} className="size-32" />
                 </div>
               </CardHeader>
-              <CardContent className='flex flex-col gap-3'>
+              <CardContent className='flex flex-col items-center justify-center gap-3'>
                 {/* <div className='flex gap-2 items-center '>
                   <Book className=" h-4 w-4" />
                   <span className='text-muted-foreground'> {subjectsNames.join(', ')}</span>
                 </div> */}
+                <p className="text-lg font-semibold">{teacher.teacherFullName}</p>
                 <a
                   href={`mailto:${teacher.email}`}
                   className="hover:underline hover:text-blue-500 flex items-center"
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  <span className='text-muted-foreground'> {teacher.email}</span>
+                  <span className='text-muted-foreground break-words'>{teacher.email}</span>
                 </a>
                 <a
                   href={`tel:${teacher.email}`}

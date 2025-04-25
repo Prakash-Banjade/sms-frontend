@@ -205,3 +205,21 @@ export type TExamReportBySubject = {
         practicalFailed: string
     }
 }
+
+export type TUpcommingExamType = {
+    id: string;
+    examType: {
+        id: string;
+        name: string
+    },
+    examSubjects: {
+        id: string;
+        examDate: string,
+        startTime: string,
+        venue: string,
+        subject: {
+            id: string,
+            subjectName: string
+        }
+    }[]
+} | null

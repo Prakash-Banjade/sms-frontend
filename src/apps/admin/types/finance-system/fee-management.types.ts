@@ -222,6 +222,6 @@ export type TStudentFeeStatistics = {
     lastPayment: {
         id: string,
         amount: string,
-        receiptNo: string
+        createdAt: string
     } | null
 } 
