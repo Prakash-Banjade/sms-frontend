@@ -1,10 +1,8 @@
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ETask } from "@/types/global.type";
 import { createQueryString } from "@/utils/create-query-string";
-import { Search } from "lucide-react";
 import { z } from "zod";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useGetTaskCounts } from "../../data-access/tasks-data-access";

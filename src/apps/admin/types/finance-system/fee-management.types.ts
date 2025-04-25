@@ -207,3 +207,21 @@ export type TSinglePayment = {
         overdueDays: string;
     }[];
 };
+
+export type TStudentFeeStatistics = {
+    studentLedger: {
+        id: string
+        amount: number
+    },
+    lastInvoice: {
+        id: string,
+        invoiceNo: string,
+        totalAmount: number,
+        dueDate: string
+    } | null,
+    lastPayment: {
+        id: string,
+        amount: string,
+        receiptNo: string
+    } | null
+} 
