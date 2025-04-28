@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { sortClassRoutines } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ERoutineType } from "@/types/global.type";
 
 export default function TodayClassRoutinesCard() {
 
@@ -24,8 +25,6 @@ export default function TodayClassRoutinesCard() {
 const today = Object.entries(dayOrder).filter(day => day[1] === new Date().getDay())[0][0];
 
 function Content() {
-    console.log(today)
-
     const { data, isLoading } = useGetClassRoutines({
         queryString: createQueryString({
             skipPagination: true,
@@ -40,12 +39,23 @@ function Content() {
     )
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-5">
             {sortClassRoutines(data?.data ?? []).map((cls) => (
                 <div key={cls.id} className="flex items-start justify-between">
                     <div className="space-y-1">
-                        <p className="font-medium leading-none">{cls.subject.subjectName}</p>
-                        <p className="text-sm text-muted-foreground">{cls.teacher?.firstName} {cls.teacher?.lastName}</p>
+                        {
+                            cls.type === ERoutineType.BREAK ? (
+                                <>
+                                    <p className="font-medium leading-none">Break Time</p>
+                                    <p className="text-sm text-muted-foreground">**No Class**</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="font-medium leading-none">{cls.subject?.subjectName}</p>
+                                    <p className="text-sm text-muted-foreground">{cls.teacher?.firstName} {cls.teacher?.lastName}</p>
+                                </>
+                            )
+                        }
                     </div>
                     <Badge>{cls.startTime} - {cls.endTime}</Badge>
                 </div>
