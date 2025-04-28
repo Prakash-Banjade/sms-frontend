@@ -1,34 +1,89 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { GitPullRequest, LayoutDashboard, Radio } from "lucide-react";
+import { Banknote, BookOpenText, Building, Calendar, CalendarDays, LayoutDashboard, Radio, Shapes, UserRoundX, UsersRound } from "lucide-react";
 
 export const teacherSidebarMenuItems: TGroupMenuItem[] = [
     {
-        groupLabel: "Dashboard",
+        groupLabel: "Main",
         menuItems: [
             {
                 title: "Dashboard",
                 icon: LayoutDashboard,
                 url: "dashboard"
-            }
-        ]
-    },
-    {
-        groupLabel: "Academics",
-        menuItems: [
+            },
             {
-                title: "Leave Request",
-                url: "leave-requests",
-                icon: GitPullRequest,
+                title: "My Classes",
+                icon: Building,
+                url: "my-classes"
+            },
+            {
+                title: "Students",
+                icon: UsersRound,
+                url: "students"
+            },
+            {
+                title: "Attendance",
+                url: "attendance",
+                icon: Calendar,
+                items: [
+                    {
+                        title: "Attendance",
+                        url: "",
+                    },
+                    {
+                        title: "Leave Requests",
+                        url: "leave-requests",
+                    }
+                ]
             },
         ]
     },
     {
-        groupLabel: "Remote Learning",
+        groupLabel: "Teaching",
         menuItems: [
+            {
+                title: "Tasks",
+                url: "tasks",
+                icon: BookOpenText,
+                items: [
+                    {
+                        title: "Homeworks",
+                        url: "homeworks",
+                    },
+                    {
+                        title: "Assignments",
+                        url: "assignments",
+                    }
+                ]
+            },
+            {
+                title: "Schedule",
+                url: "schedule",
+                icon: Shapes,
+            },
             {
                 title: "Live Classes",
                 url: "live-classes",
                 icon: Radio,
+            },
+        ]
+    },
+    {
+        groupLabel: "Personal",
+        menuItems: [
+            {
+                title: "My Attendance",
+                url: "my-attendance",
+                icon: CalendarDays,
+            },
+            {
+                title: "My Leave Requests",
+                url: "leave-requests",
+                icon: UserRoundX,
+            },
+            {
+                title: "Salary",
+                url: "salary",
+                icon: Banknote,
             },
         ]
     },

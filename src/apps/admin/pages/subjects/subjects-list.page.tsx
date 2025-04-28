@@ -59,7 +59,7 @@ function SubjectsSearchFilters() {
     return (
         <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
             <SearchInput placeholder="Search..." label="Search by name" />
-            <ClassRoomSearchFilterInputs onlyClassRoom />
+            <ClassRoomSearchFilterInputs onlyClassRoom include="classRoom" />
             <FacetedFilter searchKey="types" title="Subject Type" options={Object.entries(ESubjectType).map(([key, value]) => ({ label: key, value: value }))} />
         </section>
     )

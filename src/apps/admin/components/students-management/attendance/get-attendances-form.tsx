@@ -5,7 +5,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ISO_TIME } from "@/CONSTANTS";
+import { useAuth } from "@/contexts/auth-provider";
 import { cn } from "@/lib/utils";
+import { Role } from "@/types/global.type";
 import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -26,6 +28,8 @@ const getAttendancesSchema = z.object({
 type TGetAttendancesSchema = z.infer<typeof getAttendancesSchema>
 
 export default function GetAttendancesForm({ setSearchQuery }: Props) {
+    const { payload } = useAuth();
+
     const form = useForm<TGetAttendancesSchema>({
         resolver: zodResolver(getAttendancesSchema),
         defaultValues: {
@@ -46,7 +50,7 @@ export default function GetAttendancesForm({ setSearchQuery }: Props) {
     return (
         <AppForm schema={getAttendancesSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-6">
-                <ClassSelectionFormField include="section" noDescription />
+                <ClassSelectionFormField include="section" noDescription onlyAssigned={payload?.role === Role.TEACHER} />
 
                 <section className="space-y-2">
                     <Label className="text-sm font-normal">Date</Label>

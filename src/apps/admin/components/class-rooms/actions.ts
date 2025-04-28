@@ -22,14 +22,14 @@ export const useGetClass = ({
     return response;
 }
 
-export const useGetClasses = ({
+export const useGetClasses = <T = TClassesResponse>({
     queryString,
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TClassesResponse>
+    options?: UseQueryOptions<T>
 }) => {
-    const response = useFetchData<TClassesResponse>({
+    const response = useFetchData<T>({
         endpoint: QueryKey.CLASSES,
         queryKey: queryString ? [QueryKey.CLASSES, queryString] : [QueryKey.CLASSES],
         queryString,

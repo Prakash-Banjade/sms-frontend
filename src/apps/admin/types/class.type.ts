@@ -53,3 +53,19 @@ export type TSingleClassRoom = {
     facultyName: string,
     facultyId: string,
 }
+
+export type TClassesResponse_TeacherView = {
+    data: {
+        id: string
+        name: string,
+        location: string
+        classType: EClassType,
+        totalStudentsCount: string,
+        totalMaleStudentsCount: string,
+        totalFemaleStudentsCount: string,
+        isClassTeacher: 0 | 1,
+        facultyId: string,
+        parentId: string,
+    }[],
+    meta: TMeta
+}

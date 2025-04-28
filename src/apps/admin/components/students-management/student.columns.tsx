@@ -8,8 +8,9 @@ import { formatDate } from "@/utils/format-date"
 import { TStudent } from "@/apps/admin/types/student.type"
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
 import { ProfileAvatar } from "@/components/ui/avatar"
-import { getImageUrl } from "@/lib/utils"
+import { getImageUrl, isAdmin } from "@/lib/utils"
 import { differenceInYears } from "date-fns"
+import { useAuth } from "@/contexts/auth-provider"
 
 export const studentsColumns: ColumnDef<TStudent>[] = [
     {
@@ -117,8 +118,9 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const navigate = useNavigate();
+            const { payload } = useAuth();
 
-            return (
+            return isAdmin(payload) && (
                 <>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
