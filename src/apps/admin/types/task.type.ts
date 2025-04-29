@@ -9,10 +9,8 @@ export type Task = {
     taskType: ETask,
     marks: number | null;
     subjectName: string,
-    classRooms: {
-        id: string,
-        name: string
-    }[] | string,
+    classRoomId: string,
+    classRoomName: string,
     parentClassId: string | null,
     parentClassName: string | null,
     faculty: string,
@@ -34,7 +32,7 @@ export type TSingleTask = {
     description: string,
     deadline: string,
     taskType: ETask,
-    marks: number | null,
+    marks: number,
     subject: {
         id: string,
         subjectName: string
@@ -44,26 +42,18 @@ export type TSingleTask = {
         url: string,
         originalName: string,
     }[],
-    classRooms: {
+    classRoom: {
         id: string,
-        name: string,
+        name: string
         parent: {
-            id: string,
-            name: string,
+            id: string
+            name: string
         } | null,
         faculty: {
-            id: string,
-            name: string,
-        },
-    }[],
-    submissions: {
-        status: ETaskSubmissionStatus,
-        content: string,
-        attachments: {
-            id: string,
-            url: string
-        }[]
-    }[]
+            id: string
+            name: string
+        }
+    },
 
 }
 
@@ -79,7 +69,7 @@ export type TaskSubmission = {
     createdAt: string,
     updatedAt: string,
     status: ETaskSubmissionStatus,
-    content: string,
+    note: string,
     student: {
         id: string,
         firstName: string;
@@ -92,8 +82,10 @@ export type TaskSubmission = {
         originalName: string
     }[],
     evaluation: {
-        id: string
-    } | null;
+        id: string,
+        score: number,
+        feedback: string
+    } | null
 }
 
 export type TaskSubmissionsResponse = {

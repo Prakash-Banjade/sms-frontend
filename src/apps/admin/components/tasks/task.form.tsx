@@ -30,10 +30,8 @@ const taskSchema = z.object({
     facultyId: z.string({ required_error: "Faculty is required" }).uuid(),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Select a class room' }),
-    sectionIds: z.array(
-        z.string({ required_error: "Section is required" })
-            .uuid({ message: 'Select a section' })
-    ).optional(),
+    sectionId: z.string({ required_error: "Section is required" })
+        .uuid({ message: 'Select a section' }).optional(),
     subjectId: z.string({ required_error: "Subject is required" })
         .uuid({ message: 'Select a subject' }),
     marks: z.coerce.number().min(0, { message: "Marks is required" }),
@@ -47,7 +45,7 @@ const defaultValues: Partial<taskSchemaType> = {
     description: "",
     subjectId: undefined,
     classRoomId: undefined,
-    sectionIds: [],
+    sectionId: undefined,
     attachmentIds: [],
     marks: 0,
 }
@@ -72,9 +70,9 @@ export default function TaskForm(props: Props) {
 
     async function onSubmit(values: taskSchemaType) {
         // check if section is selected or not
-        if (hasSection(values.classRoomId) && !values.sectionIds?.length) {
-            form.setError("sectionIds", { type: "required", message: "Please select at least one section" });
-            form.setFocus("sectionIds");
+        if (hasSection(values.classRoomId) && !values.sectionId?.length) {
+            form.setError("sectionId", { type: "required", message: "Please select at least one section" });
+            form.setFocus("sectionId");
             return;
         }
 
@@ -86,7 +84,7 @@ export default function TaskForm(props: Props) {
             id: props.taskId,
             data: {
                 ...values,
-                classRoomIds: values.sectionIds?.length ? values.sectionIds : [values.classRoomId], // need to send as classRoomIds not section Ids
+                classRoomId: values.sectionId ?? values.classRoomId, // need to send as classRoomIds not section Ids
                 attachmentIds: values.attachmentIds,
             },
             invalidateTags: [QueryKey.TASKS],
@@ -109,7 +107,7 @@ export default function TaskForm(props: Props) {
                         required
                     />
 
-                    <ClassSelectionFormField include="section" multiSection />
+                    <ClassSelectionFormField include="section" />
 
                     <AppForm.DynamicSelect<taskSchemaType>
                         name="subjectId"

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetTaskStatistics } from "./action";
-import SubmissionStatisticsSkeleton from "./skeletons/task-submissions-statistics-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
     taskId: string;
@@ -13,7 +13,7 @@ export default function TaskSubmissionStatisticsCard({ taskId }: Props) {
 
     if (isLoading) return <SubmissionStatisticsSkeleton />;
 
-    if (!data) return <div>No submissions found</div>;
+    if (!data) return <div className="p-6 text-muted-foreground text-center">No submissions found</div>;
 
     return (
         <Card className="h-full">
@@ -40,4 +40,26 @@ function StatItem({ label, value }: { label: string; value: string | number }) {
             <p className="text-sm text-muted-foreground text-center">{label}</p>
         </div>
     );
+}
+
+function SubmissionStatisticsSkeleton() {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>
+                    <Skeleton className="h-6 w-3/4" />
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                    {[...Array(5)].map((_, index) => (
+                        <div key={index} className="flex flex-col items-center justify-center p-2 bg-muted rounded-lg">
+                            <Skeleton className="h-8 w-12 mb-2" />
+                            <Skeleton className="h-4 w-20" />
+                        </div>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
+    )
 }
