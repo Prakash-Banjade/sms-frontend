@@ -18,6 +18,7 @@ import StudentsListPage from '../admin/pages/students-management/students-list.p
 import SingleStudentPage from '../admin/pages/subjects/single-student.page';
 import SingleClassRoomPage from '../admin/pages/classes/single-classroom.page';
 import ClassRoutinePage from '../student/pages/class-routine.page';
+import MySalaryPage from './pages/my-salary.page';
 const MyLeaveRequestsPage = lazy(() => import('../common/pages/leave-request/my-leave-requests.page'));
 const AddLeaveRequestPage = lazy(() => import('../common/pages/leave-request/add-leave-request.page'));
 const OnlineClassesPage = lazy(() => import('../common/pages/online-classes/online-classes.page'));
@@ -62,15 +63,16 @@ const TeacherRoutes = () => {
           </Route>
 
           <Route path="schedule" element={<ClassRoutinePage />} />
+          <Route path="live-classes" element={<StreamClientProvider />}>
+            <Route index element={<OnlineClassesPage />} />
+          </Route>
 
           <Route path="my-attendance" element={<MyAttendancePage />} />
           <Route path="leave-requests">
             <Route index element={<MyLeaveRequestsPage />} />
             <Route path="new" element={<AddLeaveRequestPage />} />
           </Route>
-          <Route path="live-classes" element={<StreamClientProvider />}>
-            <Route index element={<OnlineClassesPage />} />
-          </Route>
+          <Route path="salary" element={<MySalaryPage />} />
           {CommonRoutes()}
         </Route>
       </Route>

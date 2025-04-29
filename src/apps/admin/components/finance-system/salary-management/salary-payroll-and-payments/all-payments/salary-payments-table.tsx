@@ -11,13 +11,17 @@ import { MoreHorizontal, Printer } from "lucide-react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { useState } from "react";
 import SalaryPaySlipTemplate from "../payment/salary-payslip-template";
+import { useAuth } from "@/contexts/auth-provider";
+import { isAdmin } from "@/lib/utils";
+import { Role } from "@/types/global.type";
 
 type Props = {
-    employeeId: string;
+    employeeId?: string;
 }
 
 export default function SalaryPaymentsTable({ employeeId }: Props) {
     const { searchParams } = useCustomSearchParams();
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetSalaryPayments({
         queryString: createQueryString({
@@ -27,10 +31,10 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
             page: searchParams.get('page'),
             take: searchParams.get('take'),
         }),
-        options: { enabled: !!employeeId }
+        options: { enabled: (!!employeeId && isAdmin(payload)) || payload?.role === Role.TEACHER }
     });
 
-    if (!employeeId) return null;
+    if (!employeeId && isAdmin(payload)) return null;
 
     if (isLoading) return <div>Loading...</div>;
 

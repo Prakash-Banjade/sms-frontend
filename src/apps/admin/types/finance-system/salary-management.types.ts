@@ -96,3 +96,13 @@ export type TSalaryPaymentResponse = {
     }[],
     meta: TMeta,
 }
+
+export type TSalaryPayrollsResponse = {
+    data: {
+        id: string
+        date: string
+        netSalary: number,
+        grossSalary: number
+    }[],
+    meta: TMeta
+}

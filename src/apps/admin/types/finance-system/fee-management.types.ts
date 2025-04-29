@@ -224,4 +224,19 @@ export type TStudentFeeStatistics = {
         amount: string,
         createdAt: string
     } | null
-} 
+}
+
+export type TMySalaryDetails = {
+    id: string
+    basicSalary: number,
+    allowances: {
+        title: string,
+        amount: number
+    }[],
+    grossSalary: number,
+    totalPayment: number,
+    teacher: {
+        id: string,
+        payAmount: number
+    } | null,
+}
