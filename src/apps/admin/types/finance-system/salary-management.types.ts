@@ -37,7 +37,7 @@ export type TEmployees = {
         payAmount: number,
         fullName: string,
         employeeId: number,
-        designation: Role
+        designation: Role,
     }[],
     meta: TMeta
 };
@@ -63,11 +63,11 @@ export type TSalaryEmployee = {
     lastAdvanceAmount: number | null;
 }
 
-export type TLastPayroll = {
+export type TSinglePayroll = {
     id: string,
     date: string,
     netSalary: number,
-    grossSalary: number,
+    basicSalary: number,
     employee: {
         id: string,
         email: string,
@@ -102,7 +102,7 @@ export type TSalaryPayrollsResponse = {
         id: string
         date: string
         netSalary: number,
-        grossSalary: number
+        basicSalary: number
     }[],
     meta: TMeta
 }

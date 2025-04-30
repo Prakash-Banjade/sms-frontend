@@ -105,10 +105,10 @@ export function FacetedFilter({
                                 ) : (
                                     options
                                         .filter((option) => selectedValues.has(option.value))
-                                        .map((option) => (
+                                        .map((option, ind) => (
                                             <Badge
                                                 variant="secondary"
-                                                key={option.value}
+                                                key={ind}
                                                 className="rounded-sm px-1 font-normal capitalize"
                                             >
                                                 {option.label}

@@ -238,5 +238,6 @@ export type TMySalaryDetails = {
     teacher: {
         id: string,
         payAmount: number
+        teacherId: string,
     } | null,
 }

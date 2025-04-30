@@ -18,6 +18,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import LoadingButton from "@/components/forms/loading-button"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import PayrollPrintBtn from "./payroll-print-btn"
+import { useGetLastPayroll } from "../../data-access"
+import { useSearchParams } from "react-router-dom"
 
 type Props = {
     salaryEmployee: TSalaryEmployee,
@@ -149,7 +151,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                         )}
                     />
                     {
-                        searchParams.get('sub-tab') === 'last' && <PayrollPrintBtn salaryEmployee={salaryEmployee} />
+                        searchParams.get('sub-tab') === 'last' && <PayrollPrint salaryEmployee={salaryEmployee} />
                     }
                 </section>
 
@@ -325,6 +327,24 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                     )
                 }
             </form>
-        </AppForm >
+        </AppForm>
+    )
+}
+
+function PayrollPrint({ salaryEmployee }: Props) {
+    const [searchParams] = useSearchParams();
+
+    const { data, isLoading } = useGetLastPayroll({
+        id: salaryEmployee.employee?.id,
+        options: {
+            enabled: (!!salaryEmployee.employee?.id && searchParams.get('sub-tab') === 'last'),
+        },
+    });
+
+    return (
+        <PayrollPrintBtn
+            data={data}
+            isLoading={isLoading}
+        />
     )
 }

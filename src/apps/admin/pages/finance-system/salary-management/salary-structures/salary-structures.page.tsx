@@ -51,12 +51,12 @@ export function SalaryStructureSearchFilters() {
       <FacetedFilter
         options={[
           { label: "Teacher", value: Role.TEACHER },
-          { label: "Driver", value: Role.DRIVER },
-          { label: "Helper", value: Role.HELPER },
-          { label: "Labor", value: Role.LABOR },
-          { label: "Librarian", value: Role.LIBRARIAN },
-          { label: "Receptionist", value: Role.RECEPTIONIST },
-          { label: "Peon", value: Role.PEON },
+          { label: "Driver", value: "driver" },
+          { label: "Helper", value: "helper" },
+          { label: "Labor", value: "labor" },
+          { label: "Librarian", value: "librarian" },
+          { label: "Receptionist", value: "receptionist" },
+          { label: "Peon", value: "peon" },
           { label: "Staff", value: Role.STAFF },
         ]}
         searchKey="designations"

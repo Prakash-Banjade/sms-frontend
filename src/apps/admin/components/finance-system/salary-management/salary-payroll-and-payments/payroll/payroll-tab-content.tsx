@@ -1,4 +1,4 @@
-import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
+import { ESalaryAdjustmentType, TSinglePayroll, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PayrollForm from "./payroll-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
@@ -54,7 +54,7 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
     )
 }
 
-function UpdatePayroll({ data, salaryEmployee }: { data: TLastPayroll, salaryEmployee: TSalaryEmployee }) {
+function UpdatePayroll({ data, salaryEmployee }: { data: TSinglePayroll, salaryEmployee: TSalaryEmployee }) {
     if (!data) return null;
 
     return (

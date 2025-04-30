@@ -7,6 +7,7 @@ import { HandCoinsIcon, PiggyBankIcon, Wallet, WalletMinimal } from "lucide-reac
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import SalaryPaymentsTable from "@/apps/admin/components/finance-system/salary-management/salary-payroll-and-payments/all-payments/salary-payments-table";
 import SalaryPayrollsTable from "../components/salary/salary-payrolls-table";
+import { DateRangeFilter } from "@/components/search-components/date-range-filter";
 
 export default function MySalaryPage() {
     return (
@@ -21,10 +22,20 @@ export default function MySalaryPage() {
                     <TabsTrigger value="payment">Payment History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="payroll">
-                    <SalaryPayrollsTable />
+                    <section className="space-y-4 mt-10">
+                        <header className="flex justify-between items-end gap-10">
+                            <DateRangeFilter />
+                        </header>
+                        <SalaryPayrollsTable />
+                    </section>
                 </TabsContent>
                 <TabsContent value="payment">
-                    <SalaryPaymentsTable />
+                    <section className="space-y-4 mt-10">
+                        <header className="flex justify-between items-end gap-10">
+                            <DateRangeFilter />
+                        </header>
+                        <SalaryPaymentsTable />
+                    </section>
                 </TabsContent>
             </Tabs>
         </ContainerLayout>

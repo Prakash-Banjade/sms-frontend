@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useGetSalaryPayments } from "../../data-access";
-import { DateRangeFilter } from "../../../../../../../components/search-components/date-range-filter";
 import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Printer } from "lucide-react";
@@ -36,14 +35,12 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
 
     if (!employeeId && isAdmin(payload)) return null;
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <div className="p-6 text-muted-foreground">Loading...</div>;
+
+    if (!data) return null;
 
     return (
-        <section className="space-y-4 mt-10">
-            <header className="flex justify-between items-end gap-10">
-                <DateRangeFilter />
-            </header>
-
+        <>
             <Table>
                 <TableHeader className="bg-tableheader">
                     <TableRow>
@@ -80,8 +77,8 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                 </TableBody>
             </Table>
 
-            {data?.meta && <DataTablePagination meta={data?.meta} />}
-        </section>
+            <DataTablePagination meta={data?.meta} />
+        </>
     )
 }
 

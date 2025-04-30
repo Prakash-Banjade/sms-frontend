@@ -1,23 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Printer } from "lucide-react";
+import { LoaderCircle, Printer } from "lucide-react";
 import { PayrollTemplate } from "./payroll-template";
-import { TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types";
-import { useGetLastPayroll } from "../../data-access";
-import { useSearchParams } from "react-router-dom";
+import { TSinglePayroll } from "@/apps/admin/types/finance-system/salary-management.types";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 
-export default function PayrollPrintBtn({ salaryEmployee }: { salaryEmployee: TSalaryEmployee }) {
-    const [searchParams] = useSearchParams();
+type Props = {
+    data: TSinglePayroll | undefined,
+    isLoading: boolean,
+}
+
+export default function PayrollPrintBtn({ data, isLoading }: Props) {
     const printRef = useRef<HTMLDivElement>(null);
     const [isPrinting, setIsPrinting] = useState(false);
-
-    const { data, isLoading } = useGetLastPayroll({
-        id: salaryEmployee.employee?.id,
-        options: {
-            enabled: (!!salaryEmployee.employee?.id && searchParams.get('sub-tab') === 'last'),
-        },
-    });
 
     const handlePrint = useReactToPrint({
         contentRef: printRef,
@@ -30,10 +25,6 @@ export default function PayrollPrintBtn({ salaryEmployee }: { salaryEmployee: TS
         return () => setIsPrinting(false);
     }, [isPrinting])
 
-    if (isLoading) return <div>Loading...</div>;
-
-    if (!data) return null;
-
     return (
         <>
             <Button
@@ -41,13 +32,22 @@ export default function PayrollPrintBtn({ salaryEmployee }: { salaryEmployee: TS
                 type="button"
                 onClick={() => setIsPrinting(true)}
             >
-                <Printer /> Print
+                {
+                    isLoading ? (
+                        <>
+                            <LoaderCircle className="animate-spin" /> Loading...
+                        </>
+                    ) : (
+                        <>
+                            <Printer /> Print
+                        </>
+                    )
+                }
             </Button>
 
             {
                 isPrinting && <section className="hidden sr-only print:not-sr-only print:block">
                     <PayrollTemplate
-                        salaryEmployee={salaryEmployee}
                         data={data}
                         ref={printRef}
                     />
