@@ -86,6 +86,25 @@ export const useGetSalaryPayments = <T = TSalaryPaymentResponse>({
     return response;
 };
 
+// export const useGetSalaryPayment = <T = TSalaryPaymentResponse>({
+//     options,
+//     id,
+//     queryString,
+// }: {
+//     id: string
+//     options?: Partial<UseQueryOptions<T>>;
+//     queryString?: string;
+// }) => {
+//     const response = useFetchData<T>({
+//         endpoint: QueryKey.SALARY_PAYMENTS,
+//         queryString,
+//         queryKey: queryString ? [QueryKey.SALARY_PAYMENTS, queryString, id] : [QueryKey.SALARY_PAYMENTS, id],
+//         options,
+//     })
+
+//     return response;
+// };
+
 export const useGetSalaryPayrolls = <T = TSalaryPayrollsResponse>({
     options,
     queryString,

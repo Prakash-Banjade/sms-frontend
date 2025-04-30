@@ -13,6 +13,7 @@ import SalaryPaySlipTemplate from "../payment/salary-payslip-template";
 import { useAuth } from "@/contexts/auth-provider";
 import { isAdmin } from "@/lib/utils";
 import { Role } from "@/types/global.type";
+import { TSalaryPaymentResponse } from "@/apps/admin/types/finance-system/salary-management.types";
 
 type Props = {
     employeeId?: string;
@@ -63,7 +64,7 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                                 <TableCell>{item.remark || '-'}</TableCell>
                                 <TableCell>
                                     {
-                                        index === 0 && <SalaryPaymentActionColumn />
+                                        index === 0 && <SalaryPaymentActionColumn payment={item} />
                                     }
                                 </TableCell>
                             </TableRow>
@@ -82,7 +83,7 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
     )
 }
 
-function SalaryPaymentActionColumn() {
+function SalaryPaymentActionColumn({ payment }: { payment: TSalaryPaymentResponse["data"][0] }) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
@@ -93,7 +94,7 @@ function SalaryPaymentActionColumn() {
                 title="Print Payslip"
                 className="max-w-max"
             >
-                <SalaryPaySlipTemplate />
+                <SalaryPaySlipTemplate payment={payment} />
             </ResponsiveDialog>
 
             <DropdownMenu>

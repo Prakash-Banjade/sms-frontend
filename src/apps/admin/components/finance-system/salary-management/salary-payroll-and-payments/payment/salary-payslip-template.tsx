@@ -1,4 +1,19 @@
-export default function SalaryPaySlipTemplate() {
+import { TSalaryPaymentResponse } from "@/apps/admin/types/finance-system/salary-management.types"
+import { useGetSalaryPayroll } from "../../data-access"
+
+type Props = {
+    payment: TSalaryPaymentResponse["data"][0]
+}
+
+export default function SalaryPaySlipTemplate({ payment }: Props) {
+    const { data, isLoading } = useGetSalaryPayroll({ id: payment.payrollId });
+
+    if (isLoading) return <div>Loading...</div>;
+
+    if (!data) return null;
+
+    const { employee } = data;
+
     return (
         <div className="min-h-[297mm] w-[210mm] mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="bg-gray-50 border-b p-6">
@@ -15,13 +30,11 @@ export default function SalaryPaySlipTemplate() {
                         <h3 className="font-semibold text-lg text-gray-800">Employee Information</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                             <p className="text-gray-600">Name:</p>
-                            <p className="font-medium text-gray-900">John Doe</p>
+                            <p className="font-medium text-gray-900">{employee.fullName}</p>
                             <p className="text-gray-600">Employee ID:</p>
-                            <p className="font-medium text-gray-900">EMP001</p>
-                            <p className="text-gray-600">Department:</p>
-                            <p className="font-medium text-gray-900">Information Technology</p>
+                            <p className="font-medium text-gray-900">{employee.employeeId}</p>
                             <p className="text-gray-600">Position:</p>
-                            <p className="font-medium text-gray-900">Senior Software Engineer</p>
+                            <p className="font-medium text-gray-900 capitalize">{employee.designation}</p>
                             <p className="text-gray-600">Pay Frequency:</p>
                             <p className="font-medium text-gray-900">Monthly</p>
                         </div>
@@ -30,7 +43,7 @@ export default function SalaryPaySlipTemplate() {
                         <h3 className="font-semibold text-lg text-gray-800">Company Information</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                             <p className="text-gray-600">Company Name:</p>
-                            <p className="font-medium text-gray-900">TechCorp Solutions Inc.</p>
+                            <p className="font-medium text-gray-900">Aayam Global Academy</p>
                             <p className="text-gray-600">Address:</p>
                             <p className="font-medium text-gray-900">123 Tech Avenue, Suite 200</p>
                             <p className="text-gray-600">City, State ZIP:</p>
@@ -38,7 +51,7 @@ export default function SalaryPaySlipTemplate() {
                             <p className="text-gray-600">Phone:</p>
                             <p className="font-medium text-gray-900">(555) 123-4567</p>
                             <p className="text-gray-600">Website:</p>
-                            <p className="font-medium text-gray-900 break-words">www.techcorpsolutions.com</p>
+                            <p className="font-medium text-gray-900 break-words">www.aayamglobal.com</p>
                         </div>
                     </div>
                 </div>

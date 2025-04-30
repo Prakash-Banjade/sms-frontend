@@ -93,6 +93,7 @@ export type TSalaryPaymentResponse = {
         remark: string,
         amount: number,
         salaryDate: string;
+        payrollId: string,
     }[],
     meta: TMeta,
 }
