@@ -19,6 +19,7 @@ import SingleStudentPage from '../admin/pages/subjects/single-student.page';
 import SingleClassRoomPage from '../admin/pages/classes/single-classroom.page';
 import ClassRoutinePage from '../student/pages/class-routine.page';
 import MySalaryPage from './pages/my-salary.page';
+import TeacherDashboardPage from './pages/teacher-dashboard.page';
 const MyLeaveRequestsPage = lazy(() => import('../common/pages/leave-request/my-leave-requests.page'));
 const AddLeaveRequestPage = lazy(() => import('../common/pages/leave-request/add-leave-request.page'));
 const OnlineClassesPage = lazy(() => import('../common/pages/online-classes/online-classes.page'));
@@ -28,7 +29,7 @@ const TeacherRoutes = () => {
     <Routes>
       <Route element={<RequireAuth authorizedRoles={[Role.TEACHER]} />}>
         <Route element={<AppRootLayout menuItems={teacherSidebarMenuItems} />}>
-          <Route path="dashboard" element={<div>This is teacher dashboard</div>} />
+          <Route path="dashboard" element={<TeacherDashboardPage />} />
           <Route path="my-classes" >
             <Route index element={<MyClassesPage />} />
             <Route path=":id" element={<SingleClassRoomPage />} />
