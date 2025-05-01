@@ -36,6 +36,8 @@ export type TExam = {
     classRoomId: string,
     faculty: string,
     isReportPublished: 1 | 0,
+    startingFrom: string,
+    endsOn: string,
 }
 
 export type TExamsResponse = {
@@ -208,6 +210,8 @@ export type TExamReportBySubject = {
 
 export type TUpcommingExamType = {
     id: string;
+    startingFrom: string;
+    endsOn: string;
     examType: {
         id: string;
         name: string

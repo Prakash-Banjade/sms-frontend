@@ -62,10 +62,8 @@ const ExaminationReport_SubjectWise = lazy(() => import('./pages/reports/examina
 const ExaminationReport_StudentWise = lazy(() => import('./pages/reports/examination-report/student-wise-report.page'));
 const SingleTeacherPage = lazy(() => import('./pages/teachers/single-teacher.page'));
 const SubjectSelectionPage = lazy(() => import('./pages/students-management/subject-selection.page'));
-const LessonPlansListPage = lazy(() => import('./pages/lesson-plan/lesson-plans-list.page'));
-const AddLessonPlanPage = lazy(() => import('./pages/lesson-plan/add-lesson-plan.page'));
-const EditLessonPlanPage = lazy(() => import('./pages/lesson-plan/edit-lesson-plan.page'));
-const SingleLessonPlanPage = lazy(() => import('./pages/lesson-plan/single-lesson-plan.page'));
+const LessonPlansListPage = lazy(() => import('../teacher/pages/lesson-plan/lesson-plans-list.page'));
+const SingleLessonPlanPage = lazy(() => import('../teacher/pages/lesson-plan/single-lesson-plan.page'));
 const ChargeHeadsPage = lazy(() => import('./pages/finance-system/fee-management/charge-heads.page'));
 const FeeStructuresPage = lazy(() => import('./pages/finance-system/fee-management/fee-structure/fee-structures.page'));
 const FeeBillingAndPaymentsPage = lazy(() => import('./pages/finance-system/fee-management/billings-and-payments/fee-billing-and-payment.page'));
@@ -106,11 +104,7 @@ export const AdminRoutesGroup = () => {
             </Route>
             <Route path="lesson-plans">
                 <Route index element={<LessonPlansListPage />} />
-                <Route path="new" element={<AddLessonPlanPage />} />
-                <Route path=":id">
-                    <Route index element={<SingleLessonPlanPage />} />
-                    <Route path="edit" element={<EditLessonPlanPage />} />
-                </Route>
+                <Route path=":id" element={<SingleLessonPlanPage />} />
             </Route>
             <Route path="examination">
                 <Route index element={<Navigate to="exam-setup" />} />

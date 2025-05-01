@@ -28,78 +28,53 @@ export const lessonPlanColumns: ColumnDef<TLessonPlan>[] = [
         header: "Title",
         accessorKey: "title",
         cell: ({ row }) => {
-            return <p className="max-w-[30ch] break-words">{row.original.title}</p>
+            return <p className="truncate font-medium">{row.original.title}</p>
         }
     },
     {
         header: "Subject",
-        accessorKey: "subjectName",
+        accessorKey: "Subject Name",
+        cell: ({ row }) => {
+            return row.original.subject.subjectName;
+        }
     },
     {
         header: "Class",
         accessorKey: "class",
         cell: ({ row }) => {
-            const plan = row.original;
-            const classRooms = Array.isArray(plan.classRooms)
-                ? plan.classRooms
-                : typeof plan.classRooms === 'string'
-                    ? JSON.parse(plan.classRooms)
-                    : [];
-
             return (
                 <p className="whitespace-nowrap">
-                    <span>
-                        {
-                            plan.parentClassName
-                                ? plan.parentClassName
-                                : classRooms?.[0]
-                        }
-                    </span>
+                    <span>{row.original.classRoom.fullName}</span>
                     <br />
-                    <span className="text-muted-foreground text-xs">({row.original.facultyName})</span>
+                    <span className="text-muted-foreground text-xs">({row.original.classRoom.faculty?.name})</span>
                 </p>
-            )
-        }
-    },
-    {
-        header: "Sections",
-        accessorKey: "sections",
-        cell: ({ row }) => {
-            const plan = row.original;
-            const classRooms = Array.isArray(plan.classRooms)
-                ? plan.classRooms
-                : typeof plan.classRooms === 'string'
-                    ? JSON.parse(plan.classRooms) as string[]
-                    : [];
-
-            return (
-                <span className="flex gap-2 max-w-[300px] flex-wrap">
-                    {
-                        (!!classRooms?.length && plan.parentClassName) ? classRooms?.map((classRoom, i) => (
-                            <Badge variant={'secondary'} key={i} className="whitespace-nowrap">{classRoom}</Badge>
-                        )) : '-'
-                    }
-                </span>
             )
         }
     },
     {
         header: "Start Date",
         accessorKey: "startDate",
-        cell: ({ row }) => <p className="text-14 font-medium"> {formatDate({
+        cell: ({ row }) => <span> {formatDate({
             date: new Date(row.original.startDate)
-        })}</p>,
+        })}</span>,
     },
     {
         header: "End Date",
         accessorKey: "endDate",
-        cell: ({ row }) => <p className="text-14 font-medium" > {formatDate({
+        cell: ({ row }) => <span > {formatDate({
             date: new Date(row.original.endDate)
-        })}</p>,
+        })}</span>,
     },
     {
         header: "Created By",
-        accessorKey: "createdByName",
+        accessorKey: "createdBy",
+        cell: ({ row }) => {
+            const createdBy = row.original.createdBy;
+
+            return (
+                <p className="text-14 font-medium"> {createdBy.firstName + ' ' + createdBy.lastName}</p>
+            )
+        },
     },
     {
         header: "Status",

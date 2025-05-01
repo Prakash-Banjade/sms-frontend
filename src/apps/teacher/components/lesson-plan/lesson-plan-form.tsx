@@ -6,7 +6,7 @@ import { createQueryString } from "@/utils/create-query-string";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { lessonPlanDefaultValues, lessonPlanSchema, lessonPlanSchemaType } from "../../schemas/lesson-plan.schema";
+import { lessonPlanDefaultValues, lessonPlanSchema, lessonPlanSchemaType } from "../../../admin/schemas/lesson-plan.schema";
 import { IFileUploadResponse } from "@/types/global.type";
 import LoadingButton from "@/components/forms/loading-button";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
@@ -36,13 +36,13 @@ export default function LessonPlanForm(props: Props) {
         },
     })
 
-    const { mutateAsync, isPending } = useAppMutation<Partial<Omit<lessonPlanSchemaType, 'sectionIds'> & { classRoomIds: string[] }>, any>();
+    const { mutateAsync, isPending } = useAppMutation<Partial<Omit<lessonPlanSchemaType, 'sectionId'>>, any>();
 
     async function onSubmit(values: lessonPlanSchemaType) {
         // check if section is selected or not
-        if (hasSection(values.classRoomId) && !values.sectionIds?.length) {
-            form.setError("sectionIds", { type: "required", message: "Please select at least one section" });
-            form.setFocus("sectionIds");
+        if (hasSection(values.classRoomId) && !values.sectionId) {
+            form.setError("sectionId", { type: "required", message: "Please select at least one section" });
+            form.setFocus("sectionId");
             return;
         }
 
@@ -54,7 +54,7 @@ export default function LessonPlanForm(props: Props) {
             id: props.lessonPlanId,
             data: {
                 ...values,
-                classRoomIds: values.sectionIds?.length ? values.sectionIds : [values.classRoomId], // need to send as classRoomIds not section Ids
+                classRoomId: values.sectionId ?? values.classRoomId, // need to send as classRoomId not sectionId
                 attachmentIds: values.attachmentIds,
             },
             invalidateTags: [QueryKey.LESSON_PLANS],
@@ -78,7 +78,7 @@ export default function LessonPlanForm(props: Props) {
                         max={100}
                     />
 
-                    <ClassSelectionFormField include="section" multiSection required={{ classRoomId: true, facultyId: true, sectionIds: true }} />
+                    <ClassSelectionFormField include="section" required={{ classRoomId: true, facultyId: true, sectionId: true }} />
 
                     <AppForm.DynamicSelect<lessonPlanSchemaType>
                         name="subjectId"

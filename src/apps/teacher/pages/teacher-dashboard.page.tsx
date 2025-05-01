@@ -9,6 +9,7 @@ import TodayScheduleCard from "../components/dashboard/today-schedule-card";
 import UpcommingEvents from "@/apps/admin/components/dashboard/upcomming-events";
 import RecentNotices from "@/apps/admin/components/dashboard/recent-notices";
 import TodayBirthDays from "@/apps/admin/components/dashboard/today-birthdays";
+import { ELeaveRequestStatus } from "@/types/global.type";
 
 export default function TeacherDashboardPage() {
     const { payload } = useAuth();
@@ -53,6 +54,7 @@ function DashboardStatistics() {
                     icon={Building}
                     footer={"Class Teacher or Subject Teacher"}
                     isLoading={isLoading}
+                    navigateTo="/teacher/my-classes"
                 />
                 <DashboardCountCard
                     title="Pending Assignments"
@@ -60,6 +62,7 @@ function DashboardStatistics() {
                     icon={NotepadText}
                     footer={"Assignments to be reviewed"}
                     isLoading={isLoading}
+                    navigateTo="/teacher/tasks/assignments"
                 />
                 <DashboardCountCard
                     title="Pending Leave Requests"
@@ -67,12 +70,14 @@ function DashboardStatistics() {
                     icon={UserX}
                     footer={"Leave requests to be reviewed"}
                     isLoading={isLoading}
+                    navigateTo={`/teacher/attendance/leave-requests?status=${ELeaveRequestStatus.PENDING}`}
                 />
                 <DashboardCountCard
                     title="Remaining Salary"
                     count={`Rs. ${(data?.teacherPayAmount || 0).toLocaleString()}`}
                     icon={WalletMinimal}
                     isLoading={isLoading}
+                    navigateTo="/teacher/salary"
                 />
             </div>
         </section>

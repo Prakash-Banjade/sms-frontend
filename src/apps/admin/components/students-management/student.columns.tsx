@@ -37,7 +37,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
                         src={getImageUrl(row.original.profileImageUrl, "w=40")}
                         className="size-10"
                     />
-                    {row.original.fullName}
+                    <span className="font-medium">{row.original.fullName}</span>
                 </Link>
             </TooltipWrapper>
         }

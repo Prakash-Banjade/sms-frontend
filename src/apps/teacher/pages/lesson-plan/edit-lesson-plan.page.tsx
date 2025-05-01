@@ -1,10 +1,10 @@
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Navigate, useParams } from "react-router-dom"
-import { useGetLessonPlan } from "../../components/lesson-plan/data-access";
 import LessonPlanForm from "../../components/lesson-plan/lesson-plan-form";
 import { useAuth } from "@/contexts/auth-provider";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useEffect } from "react";
+import { useGetLessonPlan } from "../../data-access/lesson-plan-data-access";
 
 
 export default function EditLessonPlanPage() {
@@ -49,13 +49,13 @@ function LessonPlanEditForm({ id }: { id: string }) {
                 endDate: data.endDate,
                 attachmentIds: data.attachments.map((attachment) => attachment.id),
                 subjectId: data.subject.id,
-                classRoomId: data.classRooms[0].parent?.id
-                    ? data.classRooms[0].parent?.id
-                    : data.classRooms[0].id,
-                sectionIds: data.classRooms[0].parent?.id
-                    ? data.classRooms?.map((classRoom) => classRoom.id)
-                    : [],
-                facultyId: data.classRooms[0]?.faculty?.id
+                classRoomId: data.classRoom.parent
+                    ? data.classRoom.parent?.id
+                    : data.classRoom.id,
+                sectionId: data.classRoom.parent
+                    ? data.classRoom.id
+                    : "",
+                facultyId: data.classRoom?.faculty?.id
             }}
         />
     )

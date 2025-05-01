@@ -23,7 +23,7 @@ export default function DashboardCountCard({ count, title, icon: Icon, navigateT
     const navigate = useNavigate();
 
     return (
-        <Card className={cn(navigateTo && 'cursor-pointer hover:bg-card/90 transition-colors', className)} onClick={() => navigateTo && navigate(`${navigateTo}`)}>
+        <Card className={cn("shadow-md", navigateTo && 'cursor-pointer hover:bg-secondary/20 hover:shadow-lg transition-all', className)} onClick={() => navigateTo && navigate(`${navigateTo}`)}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className={cn("text-sm font-medium", classNames?.title)}>{title}</CardTitle>
                 {Icon && <Icon className="h-6 w-6 text-muted-foreground" />}

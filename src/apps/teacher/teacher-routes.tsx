@@ -20,6 +20,10 @@ import SingleClassRoomPage from '../admin/pages/classes/single-classroom.page';
 import ClassRoutinePage from '../student/pages/class-routine.page';
 import MySalaryPage from './pages/my-salary.page';
 import TeacherDashboardPage from './pages/teacher-dashboard.page';
+import LessonPlansListPage from './pages/lesson-plan/lesson-plans-list.page';
+import AddLessonPlanPage from './pages/lesson-plan/add-lesson-plan.page';
+import SingleLessonPlanPage from './pages/lesson-plan/single-lesson-plan.page';
+import EditLessonPlanPage from './pages/lesson-plan/edit-lesson-plan.page';
 const MyLeaveRequestsPage = lazy(() => import('../common/pages/leave-request/my-leave-requests.page'));
 const AddLeaveRequestPage = lazy(() => import('../common/pages/leave-request/add-leave-request.page'));
 const OnlineClassesPage = lazy(() => import('../common/pages/online-classes/online-classes.page'));
@@ -41,6 +45,15 @@ const TeacherRoutes = () => {
           <Route path='attendance'>
             <Route index element={<StudentAttendancePage />} />
             <Route path='leave-requests' element={<StudentsLeaveRequestsPage />} />
+          </Route>
+
+          <Route path="lesson-plans">
+            <Route index element={<LessonPlansListPage />} />
+            <Route path="new" element={<AddLessonPlanPage />} />
+            <Route path=":id">
+              <Route index element={<SingleLessonPlanPage />} />
+              <Route path="edit" element={<EditLessonPlanPage />} />
+            </Route>
           </Route>
 
           <Route path="tasks">

@@ -1,11 +1,10 @@
-import { CalendarIcon, FileIcon, UserIcon, BookOpenIcon, UsersIcon, PencilIcon, CheckCircleIcon, CalendarCheck, TrendingUp, ListRestart } from 'lucide-react'
+import { CalendarIcon, FileIcon, UserIcon, BookOpenIcon, PencilIcon, CheckCircleIcon, CalendarCheck, TrendingUp, ListRestart } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ELessonPlanStatus } from '@/apps/admin/types/lesson-plan.type'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import LessonPlanSkeleton from '../../components/lesson-plan/single-lesson-plan-loading'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useGetLessonPlan } from '../../components/lesson-plan/data-access'
 import { formatDate } from '@/utils/format-date'
 import { useAppMutation } from '@/hooks/useAppMutation'
 import { QueryKey } from '@/react-query/queryKeys'
@@ -13,6 +12,7 @@ import LoadingButton from '@/components/forms/loading-button'
 import { useAuth } from '@/contexts/auth-provider'
 import { useEffect } from 'react'
 import { useSidebar } from '@/components/ui/sidebar'
+import { useGetLessonPlan } from '../../data-access/lesson-plan-data-access'
 
 export default function SingleLessonPlanPage() {
     const params = useParams();
@@ -142,26 +142,13 @@ export default function SingleLessonPlanPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className='flex flex-row gap-5 items-end'>
-                                    Class Rooms
-                                    <Badge variant="outline" className="capitalize text-base">
-                                        {
-                                            (!!lessonPlan.classRooms?.length && lessonPlan.classRooms[0].parent?.name)
-                                                ? lessonPlan.classRooms[0].parent?.name
-                                                : lessonPlan.classRooms[0].name
-                                        }
-                                    </Badge>
+                                    Class Room
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="space-y-2">
-                                    {lessonPlan.classRooms?.length && lessonPlan.classRooms[0].parent?.name &&
-                                        lessonPlan.classRooms.map((classroom) => (
-                                            <div key={classroom.id} className="flex items-center space-x-2">
-                                                <UsersIcon className="w-5 h-5 text-muted-foreground" />
-                                                <span>{classroom.name}</span>
-                                            </div>
-                                        ))}
-                                </div>
+                                <Badge variant="outline" className="capitalize text-base">
+                                    {lessonPlan.classRoom.fullName}
+                                </Badge>
                             </CardContent>
                         </Card>
                         <Card>

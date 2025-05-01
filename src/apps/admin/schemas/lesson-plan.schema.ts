@@ -17,10 +17,9 @@ export const lessonPlanSchema = z.object({
     attachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(),
     subjectId: z.string()
         .uuid({ message: "Subject ID must be a valid UUID" }),
-    sectionIds: z.array(
-        z.string({ required_error: "Section is required" })
-            .uuid({ message: 'Select a section' })
-    ).optional(),
+    sectionId: z.string({ required_error: "Section is required" })
+        .uuid({ message: 'Select a section' })
+        .optional(),
     facultyId: z.string({ required_error: "Faculty is required" }).uuid({ message: "Faculty ID must be a valid UUID" }),
     classRoomId: z.string({ required_error: "Class room is required" })
         .uuid({ message: 'Select a class room' }),
@@ -43,7 +42,7 @@ export const lessonPlanDefaultValues: Partial<lessonPlanSchemaType> = {
     description: '',
     attachmentIds: [],
     subjectId: undefined,
-    sectionIds: [],
+    sectionId: undefined,
     classRoomId: undefined,
     facultyId: undefined
 };
