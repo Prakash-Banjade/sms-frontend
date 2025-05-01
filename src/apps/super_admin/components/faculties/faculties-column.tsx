@@ -8,6 +8,7 @@ import { useState } from "react"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TFaculty } from "../../data-access/faculties-data-access"
 import { useNavigate } from "react-router-dom"
+import { SCHOOL_LEVEL_FACULTY_NAME } from "@/CONSTANTS"
 
 export const facultiesColumns: ColumnDef<TFaculty>[] = [
     {
@@ -43,7 +44,7 @@ export const facultiesColumns: ColumnDef<TFaculty>[] = [
                 });
             }
 
-            return (
+            return faculty.name !== SCHOOL_LEVEL_FACULTY_NAME && (
                 <>
                     <ResponsiveAlertDialog
                         isOpen={isDeleteOpen}
