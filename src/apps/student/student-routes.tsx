@@ -18,6 +18,8 @@ import StudentExamReportPage from "./pages/examination/student-exam-report.page"
 import MyAttendancePage from "./pages/my-attendance.page";
 import MyDormitoryPage from "./pages/my-dormitory.page";
 import MyFeesPage from "./pages/my-fees.page";
+import LessonPlanPage from "./pages/lesson-plan.page";
+import SingleLessonPlanPage from "../teacher/pages/lesson-plan/single-lesson-plan.page";
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
@@ -45,6 +47,10 @@ const StudentRoutes = () => {
                 <Route path=":id" element={<TaskSubmitPage type={ETask.ASSIGNMENT} />} />
               </Route>
             </Route>
+          </Route>
+          <Route path="lesson-plans">
+            <Route index element={<LessonPlanPage />} />
+            <Route path=":id" element={<SingleLessonPlanPage />} />
           </Route>
           <Route path="class-routine" element={<ClassRoutinePage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
