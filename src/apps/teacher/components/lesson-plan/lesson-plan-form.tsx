@@ -78,27 +78,33 @@ export default function LessonPlanForm(props: Props) {
                         max={100}
                     />
 
-                    <ClassSelectionFormField include="section" required={{ classRoomId: true, facultyId: true, sectionId: true }} />
+                    {
+                        !props.lessonPlanId && ( // don't allow to edit classroom and subject
+                            <>
+                                <ClassSelectionFormField include="section" required={{ classRoomId: true, facultyId: true, sectionId: true }} />
 
-                    <AppForm.DynamicSelect<lessonPlanSchemaType>
-                        name="subjectId"
-                        label="Subject"
-                        placeholder="Select subject"
-                        description="Select the subject"
-                        fetchOptions={{
-                            endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
-                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                            queryString: createQueryString({
-                                classRoomId: form.watch('classRoomId'),
-                            }),
-                            options: {
-                                enabled: !!form.watch('classRoomId'),
-                            }
-                        }}
-                        labelKey={'subjectName'}
-                        required
-                        disableOnNoOption
-                    />
+                                <AppForm.DynamicSelect<lessonPlanSchemaType>
+                                    name="subjectId"
+                                    label="Subject"
+                                    placeholder="Select subject"
+                                    description="Select the subject"
+                                    fetchOptions={{
+                                        endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+                                        queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                                        queryString: createQueryString({
+                                            classRoomId: form.watch('classRoomId'),
+                                        }),
+                                        options: {
+                                            enabled: !!form.watch('classRoomId'),
+                                        }
+                                    }}
+                                    labelKey={'subjectName'}
+                                    required
+                                    disableOnNoOption
+                                />
+                            </>
+                        )
+                    }
 
                     <AppForm.DatePicker<lessonPlanSchemaType>
                         name="startDate"

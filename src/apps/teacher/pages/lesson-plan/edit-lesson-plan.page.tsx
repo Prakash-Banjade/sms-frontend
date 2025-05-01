@@ -5,24 +5,35 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useEffect } from "react";
 import { useGetLessonPlan } from "../../data-access/lesson-plan-data-access";
+import { TSingleLessonPlan } from "@/apps/admin/types/lesson-plan.type";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 export default function EditLessonPlanPage() {
     const params = useParams();
+    const { data, isLoading } = useGetLessonPlan({ id: params.id! });
 
     return (
         <ContainerLayout
             title="Edit Lesson Plan"
+            description={
+                isLoading
+                    ? <Skeleton className="h-4 w-32" />
+                    : (
+                        <div>
+                            {data?.classRoom.fullName} | {data?.subject.subjectName}
+                        </div>
+                    )
+            }
         >
-            <LessonPlanEditForm id={params.id!} />
+            <LessonPlanEditForm id={params.id!} data={data} isLoading={isLoading} />
         </ContainerLayout>
     )
 }
 
-function LessonPlanEditForm({ id }: { id: string }) {
+function LessonPlanEditForm({ id, data, isLoading }: { id: string, data: TSingleLessonPlan | undefined, isLoading: boolean }) {
     const { payload } = useAuth();
     const { setDynamicBreadcrumb } = useSidebar();
-    const { data, isLoading } = useGetLessonPlan({ id });
 
     useEffect(() => {
         setDynamicBreadcrumb([
