@@ -12,6 +12,7 @@ import SalaryPayment from "./payment/salary-payment";
 import SalaryPaymentsTable from "./all-payments/salary-payments-table";
 import { useEffect } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
+import { DateRangeFilter } from "@/components/search-components/date-range-filter";
 
 const tabs = [
     {
@@ -81,7 +82,12 @@ export default function SalaryPayrollAndPaymentTabs() {
                     <SalaryPayment employeeId={data.employee?.id} />
                 </TabsContent>
                 <TabsContent value={tabs[2].value}>
-                    <SalaryPaymentsTable employeeId={data.employee?.id} />
+                    <section className="space-y-4 mt-10">
+                        <header className="flex justify-between items-end gap-10">
+                            <DateRangeFilter />
+                        </header>
+                        <SalaryPaymentsTable employeeId={data.employee?.id} />
+                    </section>
                 </TabsContent>
             </Tabs>
 

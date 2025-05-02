@@ -16,6 +16,7 @@ export default function SalaryPayrollsTable() {
 
     const { data, isLoading } = useGetSalaryPayrolls({
         queryString: createQueryString({
+            employeeId: searchParams.get('employeeID'),
             page: searchParams.get('page'),
             take: searchParams.get('take'),
             dateFrom: searchParams.get('dateFrom'),

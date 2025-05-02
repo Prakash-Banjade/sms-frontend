@@ -111,56 +111,54 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                     </Table>
                 </div>
 
-                {
-                    <div className="space-y-4">
-                        <h3 className="font-semibold text-lg text-gray-800">Deductions</h3>
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="bg-gray-50">
-                                    <TableHead className="font-semibold">Description</TableHead>
-                                    <TableHead className="text-right font-semibold">Amount</TableHead>
+                <div className="space-y-4">
+                    <h3 className="font-semibold text-lg text-gray-800">Deductions</h3>
+                    <Table>
+                        <TableHeader>
+                            <TableRow className="bg-gray-50">
+                                <TableHead className="font-semibold">Description</TableHead>
+                                <TableHead className="text-right font-semibold">Amount</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {
+                                previousAdvanceAmount > 0 && <TableRow>
+                                    <TableCell>Previous Advance</TableCell>
+                                    <TableCell className="text-right">Rs. {previousAdvanceAmount?.toLocaleString()}</TableCell>
                                 </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {
-                                    previousAdvanceAmount > 0 && <TableRow>
-                                        <TableCell>Previous Advance</TableCell>
-                                        <TableCell className="text-right">Rs. {previousAdvanceAmount?.toLocaleString()}</TableCell>
+                            }
+                            {
+                                deductions?.map(sa => (
+                                    <TableRow key={sa.id}>
+                                        <TableCell>{sa.description}</TableCell>
+                                        <TableCell className="text-right">Rs. {sa.amount?.toLocaleString()}</TableCell>
                                     </TableRow>
-                                }
-                                {
-                                    deductions?.map(sa => (
-                                        <TableRow key={sa.id}>
-                                            <TableCell>{sa.description}</TableCell>
-                                            <TableCell className="text-right">Rs. {sa.amount?.toLocaleString()}</TableCell>
-                                        </TableRow>
-                                    ))
-                                }
-                                {
-                                    totalDeduction > 0 && <TableRow className="font-semibold">
-                                        <TableCell>Total Deductions</TableCell>
-                                        <TableCell className="text-right">Rs. {totalDeduction?.toLocaleString()}</TableCell>
-                                    </TableRow>
-                                }
+                                ))
+                            }
+                            {
+                                totalDeduction > 0 && <TableRow className="font-semibold">
+                                    <TableCell>Total Deductions</TableCell>
+                                    <TableCell className="text-right">Rs. {totalDeduction?.toLocaleString()}</TableCell>
+                                </TableRow>
+                            }
 
-                                {/* fallback */}
-                                {
-                                    previousAdvanceAmount === 0 && !deductions?.length && <TableRow>
-                                        <TableCell colSpan={2} className='text-gray-500 text-center'>
-                                            No Deductions
-                                        </TableCell>
-                                    </TableRow>
-                                }
-                            </TableBody>
-                        </Table>
-                    </div>
-                }
+                            {/* fallback */}
+                            {
+                                previousAdvanceAmount === 0 && !deductions?.length && <TableRow>
+                                    <TableCell colSpan={2} className='text-gray-500 text-center'>
+                                        No Deductions
+                                    </TableCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
 
                 <Separator />
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                     <div className="space-y-1">
-                        <p className="text-xl font-bold text-gray-800">Net Pay: Rs. {data.netSalary?.toLocaleString()}</p>
+                        <p className="text-xl font-bold text-gray-800">Grand Total: Rs. {data.netSalary?.toLocaleString()}</p>
                         <p className='text-gray-500 text-sm'><span className='font-semibold'>In Words</span>: {toWords.convert(data.netSalary, { currency: true, ignoreZeroCurrency: true })}</p>
                     </div>
                 </div>

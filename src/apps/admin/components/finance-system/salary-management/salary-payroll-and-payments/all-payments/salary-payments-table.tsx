@@ -9,11 +9,12 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Printer } from "lucide-react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { useState } from "react";
-import SalaryPaySlipTemplate from "../payment/salary-payslip-template";
 import { useAuth } from "@/contexts/auth-provider";
 import { isAdmin } from "@/lib/utils";
 import { Role } from "@/types/global.type";
 import { TSalaryPaymentResponse } from "@/apps/admin/types/finance-system/salary-management.types";
+import { SalaryPayslipTemplate } from "../payment/salary-payslip-template";
+import PrintPaySlip from "../payment/print-payment";
 
 type Props = {
     employeeId?: string;
@@ -63,9 +64,7 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                                 <TableCell>Rs. {item.amount?.toLocaleString()}</TableCell>
                                 <TableCell>{item.remark || '-'}</TableCell>
                                 <TableCell>
-                                    {
-                                        index === 0 && <SalaryPaymentActionColumn payment={item} />
-                                    }
+                                    <SalaryPaymentActionColumn payment={item} />
                                 </TableCell>
                             </TableRow>
                         )
@@ -94,7 +93,7 @@ function SalaryPaymentActionColumn({ payment }: { payment: TSalaryPaymentRespons
                 title="Print Payslip"
                 className="max-w-max"
             >
-                <SalaryPaySlipTemplate payment={payment} />
+                <PrintPaySlip payment={payment} />
             </ResponsiveDialog>
 
             <DropdownMenu>

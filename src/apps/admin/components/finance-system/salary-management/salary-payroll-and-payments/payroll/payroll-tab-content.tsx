@@ -3,15 +3,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PayrollForm from "./payroll-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { z } from "zod"
-import { useGetLastPayroll } from "../../data-access"
 import { sub } from "date-fns"
 import { startOfDayString } from "@/lib/utils"
+import SalaryPayrollsTable from "./salary-payrolls-table"
+import { useGetLastPayroll } from "../../data-access"
+import { DateRangeFilter } from "@/components/search-components/date-range-filter"
 
 type Props = {
     salaryEmployee: TSalaryEmployee
 }
 
-const tabsSchema = z.enum(['new', 'last']);
+const tabsSchema = z.enum(['new', 'last', 'all']);
 
 export default function PayrollTabContent({ salaryEmployee }: Props) {
     const { searchParams, setSearchParams } = useCustomSearchParams();
@@ -35,6 +37,7 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
                 <TabsList className="">
                     <TabsTrigger value="new">New Payroll</TabsTrigger>
                     <TabsTrigger value="last">Last Payroll</TabsTrigger>
+                    <TabsTrigger value="all">All Payrolls</TabsTrigger>
                 </TabsList>
                 <TabsContent value="new">
                     <PayrollForm salaryEmployee={salaryEmployee} />
@@ -47,6 +50,14 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
                                 <UpdatePayroll data={data} salaryEmployee={salaryEmployee} />
                             ) : <div className="text-muted-foreground my-20 text-center">No payroll has been created yet!</div>
                     }
+                </TabsContent>
+                <TabsContent value="all">
+                    <section className="space-y-4 mt-10">
+                        <header className="flex justify-between items-end gap-10">
+                            <DateRangeFilter />
+                        </header>
+                        <SalaryPayrollsTable />
+                    </section>
                 </TabsContent>
             </Tabs>
         </section>

@@ -6,7 +6,7 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { HandCoinsIcon, PiggyBankIcon, Wallet, WalletMinimal } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import SalaryPaymentsTable from "@/apps/admin/components/finance-system/salary-management/salary-payroll-and-payments/all-payments/salary-payments-table";
-import SalaryPayrollsTable from "../components/salary/salary-payrolls-table";
+import SalaryPayrollsTable from "../../admin/components/finance-system/salary-management/salary-payroll-and-payments/payroll/salary-payrolls-table";
 import { DateRangeFilter } from "@/components/search-components/date-range-filter";
 
 export default function MySalaryPage() {
