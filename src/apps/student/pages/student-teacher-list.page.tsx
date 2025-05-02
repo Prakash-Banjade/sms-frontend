@@ -3,7 +3,7 @@ import { createQueryString } from "@/utils/create-query-string";
 import { St_TeacherResponse } from "@/apps/admin/types/teacher.type";
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { ProfileAvatar } from '@/components/ui/avatar'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { getImageUrl } from '@/lib/utils'
 import { Mail, Phone } from 'lucide-react'
 
