@@ -73,10 +73,14 @@ function Content() {
                                                 Others: {+classRoom.totalStudentsCount - +classRoom.totalMaleStudentsCount - +classRoom.totalFemaleStudentsCount}
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Building className="h-4 w-4 text-muted-foreground" />
-                                            <span className="text-sm">Room 105</span>
-                                        </div>
+                                        {
+                                            classRoom.location && (
+                                                <div className="flex items-center gap-2">
+                                                    <Building className="h-4 w-4 text-muted-foreground" />
+                                                    Room: <span className="text-sm">Room {classRoom.location}</span>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex justify-between border-t bg-secondary/20 px-6 py-3 mt-auto">

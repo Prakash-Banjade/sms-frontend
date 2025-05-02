@@ -3,7 +3,7 @@ import DashboardCountCard from "@/components/dashboard/dashboard-count-card";
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { HandCoinsIcon, PiggyBankIcon, Wallet, WalletMinimal } from "lucide-react";
+import { HandCoinsIcon, PiggyBankIcon, Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import SalaryPaymentsTable from "@/apps/admin/components/finance-system/salary-management/salary-payroll-and-payments/all-payments/salary-payments-table";
 import SalaryPayrollsTable from "../../admin/components/finance-system/salary-management/salary-payroll-and-payments/payroll/salary-payrolls-table";
@@ -50,7 +50,7 @@ function MySalaryDetails() {
 
     return (
         <section className="@container">
-            <div className="grid grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-3 @5xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-3 gap-4">
                 <DashboardCountCard
                     title="Monthly Salary"
                     count={`Rs. ${(data?.grossSalary || 0).toLocaleString()}`}
@@ -72,13 +72,13 @@ function MySalaryDetails() {
                     footer={"Salary to be paid"}
                     isLoading={isLoading}
                 />
-                <DashboardCountCard
+                {/* <DashboardCountCard
                     title="Next Payment On"
                     count={"May 30, 2025"}
                     icon={WalletMinimal}
                     footer={"10 days remaining"}
                     isLoading={isLoading}
-                />
+                /> */}
             </div>
         </section>
     )
