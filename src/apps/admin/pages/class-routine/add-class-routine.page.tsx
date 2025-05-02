@@ -44,7 +44,7 @@ const ExistingSchedules = ({ queryString }: { queryString: string }) => {
     const hasSelected = params.get("classRoomId") !== null && params.get("dayOfTheWeek") !== null;
 
     const { data, isLoading } = useGetClassRoutines({
-        queryString: queryString + '&skipPagination=true',
+        queryString: queryString,
         options: {
             enabled: hasSelected,
         }

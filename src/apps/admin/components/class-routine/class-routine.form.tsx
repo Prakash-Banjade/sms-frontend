@@ -47,7 +47,7 @@ export default function ClassRoutineForm(props: Props) {
         queryString: createQueryString({
             classRoomId: form.getValues("classRoomId"),
             sectionId: form.getValues("sectionId"),
-            daysOfTheWeek: form.getValues("daysOfTheWeek"),
+            dayOfTheWeek: form.getValues("daysOfTheWeek"),
             skipPagination: true,
         }),
         options: {
@@ -111,6 +111,7 @@ export default function ClassRoutineForm(props: Props) {
                 classRoomId: form.watch('classRoomId'),
                 sectionId: form.watch('sectionId'),
                 dayOfTheWeek: form.watch('daysOfTheWeek'),
+                skipPagination: true
             }));
         }
     }, [form.watch('classRoomId'), form.watch('sectionId'), form.watch('daysOfTheWeek')])

@@ -13,7 +13,6 @@ import { useAuth } from "@/contexts/auth-provider";
 import { isAdmin } from "@/lib/utils";
 import { Role } from "@/types/global.type";
 import { TSalaryPaymentResponse } from "@/apps/admin/types/finance-system/salary-management.types";
-import { SalaryPayslipTemplate } from "../payment/salary-payslip-template";
 import PrintPaySlip from "../payment/print-payment";
 
 type Props = {
