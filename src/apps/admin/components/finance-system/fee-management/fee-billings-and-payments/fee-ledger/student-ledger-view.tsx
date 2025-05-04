@@ -83,7 +83,7 @@ export default function StudentLedgerView({ studentId, className }: Props) {
                                 <TableCell>{format(new Date(item.date), 'dd/MM/yyyy')}</TableCell>
                                 <TableCell>
                                     {
-                                        feeInvoice?.month && Object.entries(EMonth).find(([_, monthInd]) => +feeInvoice.month === +monthInd)?.[0]
+                                        feeInvoice?.month && Object.entries(EMonth).find(([_, monthInd]) => +feeInvoice.month === +monthInd)?.[0] || '-'
                                     }
                                 </TableCell>
                                 <TableCell>

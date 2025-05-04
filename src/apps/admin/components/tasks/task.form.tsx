@@ -70,7 +70,7 @@ export default function TaskForm(props: Props) {
 
     async function onSubmit(values: taskSchemaType) {
         // check if section is selected or not
-        if (hasSection(values.classRoomId) && !values.sectionId?.length) {
+        if (!props?.taskId && hasSection(values.classRoomId) && !values.sectionId?.length) { // only check when creating a new task
             form.setError("sectionId", { type: "required", message: "Please select at least one section" });
             form.setFocus("sectionId");
             return;
@@ -107,27 +107,33 @@ export default function TaskForm(props: Props) {
                         required
                     />
 
-                    <ClassSelectionFormField include="section" />
+                    {
+                        !props.taskId && (
+                            <>
+                                <ClassSelectionFormField include="section" />
 
-                    <AppForm.DynamicSelect<taskSchemaType>
-                        name="subjectId"
-                        label="Subject"
-                        placeholder="Select subject"
-                        description="Select the subject"
-                        fetchOptions={{
-                            endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
-                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                            queryString: createQueryString({
-                                classRoomId: form.watch('classRoomId'),
-                            }),
-                            options: {
-                                enabled: !!form.watch('classRoomId'),
-                            }
-                        }}
-                        labelKey={'subjectName'}
-                        required
-                        disableOnNoOption
-                    />
+                                <AppForm.DynamicSelect<taskSchemaType>
+                                    name="subjectId"
+                                    label="Subject"
+                                    placeholder="Select subject"
+                                    description="Select the subject"
+                                    fetchOptions={{
+                                        endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+                                        queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                                        queryString: createQueryString({
+                                            classRoomId: form.watch('classRoomId'),
+                                        }),
+                                        options: {
+                                            enabled: !!form.watch('classRoomId'),
+                                        }
+                                    }}
+                                    labelKey={'subjectName'}
+                                    required
+                                    disableOnNoOption
+                                />
+                            </>
+                        )
+                    }
 
                     <AppForm.DatePicker<taskSchemaType>
                         name="deadline"
@@ -143,6 +149,7 @@ export default function TaskForm(props: Props) {
                         placeholder="eg. 100"
                         description="Enter the marks for task or leave it blank."
                     />
+
                     <AppForm.Textarea<taskSchemaType>
                         rows={8}
                         name="description"
@@ -150,6 +157,7 @@ export default function TaskForm(props: Props) {
                         placeholder={`eg. Write some details about ${props.taskType} here`}
                         required
                     />
+
                     <AppForm.FileUpload<taskSchemaType>
                         name="attachmentIds"
                         label="Attachments"

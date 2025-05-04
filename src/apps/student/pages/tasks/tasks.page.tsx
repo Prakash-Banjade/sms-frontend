@@ -42,7 +42,10 @@ function TasksList({ type }: Props) {
     const { data, isLoading } = useGetTaskCounts({
         queryString: createQueryString({
             taskType: type,
-        })
+        }),
+        options: {
+            enabled: type === ETask.ASSIGNMENT, // only fetch task counts for assignments
+        }
     });
 
     if (isLoading) return <div>Loading...</div>;

@@ -103,7 +103,7 @@ export const SalaryPayslipTemplate = React.forwardRef<HTMLDivElement, Props>(({ 
                             {
                                 data?.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.map(sa => (
                                     <tr className="font-semibold" key={sa.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Advance Amount this month</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sa.description}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">Rs. {sa.amount?.toLocaleString()}</td>
                                     </tr>
                                 ))
