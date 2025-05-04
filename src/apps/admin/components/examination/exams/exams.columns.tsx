@@ -80,7 +80,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
                     endpoint: `${QueryKey.EXAMS}/${row.original.id}/publish?publish=${!row.original.isReportPublished}`,
                     invalidateTags: [QueryKey.EXAMS],
                 });
-            }
+            }        
 
             return (
                 <>
@@ -98,9 +98,10 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         isOpen={isPublishOpen}
                         setIsOpen={setIsPublishOpen}
                         title={`Publish exam results`}
-                        description={`Are you sure you want to publish the exam results?`}
+                        description={`Are you sure you want to publish the exam results? This leads to the overall calculations for students in the class.`}
                         action={() => handlePublishResult()}
                         actionLabel="Yes, Publish"
+                        loadingText="Publishing..."
                         isLoading={isPending}
                     />
 

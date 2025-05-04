@@ -2,17 +2,14 @@ import { EClassType, TMeta } from "../../../types/global.type"
 
 export type TClass = {
     id: string,
-    createdAt: string,
-    updatedAt: string,
     name: string,
     description: string | null,
-    admissionFee: number,
-    monthlyFee: number,
     location: string,
     classType: EClassType,
     faculty: string,
     facultyId: string,
     parentClassName: string | null,
+    parentClassId: string | null,
     totalStudentsCount: string,
     totalFemaleStudentsCount: string,
     totalMaleStudentsCount: string,

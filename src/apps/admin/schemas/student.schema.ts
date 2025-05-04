@@ -25,7 +25,6 @@ export const studentSchema = z.object({
             message: 'Invalid section ID',
         })
         .nullish(),
-    rollNo: z.coerce.number({ required_error: 'Roll number is required' }),
     admissionDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid admission date',
     }).optional(),
@@ -112,7 +111,6 @@ export const studentFormDefaultValues: Partial<studentSchemaType> = {
     // ACADEMIC INFORMATION
     classRoomId: undefined,
     sectionId: undefined,
-    rollNo: 0,
     admissionDate: new Date().toISOString(),
     dormitoryRoomId: undefined,
 

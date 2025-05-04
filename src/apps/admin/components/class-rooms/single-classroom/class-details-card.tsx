@@ -16,7 +16,7 @@ export default function ClassDetailsCard({ classRoom }: { classRoom: TSingleClas
                         {classRoom.totalStudentsCount} Students
                     </Badge>
                 </div>
-                <CardDescription className="text-lg mt-2">Class Overview</CardDescription>
+                <CardDescription className="text-lg mt-2">{classRoom.facultyName}</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="grid @4xl:grid-cols-4 @3xl:grid-cols-3 @2xl:grid-cols-2 gap-4">
@@ -47,6 +47,10 @@ export default function ClassDetailsCard({ classRoom }: { classRoom: TSingleClas
                                 ? classRoom.location
                                 : <span className="text-muted-foreground">N/A</span>
                         }</span>
+                    </div>
+                    <div className="col-span-full">
+                        <h3 className="text-lg font-medium">Description:</h3>
+                        <p className="text-muted-foreground">{classRoom.description ?? <span className="text-muted-foreground">N/A</span>}</p>
                     </div>
                 </div>
             </CardContent>
