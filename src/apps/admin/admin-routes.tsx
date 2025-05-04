@@ -60,6 +60,7 @@ const ExamEvaluationPage = lazy(() => import('./pages/examination/exam-evaluatio
 const ExamRoutinePage = lazy(() => import('./pages/examination/exam-routine.page'));
 const ExaminationReport_SubjectWise = lazy(() => import('./pages/reports/examination-report/subject-wise-report.page'));
 const ExaminationReport_StudentWise = lazy(() => import('./pages/reports/examination-report/student-wise-report.page'));
+const ExaminationReport_ClassWise = lazy(() => import('./pages/reports/examination-report/class-wise-report.page'));
 const SingleTeacherPage = lazy(() => import('./pages/teachers/single-teacher.page'));
 const SubjectSelectionPage = lazy(() => import('./pages/students-management/subject-selection.page'));
 const LessonPlansListPage = lazy(() => import('../teacher/pages/lesson-plan/lesson-plans-list.page'));
@@ -222,6 +223,7 @@ export const AdminRoutesGroup = () => {
             <Route path="reports">
                 <Route path="examination-report">
                     <Route index element={<Navigate to="student-wise" />} />
+                    <Route path="class-wise" element={<ExaminationReport_ClassWise />} />
                     <Route path="student-wise" element={<ExaminationReport_StudentWise />} />
                     <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
                 </Route>

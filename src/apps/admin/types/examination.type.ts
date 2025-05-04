@@ -227,3 +227,46 @@ export type TUpcommingExamType = {
         }
     }[]
 } | null
+
+export type TExamResultsResponse = {
+    data: {
+        id: string,
+        percentage: number,
+        gpa: number,
+        grade: string,
+        exam: {
+            id: string,
+            examSubjects: {
+                id: string,
+                examReports: {
+                    id: string
+                    theoryOM: number,
+                    practicalOM: number,
+                    percentage: number,
+                    gpa: number,
+                    grade: string
+                }[]
+            }[]
+        },
+        student: {
+            id: string,
+            studentId: string,
+            firstName: string,
+            lastName: string
+        }
+    }[]
+    meta: TMeta;
+    examSubjects: {
+        id: string,
+        theoryPM: number,
+        theoryFM: number,
+        practicalPM: number,
+        practicalFM: number,
+        subject: {
+            id: string,
+            subjectName: string,
+            subjectCode: string,
+            type: ESubjectType
+        }
+    }[]
+}

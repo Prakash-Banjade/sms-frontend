@@ -97,7 +97,7 @@ export default function VehicleForm(props: Props) {
     }
 
     const onDialogClose = () => {
-        form.reset();
+        form.reset(defaultValues);
         props.setIsOpen && props.setIsOpen(false);
     }
 
@@ -126,6 +126,7 @@ export default function VehicleForm(props: Props) {
                         placeholder="Select vehicle type"
                         options={Object.entries(EVehicleType).map(([key, value]) => ({ label: key, value }))}
                         required
+                        value={form.watch("type") ?? ""}
                     />
                     <AppForm.Number<vehicleFormType>
                         name="capacity"
@@ -133,6 +134,7 @@ export default function VehicleForm(props: Props) {
                         description="Enter the vehicle capacity."
                         placeholder="eg. 30"
                         required
+                        value={form.watch("capacity") ?? ""}
                     />
                     <AppForm.Text<vehicleFormType>
                         name="yearMade"
@@ -140,6 +142,9 @@ export default function VehicleForm(props: Props) {
                         description="Enter the year made."
                         placeholder="eg. 2020"
                         required
+                        value={form.watch("yearMade") ?? ""}
+                        min={1990}
+                        max={new Date().getFullYear()}
                     />
                     <AppForm.DynamicSelect<vehicleFormType>
                         name="driverId"

@@ -428,6 +428,10 @@ export const superAdminSidebarMenuItems: TGroupMenuItem[] = [
                 icon: BookOpenText,
                 items: [
                     {
+                        title: "Class Wise Report",
+                        url: "class-wise",
+                    },
+                    {
                         title: "Student Wise Report",
                         url: "student-wise",
                     },
