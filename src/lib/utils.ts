@@ -91,11 +91,11 @@ type MilitaryTimeRange = {
  * @return True if new range overlaps with any existing range, False otherwise
  */
 
-export const doesIntersect = (ranges: MilitaryTimeRange[], newRange: MilitaryTimeRange): boolean => {
+export const doesIntersect = (ranges: TClassRoutine[], newRange: MilitaryTimeRange) => {
   const newStart = parse(newRange.startTime, "HH:mm", new Date());
   const newEnd = parse(newRange.endTime, "HH:mm", new Date());
 
-  return ranges.some(({ startTime, endTime }) => {
+  return ranges.find(({ startTime, endTime }) => {
     const rangeStart = parse(startTime, "HH:mm", new Date());
     const rangeEnd = parse(endTime, "HH:mm", new Date());
 

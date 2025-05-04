@@ -10,19 +10,18 @@ import { createQueryString } from "@/utils/create-query-string";
 import { ERoutineType, SelectOption } from "@/types/global.type";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { useGetClassRoutines } from "./actions";
 import { doesIntersect } from "@/lib/utils";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
+import { TClassRoutine } from "../../types/class-routine.type";
 
 type Props = ({
     setIsOpen?: undefined;
-    setQueryString: React.Dispatch<React.SetStateAction<string>>;
 } | {
     classRoutineId?: string;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setQueryString?: undefined;
 }) & {
     defaultValues?: Partial<classRoutineSchemaType>;
     selectedTeacher?: SelectOption;
@@ -33,6 +32,7 @@ export default function ClassRoutineForm(props: Props) {
     const navigate = useNavigate();
     const { payload } = useAuth();
     const [confirmIntersectionOpen, setConfirmIntersectionOpen] = useState(false);
+    const [intersectingRoutine, setIntersectingRoutine] = useState<TClassRoutine | null>(null);
     const id = (!!props.setIsOpen && props.classRoutineId) ? props.classRoutineId : params.id;
 
     const form = useForm<classRoutineSchemaType>({
@@ -51,7 +51,7 @@ export default function ClassRoutineForm(props: Props) {
             skipPagination: true,
         }),
         options: {
-            enabled: !!form.getValues("classRoomId") && !!form.getValues("daysOfTheWeek"),
+            enabled: !!form.getValues("classRoomId") && form.getValues("daysOfTheWeek")?.length > 0,
         }
     });
 
@@ -75,7 +75,10 @@ export default function ClassRoutineForm(props: Props) {
             const newRange = { startTime: values.startTime, endTime: values.endTime };
             const routines = id ? existingClassRoutines?.data?.filter(routine => routine.id !== id) : existingClassRoutines?.data;
 
-            if (doesIntersect(routines, newRange)) {
+            const intersectingRoutine = doesIntersect(routines, newRange);
+
+            if (intersectingRoutine) {
+                setIntersectingRoutine(intersectingRoutine);
                 return setConfirmIntersectionOpen(true);
             }
         }
@@ -103,18 +106,6 @@ export default function ClassRoutineForm(props: Props) {
     const onDialogClose = () => {
         props.setIsOpen && props.setIsOpen(false);
     }
-
-    // setting query string to show existing schedules
-    useEffect(() => {
-        if (props?.setQueryString && !!form.watch('daysOfTheWeek').length) {
-            props.setQueryString(createQueryString({
-                classRoomId: form.watch('classRoomId'),
-                sectionId: form.watch('sectionId'),
-                dayOfTheWeek: form.watch('daysOfTheWeek'),
-                skipPagination: true
-            }));
-        }
-    }, [form.watch('classRoomId'), form.watch('sectionId'), form.watch('daysOfTheWeek')])
 
     return (
         <AppForm schema={classRoutineSchema} form={form}>
@@ -230,7 +221,7 @@ export default function ClassRoutineForm(props: Props) {
 
             <ResponsiveAlertDialog
                 title="Time range conflicts"
-                description="Class routine time intersects with an existing class routine. Do you want to add the class routine anyway?"
+                description={`There is already a class routine between ${intersectingRoutine?.startTime} and ${intersectingRoutine?.endTime} on ${intersectingRoutine?.dayOfTheWeek} for subject ${intersectingRoutine?.subject?.subjectName}. Do you want to add the class routine anyway?`}
                 isOpen={confirmIntersectionOpen}
                 setIsOpen={setConfirmIntersectionOpen}
                 action={form.handleSubmit(submit)}
