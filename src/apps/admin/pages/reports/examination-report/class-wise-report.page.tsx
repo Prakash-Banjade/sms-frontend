@@ -1,11 +1,15 @@
 import { useGetExamResults } from "@/apps/admin/components/examination/data-access";
-import ClassWiseExamReportTable from "@/apps/admin/components/report/examination-report/class-wise-report/class-wise-exam-report-table";
+import { ClassWiseExamReportTable } from "@/apps/admin/components/report/examination-report/class-wise-report/class-wise-exam-report-table";
 import GetExamReportByClassForm from "@/apps/admin/components/report/examination-report/class-wise-report/get-exam-report-by-class-form";
+import { TExamResultsResponse } from "@/apps/admin/types/examination.type";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import ContainerLayout from "@/components/page-layouts/container-layout";
+import { Button } from "@/components/ui/button";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { createQueryString } from "@/utils/create-query-string";
-import { useMemo } from "react";
+import { Printer } from "lucide-react";
+import { useMemo, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 
 export default function ExaminationReport_ClassWise() {
@@ -51,8 +55,35 @@ function ReportSection() {
 
     return (
         <section className="space-y-6">
-            <ClassWiseExamReportTable data={data} />
+            <ReportTable data={data} />
             <DataTablePagination meta={data?.meta} />
+        </section>
+    )
+}
+
+function ReportTable({ data }: { data: TExamResultsResponse }) {
+    const ref = useRef<HTMLTableElement>(null);
+    const handlePrint = useReactToPrint({ contentRef: ref });
+
+    return (
+        <section className="space-y-2">
+            <ClassWiseExamReportTable data={data} ref={ref} />
+            <div className="flex justify-between items-end">
+                <section className="text-sm">
+                    <p>
+                        <span className="text-red-500">*</span>
+                        <span>&nbsp;Represents failed students</span>
+                    </p>
+                    <p>"Th." Represents Obtained Marks In Theory</p>
+                    <p>"Pr." Represents Obtained Marks In Practical</p>
+                    <p>"G. Total" Represents Grand Total</p>
+                </section>
+
+                <Button type="button" onClick={() => handlePrint()}>
+                    <Printer />
+                    Print
+                </Button>
+            </div>
         </section>
     )
 }

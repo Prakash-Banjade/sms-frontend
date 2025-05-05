@@ -1,13 +1,14 @@
 import { TExamResultsResponse } from "@/apps/admin/types/examination.type"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import React from "react"
 
 type Props = {
     data: TExamResultsResponse
 }
 
-export default function ClassWiseExamReportTable({ data }: Props) {
+export const ClassWiseExamReportTable = React.forwardRef<HTMLTableElement, Props>(({ data }, ref) => {
     return (
-        <Table className="border">
+        <Table className="border" ref={ref}>
             <TableHeader>
                 <TableRow>
                     <TableHead className="border" rowSpan={2}>S.N.</TableHead>
@@ -17,7 +18,7 @@ export default function ClassWiseExamReportTable({ data }: Props) {
                             <TableHead key={examSub.id} colSpan={3} className="text-center border">{examSub.subject.subjectName}</TableHead>
                         ))
                     }
-                    <TableHead className="border" rowSpan={2}>Grand Total</TableHead>
+                    <TableHead className="border whitespace-nowrap" rowSpan={2}>G. Total</TableHead>
                     <TableHead className="border" rowSpan={2}>Percentage</TableHead>
                     <TableHead className="border" rowSpan={2}>GPA</TableHead>
                     <TableHead className="border" rowSpan={2}>Grade</TableHead>
@@ -122,4 +123,4 @@ export default function ClassWiseExamReportTable({ data }: Props) {
         </Table>
 
     )
-}
+})
