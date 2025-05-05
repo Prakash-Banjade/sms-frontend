@@ -68,6 +68,15 @@ function TaskSubmissionsTable({ task }: Props) {
             <TableHead>Note</TableHead>
             <TableHead>Attachments</TableHead>
             {
+              searchParams.get("evaluated") === "true" && (
+                <>
+                  <TableHead>Evaluated At</TableHead>
+                  <TableHead>Marks</TableHead>
+                  <TableHead>Feedback</TableHead>
+                </>
+              )
+            }
+            {
               payload?.role === Role.TEACHER && (
                 <TableHead></TableHead>
               )
@@ -81,7 +90,7 @@ function TaskSubmissionsTable({ task }: Props) {
               <TableCell>{submission.student.firstName} {submission.student.lastName}</TableCell>
               <TableCell>{submission.student.studentId}</TableCell>
               <TableCell>{format(submission.createdAt, "MMM d, yyyy")}</TableCell>
-              <TableCell className="max-w-[40ch]">{submission.note}</TableCell>
+              <TableCell>{submission.note}</TableCell>
               <TableCell>
                 <ul className="flex flex-col gap-1">
                   {submission.attachments.map((attachment, ind) => (
@@ -93,6 +102,15 @@ function TaskSubmissionsTable({ task }: Props) {
                   ))}
                 </ul>
               </TableCell>
+              {
+                searchParams.get("evaluated") === "true" && (
+                  <>
+                    <TableCell>{submission.evaluation?.createdAt ? format(submission.evaluation.createdAt, "MMM d, yyyy") : "-"}</TableCell>
+                    <TableCell>{submission.evaluation?.score || "-"}</TableCell>
+                    <TableCell className="truncate">{submission.evaluation?.feedback || "-"}</TableCell>
+                  </>
+                )
+              }
               {
                 payload?.role === Role.TEACHER && (
                   <TableCell>

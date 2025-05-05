@@ -1,6 +1,7 @@
 import { useGetExamResults } from "@/apps/admin/components/examination/data-access";
-import ClassReportTable from "@/apps/admin/components/report/examination-report/class-wise-report/class-report-table";
+import ClassWiseExamReportTable from "@/apps/admin/components/report/examination-report/class-wise-report/class-wise-exam-report-table";
 import GetExamReportByClassForm from "@/apps/admin/components/report/examination-report/class-wise-report/get-exam-report-by-class-form";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { createQueryString } from "@/utils/create-query-string";
@@ -49,6 +50,9 @@ function ReportSection() {
     if (!data) return <div className="mt-20 text-center text-muted-foreground">No data found</div>;
 
     return (
-        <ClassReportTable data={data} />
+        <section className="space-y-6">
+            <ClassWiseExamReportTable data={data} />
+            <DataTablePagination meta={data?.meta} />
+        </section>
     )
 }
