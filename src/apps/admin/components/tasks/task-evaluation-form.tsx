@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const taskEvaluationSchema = z.object({
-    score: z.coerce.number().positive({ message: "Score must be a positive number" }).optional(),
+    score: z.coerce.number().nonnegative({ message: "Score must be a non-negative number" }).optional(),
     feedback: z.string().min(1, { message: "Feedback is required" }).max(200, { message: "Feedback must be 200 characters or less" }),
 })
 
@@ -54,6 +54,8 @@ export default function TaskEvaluationForm(props: Props) {
     const onDialogClose = () => {
         props.setIsOpen && props.setIsOpen(false);
     }
+
+    console.log(form.formState.errors)
 
     return (
         <AppForm schema={taskEvaluationSchema} form={form}>
