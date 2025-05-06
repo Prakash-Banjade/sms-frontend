@@ -1,6 +1,11 @@
 import React from 'react';
 import { BookOpen } from 'lucide-react';
 import { TLibraryBook } from '@/apps/admin/types/library-book.type';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
+import ImageWithPlaceholder from '@/components/image-with-placeholder';
+import { getImageUrl } from '@/lib/utils';
 
 interface BookCardProps {
     book: TLibraryBook;
@@ -8,17 +13,13 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book }: BookCardProps) {
-    const imageUrl = book.coverImage?.url || 'https://via.placeholder.com/128x192/e2e8f0/1e293b?text=No+Cover';
-
     // Calculate a random height between 180px and 320px for visual variety
     const randomHeight = React.useMemo(() => {
         return Math.floor(Math.random() * (320 - 180) + 180);
     }, []);
 
     return (
-        <div
-            className="group relative flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-xl"
-        >
+        <Card className="group relative flex h-fit flex-col overflow-hidden transition-all duration-300 hover:shadow-xl">
             <div
                 className="relative overflow-hidden"
                 style={{
@@ -27,44 +28,58 @@ export default function BookCard({ book }: BookCardProps) {
                     backgroundColor: book.coverImage ? 'transparent' : '#f3f4f6'
                 }}
             >
-                {book.coverImage ? (
-                    <img
-                        src={imageUrl}
-                        alt={book.bookName}
-                        className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                    />
-                ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-                        <BookOpen size={48} className="text-slate-400" />
-                    </div>
-                )}
+                <Link to={book.id}>
+                    {book.coverImage ? (
+                        <ImageWithPlaceholder
+                            alt={book.bookName}
+                            src={book.coverImage?.url || "/lib_book_placeholder.png"}
+                            placeholderSrc={getImageUrl(book.coverImage?.url, "q=2&w=50")}
+                            className="object-contain w-full object-center transition-transform duration-300 group-hover:scale-105"
+                        />
+                    ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-foreground/80 to-foreground">
+                            <BookOpen size={48} className="text-muted-foreground" />
+                        </div>
+                    )}
+                </Link>
             </div>
 
-            <div className="flex flex-1 flex-col p-4">
-                <h3 className="mb-1 font-serif text-lg font-semibold leading-tight text-slate-800 line-clamp-2">
-                    {book.bookName}
-                </h3>
-
-                {book.publisherName && (
-                    <p className="mb-2 text-sm text-slate-600">
-                        {book.publisherName}
-                    </p>
-                )}
+            <div className="flex flex-1 flex-col">
+                <CardHeader className="p-4 pb-0">
+                    <CardTitle className="text-lg font-semibold leading-tight line-clamp-2">
+                        <Link to={book.id} className='hover:underline'>
+                            {book.bookName}
+                        </Link>
+                    </CardTitle>
+                    {book.publisherName && (
+                        <p className="text-sm text-muted-foreground">
+                            {book.publisherName}
+                        </p>
+                    )}
+                </CardHeader>
 
                 {book.description && (
-                    <p className="mt-2 text-sm text-slate-500 line-clamp-3">
-                        {book.description}
-                    </p>
+                    <CardContent className="p-4 pt-2">
+                        <p className="text-sm text-accent-foreground line-clamp-3">
+                            {book.description}
+                        </p>
+                    </CardContent>
                 )}
 
-                <div className="mt-auto flex items-center gap-4 pt-3 text-xs">
-                    {book.publicationYear && (
-                        <span className="text-slate-500">
-                            {book.publicationYear}
-                        </span>
-                    )}
-                </div>
+                {book.publicationYear && (
+                    <CardFooter className="mt-auto p-4 pt-3">
+                        <div className="flex items-center w-full gap-4 text-xs">
+                            <span className="text-accent-foreground">
+                                {book.publicationYear}
+                            </span>
+                            <span className="text-accent-foreground">
+                                {book.bookCode}
+                            </span>
+                            <Badge className='ml-auto'>{book.category.name}</Badge>
+                        </div>
+                    </CardFooter>
+                )}
             </div>
-        </div>
+        </Card>
     );
 };

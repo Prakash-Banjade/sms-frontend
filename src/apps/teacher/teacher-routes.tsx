@@ -6,6 +6,8 @@ import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { CommonRoutes, OnlineClassesRoutes } from '../common/common-routes';
 import { lazy } from 'react';
 import StreamClientProvider from './layout/stream-client-provider';
+import { LibraryBooksPage } from '../common/pages/library-books/library-books.page';
+import SingleLibraryBookPage from '../admin/pages/library/single-library-book.page';
 const MyClassesPage = lazy(() => import('./pages/my-classes.page'));
 const StudentAttendancePage = lazy(() => import('../admin/pages/students-management/attendance/student-attendance.page'));
 const MyAttendancePage = lazy(() => import('../student/pages/my-attendance.page'));
@@ -74,6 +76,11 @@ const TeacherRoutes = () => {
                 <Route path="edit" element={<EditTaskPage type={ETask.ASSIGNMENT} />} />
               </Route>
             </Route>
+          </Route>
+
+          <Route path="e-library">
+            <Route index element={<LibraryBooksPage />} />
+            <Route path=":id" element={<SingleLibraryBookPage />} />
           </Route>
 
           <Route path="schedule" element={<ClassRoutinePage />} />

@@ -15,6 +15,7 @@ export const libraryBookSchema = z.object({
 
     description: z
         .string()
+        .max(500, { message: 'Description is too long. Max 500 characters.' })
         .nullish(),
 
     publicationYear: z

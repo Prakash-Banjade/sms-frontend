@@ -14,3 +14,21 @@
     font-size: 14px;
   }
 }
+
+/* Masonry grid styles */
+.my-masonry-grid {
+  display: flex;
+  margin-left: -16px;
+  /* gutter size */
+  width: auto;
+}
+
+.my-masonry-grid_column {
+  padding-left: 16px;
+  /* gutter size */
+  background-clip: padding-box;
+}
+
+.my-masonry-grid_column>div {
+  margin-bottom: 16px;
+}

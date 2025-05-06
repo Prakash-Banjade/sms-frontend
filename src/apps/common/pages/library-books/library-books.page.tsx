@@ -1,12 +1,19 @@
 import React from 'react';
 import Masonry from 'react-masonry-css';
 import { useInView } from 'react-intersection-observer';
-import { BookOpen, RefreshCw } from 'lucide-react';
+import { BookOpen, RefreshCw, Search } from 'lucide-react';
 import { useInfiniteBooks } from '../../data-access/library-book-data-access';
 import BookSkeleton from '../../components/library-books/books-loading-skeleton';
 import BookCard from '../../components/library-books/book-card';
+import { Button } from '@/components/ui/button';
+import ContainerLayout from '@/components/page-layouts/container-layout';
+import { Input } from '@/components/ui/input';
+import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
+import { createQueryString } from '@/utils/create-query-string';
 
 export function LibraryBooksPage() {
+    const { searchParams } = useCustomSearchParams();
+
     const {
         data,
         fetchNextPage,
@@ -16,7 +23,9 @@ export function LibraryBooksPage() {
         error,
         refetch,
     } = useInfiniteBooks({
-        queryString: ""
+        queryString: createQueryString({
+            search: searchParams.get('search'),
+        })
     });
 
     const { ref: innerRef, inView } = useInView({
@@ -56,32 +65,32 @@ export function LibraryBooksPage() {
         if (status === 'error') {
             return (
                 <div className="flex h-64 flex-col items-center justify-center text-center">
-                    <div className="mb-4 rounded-full bg-red-100 p-3">
-                        <BookOpen size={32} className="text-red-500" />
+                    <div className="mb-4 rounded-full bg-secondary p-3">
+                        <BookOpen size={32} />
                     </div>
-                    <h3 className="mb-2 text-lg font-medium text-slate-800">Error loading books</h3>
-                    <p className="mb-4 max-w-md text-slate-600">
+                    <h3 className="mb-2 text-lg font-medium">Error loading books</h3>
+                    <p className="mb-4 max-w-md text-muted-foreground">
                         {error instanceof Error ? error.message : 'An unknown error occurred'}
                     </p>
-                    <button
+                    <Button
                         onClick={() => refetch()}
-                        className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                        type="button"
                     >
-                        <RefreshCw size={16} />
+                        <RefreshCw />
                         Try Again
-                    </button>
+                    </Button>
                 </div>
             );
         }
 
-        if (data?.pages.length === 0) {
+        if (data?.pages.flatMap(page => page.data.data).length === 0) {
             return (
                 <div className="flex h-64 flex-col items-center justify-center text-center">
-                    <div className="mb-4 rounded-full bg-slate-100 p-3">
-                        <BookOpen size={32} className="text-slate-400" />
+                    <div className="mb-4 rounded-full bg-secondary p-3">
+                        <BookOpen size={32} />
                     </div>
-                    <h3 className="mb-2 text-lg font-medium text-slate-800">No books found</h3>
-                    <p className="mb-4 max-w-md text-slate-600">
+                    <h3 className="mb-2 text-lg font-medium">No books found</h3>
+                    <p className="mb-4 max-w-md text-muted-foreground">
                         We couldn't find any books matching your search. Try a different query.
                     </p>
                 </div>
@@ -95,7 +104,7 @@ export function LibraryBooksPage() {
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column"
                 >
-                    {data?.pages.flatMap(page => page.data).map((book, index) => (
+                    {data?.pages.flatMap(page => page.data.data).map((book, index) => (
                         <BookCard key={book.id} book={book} index={index} />
                     ))}
                 </Masonry>
@@ -105,8 +114,8 @@ export function LibraryBooksPage() {
                     {isFetchingNextPage && (
                         <div className="flex justify-center">
                             <div className="flex items-center gap-2">
-                                <RefreshCw size={20} className="animate-spin text-indigo-600" />
-                                <span className="text-sm text-slate-600">Loading more books...</span>
+                                <RefreshCw size={20} className="animate-spin text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">Loading more books...</span>
                             </div>
                         </div>
                     )}
@@ -116,8 +125,61 @@ export function LibraryBooksPage() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <ContainerLayout
+            title='E-Library'
+            description="Access digital version of library books"
+        >
+            <SearchInputForm />
+
+            {
+                !!data?.totalItems && (
+                    <section className='text-center text-sm text-muted-foreground'>
+                        Found {data?.totalItems?.toLocaleString()} book(s)
+                        {
+                            !!searchParams.get('search') && (
+                                <>
+                                    {' '}
+                                    for "{searchParams.get('search')}"
+                                </>
+                            )
+                        }
+                    </section>
+                )
+            }
+
             {renderBooks()}
-        </div>
+        </ContainerLayout>
     );
 };
+
+function SearchInputForm() {
+    const { searchParams, setSearchParams } = useCustomSearchParams();
+
+    function handleSearch(e: React.FormEvent) {
+        e.preventDefault();
+
+        setSearchParams('search', (e.target as HTMLFormElement).search.value);
+    }
+
+    return (
+        <form onSubmit={handleSearch}>
+            <section className='group relative flex items-center max-w-[800px] w-[90%] mx-auto focus-within:shadow-lg'>
+                <Input
+                    name='search'
+                    type='search'
+                    defaultValue={searchParams.get('search') ?? ''}
+                    className='rounded-full p-6 pl-12'
+                    placeholder='Search books, authors, category...'
+                />
+                <div className='absolute left-5 text-muted-foreground group-focus-within:text-foreground'>
+                    <Search size={20} />
+                </div>
+                <div className='absolute right-0'>
+                    <Button type='submit' className='font-semibold py-6 rounded-r-full rounded-l-none'>
+                        Search
+                    </Button>
+                </div>
+            </section>
+        </form>
+    )
+}
