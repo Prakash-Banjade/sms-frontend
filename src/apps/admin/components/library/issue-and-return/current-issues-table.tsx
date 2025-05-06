@@ -1,7 +1,7 @@
 import { EBookTransactionStatus } from "@/types/global.type"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
-import { useGetStudentTransactions } from "../actions";
+import { useGetStudentTransactions } from "../data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { formatDate } from "@/utils/format-date";
 import { differenceInDays, startOfDay } from "date-fns";

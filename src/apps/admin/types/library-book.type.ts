@@ -8,12 +8,24 @@ export type TLibraryBook = {
     publisherName: string,
     description: string | null,
     publicationYear: number,
-    copiesCount: number,
-    issuedCount: number;
+    copiesCount?: number,
+    issuedCount?: number;
     category: {
         id: string,
         name: string,
-    }
+    },
+    documents: {
+        id: string,
+        url: string,
+        originalName: string,
+        size: number,
+        format: string,
+    }[],
+    coverImage: {
+        id: string,
+        url: string,
+        originalName: string,
+    } | null
 }
 
 export type TLibraryBookesResponse = {

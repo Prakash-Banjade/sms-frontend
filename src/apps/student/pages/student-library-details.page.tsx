@@ -1,4 +1,4 @@
-import { useGetBookTransactions, useGetLibraryOverviewCount } from "@/apps/admin/components/library/actions";
+import { useGetBookTransactions, useGetLibraryOverviewCount } from "@/apps/admin/components/library/data-access";
 import { createQueryString } from "@/utils/create-query-string";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import ContainerLayout from "@/components/page-layouts/container-layout";

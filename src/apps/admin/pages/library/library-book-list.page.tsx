@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table/data-table"
 import { Link, useSearchParams } from "react-router-dom"
 import ContainerLayout from "@/components/page-layouts/container-layout"
-import { useGetLibraryBookes } from "../../components/library/actions"
+import { useGetLibraryBookes } from "../../components/library/data-access"
 import { libraryBooksColumns } from "../../components/library/library-books.columns"
 import LibraryBooksSearchFilters from "../../components/library/library-bok-search-filters"
 import { createQueryString } from "@/utils/create-query-string"

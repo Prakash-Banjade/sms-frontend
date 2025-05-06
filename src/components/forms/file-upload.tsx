@@ -5,10 +5,9 @@ import { useFormContext } from "react-hook-form";
 import { QueryKey } from "@/react-query/queryKeys";
 import { IFileUploadResponse } from "@/types/global.type";
 import { Input } from "../ui/input";
-import { cn } from "@/lib/utils";
+import { cn, getErrMsg } from "@/lib/utils";
 import { truncateFilename } from "@/utils/truncate-file-name";
 import { LoaderCircle, Trash } from "lucide-react";
-import { TooltipWrapper } from "../ui/tooltip";
 import { useMutation } from "@tanstack/react-query";
 import { useAxios } from "@/services/api";
 
@@ -38,6 +37,10 @@ export function FileUpload<T>({
 
     const { mutateAsync, isPending } = useMutation<IFileUploadResponse, Error, FormData>({
         mutationFn: async (data) => {
+            const files = data.get('files');
+
+            if (!files) return;
+
             const response = await axios.post(
                 `/${QueryKey.FILES}`,
                 data,
@@ -64,11 +67,10 @@ export function FileUpload<T>({
             setUploadProgress(0);
             setError(name as string, {
                 type: "manual",
-                message: error.message,
+                message: getErrMsg(error) || 'Failed to upload file',
             });
         },
     });
-
 
     const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -160,11 +162,9 @@ export function FileUpload<T>({
                                                     {truncateFilename(file.originalName, 40)}
                                                 </a>
 
-                                                <TooltipWrapper label="Remove file">
-                                                    <button type="button" onClick={() => handleRemoveFile(file.id)} aria-label="Remove file">
-                                                        <Trash className="h-4 w-4 text-destructive" />
-                                                    </button>
-                                                </TooltipWrapper>
+                                                <button type="button" onClick={() => handleRemoveFile(file.id)} aria-label="Remove file" title="Remove file">
+                                                    <Trash className="h-4 w-4 text-destructive" />
+                                                </button>
                                             </div>
                                         ))
                                     }

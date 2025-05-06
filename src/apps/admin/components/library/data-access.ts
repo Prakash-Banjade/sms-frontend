@@ -5,7 +5,6 @@ import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetLibraryBook = ({
     id,
-    queryString,
     options,
 }: {
     id: string;
@@ -16,7 +15,6 @@ export const useGetLibraryBook = ({
         queryKey: [QueryKey.LIBRARY_BOOKS, id],
         endpoint: QueryKey.LIBRARY_BOOKS,
         id,
-        queryString,
         options,
     })
 

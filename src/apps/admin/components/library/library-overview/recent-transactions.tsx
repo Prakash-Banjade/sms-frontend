@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { useGetBookTransactions } from "../actions";
+import { useGetBookTransactions } from "../data-access";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/utils/format-date";
 import TableHeadings from "@/components/data-table/table-headings";

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
-import { useGetBookTransactions } from "../actions"
+import { useGetBookTransactions } from "../data-access"
 import { createQueryString } from "@/utils/create-query-string"
 import { formatDate } from "@/utils/format-date"
 import { Badge } from "@/components/ui/badge"

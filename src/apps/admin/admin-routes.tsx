@@ -5,6 +5,7 @@ import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import { CommonRoutes } from '../common/common-routes';
+const SingleLibraryBookPage = lazy(() => import('./pages/library/single-library-book.page'));
 const SingleStaffPage = lazy(() => import('./pages/staffs/single-staff-page'));
 const SalaryStructuresPage = lazy(() => import('./pages/finance-system/salary-management/salary-structures/salary-structures.page'));
 const PayrollAndPaymentsPage = lazy(() => import('./pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page'));
@@ -198,6 +199,7 @@ export const AdminRoutesGroup = () => {
                     <Route index element={<LibraryBookListPage />} />
                     <Route path="categories" element={<BookCategoriesPage />} />
                     <Route path="new" element={<AddLibraryBookPage />} />
+                    <Route path=":id" element={<SingleLibraryBookPage />} />
                 </Route>
                 <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
             </Route>

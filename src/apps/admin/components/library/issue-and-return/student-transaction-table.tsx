@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useGetStudentTransactions } from "../actions"
+import { useGetStudentTransactions } from "../data-access"
 import { createQueryString } from "@/utils/create-query-string"
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
 import TableHeadings from "@/components/data-table/table-headings"

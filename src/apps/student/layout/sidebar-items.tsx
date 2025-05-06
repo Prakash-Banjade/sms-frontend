@@ -69,6 +69,11 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 title: "Live Classes",
                 url: "live-classes",
                 icon: Radio,
+            },
+            {
+                title: "E-Library",
+                url: "e-library",
+                icon: Library,
             }
         ]
     },

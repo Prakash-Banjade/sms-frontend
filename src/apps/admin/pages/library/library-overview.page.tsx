@@ -3,7 +3,7 @@ import { ArrowLeftRight, BookOpen, Calendar, UserCheck } from "lucide-react"
 import RecentLibraryBookTransactions from "../../components/library/library-overview/recent-transactions"
 import DetailedLibraryBookTransactions from "../../components/library/library-overview/detailed-transactions"
 import Library_StudentsOverview from "../../components/library/library-overview/students-overview"
-import { useGetLibraryOverviewCount } from "../../components/library/actions"
+import { useGetLibraryOverviewCount } from "../../components/library/data-access"
 
 export default function LibraryOverviewPage() {
     const { data: count, isLoading } = useGetLibraryOverviewCount();

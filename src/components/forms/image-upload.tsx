@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { Upload } from 'lucide-react'
+import { Trash, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
@@ -132,7 +132,7 @@ export default function ImageUpload<T>({
 
     if (isPending) {
         return (
-            <div className="p-8 border rounded-lg">
+            <div className="p-8 border rounded-lg h-full flex flex-col justify-center">
                 <div className="text-center space-y-4">
                     <Progress value={uploadProgress} className="w-full" />
                     <h3 className="font-semibold">Uploading Image: {uploadProgress}%</h3>
@@ -145,7 +145,7 @@ export default function ImageUpload<T>({
     }
 
     return (
-        <section className='flex flex-col gap-1'>
+        <section className='h-full relative'>
             <label
                 htmlFor={`file-upload-${name as string}`}
                 onDragOver={handleDragOver}
@@ -181,7 +181,7 @@ export default function ImageUpload<T>({
                         <>
                             <Upload className="h-10 w-10 text-gray-400 mb-4" />
                             <h3 className="font-semibold mb-2">Drag an image</h3>
-                            <p className="text-sm text-muted-foreground mb-4">
+                            <p className="text-sm text-center text-muted-foreground mb-4">
                                 {description}
                             </p>
                         </>
@@ -193,15 +193,22 @@ export default function ImageUpload<T>({
                     )
                 }
             </label>
+
             {
-                imageUrl && <Button
-                    type='button'
-                    onClick={handleRemove}
-                    variant="outline"
-                    className='mx-auto'
-                >
-                    Remove
-                </Button>
+                imageUrl && (
+                    <div className='absolute top-2 right-2'>
+                        <Button
+                            aria-label='Remove image'
+                            title='Remove image'
+                            type='button'
+                            size={'icon'}
+                            onClick={handleRemove}
+                            variant="destructive"
+                        >
+                            <Trash />
+                        </Button>
+                    </div>
+                )
             }
         </section>
     )

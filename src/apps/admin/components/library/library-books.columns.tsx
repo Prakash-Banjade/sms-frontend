@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {
+    DestructiveDropdownMenuButtonItem,
     DropdownMenu,
     DropdownMenuButtonItem,
     DropdownMenuContent,
@@ -16,6 +17,8 @@ import { libraryBookSchemaType } from "../../schemas/library-book.schema"
 import LibraryBookForm from "./library-book.form"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { QueryKey } from "@/react-query/queryKeys"
+import { useNavigate } from "react-router-dom"
+import { isUndefined } from "lodash"
 
 export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
     {
@@ -52,9 +55,11 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
         header: "Available / Total",
         accessorKey: "copiesCount",
         cell: ({ row }) => {
-            return <span>
-                {row.original.copiesCount - row.original.issuedCount} / {row.original.copiesCount}
-            </span>
+            const book = row.original;
+
+            return !isUndefined(book.copiesCount) && !isUndefined(book.issuedCount) && (<span>
+                {book.copiesCount - book.issuedCount} / {book.copiesCount}
+            </span>)
         }
     },
     {
@@ -63,6 +68,7 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
         cell: ({ row }) => {
             const [isEditOpen, setIsEditOpen] = useState(false);
             const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+            const navigate = useNavigate();
 
             const { mutateAsync, isPending } = useAppMutation<libraryBookSchemaType, any>();
 
@@ -80,12 +86,19 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
                         isOpen={isEditOpen}
                         setIsOpen={setIsEditOpen}
                         title="Edit Library Book"
-                        className="w-[97%] max-w-[600px]"
+                        className="w-[97%] max-w-[1200px]"
                     >
-                        <LibraryBookForm libraryBookId={row.original.id} setIsOpen={setIsEditOpen} defaultValues={{
-                            ...row.original,
-                            categoryId: row.original.category?.id,
-                        }} />
+                        <LibraryBookForm
+                            libraryBookId={row.original.id}
+                            setIsOpen={setIsEditOpen}
+                            defaultValues={{
+                                ...row.original,
+                                categoryId: row.original.category?.id,
+                                documentIds: row.original.documents?.map((doc) => doc.id) || [],
+                                coverImageId: row.original.coverImage?.url,
+                            }}
+                            documents={row.original.documents}
+                        />
                     </ResponsiveDialog>
 
                     <ResponsiveAlertDialog
@@ -107,12 +120,15 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuButtonItem onClick={() => navigate(row.original.id)}>
+                                <span>View Full Details</span>
+                            </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit Book</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
+                            <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
                                 <span>Delete</span>
-                            </DropdownMenuButtonItem>
+                            </DestructiveDropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>
