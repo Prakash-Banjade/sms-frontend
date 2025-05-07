@@ -10,6 +10,8 @@ import ContainerLayout from '@/components/page-layouts/container-layout';
 import { Input } from '@/components/ui/input';
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
 import { createQueryString } from '@/utils/create-query-string';
+import { useGetBookCategories } from '@/apps/admin/components/library/books-category/action';
+import { FacetedFilter } from '@/components/data-table/faceted-filter';
 
 export function LibraryBooksPage() {
     const { searchParams } = useCustomSearchParams();
@@ -25,6 +27,7 @@ export function LibraryBooksPage() {
     } = useInfiniteBooks({
         queryString: createQueryString({
             search: searchParams.get('search'),
+            categories: searchParams.get('categories'),
         })
     });
 
@@ -42,8 +45,8 @@ export function LibraryBooksPage() {
     // Configure the breakpoints for the masonry grid
     const breakpointColumns = {
         default: 4,
-        1100: 3,
-        768: 2,
+        1400: 3,
+        1024: 2,
         500: 1
     };
 
@@ -90,9 +93,13 @@ export function LibraryBooksPage() {
                         <BookOpen size={32} />
                     </div>
                     <h3 className="mb-2 text-lg font-medium">No books found</h3>
-                    <p className="mb-4 max-w-md text-muted-foreground">
-                        We couldn't find any books matching your search. Try a different query.
-                    </p>
+                    {
+                        searchParams.get("search") && (
+                            <p className="mb-4 max-w-md text-muted-foreground">
+                                We couldn't find any books matching your search. Try a different query.
+                            </p>
+                        )
+                    }
                 </div>
             );
         }
@@ -129,11 +136,11 @@ export function LibraryBooksPage() {
             title='E-Library'
             description="Access digital version of library books"
         >
-            <SearchInputForm />
+            <SearchForm />
 
             {
                 !!data?.totalItems && (
-                    <section className='text-center text-sm text-muted-foreground'>
+                    <section className='text-sm text-muted-foreground'>
                         Found {data?.totalItems?.toLocaleString()} book(s)
                         {
                             !!searchParams.get('search') && (
@@ -152,33 +159,41 @@ export function LibraryBooksPage() {
     );
 };
 
-function SearchInputForm() {
+function SearchForm() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
+
+    const { data } = useGetBookCategories({
+        queryString: 'skipPagination=true',
+    });
 
     function handleSearch(e: React.FormEvent) {
         e.preventDefault();
 
-        setSearchParams('search', (e.target as HTMLFormElement).search.value);
+        setSearchParams('search', (e.target as HTMLFormElement).search.value?.trim());
     }
 
     return (
-        <form onSubmit={handleSearch}>
-            <section className='group relative flex items-center max-w-[800px] w-[90%] mx-auto focus-within:shadow-lg'>
+        <form onSubmit={handleSearch} className='flex justify-center items-end gap-2'>
+            <section className='group max-w-[800px] w-[90%] relative flex items-center focus-within:shadow-lg'>
                 <Input
                     name='search'
                     type='search'
                     defaultValue={searchParams.get('search') ?? ''}
                     className='rounded-full p-6 pl-12'
-                    placeholder='Search books, authors, category...'
+                    placeholder='Search books, code, authors...'
                 />
                 <div className='absolute left-5 text-muted-foreground group-focus-within:text-foreground'>
                     <Search size={20} />
                 </div>
-                <div className='absolute right-0'>
+                <div className='absolute right-0 sm:block hidden'>
                     <Button type='submit' className='font-semibold py-6 rounded-r-full rounded-l-none'>
                         Search
                     </Button>
                 </div>
+            </section>
+
+            <section className='ml-auto'>
+                <FacetedFilter title="Category" searchKey="categories" options={data?.data.map((category) => ({ label: category.name, value: category.name, count: category.booksCount })) ?? []} />
             </section>
         </form>
     )

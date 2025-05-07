@@ -17,7 +17,7 @@ export const useInfiniteBooks = ({
         queryFn: ({ pageParam = 1 }) => axios.get<TLibraryBookesResponse>(`${QueryKey.LIBRARY_BOOKS}?${queryString}`, {
             params: {
                 page: pageParam,
-                take: 25,
+                take: 20,
             }
         }),
         initialPageParam: 1,

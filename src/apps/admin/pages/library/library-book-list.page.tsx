@@ -3,14 +3,14 @@ import { Link, useSearchParams } from "react-router-dom"
 import ContainerLayout from "@/components/page-layouts/container-layout"
 import { useGetLibraryBookes } from "../../components/library/data-access"
 import { libraryBooksColumns } from "../../components/library/library-books.columns"
-import LibraryBooksSearchFilters from "../../components/library/library-bok-search-filters"
 import { createQueryString } from "@/utils/create-query-string"
 import { Button } from "@/components/ui/button"
 import { PlusIcon } from "lucide-react"
+import { FacetedFilter } from "@/components/data-table/faceted-filter"
+import SearchInput from "@/components/search-components/search-input"
+import { useGetBookCategories } from "../../components/library/books-category/action"
 
 export default function LibraryBookListPage() {
-
-
     return (
         <ContainerLayout
             title="Books Catalog"
@@ -48,5 +48,18 @@ function LibraryBookList() {
             meta={data?.meta}
             filters={<LibraryBooksSearchFilters />}
         />
+    )
+}
+
+function LibraryBooksSearchFilters() {
+    const { data } = useGetBookCategories({
+        queryString: 'skipPagination=true',
+    })
+
+    return (
+        <section className="flex flex-wrap lg:gap-5 gap-3 w-full items-end">
+            <SearchInput placeholder="Search by book name or code" label="Search" />
+            <FacetedFilter title="Category" searchKey="categories" options={data?.data.map((category) => ({ label: category.name, value: category.name, count: category.booksCount })) ?? []} />
+        </section>
     )
 }
