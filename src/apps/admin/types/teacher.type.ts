@@ -80,6 +80,16 @@ export type TeacherClassSchedule = {
     subjectName: string
 }
 
+export type TLibraryTeacher = {
+    id: string,
+    name: string,
+    phone: string,
+    email: string,
+    profileImageUrl: string | null,
+    transactionCount: string;
+    faculties: string | string[]
+}
+
 /**
 |--------------------------------------------------
 | TYPES FOR STUDENT VIEW

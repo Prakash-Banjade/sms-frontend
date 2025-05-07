@@ -12,6 +12,11 @@ import { z } from "zod"
 type Props = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     studentId: string;
+    teacherId?: undefined
+} | {
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    teacherId: string;
+    studentId?: undefined
 }
 
 const bookIssueFormSchema = z.object({
@@ -19,7 +24,16 @@ const bookIssueFormSchema = z.object({
     dueDate: z.string({ required_error: "Due date is required" }).refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid due date',
     }),
-    studentId: z.string({ required_error: "Student ID is required" }).uuid(),
+    studentId: z.string().uuid().optional(),
+    teacherId: z.string().uuid().optional(),
+}).superRefine((data, ctx) => {
+    if (!data.teacherId && !data.studentId) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Either student or teacher ID is required",
+            path: ["studentId"],
+        })
+    }
 })
 
 const defaultValues: Partial<bookIssueFormSchemaType> = {
@@ -29,7 +43,7 @@ const defaultValues: Partial<bookIssueFormSchemaType> = {
 
 export type bookIssueFormSchemaType = z.infer<typeof bookIssueFormSchema>;
 
-export default function BookIssueForm({ setIsOpen, studentId }: Props) {
+export default function BookIssueForm({ setIsOpen, studentId, teacherId }: Props) {
     const [searchParams] = useSearchParams();
     const queryClient = useQueryClient();
 
@@ -38,6 +52,7 @@ export default function BookIssueForm({ setIsOpen, studentId }: Props) {
         defaultValues: {
             ...defaultValues,
             studentId,
+            teacherId
         },
     })
 

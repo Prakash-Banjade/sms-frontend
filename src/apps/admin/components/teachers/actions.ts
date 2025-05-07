@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData"
 import { QueryKey } from "@/react-query/queryKeys"
-import { TeacherClassSchedule, TeachersResponse, TeacherWithAttendanceResponse, TSingleTeacher } from "@/apps/admin/types/teacher.type";
+import { TeacherClassSchedule, TeachersResponse, TeacherWithAttendanceResponse, TLibraryTeacher, TSingleTeacher } from "@/apps/admin/types/teacher.type";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetTeacher = <T = TSingleTeacher>({
@@ -69,6 +69,26 @@ export const useGetTeacherClassSchedule = <T = TeacherClassSchedule[],>({
     const response = useFetchData<T>({
         endpoint: QueryKey.TEACHERS + '/' + id + '/class-schedule',
         queryKey: queryString ? [QueryKey.TEACHERS, id, 'class-schedule', queryString] : [QueryKey.TEACHERS, id, 'class-schedule'],
+        queryString,
+        options,
+    })
+
+    return response;
+}
+
+export const useGetLibraryTeacher = ({
+    id,
+    queryString,
+    options,
+}: {
+    id: string;
+    queryString?: string;
+    options?: Partial<UseQueryOptions<TLibraryTeacher>>
+}) => {
+    const response = useFetchData<TLibraryTeacher>({
+        queryKey: [QueryKey.TEACHERS, QueryKey.LIBRARY, id],
+        endpoint: QueryKey.TEACHERS + '/' + QueryKey.LIBRARY,
+        id,
         queryString,
         options,
     })

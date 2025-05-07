@@ -63,8 +63,8 @@ export const useGetStudentTransactions = ({
     options?: UseQueryOptions<TStudentTransactionsResponse>
 }) => {
     const response = useFetchData<TStudentTransactionsResponse>({
-        endpoint: QueryKey.BOOK_TRANSACTIONS + '/student',
-        queryKey: queryString ? [QueryKey.BOOK_TRANSACTIONS, queryString] : [QueryKey.BOOK_TRANSACTIONS],
+        endpoint: QueryKey.BOOK_TRANSACTIONS + '/member',
+        queryKey: queryString ? [QueryKey.BOOK_TRANSACTIONS, 'member', queryString] : [QueryKey.BOOK_TRANSACTIONS, 'member'],
         queryString,
         options,
     })
