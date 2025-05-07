@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { EBookTransactionStatus } from "@/types/global.type";
 import { useSearchParams } from "react-router-dom";
 
-export default function StudentLibraryDetailsPage() {
+export default function MyLibraryDetailsPage() {
 
     return (
         <ContainerLayout
@@ -48,7 +48,7 @@ function LibraryStatistics() {
 function BookTransactions() {
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [searchFilters, setSearchFilters] = useState({
-        status: searchParams.get('status') ?? '',
+        status: searchParams.get('status') ?? 'all',
     })
 
     const handleSearchFiltersChange = (value: string, key: keyof typeof searchFilters) => {
@@ -69,6 +69,7 @@ function BookTransactions() {
                         <SelectValue placeholder="Filter by status" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value={"all"} className="text-xs text-muted-foreground">All</SelectItem>
                         <SelectItem value={EBookTransactionStatus.Issued}>Issued</SelectItem>
                         <SelectItem value={EBookTransactionStatus.Returned}>Returned</SelectItem>
                         <SelectItem value={EBookTransactionStatus.Overdue}>Overdue</SelectItem>

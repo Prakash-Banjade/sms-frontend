@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Banknote, BookCheck, BookOpenText, Building, Calendar, CalendarDays, LayoutDashboard, Library, Radio, Shapes, UserRoundX, UsersRound } from "lucide-react";
+import { Banknote, BookCheck, BookOpenText, Building, Calendar, CalendarDays, LayoutDashboard, Library, LibraryBig, Radio, Shapes, UserRoundX, UsersRound } from "lucide-react";
 
 export const teacherSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -74,8 +74,18 @@ export const teacherSidebarMenuItems: TGroupMenuItem[] = [
                 title: "E-Library",
                 url: "e-library",
                 icon: Library,
-            }
+            },
         ]
+    },
+    {
+        groupLabel: "School Resources",
+        menuItems: [
+            {
+                title: "Library",
+                url: "library",
+                icon: LibraryBig,
+            },
+        ],
     },
     {
         groupLabel: "Personal",

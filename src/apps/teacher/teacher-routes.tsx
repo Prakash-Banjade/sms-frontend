@@ -8,6 +8,7 @@ import { lazy } from 'react';
 import StreamClientProvider from './layout/stream-client-provider';
 import { LibraryBooksPage } from '../common/pages/library-books/library-books.page';
 import SingleLibraryBookPage from '../admin/pages/library/single-library-book.page';
+import MyLibraryDetailsPage from '../common/pages/library-books/my-library-details.page';
 const MyClassesPage = lazy(() => import('./pages/my-classes.page'));
 const StudentAttendancePage = lazy(() => import('../admin/pages/students-management/attendance/student-attendance.page'));
 const MyAttendancePage = lazy(() => import('../student/pages/my-attendance.page'));
@@ -82,6 +83,8 @@ const TeacherRoutes = () => {
             <Route index element={<LibraryBooksPage />} />
             <Route path=":id" element={<SingleLibraryBookPage />} />
           </Route>
+
+          <Route path='library' element={<MyLibraryDetailsPage />} />
 
           <Route path="schedule" element={<ClassRoutinePage />} />
           <Route path="live-classes" element={<StreamClientProvider />}>

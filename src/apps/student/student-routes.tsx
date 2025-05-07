@@ -25,7 +25,7 @@ const SingleLessonPlanPage = lazy(() => import("../teacher/pages/lesson-plan/sin
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
-const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
+const MyLibraryDetailsPage = lazy(() => import("../common/pages/library-books/my-library-details.page"));
 const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
 const OnlineClassesPage = lazy(() => import("../common/pages/online-classes/online-classes.page"));
 
@@ -56,7 +56,7 @@ const StudentRoutes = () => {
           </Route>
           <Route path="class-routine" element={<ClassRoutinePage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
-          <Route path='library' element={<StudentLibraryDetailsPage />} />
+          <Route path='library' element={<MyLibraryDetailsPage />} />
           <Route path='dormitory' element={<MyDormitoryPage />} />
           <Route path="examination">
             <Route path='routine' element={<StudentExamRoutinePage />} />
