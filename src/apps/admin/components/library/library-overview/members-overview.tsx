@@ -3,8 +3,8 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator";
 
 type Props = {
-    totalStudents: number;
-    issuedStudents: number;
+    totalMemberss: number;
+    issuedMemberss: number;
     topBooks: {
         bookId: string,
         bookName: string,
@@ -12,27 +12,27 @@ type Props = {
     }[]
 }
 
-export default function Library_StudentsOverview({
-    totalStudents,
-    issuedStudents,
+export default function LibraryMembersOverview({
+    totalMemberss,
+    issuedMemberss,
     topBooks,
 }: Props) {
     return (
         <Card className="">
             <CardHeader>
-                <CardTitle>Student Overview</CardTitle>
-                <CardDescription>Quick stats on student activities</CardDescription>
+                <CardTitle>Members Overview</CardTitle>
+                <CardDescription>Quick stats on members activities</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
                     <div>
                         <div className="flex items-center justify-between mb-2">
-                            <span>Total Students:</span>
-                            <span className="font-bold">{totalStudents}</span>
+                            <span>Total Memberss:</span>
+                            <span className="font-bold">{totalMemberss}</span>
                         </div>
-                        <Progress value={(issuedStudents / totalStudents) * 100} />
+                        <Progress value={(issuedMemberss / totalMemberss) * 100} />
                         <p className="text-sm text-muted-foreground mt-1">
-                            {issuedStudents} students with issued books
+                            {issuedMemberss} memberss with issued books
                         </p>
                     </div>
                     {

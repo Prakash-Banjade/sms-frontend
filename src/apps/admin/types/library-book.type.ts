@@ -51,10 +51,8 @@ export type TLibraryBookTransaction = {
     bookCode: string,
     returnedAt: string | null,
     createdAt: string,
-    studentId: number,
-    studentName: string,
-    parentClassName: string | null,
-    classRoomName: string,
+    memberId: number,
+    memberName: string,
     fine: number;
     paidAt: string | null;
     renewals: string;
@@ -86,8 +84,8 @@ export type TLibraryOverviewCount = {
     transactionCount: number,
     issuedCount: number,
     overdueCount: number,
-    studentsCount: number,
-    issuedStudentCount: number,
+    membersCount: number,
+    issuedMembersCount: number,
     topBooks: {
         bookId: string,
         bookName: string,
