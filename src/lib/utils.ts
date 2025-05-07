@@ -41,6 +41,8 @@ export function getErrMsg(error: unknown): string | null {
     const err = error.response?.data?.message;
 
     if (err instanceof Object && 'message' in err) {
+      const msg = err.message;
+      if (Array.isArray(msg)) return msg[0];
       return err.message;
     } else if (typeof err === 'string') {
       return err;

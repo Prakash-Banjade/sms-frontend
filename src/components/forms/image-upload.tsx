@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { Trash, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { cn } from '@/lib/utils'
+import { cn, getErrMsg } from '@/lib/utils'
 import { IFileUploadResponse } from '@/types/global.type'
 import { QueryKey } from '@/react-query/queryKeys'
 import { useFormContext } from 'react-hook-form'
@@ -66,7 +66,7 @@ export default function ImageUpload<T>({
         },
         onError: (error) => {
             setUploadProgress(0);
-            setError(error.message);
+            setError(getErrMsg(error) || 'Failed to upload file');
         },
     });
 
@@ -101,7 +101,7 @@ export default function ImageUpload<T>({
             setUploadProgress(100)
         } catch (err) {
             if (err instanceof Error) {
-                setError(err.message)
+                setError(getErrMsg(err) || 'Failed to upload file')
             }
         } finally {
             setIsDragging(false)
