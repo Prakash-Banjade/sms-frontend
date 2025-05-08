@@ -4,11 +4,12 @@ import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Badge } from "@/components/ui/badge";
 import ExamEvaluationForm from "../../components/examination/exam-evaluation/exam-evaluation-form";
 import { createQueryString } from "@/utils/create-query-string";
-import { TExamSubject } from "@/apps/admin/types/examination.type";
+import { TExamSubject, TSingleExam } from "@/apps/admin/types/examination.type";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { ESubjectType } from "@/types/global.type";
+import { SectionSearchFilters } from "@/components/search-components/section-search-filter";
 
 export default function ExamEvaluationPage() {
     const params = useParams();
@@ -27,6 +28,8 @@ export default function ExamEvaluationPage() {
 
     if (!exam && !isLoading) return <Navigate to={`/${payload?.role}/exam-setup`} />;
 
+    if (!exam) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>;
+
     return (
         <ContainerLayout
             title={`Exam Evaluation - ${exam?.examType.name}`}
@@ -36,12 +39,12 @@ export default function ExamEvaluationPage() {
                 </Badge>
             )}
         >
-            <EvaluationTable examId={params.id!} examSubjects={exam?.examSubjects ?? []} />
+            <EvaluationTable exam={exam} />
         </ContainerLayout>
     )
 };
 
-const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubjects: TExamSubject[] }) => {
+const EvaluationTable = ({ exam: { id, examSubjects, classRoom } }: { exam: TSingleExam }) => {
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
     useEffect(() => {
@@ -50,11 +53,12 @@ const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubject
     }, []);
 
     const { data: students, isLoading } = useGetExamStudents({ // no pagination
-        id: examId,
+        id,
         queryString: createQueryString({
-            optionalSubjectId: searchParams.get('optionalSubjectId')
+            optionalSubjectId: searchParams.get('optionalSubjectId'),
+            sectionId: searchParams.get('sectionId'),
         }),
-        options: { enabled: !!examId }
+        options: { enabled: !!id }
     });
 
     if (!examSubjects?.length) return <p className="text-muted-foreground text-center my-20">No exams has held to be evaluated.</p>
@@ -62,6 +66,11 @@ const EvaluationTable = ({ examId, examSubjects }: { examId: string, examSubject
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <ExamEvaluationForm examSubjects={examSubjects} students={students ?? []} />
+        <>
+            <section className="flex">
+                <SectionSearchFilters classRoomId={classRoom?.id} />
+            </section>
+            <ExamEvaluationForm examSubjects={examSubjects} students={students ?? []} />
+        </>
     )
 }

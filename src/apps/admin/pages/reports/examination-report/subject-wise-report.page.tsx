@@ -4,14 +4,12 @@ import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useMemo } from "react";
 import { createQueryString } from "@/utils/create-query-string";
-import SearchInput from "@/components/search-components/search-input";
 import { DataTable } from "@/components/data-table/data-table";
 import { subjectWiseReportColumns } from "@/apps/admin/components/report/examination-report/subject-wise-report/subject-wise-report.column";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useGetClassRoomsOptions } from "@/apps/admin/components/class-rooms/actions";
-import { useSearchParams } from "react-router-dom";
-import { Label } from "@/components/ui/label";
+
 import DashboardCountCard from "@/components/dashboard/dashboard-count-card";
+import { SectionSearchFilters } from "@/components/search-components/section-search-filter";
+import SearchInput from "@/components/search-components/search-input";
 
 export default function ExaminationReport_SubjectWise() {
     return (
@@ -103,45 +101,13 @@ function ReportSection() {
 };
 
 function SearchFilters() {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const classRoomId = searchParams.get('classRoomId');
-
-    const { data, isLoading } = useGetClassRoomsOptions({
-        queryString: 'page=1&take=50',
-        options: { enabled: !!classRoomId }
-    });
-
     return (
         <section className="flex gap-6">
             <SearchInput
                 label="Search"
                 placeholder="Search by student name"
             />
-            <section className="space-y-2">
-                <Label>Select section</Label>
-                <Select
-                    value={searchParams.get('sectionId') ?? ''}
-                    onValueChange={val => {
-                        (!!val && val !== 'all') ? searchParams.set('sectionId', val) : searchParams.delete('sectionId');
-                        setSearchParams(searchParams);
-                    }}
-                    disabled={!classRoomId || isLoading}
-                >
-                    <SelectTrigger className="min-w-[200px]">
-                        <SelectValue placeholder="Section" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value={'all'} className="text-xs text-muted-foreground">Select Section</SelectItem>
-                            {
-                                data?.find((classRoom) => classRoom.id === classRoomId)?.children?.map((section) => (
-                                    <SelectItem value={section.id} key={section.id}>{section.name}</SelectItem>
-                                ))
-                            }
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            </section>
+            <SectionSearchFilters />
         </section>
     )
 }
