@@ -1,14 +1,14 @@
+import { lazy } from 'react';
 import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { teacherSidebarMenuItems } from './layout/sidebar-items';
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
 import { CommonRoutes, OnlineClassesRoutes } from '../common/common-routes';
-import { lazy } from 'react';
 import StreamClientProvider from './layout/stream-client-provider';
-import { LibraryBooksPage } from '../common/pages/library-books/library-books.page';
-import SingleLibraryBookPage from '../admin/pages/library/single-library-book.page';
-import MyLibraryDetailsPage from '../common/pages/library-books/my-library-details.page';
+const LibraryBooksPage = lazy(() => import("../common/pages/library-books/library-books.page"));
+const SingleLibraryBookPage = lazy(() => import('../admin/pages/library/single-library-book.page'));
+const MyLibraryDetailsPage = lazy(() => import('../common/pages/library-books/my-library-details.page'));
 const MyClassesPage = lazy(() => import('./pages/my-classes.page'));
 const StudentAttendancePage = lazy(() => import('../admin/pages/students-management/attendance/student-attendance.page'));
 const MyAttendancePage = lazy(() => import('../student/pages/my-attendance.page'));

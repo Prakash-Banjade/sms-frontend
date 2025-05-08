@@ -13,7 +13,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { useGetBookCategories } from '@/apps/admin/components/library/books-category/action';
 import { FacetedFilter } from '@/components/data-table/faceted-filter';
 
-export function LibraryBooksPage() {
+export default function LibraryBooksPage() {
     const { searchParams } = useCustomSearchParams();
 
     const {
