@@ -4,7 +4,7 @@ import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Badge } from "@/components/ui/badge";
 import ExamEvaluationForm from "../../components/examination/exam-evaluation/exam-evaluation-form";
 import { createQueryString } from "@/utils/create-query-string";
-import { TExamSubject, TSingleExam } from "@/apps/admin/types/examination.type";
+import { TSingleExam } from "@/apps/admin/types/examination.type";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/auth-provider";

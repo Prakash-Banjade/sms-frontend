@@ -13,6 +13,14 @@ import { createQueryString } from '@/utils/create-query-string';
 import { useGetBookCategories } from '@/apps/admin/components/library/books-category/action';
 import { FacetedFilter } from '@/components/data-table/faceted-filter';
 
+// Configure the breakpoints for the masonry grid
+const breakpointColumns = {
+    default: 4,
+    1400: 3,
+    1024: 2,
+    500: 1
+};
+
 export default function LibraryBooksPage() {
     const { searchParams } = useCustomSearchParams();
 
@@ -42,27 +50,9 @@ export default function LibraryBooksPage() {
         }
     }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-    // Configure the breakpoints for the masonry grid
-    const breakpointColumns = {
-        default: 4,
-        1400: 3,
-        1024: 2,
-        500: 1
-    };
-
     const renderBooks = () => {
         if (status === 'pending') {
-            return (
-                <Masonry
-                    breakpointCols={breakpointColumns}
-                    className="my-masonry-grid"
-                    columnClassName="my-masonry-grid_column"
-                >
-                    {Array.from({ length: 12 }).map((_, index) => (
-                        <BookSkeleton key={index} />
-                    ))}
-                </Masonry>
-            );
+            return <BooksSkeleton />
         }
 
         if (status === 'error') {
@@ -111,22 +101,21 @@ export default function LibraryBooksPage() {
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column"
                 >
-                    {data?.pages.flatMap(page => page.data.data).map((book, index) => (
-                        <BookCard key={book.id} book={book} index={index} />
-                    ))}
-                </Masonry>
+                    {
+                        data?.pages.flatMap(page => page.data.data).map((book, index) => (
+                            <BookCard key={book.id} book={book} index={index} />
+                        ))
+                    }
 
-                {/* Loading more indicator */}
-                <div ref={innerRef} className="mt-8">
-                    {isFetchingNextPage && (
-                        <div className="flex justify-center">
-                            <div className="flex items-center gap-2">
-                                <RefreshCw size={20} className="animate-spin text-muted-foreground" />
-                                <span className="text-sm text-muted-foreground">Loading more books...</span>
-                            </div>
-                        </div>
-                    )}
-                </div>
+
+                    <div ref={innerRef} />
+
+                    {
+                        isFetchingNextPage && Array.from({ length: 12 }).map((_, index) => (
+                            <BookSkeleton key={index} />
+                        ))
+                    }
+                </Masonry>
             </>
         );
     };
@@ -158,6 +147,20 @@ export default function LibraryBooksPage() {
         </ContainerLayout>
     );
 };
+
+function BooksSkeleton() {
+    return (
+        <Masonry
+            breakpointCols={breakpointColumns}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+        >
+            {Array.from({ length: 12 }).map((_, index) => (
+                <BookSkeleton key={index} />
+            ))}
+        </Masonry>
+    )
+}
 
 function SearchForm() {
     const { searchParams, setSearchParams } = useCustomSearchParams();
