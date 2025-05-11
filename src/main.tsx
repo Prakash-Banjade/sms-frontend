@@ -30,7 +30,6 @@ createRoot(document.getElementById('root')!).render(
           disableTransitionOnChange
         >
           <Toaster
-            position="bottom-right"
             reverseOrder={false}
             toastOptions={{
               duration: 5000,

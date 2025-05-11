@@ -1,7 +1,7 @@
 import AppForm from "@/components/forms/app-form"
 import { ESalaryAdjustmentType, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { addMonths, format } from "date-fns"
+import { addMonths, format, subMonths } from "date-fns"
 import { useFieldArray, useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -35,7 +35,7 @@ type Props = {
 
 const payrollSchema = z.object({
     employeeId: z.string({ required_error: 'Employee ID is required' }).uuid({ message: 'Employee ID must be a valid UUID' }),
-    date: z.string({ required_error: 'Date is required' }).datetime({ message: 'A valid date is required' }),
+    date: z.string({ required_error: 'Date is required' }).datetime({ message: 'A valid date is required' }), // this date is not necessary to send to backend, it is calculated automatically
     salaryAdjustments: z.array(z.object({
         amount: z.coerce.number().min(0, { message: 'Amount must be greater than 0' }),
         description: z.string({ required_error: 'Particular is required' })
@@ -59,7 +59,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
             employeeId: salaryEmployee.employee?.id,
             date: salaryEmployee.lastPayrollDate
                 ? startOfDayString(addMonths(salaryEmployee.lastPayrollDate, 1))
-                : startOfDayString(new Date()),
+                : startOfDayString(subMonths(new Date(), 1)), // payroll is calculated for last month
             salaryAdjustments: [],
             advance: 0,
         }
@@ -101,13 +101,18 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                             description: 'Advance',
                             type: ESalaryAdjustmentType.Advance
                         }
-                    ] : values.salaryAdjustments
+                    ] : values.salaryAdjustments,
+                employeeType: searchParams.get("employeeID")?.includes('STAFF') ? 'staff' : 'teacher', // this is needed in backend to determine which table to use
             },
             invalidateTags: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.employeeId?.toString()]
         });
 
         queryClient.invalidateQueries({
             queryKey: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.id], // invalidate last payroll
+        });
+
+        queryClient.invalidateQueries({
+            queryKey: [QueryKey.PAYROLLS, 'salary-employee', salaryEmployee.employee.employeeId] // invalidate salary employee
         });
 
         if (res.data?.message && !payrollId) { // when new payroll is created

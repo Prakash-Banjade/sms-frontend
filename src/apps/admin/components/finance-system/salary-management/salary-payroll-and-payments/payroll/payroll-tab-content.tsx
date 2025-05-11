@@ -3,11 +3,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PayrollForm from "./payroll-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { z } from "zod"
-import { sub } from "date-fns"
+import { addMonths, isBefore, isSameMonth, sub, subMonths } from "date-fns"
 import { startOfDayString } from "@/lib/utils"
 import SalaryPayrollsTable from "./salary-payrolls-table"
 import { useGetLastPayroll } from "../../data-access"
 import { DateRangeFilter } from "@/components/search-components/date-range-filter"
+import { useMemo } from "react"
 
 type Props = {
     salaryEmployee: TSalaryEmployee
@@ -28,6 +29,16 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
         },
     });
 
+    const isPayrollGenerationAvailable = useMemo(() => {
+        const { lastPayrollDate } = salaryEmployee;
+
+        if (!lastPayrollDate) return true; // no payroll generated, so available to generate
+
+        const newSalaryDate = lastPayrollDate ? addMonths(lastPayrollDate, 1) : subMonths(new Date(), 1);
+
+        return isBefore(newSalaryDate, new Date()) && !isSameMonth(newSalaryDate, new Date());
+    }, [salaryEmployee])
+
     return (
         <section className="pt-4">
             <Tabs
@@ -40,7 +51,11 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
                     <TabsTrigger value="all">All Payrolls</TabsTrigger>
                 </TabsList>
                 <TabsContent value="new">
-                    <PayrollForm salaryEmployee={salaryEmployee} />
+                    {
+                        isPayrollGenerationAvailable
+                            ? <PayrollForm salaryEmployee={salaryEmployee} />
+                            : <div className="my-20 text-center text-muted-foreground">Payroll for previous month is already generated</div>
+                    }
                 </TabsContent>
                 <TabsContent value="last">
                     {
