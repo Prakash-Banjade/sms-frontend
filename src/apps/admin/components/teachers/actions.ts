@@ -49,7 +49,7 @@ export const useGetTeachersWithAttendances = <T = TeacherWithAttendanceResponse,
 }) => {
     const response = useFetchData<T>({
         endpoint: QueryKey.TEACHERS + '/' + QueryKey.ATTENDANCES,
-        queryKey: queryString ? [QueryKey.TEACHERS, queryString] : [QueryKey.TEACHERS],
+        queryKey: queryString ? [QueryKey.TEACHERS, QueryKey.ATTENDANCES, queryString] : [QueryKey.TEACHERS, QueryKey.ATTENDANCES],
         queryString,
         options,
     })

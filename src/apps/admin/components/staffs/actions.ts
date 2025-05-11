@@ -50,7 +50,7 @@ export const useGetStaffsWithAttendances = ({
 }) => {
     const response = useFetchData<StaffWithAttendanceResponse>({
         endpoint: QueryKey.STAFFS + '/' + QueryKey.ATTENDANCES,
-        queryKey: queryString ? [QueryKey.STAFFS, queryString] : [QueryKey.STAFFS],
+        queryKey: queryString ? [QueryKey.STAFFS, QueryKey.ATTENDANCES, queryString] : [QueryKey.STAFFS, QueryKey.ATTENDANCES],
         queryString,
         options,
     })
