@@ -17,13 +17,15 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
     const employee = data.employee;
 
     const deductions = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction);
+    const absentAdjustment = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Absent);
 
     const allowanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Allowance)?.amount ?? 0;
     const previousAdvanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Past_Advance)?.amount ?? 0;
     const advanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Advance)?.amount ?? 0;
     const unpaidAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Unpaid)?.amount ?? 0;
     const totalBonus = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
-    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0);
+    const absentFine = absentAdjustment?.amount ?? 0;
+    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0) + absentFine;
     const totalEarnings = data.basicSalary + allowanceAmount + unpaidAmount + totalBonus + advanceAmount;
 
     return (
@@ -125,6 +127,12 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                                 previousAdvanceAmount > 0 && <TableRow>
                                     <TableCell>Previous Advance</TableCell>
                                     <TableCell className="text-right">Rs. {previousAdvanceAmount?.toLocaleString()}</TableCell>
+                                </TableRow>
+                            }
+                            {
+                                absentFine > 0 && <TableRow>
+                                    <TableCell>{absentAdjustment?.description}</TableCell>
+                                    <TableCell className="text-right">Rs. {absentFine?.toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             {

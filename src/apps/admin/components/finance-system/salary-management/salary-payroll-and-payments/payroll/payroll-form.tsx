@@ -20,6 +20,7 @@ import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import PayrollPrintBtn from "./payroll-print-btn"
 import { useGetLastPayroll } from "../../data-access"
 import { useSearchParams } from "react-router-dom"
+import useGetAbsentCount from "./useGetAbsentCount"
 
 type Props = {
     salaryEmployee: TSalaryEmployee,
@@ -54,16 +55,30 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
     const queryClient = useQueryClient();
     const { searchParams, setSearchParams } = useCustomSearchParams();
 
+    const salaryDate = salaryEmployee.lastPayrollDate
+        ? startOfDayString(addMonths(salaryEmployee.lastPayrollDate, 1))
+        : startOfDayString(subMonths(new Date(), 1)); // payroll is calculated for last month
+
+    const { data, isLoading } = useGetAbsentCount(salaryDate, salaryEmployee.employee.accountId);
+
     const formDefaultValues = useMemo(() => {
+        const absentCount = +(data?.monthly.absent ?? 0);
+        const totalDays = +(data?.monthly.total ?? 30);
+
         return defaultValues ?? {
             employeeId: salaryEmployee.employee?.id,
-            date: salaryEmployee.lastPayrollDate
-                ? startOfDayString(addMonths(salaryEmployee.lastPayrollDate, 1))
-                : startOfDayString(subMonths(new Date(), 1)), // payroll is calculated for last month
-            salaryAdjustments: [],
+            date: salaryDate,
+            salaryAdjustments: [
+                ...(absentCount > 0 ? [
+                    {
+                        amount: Math.round((absentCount / totalDays) * salaryEmployee.basicSalary),
+                        description: `Absent Fine (${absentCount} days)`,
+                        type: ESalaryAdjustmentType.Absent,
+                    }] : [])
+            ],
             advance: 0,
         }
-    }, [defaultValues, salaryEmployee])
+    }, [defaultValues, salaryEmployee, data])
 
     const form = useForm<PayrollFormSchemaType>({
         resolver: zodResolver(payrollSchema),
@@ -72,11 +87,13 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
 
     useEffect(() => {
         form.reset(defaultValues ?? formDefaultValues);
-    }, [defaultValues])
+    }, [defaultValues, data]);
 
     const totalAdjustments = useMemo(() => {
+        const deductionTypes = [ESalaryAdjustmentType.Deduction, ESalaryAdjustmentType.Absent];
+
         return form.watch('salaryAdjustments')?.reduce((acc, curr) => {
-            return curr.type === ESalaryAdjustmentType.Deduction ? acc - +curr.amount : acc + +curr.amount;
+            return deductionTypes.includes(curr.type) ? acc - +curr.amount : acc + +curr.amount;
         }, 0) ?? 0;
     }, [form.watch()]);
 
@@ -87,6 +104,10 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
     const onSubmit = async (values: PayrollFormSchemaType) => {
         if (hasPaymentMade) return;
 
+        const adjustments = values.salaryAdjustments?.filter(sa => sa.type !== ESalaryAdjustmentType.Absent); // no need to send absent adjustment, backend will calculate automatically
+
+        console.log(salaryDate)
+
         const res = await mutateAsync({
             method: !!defaultValues ? 'patch' : 'post',
             endpoint: QueryKey.PAYROLLS,
@@ -95,13 +116,13 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                 ...values,
                 salaryAdjustments: values.advance > 0
                     ? [
-                        ...(values.salaryAdjustments ?? []),
+                        ...(adjustments ?? []),
                         {
                             amount: values.advance,
                             description: 'Advance',
                             type: ESalaryAdjustmentType.Advance
                         }
-                    ] : values.salaryAdjustments,
+                    ] : adjustments,
                 employeeType: searchParams.get("employeeID")?.includes('STAFF') ? 'staff' : 'teacher', // this is needed in backend to determine which table to use
             },
             invalidateTags: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.employeeId?.toString()]
@@ -222,90 +243,102 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
 
                     <div className="space-y-2">
                         <h2 className="font-semibold uppercase">Adjustments</h2>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Particulars</TableHead>
-                                    <TableHead className="w-52">Type</TableHead>
-                                    <TableHead>Amount</TableHead>
-                                    <TableHead></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {
-                                    fields.map((field, index) => (
-                                        <TableRow key={field.id}>
-                                            <TableCell>
-                                                <AppForm.Text
-                                                    name={`salaryAdjustments.${index}.description`}
-                                                    placeholder="eg. Tax (13%)"
-                                                    readOnly={hasPaymentMade}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <FormField
-                                                    control={form.control}
-                                                    name={`salaryAdjustments.${index}.type`}
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                <FormControl>
-                                                                    <SelectTrigger aria-readonly={hasPaymentMade} className={cn(hasPaymentMade && "pointer-events-none")}>
-                                                                        <SelectValue placeholder="Select a type" />
-                                                                    </SelectTrigger>
-                                                                </FormControl>
-                                                                <SelectContent>
-                                                                    <SelectItem value={ESalaryAdjustmentType.Deduction}>Deduction</SelectItem>
-                                                                    <SelectItem value={ESalaryAdjustmentType.Bonus}>Bonus</SelectItem>
-                                                                </SelectContent>
-                                                            </Select>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <AppForm.Number
-                                                    name={`salaryAdjustments.${index}.amount`}
-                                                    placeholder="eg. 1000"
-                                                    readOnly={hasPaymentMade}
-                                                />
-                                            </TableCell>
+                        {
+                            isLoading ? (
+                                <div className="py-6 text-center text-muted-foreground">
+                                    Loading...
+                                </div>
+                            ) : (
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Particulars</TableHead>
+                                            <TableHead className="w-52">Type</TableHead>
+                                            <TableHead>Amount</TableHead>
+                                            <TableHead></TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {
+                                            fields.map((field, index) => {
+                                                return field.type === ESalaryAdjustmentType.Absent ? (
+                                                    <AbsentAdjustmentRow key={field.id} field={field} />
+                                                ) : (
+                                                    <TableRow key={field.id}>
+                                                        <TableCell>
+                                                            <AppForm.Text
+                                                                name={`salaryAdjustments.${index}.description`}
+                                                                placeholder="eg. Tax (13%)"
+                                                                readOnly={hasPaymentMade}
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <FormField
+                                                                control={form.control}
+                                                                name={`salaryAdjustments.${index}.type`}
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                            <FormControl>
+                                                                                <SelectTrigger aria-readonly={hasPaymentMade} className={cn(hasPaymentMade && "pointer-events-none")}>
+                                                                                    <SelectValue placeholder="Select a type" />
+                                                                                </SelectTrigger>
+                                                                            </FormControl>
+                                                                            <SelectContent>
+                                                                                <SelectItem value={ESalaryAdjustmentType.Deduction}>Deduction</SelectItem>
+                                                                                <SelectItem value={ESalaryAdjustmentType.Bonus}>Bonus</SelectItem>
+                                                                            </SelectContent>
+                                                                        </Select>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <AppForm.Number
+                                                                name={`salaryAdjustments.${index}.amount`}
+                                                                placeholder="eg. 1000"
+                                                                readOnly={hasPaymentMade}
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {
+                                                                !hasPaymentMade && <Button type="button" variant={'destructive'} size={'icon'} onClick={() => remove(index)}>
+                                                                    <Minus />
+                                                                </Button>
+                                                            }
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )
+                                            })
+                                        }
+                                        <TableRow className="hover:bg-transparent">
                                             <TableCell>
                                                 {
-                                                    !hasPaymentMade && <Button type="button" variant={'destructive'} size={'icon'} onClick={() => remove(index)}>
-                                                        <Minus />
+                                                    !hasPaymentMade && <Button
+                                                        type="button"
+                                                        variant={'outline'}
+                                                        size={'sm'}
+                                                        onClick={() => append({ amount: 0, description: '', type: ESalaryAdjustmentType.Deduction })}
+                                                    >
+                                                        <Plus />
+                                                        Add
                                                     </Button>
                                                 }
                                             </TableCell>
+                                            {
+                                                fields?.length > 0 && <TableCell className="text-right font-semibold text-lg" colSpan={2}>
+                                                    Total Adjustments: &nbsp;
+                                                    Rs. {totalAdjustments.toLocaleString()}
+                                                </TableCell>
+                                            }
                                         </TableRow>
-                                    ))
-                                }
-                                <TableRow className="hover:bg-transparent">
-                                    <TableCell>
-                                        {
-                                            !hasPaymentMade && <Button
-                                                type="button"
-                                                variant={'outline'}
-                                                size={'sm'}
-                                                onClick={() => append({ amount: 0, description: '', type: ESalaryAdjustmentType.Deduction })}
-                                            >
-                                                <Plus />
-                                                Add
-                                            </Button>
-                                        }
-                                    </TableCell>
-                                    {
-                                        fields?.length > 0 && <TableCell className="text-right font-semibold text-lg" colSpan={2}>
-                                            Total Adjustments: &nbsp;
-                                            Rs. {totalAdjustments.toLocaleString()}
-                                        </TableCell>
-                                    }
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
-                </section>
+                                    </TableBody>
+                                </Table>
+                            )
+                        }
+                    </div >
+                </section >
 
 
                 <section className="text-center text-xl px-4 !mt-10">
@@ -333,6 +366,24 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                 }
             </form>
         </AppForm>
+    )
+}
+
+function AbsentAdjustmentRow({ field }: { field: any }) {
+    return (
+        <TableRow>
+            <TableCell>
+                {field.description}
+            </TableCell>
+            <TableCell className="capitalize">
+                {ESalaryAdjustmentType.Absent}
+            </TableCell>
+            <TableCell>
+                {field.amount.toLocaleString()}
+            </TableCell>
+            <TableCell>
+            </TableCell>
+        </TableRow>
     )
 }
 
