@@ -49,7 +49,7 @@ export type TSalaryEmployee = {
         id: string,
         payAmount: number,
         fullName: string,
-        employeeId: number,
+        employeeId: string,
         designation: Role,
         profileImageUrl: string | null;
         phone: string;

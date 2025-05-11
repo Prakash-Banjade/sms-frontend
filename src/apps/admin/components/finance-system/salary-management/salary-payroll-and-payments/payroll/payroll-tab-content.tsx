@@ -99,7 +99,7 @@ function UpdatePayroll({ data, salaryEmployee }: { data: TSinglePayroll, salaryE
                 advance: data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Advance)?.amount ?? 0,
                 date: data.date,
                 employeeId: salaryEmployee.employee?.id,
-                salaryAdjustments: data.salaryAdjustments?.filter(sa => [ESalaryAdjustmentType.Deduction, ESalaryAdjustmentType.Bonus, ESalaryAdjustmentType.Absent].includes(sa.type)),
+                salaryAdjustments: data.salaryAdjustments?.filter(sa => [ESalaryAdjustmentType.Deduction, ESalaryAdjustmentType.Bonus, ESalaryAdjustmentType.Absent, ESalaryAdjustmentType.Library_Fine].includes(sa.type)),
             }}
             paidSalary={data.paidSalary}
         />

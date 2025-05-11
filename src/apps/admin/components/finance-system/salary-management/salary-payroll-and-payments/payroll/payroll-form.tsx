@@ -21,6 +21,7 @@ import PayrollPrintBtn from "./payroll-print-btn"
 import { useGetLastPayroll } from "../../data-access"
 import { useSearchParams } from "react-router-dom"
 import useGetAbsentCount from "./useGetAbsentCount"
+import { useGetUnpaidBookTransactions } from "@/apps/admin/components/library/data-access"
 
 type Props = {
     salaryEmployee: TSalaryEmployee,
@@ -59,11 +60,20 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
         ? startOfDayString(addMonths(salaryEmployee.lastPayrollDate, 1))
         : startOfDayString(subMonths(new Date(), 1)); // payroll is calculated for last month
 
-    const { data, isLoading } = useGetAbsentCount(salaryDate, salaryEmployee.employee.accountId);
+    const { data: attendanceCount, isLoading: isLoadingAttendance } = useGetAbsentCount(salaryDate, salaryEmployee.employee.accountId);
+
+    const { data: libraryFines, isLoading: isLoadingLibraryFine } = useGetUnpaidBookTransactions({
+        queryString: `teacherId=${salaryEmployee.employee.id}`,
+        options: {
+            enabled: salaryEmployee.employee.employeeId?.includes('TCR') // enable only for teacher
+        }
+    });
 
     const formDefaultValues = useMemo(() => {
-        const absentCount = +(data?.monthly.absent ?? 0);
-        const totalDays = +(data?.monthly.total ?? 30);
+        const absentCount = +(attendanceCount?.monthly.absent ?? 0);
+        const totalDays = +(attendanceCount?.monthly.total ?? 30);
+
+        const libraryFineAmount = libraryFines?.reduce((acc, curr) => acc + curr.fine, 0) ?? 0;
 
         return defaultValues ?? {
             employeeId: salaryEmployee.employee?.id,
@@ -74,11 +84,18 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                         amount: Math.round((absentCount / totalDays) * salaryEmployee.basicSalary),
                         description: `Absent Fine (${absentCount} days)`,
                         type: ESalaryAdjustmentType.Absent,
-                    }] : [])
+                    }] : []),
+                ...(libraryFineAmount > 0 ? [
+                    {
+                        amount: libraryFineAmount,
+                        description: 'Library Fine',
+                        type: ESalaryAdjustmentType.Library_Fine,
+                    }
+                ] : []),
             ],
             advance: 0,
         }
-    }, [defaultValues, salaryEmployee, data])
+    }, [defaultValues, salaryEmployee, attendanceCount])
 
     const form = useForm<PayrollFormSchemaType>({
         resolver: zodResolver(payrollSchema),
@@ -87,10 +104,10 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
 
     useEffect(() => {
         form.reset(defaultValues ?? formDefaultValues);
-    }, [defaultValues, data]);
+    }, [defaultValues, attendanceCount]);
 
     const totalAdjustments = useMemo(() => {
-        const deductionTypes = [ESalaryAdjustmentType.Deduction, ESalaryAdjustmentType.Absent];
+        const deductionTypes = [ESalaryAdjustmentType.Deduction, ESalaryAdjustmentType.Absent, ESalaryAdjustmentType.Library_Fine];
 
         return form.watch('salaryAdjustments')?.reduce((acc, curr) => {
             return deductionTypes.includes(curr.type) ? acc - +curr.amount : acc + +curr.amount;
@@ -104,9 +121,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
     const onSubmit = async (values: PayrollFormSchemaType) => {
         if (hasPaymentMade) return;
 
-        const adjustments = values.salaryAdjustments?.filter(sa => sa.type !== ESalaryAdjustmentType.Absent); // no need to send absent adjustment, backend will calculate automatically
-
-        console.log(salaryDate)
+        const adjustments = values.salaryAdjustments?.filter(sa => ![ESalaryAdjustmentType.Absent, ESalaryAdjustmentType.Library_Fine].includes(sa.type)); // no need to send these adjustments, backend will calculate automatically
 
         const res = await mutateAsync({
             method: !!defaultValues ? 'patch' : 'post',
@@ -244,7 +259,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                     <div className="space-y-2">
                         <h2 className="font-semibold uppercase">Adjustments</h2>
                         {
-                            isLoading ? (
+                            (isLoadingAttendance || isLoadingLibraryFine) ? (
                                 <div className="py-6 text-center text-muted-foreground">
                                     Loading...
                                 </div>
@@ -263,6 +278,8 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                                             fields.map((field, index) => {
                                                 return field.type === ESalaryAdjustmentType.Absent ? (
                                                     <AbsentAdjustmentRow key={field.id} field={field} />
+                                                ) : field.type === ESalaryAdjustmentType.Library_Fine ? (
+                                                    <LibraryFineAdjustmentRow key={field.id} field={field} />
                                                 ) : (
                                                     <TableRow key={field.id}>
                                                         <TableCell>
@@ -377,6 +394,24 @@ function AbsentAdjustmentRow({ field }: { field: any }) {
             </TableCell>
             <TableCell className="capitalize">
                 {ESalaryAdjustmentType.Absent}
+            </TableCell>
+            <TableCell>
+                {field.amount.toLocaleString()}
+            </TableCell>
+            <TableCell>
+            </TableCell>
+        </TableRow>
+    )
+}
+
+function LibraryFineAdjustmentRow({ field }: { field: any }) {
+    return (
+        <TableRow>
+            <TableCell>
+                {field.description}
+            </TableCell>
+            <TableCell className="capitalize">
+                Library Fine
             </TableCell>
             <TableCell>
                 {field.amount.toLocaleString()}
