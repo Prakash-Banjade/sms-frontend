@@ -360,7 +360,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                             isLoading={isPending}
                             loadingText={payrollId ? 'Updating...' : 'Generating...'}
                             type="submit"
-                            disabled={isPending || Object.keys(form.formState.dirtyFields).length === 0}
+                            disabled={isPending || (defaultValues && Object.keys(form.formState.dirtyFields).length === 0)}
                         >
                             {payrollId ? 'Update Payroll' : 'Generate Payroll'}
                         </LoadingButton>
