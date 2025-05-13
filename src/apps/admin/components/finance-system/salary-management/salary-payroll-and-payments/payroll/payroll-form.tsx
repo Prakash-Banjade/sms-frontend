@@ -129,15 +129,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
             id: payrollId,
             data: {
                 ...values,
-                salaryAdjustments: values.advance > 0
-                    ? [
-                        ...(adjustments ?? []),
-                        {
-                            amount: values.advance,
-                            description: 'Advance',
-                            type: ESalaryAdjustmentType.Advance
-                        }
-                    ] : adjustments,
+                salaryAdjustments: adjustments,
                 employeeType: searchParams.get("employeeID")?.includes('STAFF') ? 'staff' : 'teacher', // this is needed in backend to determine which table to use
             },
             invalidateTags: [QueryKey.PAYROLLS, 'employees', salaryEmployee.employee?.employeeId?.toString()]
@@ -368,7 +360,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                             isLoading={isPending}
                             loadingText={payrollId ? 'Updating...' : 'Generating...'}
                             type="submit"
-                            disabled={isPending}
+                            disabled={isPending || Object.keys(form.formState.dirtyFields).length === 0}
                         >
                             {payrollId ? 'Update Payroll' : 'Generate Payroll'}
                         </LoadingButton>
@@ -390,13 +382,19 @@ function AbsentAdjustmentRow({ field }: { field: any }) {
     return (
         <TableRow>
             <TableCell>
-                {field.description}
+                <span className="px-3">
+                    {field.description}
+                </span>
             </TableCell>
             <TableCell className="capitalize">
-                {ESalaryAdjustmentType.Absent}
+                <span className="px-3">
+                    {ESalaryAdjustmentType.Absent}
+                </span>
             </TableCell>
             <TableCell>
-                {field.amount.toLocaleString()}
+                <span className="px-3">
+                    {field.amount.toLocaleString()}
+                </span>
             </TableCell>
             <TableCell>
             </TableCell>
@@ -408,13 +406,19 @@ function LibraryFineAdjustmentRow({ field }: { field: any }) {
     return (
         <TableRow>
             <TableCell>
-                {field.description}
+                <span className="px-3">
+                    {field.description}
+                </span>
             </TableCell>
             <TableCell className="capitalize">
-                Library Fine
+                <span className="px-3">
+                    Library Fine
+                </span>
             </TableCell>
             <TableCell>
-                {field.amount.toLocaleString()}
+                <span className="px-3">
+                    {field.amount.toLocaleString()}
+                </span>
             </TableCell>
             <TableCell>
             </TableCell>
