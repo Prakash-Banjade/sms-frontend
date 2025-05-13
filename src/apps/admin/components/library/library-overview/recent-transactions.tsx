@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { useGetBookTransactions } from "../actions";
+import { useGetBookTransactions } from "../data-access";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/utils/format-date";
 import TableHeadings from "@/components/data-table/table-headings";
@@ -20,22 +20,18 @@ export default function RecentLibraryBookTransactions() {
             <CardContent>
                 <Table>
                     <TableHeader>
-                        <TableHeadings headings={['Book', 'Student', 'Class', 'Date', 'Returned', 'Status']} />
+                        <TableHeadings headings={['Book', 'Member', 'Date', 'Returned', 'Status']} />
                     </TableHeader>
                     <TableBody>
-                        {data?.data?.slice(0, 5).map((transaction: any) => { // we are slicing the data but not using take=5 in query because it would make two queries to the backend due to the transaction query in detailed transaction section
+                        {data?.data?.slice(0, 5).map((transaction) => { // we are slicing the data but not using take=5 in query because it would make two queries to the backend due to the transaction query in detailed transaction section
                             const isOverDue = isBefore(startOfDay(new Date(transaction.dueDate)), startOfDay(new Date())) && !transaction.returnedAt;
 
                             return (
                                 <TableRow key={transaction.id}>
                                     <TableCell>{transaction.bookName}</TableCell>
-                                    <TableCell>{transaction.studentName}</TableCell>
-                                    <TableCell>
-                                        {
-                                            transaction.parentClassName
-                                                ? transaction.parentClassName + ' - ' + transaction.classRoomName
-                                                : transaction.classRoomName
-                                        }
+                                    <TableCell className="capitalize">
+                                        <div>{transaction.memberName}</div>
+                                        <div className="text-muted-foreground text-xs">{transaction.memberId}</div>
                                     </TableCell>
                                     <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                                     <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>

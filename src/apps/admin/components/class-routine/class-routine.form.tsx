@@ -10,19 +10,18 @@ import { createQueryString } from "@/utils/create-query-string";
 import { ERoutineType, SelectOption } from "@/types/global.type";
 import ClassSelectionFormField from "@/components/forms/class-selection-form-field";
 import { useFacultySearch } from "@/hooks/useFacultySearch";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { useGetClassRoutines } from "./actions";
 import { doesIntersect } from "@/lib/utils";
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog";
+import { TClassRoutine } from "../../types/class-routine.type";
 
 type Props = ({
     setIsOpen?: undefined;
-    setQueryString: React.Dispatch<React.SetStateAction<string>>;
 } | {
     classRoutineId?: string;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    setQueryString?: undefined;
 }) & {
     defaultValues?: Partial<classRoutineSchemaType>;
     selectedTeacher?: SelectOption;
@@ -33,6 +32,7 @@ export default function ClassRoutineForm(props: Props) {
     const navigate = useNavigate();
     const { payload } = useAuth();
     const [confirmIntersectionOpen, setConfirmIntersectionOpen] = useState(false);
+    const [intersectingRoutine, setIntersectingRoutine] = useState<TClassRoutine | null>(null);
     const id = (!!props.setIsOpen && props.classRoutineId) ? props.classRoutineId : params.id;
 
     const form = useForm<classRoutineSchemaType>({
@@ -47,11 +47,11 @@ export default function ClassRoutineForm(props: Props) {
         queryString: createQueryString({
             classRoomId: form.getValues("classRoomId"),
             sectionId: form.getValues("sectionId"),
-            dayOfTheWeek: form.getValues("dayOfTheWeek"),
+            dayOfTheWeek: form.getValues("daysOfTheWeek"),
             skipPagination: true,
         }),
         options: {
-            enabled: !!form.getValues("classRoomId") && !!form.getValues("dayOfTheWeek"),
+            enabled: !!form.getValues("classRoomId") && form.getValues("daysOfTheWeek")?.length > 0,
         }
     });
 
@@ -75,7 +75,10 @@ export default function ClassRoutineForm(props: Props) {
             const newRange = { startTime: values.startTime, endTime: values.endTime };
             const routines = id ? existingClassRoutines?.data?.filter(routine => routine.id !== id) : existingClassRoutines?.data;
 
-            if (doesIntersect(routines, newRange)) {
+            const intersectingRoutine = doesIntersect(routines, newRange);
+
+            if (intersectingRoutine) {
+                setIntersectingRoutine(intersectingRoutine);
                 return setConfirmIntersectionOpen(true);
             }
         }
@@ -104,56 +107,53 @@ export default function ClassRoutineForm(props: Props) {
         props.setIsOpen && props.setIsOpen(false);
     }
 
-    // setting query string to show existing schedules
-    useEffect(() => {
-        props?.setQueryString && props?.setQueryString(createQueryString({
-            classRoomId: form.watch('classRoomId'),
-            sectionId: form.watch('sectionId'),
-            dayOfTheWeek: form.watch('dayOfTheWeek'),
-        }));
-    }, [form.watch('classRoomId'), form.watch('sectionId'), form.watch('dayOfTheWeek')])
-
     return (
         <AppForm schema={classRoutineSchema} form={form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <section className="grid lg:grid-cols-2 gap-8 grid-cols-1">
-                    <AppForm.Select<classRoutineSchemaType>
-                        name="type"
-                        label="Routine type"
-                        placeholder="Select type"
-                        description="Select the type of routine"
-                        required
-                        options={Object.entries(RoutineTypeMappings).map(([label, value]) => ({ label, value }))}
-                        value={form.watch('type') ?? ''}
-                    />
+                    {
+                        !id && (
+                            <>
+                                <AppForm.Select<classRoutineSchemaType>
+                                    name="type"
+                                    label="Routine type"
+                                    placeholder="Select type"
+                                    description="Select the type of routine"
+                                    required
+                                    options={Object.entries(RoutineTypeMappings).map(([label, value]) => ({ label, value }))}
+                                    value={form.watch('type') ?? ''}
+                                />
 
-                    <ClassSelectionFormField
-                        include="section"
-                        required={{
-                            facultyId: true,
-                            classRoomId: true,
-                        }}
-                    />
+                                <ClassSelectionFormField
+                                    include="section"
+                                    required={{
+                                        facultyId: true,
+                                        classRoomId: true,
+                                    }}
+                                />
 
-                    <AppForm.DynamicSelect<classRoutineSchemaType>
-                        name="subjectId"
-                        label="Subject"
-                        placeholder="Select subject"
-                        description="Select the subject"
-                        fetchOptions={{
-                            endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
-                            queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
-                            queryString: createQueryString({
-                                classRoomId: form.watch('classRoomId'),
-                            }),
-                            options: {
-                                enabled: !!form.watch('classRoomId'),
-                            }
-                        }}
-                        labelKey={'subjectName'}
-                        required={form.watch('type') === ERoutineType.CLASS}
-                        disabled={!form.watch('classRoomId') || form.watch('type') === ERoutineType.BREAK}
-                    />
+                                <AppForm.DynamicSelect<classRoutineSchemaType>
+                                    name="subjectId"
+                                    label="Subject"
+                                    placeholder="Select subject"
+                                    description="Select the subject"
+                                    fetchOptions={{
+                                        endpoint: QueryKey.SUBJECTS + '/' + QueryKey.OPTIONS,
+                                        queryKey: [QueryKey.SUBJECTS, form.watch('classRoomId')],
+                                        queryString: createQueryString({
+                                            classRoomId: form.watch('classRoomId'),
+                                        }),
+                                        options: {
+                                            enabled: !!form.watch('classRoomId'),
+                                        }
+                                    }}
+                                    labelKey={'subjectName'}
+                                    required={form.watch('type') === ERoutineType.CLASS}
+                                    disabled={!form.watch('classRoomId') || form.watch('type') === ERoutineType.BREAK}
+                                />
+                            </>
+                        )
+                    }
 
                     <AppForm.DynamicSelect<classRoutineSchemaType>
                         name="teacherId"
@@ -175,16 +175,18 @@ export default function ClassRoutineForm(props: Props) {
                         disabled={(form.watch('type') === ERoutineType.CLASS && !form.watch('subjectId')) || form.watch('type') === ERoutineType.BREAK}
                     />
 
-
-                    <AppForm.Select<classRoutineSchemaType>
-                        name="dayOfTheWeek"
-                        label="Day of the week"
-                        placeholder="Select day"
-                        description="Select the day of the week"
-                        required
-                        options={Object.entries(DayOfWeekMappings).map(([label, value]) => ({ label, value }))}
-                        value={form.watch('dayOfTheWeek') ?? ''}
-                    />
+                    {
+                        !id && (
+                            <AppForm.MultiSelect<classRoutineSchemaType>
+                                name="daysOfTheWeek"
+                                label="Days of the week"
+                                placeholder="Select days"
+                                description="Select the days of the week"
+                                required
+                                options={Object.entries(DayOfWeekMappings).map(([label, value]) => ({ label, value }))}
+                            />
+                        )
+                    }
 
                     <AppForm.TimePicker<classRoutineSchemaType>
                         name="startTime"
@@ -219,7 +221,7 @@ export default function ClassRoutineForm(props: Props) {
 
             <ResponsiveAlertDialog
                 title="Time range conflicts"
-                description="Class routine time intersects with an existing class routine. Do you want to add the class routine anyway?"
+                description={`There is already a class routine between ${intersectingRoutine?.startTime} and ${intersectingRoutine?.endTime} on ${intersectingRoutine?.dayOfTheWeek} for subject ${intersectingRoutine?.subject?.subjectName}. Do you want to add the class routine anyway?`}
                 isOpen={confirmIntersectionOpen}
                 setIsOpen={setConfirmIntersectionOpen}
                 action={form.handleSubmit(submit)}

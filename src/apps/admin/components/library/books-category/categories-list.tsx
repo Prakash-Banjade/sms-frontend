@@ -11,6 +11,8 @@ export default function CategoriesList() {
     const { data, isLoading } = useGetBookCategories({
         queryString: createQueryString({
             search: searchParams.get('search'),
+            page: searchParams.get('page'),
+            take: searchParams.get('take'),
         }),
     });
 

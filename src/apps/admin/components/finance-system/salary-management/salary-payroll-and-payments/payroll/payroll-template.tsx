@@ -2,28 +2,31 @@ import { CalendarIcon, HelpCircleIcon } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Separator } from "@/components/ui/separator"
-import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from '@/apps/admin/types/finance-system/salary-management.types'
+import { ESalaryAdjustmentType, TSinglePayroll } from '@/apps/admin/types/finance-system/salary-management.types'
 import React from 'react'
 import { addMonths, format, lastDayOfMonth, startOfMonth } from 'date-fns'
 import { toWords } from '@/lib/utils'
 
 type PayrollTemplateProps = {
-    data: TLastPayroll,
-    salaryEmployee: TSalaryEmployee
+    data: TSinglePayroll | undefined
 }
 
-export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateProps>(({ data, salaryEmployee }, ref) => {
+export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateProps>(({ data }, ref) => {
     if (!data) return null;
 
+    const employee = data.employee;
+
     const deductions = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction);
+    const absentAdjustment = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Absent);
 
     const allowanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Allowance)?.amount ?? 0;
     const previousAdvanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Past_Advance)?.amount ?? 0;
     const advanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Advance)?.amount ?? 0;
     const unpaidAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Unpaid)?.amount ?? 0;
     const totalBonus = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
-    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0);
-    const totalEarnings = salaryEmployee.grossSalary + unpaidAmount + totalBonus + advanceAmount;
+    const absentFine = absentAdjustment?.amount ?? 0;
+    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0) + absentFine;
+    const totalEarnings = data.basicSalary + allowanceAmount + unpaidAmount + totalBonus + advanceAmount;
 
     return (
         <Card className="min-h-[297mm] w-[210mm] bg-white text-black mx-auto flex flex-col" ref={ref}>
@@ -41,23 +44,23 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                     <div className="grid grid-cols-2 gap-2 text-sm">
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Name:</p>
-                            <p className="font-medium">{salaryEmployee.employee?.fullName}</p>
+                            <p className="font-medium">{employee?.fullName}</p>
                         </section>
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Employee ID:</p>
-                            <p className="font-medium">{salaryEmployee.employee?.employeeId}</p>
+                            <p className="font-medium">{employee?.employeeId}</p>
                         </section>
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Position:</p>
-                            <p className="font-medium capitalize">{salaryEmployee.employee?.designation}</p>
+                            <p className="font-medium capitalize">{employee?.designation}</p>
                         </section>
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Email:</p>
-                            <p className="font-medium break-words">{salaryEmployee.employee?.email}</p>
+                            <p className="font-medium break-words">{employee?.email}</p>
                         </section>
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Phone:</p>
-                            <p className="font-medium break-words">{salaryEmployee.employee?.phone}</p>
+                            <p className="font-medium break-words">{employee?.phone}</p>
                         </section>
                     </div>
                 </div>
@@ -76,7 +79,7 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                         <TableBody>
                             <TableRow>
                                 <TableCell>Basic Salary</TableCell>
-                                <TableCell className="text-right">Rs. {salaryEmployee.basicSalary?.toLocaleString()}</TableCell>
+                                <TableCell className="text-right">Rs. {data.basicSalary?.toLocaleString()}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Allowances</TableCell>
@@ -110,64 +113,62 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                     </Table>
                 </div>
 
-                {
-                    <div className="space-y-4">
-                        <h3 className="font-semibold text-lg text-gray-800">Deductions</h3>
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="bg-gray-50">
-                                    <TableHead className="font-semibold">Description</TableHead>
-                                    <TableHead className="text-right font-semibold">Amount</TableHead>
+                <div className="space-y-4">
+                    <h3 className="font-semibold text-lg text-gray-800">Deductions</h3>
+                    <Table>
+                        <TableHeader>
+                            <TableRow className="bg-gray-50">
+                                <TableHead className="font-semibold">Description</TableHead>
+                                <TableHead className="text-right font-semibold">Amount</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {
+                                previousAdvanceAmount > 0 && <TableRow>
+                                    <TableCell>Previous Advance</TableCell>
+                                    <TableCell className="text-right">Rs. {previousAdvanceAmount?.toLocaleString()}</TableCell>
                                 </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {
-                                    previousAdvanceAmount > 0 && <TableRow>
-                                        <TableCell>Previous Advance</TableCell>
-                                        <TableCell className="text-right">Rs. {previousAdvanceAmount?.toLocaleString()}</TableCell>
+                            }
+                            {
+                                absentFine > 0 && <TableRow>
+                                    <TableCell>{absentAdjustment?.description}</TableCell>
+                                    <TableCell className="text-right">Rs. {absentFine?.toLocaleString()}</TableCell>
+                                </TableRow>
+                            }
+                            {
+                                deductions?.map(sa => (
+                                    <TableRow key={sa.id}>
+                                        <TableCell>{sa.description}</TableCell>
+                                        <TableCell className="text-right">Rs. {sa.amount?.toLocaleString()}</TableCell>
                                     </TableRow>
-                                }
-                                {
-                                    deductions?.map(sa => (
-                                        <TableRow key={sa.id}>
-                                            <TableCell>{sa.description}</TableCell>
-                                            <TableCell className="text-right">Rs. {sa.amount?.toLocaleString()}</TableCell>
-                                        </TableRow>
-                                    ))
-                                }
-                                {
-                                    totalDeduction > 0 && <TableRow className="font-semibold">
-                                        <TableCell>Total Deductions</TableCell>
-                                        <TableCell className="text-right">Rs. {totalDeduction?.toLocaleString()}</TableCell>
-                                    </TableRow>
-                                }
+                                ))
+                            }
+                            {
+                                totalDeduction > 0 && <TableRow className="font-semibold">
+                                    <TableCell>Total Deductions</TableCell>
+                                    <TableCell className="text-right">Rs. {totalDeduction?.toLocaleString()}</TableCell>
+                                </TableRow>
+                            }
 
-                                {/* fallback */}
-                                {
-                                    previousAdvanceAmount === 0 && !deductions?.length && <TableRow>
-                                        <TableCell colSpan={2} className='text-gray-500 text-center'>
-                                            No Deductions
-                                        </TableCell>
-                                    </TableRow>
-                                }
-                            </TableBody>
-                        </Table>
-                    </div>
-                }
+                            {/* fallback */}
+                            {
+                                previousAdvanceAmount === 0 && !deductions?.length && <TableRow>
+                                    <TableCell colSpan={2} className='text-gray-500 text-center'>
+                                        No Deductions
+                                    </TableCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
 
                 <Separator />
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                     <div className="space-y-1">
-                        <p className="text-xl font-bold text-gray-800">Net Pay: Rs. {data.netSalary?.toLocaleString()}</p>
+                        <p className="text-xl font-bold text-gray-800">Grand Total: Rs. {data.netSalary?.toLocaleString()}</p>
                         <p className='text-gray-500 text-sm'><span className='font-semibold'>In Words</span>: {toWords.convert(data.netSalary, { currency: true, ignoreZeroCurrency: true })}</p>
                     </div>
-                    {/* <div className="bg-blue-50 border border-blue-200 rounded p-4 text-sm">
-                        <h4 className="font-semibold text-blue-800 mb-2">Direct Deposit Information</h4>
-                        <p>Bank: National Bank</p>
-                        <p>Account: XXXX-XXXX-5678 (Checking)</p>
-                        <p>Routing Number: XXXXXXXXX</p>
-                    </div> */}
                 </div>
 
                 <div className="text-sm text-gray-500 space-y-2">

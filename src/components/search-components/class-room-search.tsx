@@ -18,6 +18,7 @@ type Props = {
     classRoomKey?: string;
     withSubjet?: boolean;
     include?: 'classRoom' | 'section';
+    onlyAssigned?: boolean
 }
 
 export default function ClassRoomSearchFilterInputs({
@@ -25,13 +26,14 @@ export default function ClassRoomSearchFilterInputs({
     classRoomKey = CLASS_ROOM_SEARCH_KEY,
     withSubjet = false,
     include = 'section',
+    onlyAssigned = false, // used by teacher to get the options that include classrooms for which he is the class teacher
 }: Props) {
     const { setSearchParams, searchParams } = useCustomSearchParams();
     const [selectedFaculty, setSelectedFaculty] = useState<TFacultyOption>();
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0]>();
     const [selectedSection, setSelectedSection] = useState<TClassRoomOptions[0]["children"][0]>();
 
-    const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include }));
+    const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include, assigned: onlyAssigned }));
 
     const { data: subjects, isLoading: isLoadingSubjects } = useGetSubjectOptions({
         queryString: createQueryString({

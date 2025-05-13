@@ -207,3 +207,37 @@ export type TSinglePayment = {
         overdueDays: string;
     }[];
 };
+
+export type TStudentFeeStatistics = {
+    studentLedger: {
+        id: string
+        amount: number
+    },
+    lastInvoice: {
+        id: string,
+        invoiceNo: string,
+        totalAmount: number,
+        dueDate: string
+    } | null,
+    lastPayment: {
+        id: string,
+        amount: string,
+        createdAt: string
+    } | null
+}
+
+export type TMySalaryDetails = {
+    id: string
+    basicSalary: number,
+    allowances: {
+        title: string,
+        amount: number
+    }[],
+    grossSalary: number,
+    totalPayment: number,
+    teacher: {
+        id: string,
+        payAmount: number
+        teacherId: string,
+    } | null,
+}

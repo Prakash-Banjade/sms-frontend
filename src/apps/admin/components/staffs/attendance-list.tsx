@@ -8,41 +8,53 @@ import { StaffWithAttendanceResponse } from "@/apps/admin/types/staff.type"
 import EmployeeAttendanceTable from "../attendances/employee-attendance-table";
 import GetEmployeesAttendancesForm from "../attendances/get-employee-attendances-form";
 import { useGetStaffsWithAttendances } from "./actions";
+import MarkAsAbsentButton from "../attendances/mark-as-absent-btn";
+import { UseQueryResult } from "@tanstack/react-query";
 
 interface IAttendanceListProps {
     searchQuery: string | undefined
     attendances: StaffWithAttendanceResponse
     setAttendances: React.Dispatch<React.SetStateAction<StaffWithAttendanceResponse>>
+    attendanceResponse: UseQueryResult<StaffWithAttendanceResponse, Error>
 }
 
 export default function StaffsAttendanceList() {
-    const [searchQuery, setSearchQuery] = useState<string>(); // we are not storing the queries in url, so create a state
+    const [searchQuery, setSearchQuery] = useState<string>(''); // we are not storing the queries in url, so create a state
     const [attendances, setAttendances] = useState<StaffWithAttendanceResponse>([]); // this is used to keep track of attendance changes
 
-    return (
-        <>
-            <GetEmployeesAttendancesForm setSearchQuery={setSearchQuery} />
-            <AttendanceList searchQuery={searchQuery} attendances={attendances} setAttendances={setAttendances} />
-        </>
-    )
-}
-
-function AttendanceList({ searchQuery, attendances, setAttendances }: IAttendanceListProps) {
-    const selectedDate = new URLSearchParams(searchQuery).get('date')!;
-    const { mutateAsync, isPending } = useAppMutation();
-
-    const { data, isLoading } = useGetStaffsWithAttendances({
+    const attendanceResponse = useGetStaffsWithAttendances({
         queryString: searchQuery,
         options: {
             enabled: !!searchQuery,
         }
-    })
+    });
 
     useEffect(() => { // update attendances when data is updated
+        const data = attendanceResponse.data;
         if (Array.isArray(data)) {
             setAttendances(data);
         }
-    }, [data])
+    }, [attendanceResponse.data])
+
+    return (
+        <>
+            <section className="flex gap-6 items-end justify-between">
+                <GetEmployeesAttendancesForm setSearchQuery={setSearchQuery} />
+                <MarkAsAbsentButton searchQuery={searchQuery} attendanceResponse={attendanceResponse} employeeType="staff" />
+            </section>
+            <AttendanceList
+                searchQuery={searchQuery}
+                attendances={attendances}
+                setAttendances={setAttendances}
+                attendanceResponse={attendanceResponse}
+            />
+        </>
+    )
+}
+
+function AttendanceList({ searchQuery, attendances, setAttendances, attendanceResponse: { data, isLoading } }: IAttendanceListProps) {
+    const selectedDate = new URLSearchParams(searchQuery).get('date')!;
+    const { mutateAsync, isPending } = useAppMutation();
 
     const handleSaveAttendances = async () => {
         if (!data) return;
@@ -71,7 +83,7 @@ function AttendanceList({ searchQuery, attendances, setAttendances }: IAttendanc
             data: {
                 updatedAttendances: formattedAttendances,
             },
-            invalidateTags: [QueryKey.STAFFS],
+            invalidateTags: [QueryKey.STAFFS, QueryKey.ATTENDANCES],
         })
     }
 

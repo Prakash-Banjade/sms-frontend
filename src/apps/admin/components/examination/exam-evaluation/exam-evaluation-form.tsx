@@ -77,7 +77,7 @@ export default function ExamEvaluationForm({ examSubjects, students }: Props) {
 
             });
 
-            setSelectAll(reports.data?.length === students.length);
+            setSelectAll(reports.data?.length > 0 && reports.data?.length === students.length);
         } else if (!students?.length) {
             form.reset({
                 ...form.getValues(),

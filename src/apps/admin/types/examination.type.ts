@@ -36,6 +36,8 @@ export type TExam = {
     classRoomId: string,
     faculty: string,
     isReportPublished: 1 | 0,
+    startingFrom: string,
+    endsOn: string,
 }
 
 export type TExamsResponse = {
@@ -204,4 +206,67 @@ export type TExamReportBySubject = {
         practicalPassed: string,
         practicalFailed: string
     }
+}
+
+export type TUpcommingExamType = {
+    id: string;
+    startingFrom: string;
+    endsOn: string;
+    examType: {
+        id: string;
+        name: string
+    },
+    examSubjects: {
+        id: string;
+        examDate: string,
+        startTime: string,
+        venue: string,
+        subject: {
+            id: string,
+            subjectName: string
+        }
+    }[]
+} | null
+
+export type TExamResultsResponse = {
+    data: {
+        id: string,
+        percentage: number,
+        gpa: number,
+        grade: string,
+        exam: {
+            id: string,
+            examSubjects: {
+                id: string,
+                examReports: {
+                    id: string
+                    theoryOM: number,
+                    practicalOM: number,
+                    percentage: number,
+                    gpa: number,
+                    grade: string
+                }[]
+            }[]
+        },
+        student: {
+            id: string,
+            studentId: string,
+            firstName: string,
+            lastName: string
+        }
+    }[]
+    meta: TMeta;
+    examSubjects: {
+        id: string,
+        theoryPM: number,
+        theoryFM: number,
+        practicalPM: number,
+        practicalFM: number,
+        subject: {
+            id: string,
+            subjectName: string,
+            subjectCode: string,
+            type: ESubjectType
+        }
+    }[]
 }

@@ -19,7 +19,7 @@ export type TClassRoutine = {
         id: string,
         subjectName: string,
         subjectCode: string,
-    },
+    } | null,
     teacher: {
         id: string,
         firstName: string,

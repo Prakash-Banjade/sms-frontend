@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
-import { useGetBookTransactions } from "../actions"
+import { useGetBookTransactions } from "../data-access"
 import { createQueryString } from "@/utils/create-query-string"
 import { formatDate } from "@/utils/format-date"
 import { Badge } from "@/components/ui/badge"
@@ -100,7 +100,7 @@ export default function DetailedLibraryBookTransactions() {
 
                 <Table>
                     <TableHeader>
-                        <TableHeadings headings={['S.N', 'Book Code', 'Book Name', 'Student Name', 'Student ID', 'Class', 'Issue Date', 'Due Date', 'Returned At', 'Renewals', 'Status', 'Overdue days', 'Fine', 'Paid At']} />
+                        <TableHeadings headings={['S.N', 'Book Code', 'Book Name', 'Member Name', 'Member ID', 'Issue Date', 'Due Date', 'Returned At', 'Renewals', 'Status', 'Overdue days', 'Fine', 'Paid At']} />
                     </TableHeader>
                     <TableBody>
                         {data?.data?.map((transaction, index) => {
@@ -114,15 +114,8 @@ export default function DetailedLibraryBookTransactions() {
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{transaction.bookCode}</TableCell>
                                     <TableCell>{transaction.bookName}</TableCell>
-                                    <TableCell>{transaction.studentName}</TableCell>
-                                    <TableCell>{transaction.studentId}</TableCell>
-                                    <TableCell>
-                                        {
-                                            transaction.parentClassName
-                                                ? transaction.parentClassName + ' - ' + transaction.classRoomName
-                                                : transaction.classRoomName
-                                        }
-                                    </TableCell>
+                                    <TableCell className="capitalize">{transaction.memberName}</TableCell>
+                                    <TableCell>{transaction.memberId}</TableCell>
                                     <TableCell>{formatDate({ date: new Date(transaction.createdAt) })}</TableCell>
                                     <TableCell>{formatDate({ date: new Date(transaction.dueDate) })}</TableCell>
                                     <TableCell>{transaction.returnedAt ? formatDate({ date: new Date(transaction.returnedAt) }) : '-'}</TableCell>

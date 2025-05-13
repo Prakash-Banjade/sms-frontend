@@ -184,15 +184,6 @@ export default function StudentForm(props: Props) {
                             !params.id && <ClassSelectionFormField include="section" required={{ classRoomId: true, facultyId: true }} />
                         }
 
-                        <AppForm.Number<studentSchemaType>
-                            name="rollNo"
-                            label="Roll No"
-                            placeholder="eg. 10"
-                            description="Roll no of the student"
-                            min={1}
-                            required
-                        />
-
                         {
                             !params?.id && <AppForm.DatePicker<studentSchemaType> // don't allow to edit the admission date
                                 name="admissionDate"

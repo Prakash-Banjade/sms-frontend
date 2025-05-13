@@ -10,6 +10,10 @@ import ClassSectionForm from "./class-room-section.form"
 import { useNavigate } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { calculateRatios } from "@/lib/utils"
+import { useAuth } from "@/contexts/auth-provider"
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
+import { useAppMutation } from "@/hooks/useAppMutation"
+import { QueryKey } from "@/react-query/queryKeys"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -98,8 +102,20 @@ export const classesColumns: ColumnDef<TClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const navigate = useNavigate();
+            const { payload } = useAuth();
             const [isEditOpen, setIsEditOpen] = useState(false);
             const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
+            const [isUpdateRollNumberOpen, setIsUpdateRollNumberOpen] = useState(false);
+
+            const { mutateAsync, isPending } = useAppMutation();
+
+            async function handleUpdateRollNumber() {
+                await mutateAsync({
+                    method: "patch",
+                    endpoint: `class-rooms/${row.original.id}/update-roll-no`,
+                    invalidateTags: [QueryKey.CLASSES],
+                });
+            }
 
             return (
                 <>
@@ -124,6 +140,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
                             }
                         />
                     </ResponsiveDialog>
+
                     <ResponsiveDialog
                         isOpen={isSectionFormOpen}
                         setIsOpen={setIsSectionFormOpen}
@@ -135,6 +152,18 @@ export const classesColumns: ColumnDef<TClass>[] = [
                             setIsOpen={setIsSectionFormOpen}
                         />
                     </ResponsiveDialog>
+
+                    <ResponsiveAlertDialog
+                        action={handleUpdateRollNumber}
+                        isOpen={isUpdateRollNumberOpen}
+                        setIsOpen={setIsUpdateRollNumberOpen}
+                        title="Update Roll Number Alphabetically"
+                        description="Are you sure you want to update the roll number for all students in this class? This will rearrange the roll numbers alphabetically."
+                        actionLabel="Yes, Update"
+                        isLoading={isPending}
+                        loadingText="Updating..."
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -145,13 +174,19 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => navigate(row.original.id)}>
-                                <span>View full detail</span>
+                                <span>View Full Details</span>
+                            </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={() => navigate(`/${payload?.role}/students?facultyId=${row.original.facultyId}&classRoomId=${row.original.id}`)}>
+                                <span>View All Students</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
-                                <span>Edit class</span>
+                                <span>Edit Class</span>
                             </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsSectionFormOpen(true)}>
-                                <span>Add section</span>
+                                <span>Add Section</span>
+                            </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={() => setIsUpdateRollNumberOpen(true)}>
+                                <span>Update Roll Numbers</span>
                             </DropdownMenuButtonItem>
                             {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>

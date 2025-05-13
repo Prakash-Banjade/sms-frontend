@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom"
 import SingleClassSectionsList from "../../components/class-rooms/single-classroom/single-class-sections-list"
 import { useEffect } from "react"
 import { useSidebar } from "@/components/ui/sidebar"
+import { EClassType } from "@/types/global.type"
 
 // Extended mock data for the class
 const classData = {
@@ -106,7 +107,7 @@ export default function SingleClassRoomPage() {
             }
 
             {
-                classRoom && (<SingleClassSectionsList classRoomId={params.id!} facultyId={classRoom?.facultyId} />)
+                classRoom?.classType === EClassType.PRIMARY && (<SingleClassSectionsList classRoomId={params.id!} facultyId={classRoom?.facultyId} />)
             }
 
             <ClassRoomAttendanceChart />

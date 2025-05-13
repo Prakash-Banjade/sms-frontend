@@ -47,52 +47,61 @@ export default function EmployeeAttendanceTable<T extends TEntityWithAttendanceU
             <Table>
                 <TableHeader>
                     <TableRow className="bg-tableheader">
-                        <TableHead className="w-[100px]">ID</TableHead>
+                        <TableHead>ID</TableHead>
                         <TableHead>Employee Name</TableHead>
                         <TableHead>In Time</TableHead>
                         <TableHead>Out Time</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {attendances.map((employee) => (
-                        <TableRow key={employee.id}>
-                            <TableCell>{employee.staffId ?? employee.teacherId}</TableCell>
-                            <TableCell>{employee.firstName} {employee.lastName}</TableCell>
-                            {
-                                employee.attendance?.status === EAttendanceStatus.LEAVE ? (
-                                    <TableCell key={employee.account?.id} colSpan={2} className="text-center text-warning">
-                                        The Employee has taken leave.
-                                    </TableCell>
-                                ) : (
-                                    <React.Fragment key={employee.account?.id}>
-                                        <TableCell>
-                                            <Input
-                                                type="time"
-                                                className="w-28"
-                                                placeholder="In Time"
-                                                name="inTime"
-                                                value={employee.attendance?.inTime ?? ''}
-                                                disabled={!!employee.attendance?.inTime && !!employee.attendance?.id}
-                                                onChange={e => updateTime(e, employee.account?.id ?? '')}
-                                            />
-                                        </TableCell>
+                    {attendances.map((employee) => {
+                        const isPresent = !!employee.attendance?.inTime;
+                        const isAlreadyPresent = isPresent && !!employee.attendance?.id;
 
-                                        <TableCell>
-                                            <Input
-                                                type="time"
-                                                className="w-28"
-                                                name="outTime"
-                                                placeholder="Out Time"
-                                                value={employee.attendance?.outTime ?? ''}
-                                                onChange={e => updateTime(e, employee.account?.id ?? '')}
-                                                disabled={!employee.attendance?.inTime}
-                                            />
+                        return (
+                            <TableRow key={employee.id}>
+                                <TableCell>{employee.staffId ?? employee.teacherId}</TableCell>
+                                <TableCell className="capitalize font-medium">{employee.firstName} {employee.lastName}</TableCell>
+                                {
+                                    employee.attendance?.status === EAttendanceStatus.LEAVE ? (
+                                        <TableCell key={employee.account?.id} colSpan={2} className="text-center text-warning">
+                                            The Employee has taken leave.
                                         </TableCell>
-                                    </React.Fragment>
-                                )
-                            }
-                        </TableRow>
-                    ))}
+                                    ) : employee.attendance?.status === EAttendanceStatus.ABSENT ? (
+                                        <TableCell key={employee.account?.id} colSpan={2} className="text-center text-destructive">
+                                            The Employee is absent.
+                                        </TableCell>
+                                    ) : (
+                                        <React.Fragment key={employee.account?.id}>
+                                            <TableCell title={isAlreadyPresent ? "Cannot update in-time once recorded" : undefined}>
+                                                <Input
+                                                    type="time"
+                                                    className="w-28"
+                                                    placeholder="In Time"
+                                                    name="inTime"
+                                                    value={employee.attendance?.inTime ?? ''}
+                                                    disabled={isAlreadyPresent}
+                                                    onChange={e => updateTime(e, employee.account?.id ?? '')}
+                                                />
+                                            </TableCell>
+
+                                            <TableCell title={!isPresent ? "Cannot record out-time without in-time" : undefined}>
+                                                <Input
+                                                    type="time"
+                                                    className="w-28"
+                                                    name="outTime"
+                                                    placeholder="Out Time"
+                                                    value={employee.attendance?.outTime ?? ''}
+                                                    onChange={e => updateTime(e, employee.account?.id ?? '')}
+                                                    disabled={!isPresent}
+                                                />
+                                            </TableCell>
+                                        </React.Fragment>
+                                    )
+                                }
+                            </TableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </div>

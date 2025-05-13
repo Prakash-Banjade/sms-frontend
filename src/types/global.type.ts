@@ -3,16 +3,8 @@ export enum Role {
     ADMIN = 'admin',
     USER = 'user',
     TEACHER = 'teacher',
-    GUARDIAN = 'guardian',
-    ACCOUNTANT = 'accountant',
-    RECEPTIONIST = 'receptionist',
     STUDENT = 'student',
-    LIBRARIAN = 'librarian',
     STAFF = 'staff',
-    DRIVER = 'driver',
-    LABOR = 'labor',
-    HELPER = 'helper',
-    PEON = 'peon',
 }
 
 export type TMeta = {
@@ -51,11 +43,6 @@ export enum Gender {
     MALE = 'male',
     FEMALE = 'female',
     OTHER = 'other',
-}
-
-export enum AuthProvider {
-    GOOGLE = 'google',
-    CREDENTIALS = 'credentials',
 }
 
 export enum EPasskeyChallengeType {
@@ -159,16 +146,6 @@ export enum EPaymentMethod {
     BANK = 'bank',
 }
 
-export enum EFeeInvoicePaymentStatus {
-    NOT_PAID = 'not_paid',
-    PARTIAL_PAID = 'partial_paid',
-    FULL_PAID = 'full_paid',
-}
-
-export enum EFeeGroupAppliedTo {
-    CLASS = 'class',
-    ALL = 'all'
-}
 
 export enum EDormitoryType {
     BOYS = 'boys',

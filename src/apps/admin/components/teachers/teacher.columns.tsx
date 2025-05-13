@@ -37,7 +37,9 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
                         src={getImageUrl(row.original.account?.profileImage?.url, "w=40")}
                         className="size-10"
                     />
-                    {row.original.firstName + ' ' + row.original.lastName}
+                    <span className="font-medium">
+                        {row.original.firstName + ' ' + row.original.lastName}
+                    </span>
                 </Link>
             </TooltipWrapper>
         }

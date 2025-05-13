@@ -1,6 +1,6 @@
 import { useFetchData } from "@/hooks/useFetchData";
 import { QueryKey } from "@/react-query/queryKeys";
-import { TEmployees, TLastPayroll, TSalaryEmployee, TSalaryPaymentResponse, TSalaryStructureResponse } from "@/apps/admin/types/finance-system/salary-management.types";
+import { TEmployees, TSinglePayroll, TSalaryEmployee, TSalaryPaymentResponse, TSalaryPayrollsResponse, TSalaryStructureResponse } from "@/apps/admin/types/finance-system/salary-management.types";
 import { UseQueryOptions } from "@tanstack/react-query";
 
 export const useGetSalaryStructures = <T = TSalaryStructureResponse>({
@@ -41,28 +41,28 @@ export const useGetSalaryEmployee = <T = TSalaryEmployee>({
     options,
     id,
 }: {
-    id: string;
+    id?: string; // teacher don't need to send id
     options?: Partial<UseQueryOptions<T>>;
 }) => {
     const response = useFetchData<T>({
-        endpoint: QueryKey.PAYROLLS + '/employees/' + id,
-        queryKey: [QueryKey.PAYROLLS, 'employees', id],
+        endpoint: id ? `${QueryKey.PAYROLLS}/salary-employee?employeeId=${id}` : `${QueryKey.PAYROLLS}/salary-employee`,
+        queryKey: id ? [QueryKey.PAYROLLS, 'salary-employee', id] : [QueryKey.PAYROLLS, 'salary-employee'],
         options,
     })
 
     return response;
 };
 
-export const useGetLastPayroll = <T = TLastPayroll>({
+export const useGetLastPayroll = <T = TSinglePayroll>({
     options,
     id,
 }: {
-    id: string;
+    id?: string;
     options?: Partial<UseQueryOptions<T>>;
 }) => {
     const response = useFetchData<T>({
-        endpoint: QueryKey.PAYROLLS + '/employees/' + id + '/last-payroll',
-        queryKey: [QueryKey.PAYROLLS, 'employees', id, 'last-payroll'],
+        endpoint: id ? `${QueryKey.PAYROLLS}/employees/last-payroll?employeeId=${id}` : `${QueryKey.PAYROLLS}/employees/last-payroll`,
+        queryKey: id ? [QueryKey.PAYROLLS, 'employees', id, 'last-payroll'] : [QueryKey.PAYROLLS, 'employees', 'last-payroll'],
         options,
     })
 
@@ -85,3 +85,59 @@ export const useGetSalaryPayments = <T = TSalaryPaymentResponse>({
 
     return response;
 };
+
+// export const useGetSalaryPayment = <T = TSalaryPaymentResponse>({
+//     options,
+//     id,
+//     queryString,
+// }: {
+//     id: string
+//     options?: Partial<UseQueryOptions<T>>;
+//     queryString?: string;
+// }) => {
+//     const response = useFetchData<T>({
+//         endpoint: QueryKey.SALARY_PAYMENTS,
+//         queryString,
+//         queryKey: queryString ? [QueryKey.SALARY_PAYMENTS, queryString, id] : [QueryKey.SALARY_PAYMENTS, id],
+//         options,
+//     })
+
+//     return response;
+// };
+
+export const useGetSalaryPayrolls = <T = TSalaryPayrollsResponse>({
+    options,
+    queryString,
+}: {
+    options?: Partial<UseQueryOptions<T>>;
+    queryString?: string;
+}) => {
+    const response = useFetchData<T>({
+        endpoint: QueryKey.PAYROLLS,
+        queryString,
+        queryKey: queryString ? [QueryKey.PAYROLLS, queryString] : [QueryKey.PAYROLLS],
+        options,
+    })
+
+    return response;
+};
+
+export const useGetSalaryPayroll = <T = TSinglePayroll>({
+    options,
+    id,
+    queryString,
+}: {
+    id: string,
+    options?: Partial<UseQueryOptions<T>>;
+    queryString?: string;
+}) => {
+    const response = useFetchData<T>({
+        endpoint: QueryKey.PAYROLLS + '/' + id,
+        queryString,
+        queryKey: queryString ? [QueryKey.PAYROLLS, queryString, id] : [QueryKey.PAYROLLS, id],
+        options,
+    })
+
+    return response;
+};
+

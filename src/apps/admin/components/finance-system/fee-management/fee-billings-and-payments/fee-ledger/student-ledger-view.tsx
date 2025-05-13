@@ -18,6 +18,7 @@ import RefreshBtn from "../refresh-btn";
 import { DateRangeFilter } from "@/components/search-components/date-range-filter";
 import { useAuth } from "@/contexts/auth-provider";
 import { cn, isAdmin } from "@/lib/utils";
+
 type Props = {
     studentId?: string;
     className?: string;
@@ -82,7 +83,7 @@ export default function StudentLedgerView({ studentId, className }: Props) {
                                 <TableCell>{format(new Date(item.date), 'dd/MM/yyyy')}</TableCell>
                                 <TableCell>
                                     {
-                                        feeInvoice?.month && Object.entries(EMonth).find(([_, monthInd]) => +feeInvoice.month === +monthInd)?.[0]
+                                        feeInvoice?.month && Object.entries(EMonth).find(([_, monthInd]) => +feeInvoice.month === +monthInd)?.[0] || '-'
                                     }
                                 </TableCell>
                                 <TableCell>

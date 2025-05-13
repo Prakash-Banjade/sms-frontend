@@ -4,9 +4,11 @@ import { z } from "zod";
 import { differenceInMinutes, isAfter, parse } from "date-fns";
 
 export const classRoutineSchema = z.object({
-    dayOfTheWeek: z.nativeEnum(EDayOfWeek, {
-        errorMap: () => ({ message: 'Select a valid day' }),
-    }),
+    daysOfTheWeek: z.array(
+        z.nativeEnum(EDayOfWeek, {
+            errorMap: () => ({ message: 'Select a valid day' }),
+        })
+    ).min(1, { message: 'Select at least one day' }),
     startTime: z.string()
         .regex(MILITARY_TIME_REGEX, { message: 'Invalid start time. Required format: HH:MM' }),
     endTime: z.string()
@@ -60,4 +62,5 @@ export const classRoutineDefaultValues: Partial<classRoutineSchemaType> = {
     classRoomId: "",
     subjectId: "",
     teacherId: "",
+    daysOfTheWeek: [],
 }

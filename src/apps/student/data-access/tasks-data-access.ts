@@ -32,7 +32,7 @@ export const useGetTaskCounts = ({
     options,
 }: {
     queryString?: string;
-    options?: UseQueryOptions<TaskCounts>
+    options?: Partial<UseQueryOptions<TaskCounts>>
 }) => {
     const response = useFetchData<TaskCounts>({
         endpoint: QueryKey.TASKS + '/counts',

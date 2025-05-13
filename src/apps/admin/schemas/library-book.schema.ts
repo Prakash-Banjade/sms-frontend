@@ -15,6 +15,7 @@ export const libraryBookSchema = z.object({
 
     description: z
         .string()
+        .max(500, { message: 'Description is too long. Max 500 characters.' })
         .nullish(),
 
     publicationYear: z
@@ -32,6 +33,8 @@ export const libraryBookSchema = z.object({
         .min(1, { message: 'Copies count must be at least 1' }),
 
     categoryId: z.string({ required_error: 'Category is required' }).uuid({ message: 'Invalid category ID' }),
+    documentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(),
+    coverImageId: z.string().nullish(),
 });
 
 export type libraryBookSchemaType = z.infer<typeof libraryBookSchema>;
@@ -43,4 +46,6 @@ export const libraryBookFormDefaultValues: Partial<libraryBookSchemaType> = {
     description: '',
     publicationYear: new Date().getFullYear(),
     copiesCount: 1,
+    documentIds: [],
+    coverImageId: null,
 };

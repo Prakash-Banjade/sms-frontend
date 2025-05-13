@@ -11,13 +11,20 @@ export type TLessonPlan = {
     title: string;
     startDate: string;
     endDate: string;
-    createdBy: string;
-    subjectName: string;
-    classRooms: string[] | string;
-    parentClassName: string | null;
-    createdByName: string;
     status: ELessonPlanStatus;
-    facultyName: string;
+    subject: {
+        subjectName: string
+    },
+    classRoom: {
+        fullName: string,
+        faculty: {
+            name: string
+        }
+    },
+    createdBy: {
+        firstName: string,
+        lastName: string
+    }
 }
 
 export type TLessonPlansResponse = {
@@ -46,9 +53,9 @@ export type TSingleLessonPlan = {
         url: string,
         originalName: string,
     }[],
-    classRooms: {
+    classRoom: {
         id: string,
-        name: string,
+        fullName: string,
         parent: {
             id: string,
             name: string,
@@ -57,5 +64,5 @@ export type TSingleLessonPlan = {
             id: string,
             name: string,
         }
-    }[],
+    },
 }

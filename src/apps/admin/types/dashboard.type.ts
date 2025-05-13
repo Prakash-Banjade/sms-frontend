@@ -34,3 +34,18 @@ export type TDashboardLeaveRequests = {
         total: string;
     }
 }
+
+export type TeacherDashboard = {
+    totalClasses: number,
+    pendingAssignments: number,
+    pendingLeaveRequests: number,
+    teacherPayAmount: number
+}
+
+export type TeacherTodaySchedule = {
+    id: string
+    startTime: string,
+    endTime: string,
+    classRoomName: string,
+    subjectName: string
+}

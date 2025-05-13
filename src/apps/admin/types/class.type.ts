@@ -2,17 +2,14 @@ import { EClassType, TMeta } from "../../../types/global.type"
 
 export type TClass = {
     id: string,
-    createdAt: string,
-    updatedAt: string,
     name: string,
     description: string | null,
-    admissionFee: number,
-    monthlyFee: number,
     location: string,
     classType: EClassType,
     faculty: string,
     facultyId: string,
     parentClassName: string | null,
+    parentClassId: string | null,
     totalStudentsCount: string,
     totalFemaleStudentsCount: string,
     totalMaleStudentsCount: string,
@@ -52,4 +49,20 @@ export type TSingleClassRoom = {
     totalFemaleStudentsCount: number,
     facultyName: string,
     facultyId: string,
+}
+
+export type TClassesResponse_TeacherView = {
+    data: {
+        id: string
+        name: string,
+        location: string
+        classType: EClassType,
+        totalStudentsCount: string,
+        totalMaleStudentsCount: string,
+        totalFemaleStudentsCount: string,
+        isClassTeacher: 0 | 1,
+        facultyId: string,
+        parentId: string,
+    }[],
+    meta: TMeta
 }

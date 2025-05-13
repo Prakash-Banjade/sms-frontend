@@ -5,23 +5,27 @@ import { ETask, Role } from "@/types/global.type";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { studentSidebarMenuItems } from "./layout/sidebar-items";
 import { CommonRoutes, OnlineClassesRoutes } from "../common/common-routes";
+import StreamClientProvider from "../teacher/layout/stream-client-provider";
 const MyLeaveRequestsPage = lazy(() => import("../common/pages/leave-request/my-leave-requests.page"));
 const AddLeaveRequestPage = lazy(() => import("../common/pages/leave-request/add-leave-request.page"));
-import StreamClientProvider from "../teacher/layout/stream-client-provider";
-import SingleSubjectPage from "../admin/pages/subjects/single-subject.page";
-import TasksPage from "./pages/tasks/tasks.page";
-import MySubjectsPage from "./pages/my-subjects.page";
-import TaskSubmitPage from "./pages/tasks/task-submit.page";
-import ClassRoutinePage from "./pages/class-routine.page";
-import StudentExamRoutinePage from "./pages/examination/student-exam-routine.page";
-import StudentExamReportPage from "./pages/examination/student-exam-report.page";
-import MyAttendancePage from "./pages/my-attendance.page";
-import MyDormitoryPage from "./pages/my-dormitory.page";
-import MyFeesPage from "./pages/my-fees.page";
+const LibraryBooksPage = lazy(() => import("../common/pages/library-books/library-books.page"));
+const SingleLibraryBookPage = lazy(() => import("../admin/pages/library/single-library-book.page"));
+const SingleSubjectPage = lazy(() => import("../admin/pages/subjects/single-subject.page"));
+const TasksPage = lazy(() => import("./pages/tasks/tasks.page"));
+const MySubjectsPage = lazy(() => import("./pages/my-subjects.page"));
+const TaskSubmitPage = lazy(() => import("./pages/tasks/task-submit.page"));
+const ClassRoutinePage = lazy(() => import("./pages/class-routine.page"));
+const StudentExamRoutinePage = lazy(() => import("./pages/examination/student-exam-routine.page"));
+const StudentExamReportPage = lazy(() => import("./pages/examination/student-exam-report.page"));
+const MyAttendancePage = lazy(() => import("./pages/my-attendance.page"));
+const MyDormitoryPage = lazy(() => import("./pages/my-dormitory.page"));
+const MyFeesPage = lazy(() => import("./pages/my-fees.page"));
+const LessonPlanPage = lazy(() => import("./pages/lesson-plan.page"));
+const SingleLessonPlanPage = lazy(() => import("../teacher/pages/lesson-plan/single-lesson-plan.page"));
 const NoticeViewPage = lazy(() => import("../admin/pages/notices/notice-view.page"));
 const NoticePage = lazy(() => import("./pages/notice.page"));
 const StudentTeacherListPage = lazy(() => import("./pages/student-teacher-list.page"));
-const StudentLibraryDetailsPage = lazy(() => import("./pages/student-library-details.page"));
+const MyLibraryDetailsPage = lazy(() => import("../common/pages/library-books/my-library-details.page"));
 const StudentDashboardPage = lazy(() => import("./pages/student-dashboard.page"));
 const OnlineClassesPage = lazy(() => import("../common/pages/online-classes/online-classes.page"));
 
@@ -46,9 +50,13 @@ const StudentRoutes = () => {
               </Route>
             </Route>
           </Route>
+          <Route path="lesson-plans">
+            <Route index element={<LessonPlanPage />} />
+            <Route path=":id" element={<SingleLessonPlanPage />} />
+          </Route>
           <Route path="class-routine" element={<ClassRoutinePage />} />
           <Route path="teachers" element={<StudentTeacherListPage />} />
-          <Route path='library' element={<StudentLibraryDetailsPage />} />
+          <Route path='library' element={<MyLibraryDetailsPage />} />
           <Route path='dormitory' element={<MyDormitoryPage />} />
           <Route path="examination">
             <Route path='routine' element={<StudentExamRoutinePage />} />
@@ -56,6 +64,10 @@ const StudentRoutes = () => {
           </Route>
           <Route path="live-classes" element={<StreamClientProvider />}>
             <Route index element={<OnlineClassesPage />} />
+          </Route>
+          <Route path="e-library">
+            <Route index element={<LibraryBooksPage />} />
+            <Route path=":id" element={<SingleLibraryBookPage />} />
           </Route>
           <Route path="leave-requests">
             <Route index element={<MyLeaveRequestsPage />} />

@@ -79,8 +79,14 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
 
     const { mutateAsync, isPending } = useAppMutation<any, { message: string }>();
 
+    const hasAnyChanges = useMemo(() => {
+        return (
+            _.differenceWith(form.watch('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0
+        )
+    }, [form.watch('examSubjects')])
+
     async function onSubmit(values: TExamSubjectsSchema) {
-        if (_.differenceWith(values.examSubjects, form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0) return toast.error('No changes detected');
+        if (hasAnyChanges) return toast.error('No changes detected');
 
         const response = await mutateAsync({
             endpoint: QueryKey.EXAMS,
@@ -369,8 +375,8 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
                     <LoadingButton
                         isLoading={isPending}
                         className='ml-auto'
-                        loadingText='Creating exam...'
-                        disabled={_.differenceWith(form.watch('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0}
+                        loadingText={examId ? 'Updating...' : 'Creating...'}
+                        disabled={!hasAnyChanges}
                     >
                         <Check />
                         {

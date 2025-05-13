@@ -1,6 +1,7 @@
 import { formatDate } from "@/utils/format-date"
 import { ColumnDef } from "@tanstack/react-table"
 import {
+    DestructiveDropdownMenuButtonItem,
     DropdownMenu,
     DropdownMenuButtonItem,
     DropdownMenuContent,
@@ -15,7 +16,6 @@ import { useState } from "react"
 import { Task } from "@/apps/admin/types/task.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useNavigate } from "react-router-dom"
-import { Badge } from "@/components/ui/badge"
 
 export const taskColumns: ColumnDef<Task>[] = [
     {
@@ -27,40 +27,13 @@ export const taskColumns: ColumnDef<Task>[] = [
         accessorKey: "class",
         cell: ({ row }) => {
             const task = row.original;
-            const classRooms = typeof task.classRooms === 'string' ? JSON.parse(task.classRooms) : task.classRooms
 
             return (
                 <p className="whitespace-nowrap">
-                    <span>
-                        {
-                            task.parentClassName
-                                ? task.parentClassName
-                                : classRooms?.[0]?.name
-                        }
-                    </span>
+                    {task.classRoomName}
                     <br />
                     <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
                 </p>
-            )
-        }
-    },
-    {
-        header: "Sections",
-        accessorKey: "sections",
-        cell: ({ row }) => {
-            const task = row.original;
-            const classRooms = typeof task.classRooms === 'string'
-                ? JSON.parse(task.classRooms) as { id: string, name: string }[]
-                : task.classRooms
-
-            return (
-                <span className="flex gap-2 max-w-[300px] flex-wrap">
-                    {
-                        (!!classRooms?.length && task.parentClassId) ? classRooms?.map(classRoom => (
-                            <Badge variant={'secondary'} key={classRoom.id}>{classRoom.name}</Badge>
-                        )) : '-'
-                    }
-                </span>
             )
         }
     },
@@ -78,10 +51,8 @@ export const taskColumns: ColumnDef<Task>[] = [
         header: "Title",
         accessorKey: "title",
         cell: ({ row }) => {
-            return <p>
-                {
-                    row.original.title?.length > 50 ? `${row.original.title.substring(0, 50)}...` : row.original.title
-                }
+            return <p className="truncate">
+                {row.original.title}
             </p>
         }
     },
@@ -135,9 +106,9 @@ export const taskColumns: ColumnDef<Task>[] = [
                             <DropdownMenuButtonItem onClick={() => navigate(task.id + '/edit')}>
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
-                            <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
+                            <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
                                 <span>Delete</span>
-                            </DropdownMenuButtonItem>
+                            </DestructiveDropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

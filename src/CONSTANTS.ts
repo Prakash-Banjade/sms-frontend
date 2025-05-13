@@ -27,3 +27,5 @@ export const RESEND_OTP_TIME_SEC = 60;
 export enum CookieKey {
     BRANCH_ID = 'branchId',
 }
+
+export const SCHOOL_LEVEL_FACULTY_NAME = "School Level" as const;

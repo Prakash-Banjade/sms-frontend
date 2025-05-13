@@ -4,7 +4,6 @@ import { Navigate, useParams } from "react-router-dom";
 import { useGetExam } from "../../components/examination/data-access";
 import { useGetSubjects } from "../../components/subjects/data-access";
 import { createQueryString } from "@/utils/create-query-string";
-import GetExamSubjectsForm from "../../components/examination/exams/get-exam-subjects-form";
 import { formatDateNumeric } from "@/utils/format-date";
 import { TSingleExam } from "@/apps/admin/types/examination.type";
 import { TExamSubjectsSchema } from "../../schemas/exam-setup.schema";
@@ -51,11 +50,13 @@ function EditExamTable({ exam }: { exam: TSingleExam }) {
 
     if (isLoading) return <div>Loading...</div>;
 
+    if (!subjects) return <div>No subjects found</div>;
+
     return (
         <>
-            <GetExamSubjectsForm
-                defaultExamType={{ value: exam?.examType.id, label: exam?.examType.name }}
-            />
+            <p className="font-semibold text-lg">
+                {exam.examType.name}
+            </p>
             <ExamSetupForm
                 subjects={subjects?.data ?? []}
                 examId={exam.id}

@@ -38,10 +38,10 @@ export default function OnlineClassesPage() {
             title="Live Classes"
             actionTrigger={payload?.role === Role.TEACHER && <CreateOnlineClassDialog />}
         >
+            <OnlineClassesSearchFilters />
             {
                 !!data?.data?.length ? (
                     <>
-                        <OnlineClassesSearchFilters />
                         <section className='@container space-y-4'>
                             <OnlineClassesList onlineClasses={data?.data ?? []} />
                         </section>

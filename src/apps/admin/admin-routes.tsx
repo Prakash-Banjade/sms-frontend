@@ -5,6 +5,7 @@ import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import { CommonRoutes } from '../common/common-routes';
+const SingleLibraryBookPage = lazy(() => import('./pages/library/single-library-book.page'));
 const SingleStaffPage = lazy(() => import('./pages/staffs/single-staff-page'));
 const SalaryStructuresPage = lazy(() => import('./pages/finance-system/salary-management/salary-structures/salary-structures.page'));
 const PayrollAndPaymentsPage = lazy(() => import('./pages/finance-system/salary-management/payroll-and-payments/payroll-and-payments.page'));
@@ -60,12 +61,11 @@ const ExamEvaluationPage = lazy(() => import('./pages/examination/exam-evaluatio
 const ExamRoutinePage = lazy(() => import('./pages/examination/exam-routine.page'));
 const ExaminationReport_SubjectWise = lazy(() => import('./pages/reports/examination-report/subject-wise-report.page'));
 const ExaminationReport_StudentWise = lazy(() => import('./pages/reports/examination-report/student-wise-report.page'));
+const ExaminationReport_ClassWise = lazy(() => import('./pages/reports/examination-report/class-wise-report.page'));
 const SingleTeacherPage = lazy(() => import('./pages/teachers/single-teacher.page'));
 const SubjectSelectionPage = lazy(() => import('./pages/students-management/subject-selection.page'));
-const LessonPlansListPage = lazy(() => import('./pages/lesson-plan/lesson-plans-list.page'));
-const AddLessonPlanPage = lazy(() => import('./pages/lesson-plan/add-lesson-plan.page'));
-const EditLessonPlanPage = lazy(() => import('./pages/lesson-plan/edit-lesson-plan.page'));
-const SingleLessonPlanPage = lazy(() => import('./pages/lesson-plan/single-lesson-plan.page'));
+const LessonPlansListPage = lazy(() => import('../teacher/pages/lesson-plan/lesson-plans-list.page'));
+const SingleLessonPlanPage = lazy(() => import('../teacher/pages/lesson-plan/single-lesson-plan.page'));
 const ChargeHeadsPage = lazy(() => import('./pages/finance-system/fee-management/charge-heads.page'));
 const FeeStructuresPage = lazy(() => import('./pages/finance-system/fee-management/fee-structure/fee-structures.page'));
 const FeeBillingAndPaymentsPage = lazy(() => import('./pages/finance-system/fee-management/billings-and-payments/fee-billing-and-payment.page'));
@@ -106,11 +106,7 @@ export const AdminRoutesGroup = () => {
             </Route>
             <Route path="lesson-plans">
                 <Route index element={<LessonPlansListPage />} />
-                <Route path="new" element={<AddLessonPlanPage />} />
-                <Route path=":id">
-                    <Route index element={<SingleLessonPlanPage />} />
-                    <Route path="edit" element={<EditLessonPlanPage />} />
-                </Route>
+                <Route path=":id" element={<SingleLessonPlanPage />} />
             </Route>
             <Route path="examination">
                 <Route index element={<Navigate to="exam-setup" />} />
@@ -203,6 +199,7 @@ export const AdminRoutesGroup = () => {
                     <Route index element={<LibraryBookListPage />} />
                     <Route path="categories" element={<BookCategoriesPage />} />
                     <Route path="new" element={<AddLibraryBookPage />} />
+                    <Route path=":id" element={<SingleLibraryBookPage />} />
                 </Route>
                 <Route path="issues-and-returns" element={<IssuesAndReturnsPage />} />
             </Route>
@@ -228,6 +225,7 @@ export const AdminRoutesGroup = () => {
             <Route path="reports">
                 <Route path="examination-report">
                     <Route index element={<Navigate to="student-wise" />} />
+                    <Route path="class-wise" element={<ExaminationReport_ClassWise />} />
                     <Route path="student-wise" element={<ExaminationReport_StudentWise />} />
                     <Route path="subject-wise" element={<ExaminationReport_SubjectWise />} />
                 </Route>

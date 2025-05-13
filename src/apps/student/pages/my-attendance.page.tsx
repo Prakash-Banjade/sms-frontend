@@ -3,12 +3,13 @@ import ContainerLayout from "@/components/page-layouts/container-layout";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { createQueryString } from "@/utils/create-query-string";
 import { Calendar } from "@/components/ui/calendar"
-import { EAttendanceStatus } from "@/types/global.type";
+import { EAttendanceStatus, Role } from "@/types/global.type";
 import { useCallback, useState } from "react";
 import AttendanceStatusIndicators from "@/apps/admin/components/students-management/single-student/attendance-status-indicators";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useSearchParams } from "react-router-dom";
 import { getPercentage } from "@/lib/utils";
+import { useAuth } from "@/contexts/auth-provider";
 
 export default function MyAttendancePage() {
 
@@ -28,12 +29,14 @@ function AttendanceView() {
     const currentDate = new Date();
     const { searchParams, setSearchParams } = useCustomSearchParams()
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+    const { payload } = useAuth();
 
     const { data: attendances, isLoading } = useGetAttendances({
         queryString: createQueryString({
             month: searchParams.get('month'),
             year: searchParams.get('year'),
             take: 32,
+            self: payload?.role === Role.TEACHER, // if teacher is requesting, this query param needs to be true to get own attendances
         }),
     });
 

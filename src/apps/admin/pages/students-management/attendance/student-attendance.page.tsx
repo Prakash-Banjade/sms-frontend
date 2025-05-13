@@ -93,15 +93,17 @@ function AttendanceList({ searchQuery, attendances, setAttendances }: IAttendanc
       <AttendanceTable attendances={attendances} setAttendances={setAttendances} />
       <div className="flex justify-end">
         {
-          !!_.differenceWith(attendances, data, _.isEqual)?.length && <Button className="w-fit" onClick={handleSaveAttendances} disabled={isPending}>
-            {
-              isPending ? <>
-                <LoaderCircle className="animate-spin" /> Saving changes...
-              </> : 'Save changes'
-            }
-          </Button>
+          (!!_.differenceWith(attendances, data, _.isEqual)?.length && !isLoading) && (
+            <Button className="w-fit" onClick={handleSaveAttendances} disabled={isPending}>
+              {
+                isPending ? <>
+                  <LoaderCircle className="animate-spin" /> Saving changes...
+                </> : 'Save changes'
+              }
+            </Button>
+          )
         }
-      </div>
+      </div >
     </>
   )
 }

@@ -28,6 +28,8 @@ function TaskEditForm({ type, id }: { id: string, type: ETask }) {
 
     if (!data) return <Navigate to={`/${payload?.role}/tasks`} />;
 
+    const classRoom = data.classRoom;
+
     return (
         <TaskForm
             taskType={type}
@@ -42,13 +44,9 @@ function TaskEditForm({ type, id }: { id: string, type: ETask }) {
                 marks: data.marks ?? 0,
                 subjectId: data.subject.id,
                 taskType: type,
-                facultyId: data.classRooms[0]?.faculty?.id,
-                classRoomId: data.classRooms[0].parent?.id
-                    ? data.classRooms[0].parent?.id
-                    : data.classRooms[0].id,
-                sectionIds: data.classRooms[0].parent?.id
-                    ? data.classRooms?.map((classRoom) => classRoom.id)
-                    : [],
+                facultyId: classRoom.faculty.id,
+                classRoomId: classRoom.parent ? classRoom.parent.id : classRoom.id,
+                sectionId: classRoom.parent ? classRoom.id : undefined
             }}
         />
     )

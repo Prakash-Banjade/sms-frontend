@@ -130,7 +130,7 @@ export function SubmittedTasks() {
 
     const { data, isLoading } = useGetTaskSubmissions<TaskSubmissionsResponse>({
         queryString: createQueryString({
-            notEvaluated: true,
+            evaluated: "false",
             take: searchParams.get('take'),
             page: searchParams.get('page'),
         })

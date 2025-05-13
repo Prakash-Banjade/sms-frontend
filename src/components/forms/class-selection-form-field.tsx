@@ -19,20 +19,22 @@ type Props = {
     required?: Partial<Record<TRequiredFields, boolean>>;
     noDescription?: boolean;
     multiSection?: boolean;
+    onlyAssigned?: boolean
 }
 
 export default function ClassSelectionFormField({
     include = 'classRoom',
     required,
     noDescription = false,
-    multiSection = false
+    multiSection = false,
+    onlyAssigned = false, // used by teacher to get the options that include classrooms for which he is the class teacher
 }: Props) {
     const form = useFormContext();
 
     const [selectedFaculty, setSelectedFaculty] = useState<TFacultyOption>();
     const [selectedClassRoom, setSelectedClassRoom] = useState<TClassRoomOptions[0]>();
 
-    const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include }));
+    const { data: faculties, isLoading } = useFacultySearch(createQueryString({ include, assigned: onlyAssigned }));
 
     useEffect(() => {
         if (!faculties) return;

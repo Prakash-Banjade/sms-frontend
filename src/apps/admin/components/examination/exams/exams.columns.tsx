@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { TExam } from "@/apps/admin/types/examination.type"
 import { Badge } from "@/components/ui/badge"
+import { format } from "date-fns"
 
 export const examsColumns: ColumnDef<TExam>[] = [
     {
@@ -35,6 +36,18 @@ export const examsColumns: ColumnDef<TExam>[] = [
     {
         header: "Faculty",
         accessorKey: "faculty",
+    },
+    {
+        header: "Schedule",
+        accessorKey: "schedule",
+        cell: ({ row }) => {
+            return (
+                <div>
+                    <span className="font-medium">{format(row.original.startingFrom, "EEE dd MMM, yyyy")}</span>&nbsp;To&nbsp;
+                    <span className="font-medium">{format(row.original.endsOn, "EEE dd MMM, yyyy")}</span>
+                </div>
+            )
+        }
     },
     {
         header: "Result Status",
@@ -67,7 +80,7 @@ export const examsColumns: ColumnDef<TExam>[] = [
                     endpoint: `${QueryKey.EXAMS}/${row.original.id}/publish?publish=${!row.original.isReportPublished}`,
                     invalidateTags: [QueryKey.EXAMS],
                 });
-            }
+            }        
 
             return (
                 <>
@@ -85,9 +98,10 @@ export const examsColumns: ColumnDef<TExam>[] = [
                         isOpen={isPublishOpen}
                         setIsOpen={setIsPublishOpen}
                         title={`Publish exam results`}
-                        description={`Are you sure you want to publish the exam results?`}
+                        description={`Are you sure you want to publish the exam results? This leads to the overall calculations for students in the class.`}
                         action={() => handlePublishResult()}
                         actionLabel="Yes, Publish"
+                        loadingText="Publishing..."
                         isLoading={isPending}
                     />
 

@@ -119,7 +119,7 @@ function ClassRoutineCardActions({ classRoutine }: { classRoutine: TClassRoutine
                         subjectId: classRoutine.subject?.id,
                         startTime: classRoutine.startTime,
                         endTime: classRoutine.endTime,
-                        dayOfTheWeek: classRoutine.dayOfTheWeek,
+                        daysOfTheWeek: [classRoutine.dayOfTheWeek],
                         type: classRoutine.type,
                         teacherId: classRoutine.teacher?.id,
                     }}

@@ -41,6 +41,8 @@ export function getErrMsg(error: unknown): string | null {
     const err = error.response?.data?.message;
 
     if (err instanceof Object && 'message' in err) {
+      const msg = err.message;
+      if (Array.isArray(msg)) return msg[0];
       return err.message;
     } else if (typeof err === 'string') {
       return err;
@@ -91,11 +93,11 @@ type MilitaryTimeRange = {
  * @return True if new range overlaps with any existing range, False otherwise
  */
 
-export const doesIntersect = (ranges: MilitaryTimeRange[], newRange: MilitaryTimeRange): boolean => {
+export const doesIntersect = (ranges: TClassRoutine[], newRange: MilitaryTimeRange) => {
   const newStart = parse(newRange.startTime, "HH:mm", new Date());
   const newEnd = parse(newRange.endTime, "HH:mm", new Date());
 
-  return ranges.some(({ startTime, endTime }) => {
+  return ranges.find(({ startTime, endTime }) => {
     const rangeStart = parse(startTime, "HH:mm", new Date());
     const rangeEnd = parse(endTime, "HH:mm", new Date());
 

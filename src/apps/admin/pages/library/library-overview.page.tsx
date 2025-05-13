@@ -2,8 +2,8 @@ import DashboardCountCard from "@/components/dashboard/dashboard-count-card"
 import { ArrowLeftRight, BookOpen, Calendar, UserCheck } from "lucide-react"
 import RecentLibraryBookTransactions from "../../components/library/library-overview/recent-transactions"
 import DetailedLibraryBookTransactions from "../../components/library/library-overview/detailed-transactions"
-import Library_StudentsOverview from "../../components/library/library-overview/students-overview"
-import { useGetLibraryOverviewCount } from "../../components/library/actions"
+import LibraryMembersOverview from "../../components/library/library-overview/members-overview"
+import { useGetLibraryOverviewCount } from "../../components/library/data-access"
 
 export default function LibraryOverviewPage() {
     const { data: count, isLoading } = useGetLibraryOverviewCount();
@@ -23,10 +23,10 @@ export default function LibraryOverviewPage() {
                 <div className="col-span-2">
                     <RecentLibraryBookTransactions />
                 </div>
-                <Library_StudentsOverview
+                <LibraryMembersOverview
                     topBooks={count?.topBooks || []}
-                    totalStudents={count?.studentsCount || 0}
-                    issuedStudents={count?.issuedStudentCount || 0}
+                    totalMemberss={count?.membersCount || 0}
+                    issuedMemberss={count?.issuedMembersCount || 0}
                 />
             </section>
 

@@ -13,6 +13,11 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TClass } from "@/apps/admin/types/class.type"
 import ClassSectionForm from "./class-room-section.form"
 import { calculateRatios } from "@/lib/utils"
+import { useAuth } from "@/contexts/auth-provider"
+import { useNavigate } from "react-router-dom"
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
+import { useAppMutation } from "@/hooks/useAppMutation"
+import { QueryKey } from "@/react-query/queryKeys"
 
 export const sectionsColumns: ColumnDef<TClass>[] = [
     {
@@ -82,6 +87,19 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const [isEditOpen, setIsEditOpen] = useState(false);
+            const navigate = useNavigate();
+            const { payload } = useAuth();
+            const [isUpdateRollNumberOpen, setIsUpdateRollNumberOpen] = useState(false);
+
+            const { mutateAsync, isPending } = useAppMutation();
+
+            async function handleUpdateRollNumber() {
+                await mutateAsync({
+                    method: "patch",
+                    endpoint: `class-rooms/${row.original.id}/update-roll-no`,
+                    invalidateTags: [QueryKey.CLASSES],
+                });
+            }
 
             return (
                 <>
@@ -96,8 +114,6 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                             facultyId={row.original.facultyId}
                             defaultValues={{
                                 name: row.original.name,
-                                monthlyFee: row.original.monthlyFee,
-                                admissionFee: row.original.admissionFee,
                                 location: row.original.location,
                                 classTeacherId: row.original.classTeacherId
                             }}
@@ -108,6 +124,18 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                             }
                         />
                     </ResponsiveDialog>
+
+                    <ResponsiveAlertDialog
+                        action={handleUpdateRollNumber}
+                        isOpen={isUpdateRollNumberOpen}
+                        setIsOpen={setIsUpdateRollNumberOpen}
+                        title="Update Roll Number Alphabetically"
+                        description="Are you sure you want to update the roll number for all students in this class? This will rearrange the roll numbers alphabetically."
+                        actionLabel="Yes, Update"
+                        isLoading={isPending}
+                        loadingText="Updating..."
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -117,8 +145,14 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuButtonItem onClick={() => navigate(`/${payload?.role}/students?facultyId=${row.original.facultyId}&classRoomId=${row.original.parentClassId}&sectionId=${row.original.id}`)}>
+                                <span>View All Students</span>
+                            </DropdownMenuButtonItem>
                             <DropdownMenuButtonItem onClick={() => setIsEditOpen(true)}>
                                 <span>Edit section</span>
+                            </DropdownMenuButtonItem>
+                            <DropdownMenuButtonItem onClick={() => setIsUpdateRollNumberOpen(true)}>
+                                <span>Update Roll Numbers</span>
                             </DropdownMenuButtonItem>
                             {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>

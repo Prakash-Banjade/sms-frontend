@@ -41,10 +41,14 @@ export default function SingleTaskPage({ type }: { type: ETask }) {
                     <SingleTaskDetailsCard task={task} />
                 </section>
 
-                <TaskSubmissionStatisticsCard taskId={id!} />
+                {
+                    task.taskType === ETask.ASSIGNMENT && <TaskSubmissionStatisticsCard taskId={id!} />
+                }
             </div>
 
-            <TaskSubmissionsCard taskId={id!} />
+            {
+                task.taskType === ETask.ASSIGNMENT && <TaskSubmissionsCard task={task} />
+            }
         </section>
     )
 }

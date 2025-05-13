@@ -1,4 +1,4 @@
-import { TLastPayroll } from '@/apps/admin/types/finance-system/salary-management.types';
+import { TSinglePayroll } from '@/apps/admin/types/finance-system/salary-management.types';
 import { useGetLastPayroll } from '../../data-access';
 import { format } from 'date-fns';
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
@@ -44,7 +44,7 @@ const paymentSchema = z.object({
 
 export type paymentSchemaType = z.infer<typeof paymentSchema>;
 
-function SalaryPaymentForm({ payroll }: { payroll: TLastPayroll }) {
+function SalaryPaymentForm({ payroll }: { payroll: TSinglePayroll }) {
     const queryclient = useQueryClient();
 
     const formDefaultValues = {

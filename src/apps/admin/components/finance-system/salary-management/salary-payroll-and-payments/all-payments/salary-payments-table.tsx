@@ -4,20 +4,24 @@ import { format } from "date-fns";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams";
 import { useGetSalaryPayments } from "../../data-access";
-import { DateRangeFilter } from "../../../../../../../components/search-components/date-range-filter";
 import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Printer } from "lucide-react";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { useState } from "react";
-import SalaryPaySlipTemplate from "../payment/salary-payslip-template";
+import { useAuth } from "@/contexts/auth-provider";
+import { isAdmin } from "@/lib/utils";
+import { Role } from "@/types/global.type";
+import { TSalaryPaymentResponse } from "@/apps/admin/types/finance-system/salary-management.types";
+import PrintPaySlip from "../payment/print-payment";
 
 type Props = {
-    employeeId: string;
+    employeeId?: string;
 }
 
 export default function SalaryPaymentsTable({ employeeId }: Props) {
     const { searchParams } = useCustomSearchParams();
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetSalaryPayments({
         queryString: createQueryString({
@@ -27,19 +31,17 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
             page: searchParams.get('page'),
             take: searchParams.get('take'),
         }),
-        options: { enabled: !!employeeId }
+        options: { enabled: (!!employeeId && isAdmin(payload)) || payload?.role === Role.TEACHER }
     });
 
-    if (!employeeId) return null;
+    if (!employeeId && isAdmin(payload)) return null;
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <div className="p-6 text-muted-foreground">Loading...</div>;
+
+    if (!data) return null;
 
     return (
-        <section className="space-y-4 mt-10">
-            <header className="flex justify-between items-end gap-10">
-                <DateRangeFilter />
-            </header>
-
+        <>
             <Table>
                 <TableHeader className="bg-tableheader">
                     <TableRow>
@@ -61,9 +63,7 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                                 <TableCell>Rs. {item.amount?.toLocaleString()}</TableCell>
                                 <TableCell>{item.remark || '-'}</TableCell>
                                 <TableCell>
-                                    {
-                                        index === 0 && <SalaryPaymentActionColumn />
-                                    }
+                                    <SalaryPaymentActionColumn payment={item} />
                                 </TableCell>
                             </TableRow>
                         )
@@ -76,12 +76,12 @@ export default function SalaryPaymentsTable({ employeeId }: Props) {
                 </TableBody>
             </Table>
 
-            {data?.meta && <DataTablePagination meta={data?.meta} />}
-        </section>
+            <DataTablePagination meta={data?.meta} />
+        </>
     )
 }
 
-function SalaryPaymentActionColumn() {
+function SalaryPaymentActionColumn({ payment }: { payment: TSalaryPaymentResponse["data"][0] }) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
@@ -92,7 +92,7 @@ function SalaryPaymentActionColumn() {
                 title="Print Payslip"
                 className="max-w-max"
             >
-                <SalaryPaySlipTemplate />
+                <PrintPaySlip payment={payment} />
             </ResponsiveDialog>
 
             <DropdownMenu>

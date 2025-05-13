@@ -7,6 +7,8 @@ export enum ESalaryAdjustmentType {
     Allowance = 'allowance',
     Unpaid = 'unpaid',
     Past_Advance = 'past_advance', // used to track last month advance amount
+    Absent = 'absent', // used to track absent days
+    Library_Fine = 'library_fine'
 }
 
 export type TAllowance = {
@@ -37,7 +39,7 @@ export type TEmployees = {
         payAmount: number,
         fullName: string,
         employeeId: number,
-        designation: Role
+        designation: Role,
     }[],
     meta: TMeta
 };
@@ -47,11 +49,12 @@ export type TSalaryEmployee = {
         id: string,
         payAmount: number,
         fullName: string,
-        employeeId: number,
+        employeeId: string,
         designation: Role,
         profileImageUrl: string | null;
         phone: string;
         email: string;
+        accountId: string;
     },
     basicSalary: number,
     grossSalary: number,
@@ -63,11 +66,11 @@ export type TSalaryEmployee = {
     lastAdvanceAmount: number | null;
 }
 
-export type TLastPayroll = {
+export type TSinglePayroll = {
     id: string,
     date: string,
     netSalary: number,
-    grossSalary: number,
+    basicSalary: number,
     employee: {
         id: string,
         email: string,
@@ -93,6 +96,17 @@ export type TSalaryPaymentResponse = {
         remark: string,
         amount: number,
         salaryDate: string;
+        payrollId: string,
     }[],
     meta: TMeta,
+}
+
+export type TSalaryPayrollsResponse = {
+    data: {
+        id: string
+        date: string
+        netSalary: number,
+        basicSalary: number
+    }[],
+    meta: TMeta
 }

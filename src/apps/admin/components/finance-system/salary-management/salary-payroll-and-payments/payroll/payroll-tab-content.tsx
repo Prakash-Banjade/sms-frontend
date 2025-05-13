@@ -1,17 +1,20 @@
-import { ESalaryAdjustmentType, TLastPayroll, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
+import { ESalaryAdjustmentType, TSinglePayroll, TSalaryEmployee } from "@/apps/admin/types/finance-system/salary-management.types"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PayrollForm from "./payroll-form"
 import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 import { z } from "zod"
-import { useGetLastPayroll } from "../../data-access"
-import { sub } from "date-fns"
+import { addMonths, isBefore, isSameMonth, sub, subMonths } from "date-fns"
 import { startOfDayString } from "@/lib/utils"
+import SalaryPayrollsTable from "./salary-payrolls-table"
+import { useGetLastPayroll } from "../../data-access"
+import { DateRangeFilter } from "@/components/search-components/date-range-filter"
+import { useMemo } from "react"
 
 type Props = {
     salaryEmployee: TSalaryEmployee
 }
 
-const tabsSchema = z.enum(['new', 'last']);
+const tabsSchema = z.enum(['new', 'last', 'all']);
 
 export default function PayrollTabContent({ salaryEmployee }: Props) {
     const { searchParams, setSearchParams } = useCustomSearchParams();
@@ -26,6 +29,16 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
         },
     });
 
+    const isPayrollGenerationAvailable = useMemo(() => {
+        const { lastPayrollDate } = salaryEmployee;
+
+        if (!lastPayrollDate) return true; // no payroll generated, so available to generate
+
+        const newSalaryDate = lastPayrollDate ? addMonths(lastPayrollDate, 1) : subMonths(new Date(), 1);
+
+        return isBefore(newSalaryDate, new Date()) && !isSameMonth(newSalaryDate, new Date());
+    }, [salaryEmployee])
+
     return (
         <section className="pt-4">
             <Tabs
@@ -35,9 +48,14 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
                 <TabsList className="">
                     <TabsTrigger value="new">New Payroll</TabsTrigger>
                     <TabsTrigger value="last">Last Payroll</TabsTrigger>
+                    <TabsTrigger value="all">All Payrolls</TabsTrigger>
                 </TabsList>
                 <TabsContent value="new">
-                    <PayrollForm salaryEmployee={salaryEmployee} />
+                    {
+                        isPayrollGenerationAvailable
+                            ? <PayrollForm salaryEmployee={salaryEmployee} />
+                            : <div className="my-20 text-center text-muted-foreground">Payroll for previous month is already generated</div>
+                    }
                 </TabsContent>
                 <TabsContent value="last">
                     {
@@ -48,13 +66,21 @@ export default function PayrollTabContent({ salaryEmployee }: Props) {
                             ) : <div className="text-muted-foreground my-20 text-center">No payroll has been created yet!</div>
                     }
                 </TabsContent>
+                <TabsContent value="all">
+                    <section className="space-y-4 mt-10">
+                        <header className="flex justify-between items-end gap-10">
+                            <DateRangeFilter />
+                        </header>
+                        <SalaryPayrollsTable />
+                    </section>
+                </TabsContent>
             </Tabs>
         </section>
 
     )
 }
 
-function UpdatePayroll({ data, salaryEmployee }: { data: TLastPayroll, salaryEmployee: TSalaryEmployee }) {
+function UpdatePayroll({ data, salaryEmployee }: { data: TSinglePayroll, salaryEmployee: TSalaryEmployee }) {
     if (!data) return null;
 
     return (
@@ -73,7 +99,7 @@ function UpdatePayroll({ data, salaryEmployee }: { data: TLastPayroll, salaryEmp
                 advance: data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Advance)?.amount ?? 0,
                 date: data.date,
                 employeeId: salaryEmployee.employee?.id,
-                salaryAdjustments: data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction || sa.type === ESalaryAdjustmentType.Bonus),
+                salaryAdjustments: data.salaryAdjustments?.filter(sa => [ESalaryAdjustmentType.Deduction, ESalaryAdjustmentType.Bonus, ESalaryAdjustmentType.Absent, ESalaryAdjustmentType.Library_Fine].includes(sa.type)),
             }}
             paidSalary={data.paidSalary}
         />

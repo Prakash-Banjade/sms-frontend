@@ -22,7 +22,7 @@ export default function UpcommingEvents() {
             </CardHeader>
             <CardContent>
                 <section className="space-y-3">
-                    {isLoading && [...Array(3)].map((_, index) => <EventsLoadingSkeleton key={index} />)}
+                    {isLoading && [...Array(2)].map((_, index) => <EventsLoadingSkeleton key={index} />)}
                     {
                         events?.data.map((event) => {
                             const difference = differenceInDays(new Date(event.dateTo), new Date(event.dateFrom));

@@ -65,6 +65,14 @@ export function DynamicCombobox<T extends FieldValues>({
         options: queryOptions,
     });
 
+    const currentValue = useMemo(() => {
+        const val = selectedValues?.length
+            ? formatArray(selectedValues.map(item => item.label), 2)
+            : placeholder;
+
+        return val.length > 40 ? val.slice(0, 40) + '...' : val;
+    }, [selectedValues, placeholder]);
+
     return (
         <FormField
             control={control}
@@ -87,11 +95,7 @@ export function DynamicCombobox<T extends FieldValues>({
                                 className="w-full justify-between h-max min-h-10 overflow-hidden disabled:!cursor-not-allowed disabled:pointer-events-auto"
                                 disabled={disabled || isLoading || (disableOnNoOption && !options?.length)}
                             >
-                                {
-                                    selectedValues?.length
-                                        ? formatArray(selectedValues.map(item => item.label), 2)
-                                        : placeholder
-                                }
+                                {currentValue}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>
@@ -128,7 +132,9 @@ export function DynamicCombobox<T extends FieldValues>({
                                                             selectedValues?.some(item => item.value === option.value) ? "opacity-100" : "opacity-0"
                                                         )}
                                                     />
-                                                    {option.label}
+                                                    <div className='truncate'>
+                                                        {option.label}
+                                                    </div>
                                                 </CommandItem>
                                             )
                                         })}
