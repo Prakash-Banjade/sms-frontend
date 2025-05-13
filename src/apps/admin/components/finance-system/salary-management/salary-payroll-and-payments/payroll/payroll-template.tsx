@@ -18,6 +18,7 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
 
     const deductions = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction);
     const absentAdjustment = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Absent);
+    const libraryFineAdjustment = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Library_Fine);
 
     const allowanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Allowance)?.amount ?? 0;
     const previousAdvanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Past_Advance)?.amount ?? 0;
@@ -25,7 +26,8 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
     const unpaidAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Unpaid)?.amount ?? 0;
     const totalBonus = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
     const absentFine = absentAdjustment?.amount ?? 0;
-    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0) + absentFine;
+    const libraryFine = libraryFineAdjustment?.amount ?? 0;
+    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0) + absentFine + libraryFine;
     const totalEarnings = data.basicSalary + allowanceAmount + unpaidAmount + totalBonus + advanceAmount;
 
     return (
@@ -133,6 +135,12 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                                 absentFine > 0 && <TableRow>
                                     <TableCell>{absentAdjustment?.description}</TableCell>
                                     <TableCell className="text-right">Rs. {absentFine?.toLocaleString()}</TableCell>
+                                </TableRow>
+                            }
+                            {
+                                libraryFine > 0 && <TableRow>
+                                    <TableCell>{libraryFineAdjustment?.description}</TableCell>
+                                    <TableCell className="text-right">Rs. {libraryFine?.toLocaleString()}</TableCell>
                                 </TableRow>
                             }
                             {

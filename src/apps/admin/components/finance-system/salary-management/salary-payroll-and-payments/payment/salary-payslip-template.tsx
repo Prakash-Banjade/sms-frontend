@@ -15,13 +15,17 @@ export const SalaryPayslipTemplate = React.forwardRef<HTMLDivElement, Props>(({ 
     const employee = data.employee;
 
     const deductions = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Deduction);
+    const absentAdjustment = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Absent);
+    const libraryFineAdjustment = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Library_Fine);
 
     const allowanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Allowance)?.amount ?? 0;
     const previousAdvanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Past_Advance)?.amount ?? 0;
     const advanceAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Advance)?.amount ?? 0;
     const unpaidAmount = data.salaryAdjustments?.find(salaryAdjustment => salaryAdjustment.type === ESalaryAdjustmentType.Unpaid)?.amount ?? 0;
     const totalBonus = data.salaryAdjustments?.filter(sa => sa.type === ESalaryAdjustmentType.Bonus)?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
-    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0);
+    const absentFine = absentAdjustment?.amount ?? 0;
+    const libraryFine = libraryFineAdjustment?.amount ?? 0;
+    const totalDeduction = previousAdvanceAmount + (deductions?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0) + absentFine + libraryFine;
     const totalEarnings = data.basicSalary + allowanceAmount + unpaidAmount + totalBonus + advanceAmount;
 
     return (
@@ -130,6 +134,18 @@ export const SalaryPayslipTemplate = React.forwardRef<HTMLDivElement, Props>(({ 
                                 previousAdvanceAmount > 0 && <tr>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Previous Advance</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">Rs. {previousAdvanceAmount?.toLocaleString()}</td>
+                                </tr>
+                            }
+                            {
+                                absentFine > 0 && <tr>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{absentAdjustment?.description}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">Rs. {absentFine?.toLocaleString()}</td>
+                                </tr>
+                            }
+                            {
+                                libraryFine > 0 && <tr>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{libraryFineAdjustment?.description}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">Rs. {libraryFine?.toLocaleString()}</td>
                                 </tr>
                             }
                             {

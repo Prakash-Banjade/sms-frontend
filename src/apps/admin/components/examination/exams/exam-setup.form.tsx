@@ -81,12 +81,12 @@ export default function ExamSetupForm({ subjects, examId, defaultValues }: Props
 
     const hasAnyChanges = useMemo(() => {
         return (
-            _.differenceWith(form.watch('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length === 0
+            _.differenceWith(form.getValues('examSubjects'), form.formState.defaultValues?.examSubjects ?? [], _.isEqual).length > 0
         )
-    }, [form.watch('examSubjects')])
+    }, [form.watch()])
 
     async function onSubmit(values: TExamSubjectsSchema) {
-        if (hasAnyChanges) return toast.error('No changes detected');
+        if (!hasAnyChanges) return toast.error('No changes detected');
 
         const response = await mutateAsync({
             endpoint: QueryKey.EXAMS,
