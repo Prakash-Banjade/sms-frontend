@@ -9,7 +9,7 @@ import useStreamCall from "@/hooks/useStreamCall";
 import { ArrowLeft, CheckCircle, Clock, FileText, FileVideo2, Loader2, MessageCircle, VideoOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import AudioVolumeIndicator from "../../online-classes/live-online-class/audio-volume-indicator";
-import FlexibleCallLayout from "../../online-classes/live-online-class/flexible-layout";
+import FlexibleCallLayout, { OnlineClassNewWindowEvents } from "../../online-classes/live-online-class/flexible-layout";
 import { format } from "date-fns";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox";
@@ -227,6 +227,17 @@ function ClassEndedScreen() {
     const navigate = useNavigate();
 
     const { call } = useLoadCall(id!);
+
+    useEffect(() => {
+        if (window.opener) {
+            // Trigger a custom event on the main window to invalidate the online class list
+            const event = new CustomEvent(OnlineClassNewWindowEvents.Update_Classes);
+            window.opener.dispatchEvent(event);
+            window.close();
+        } else {
+            console.warn('No opener window found');
+        }
+    }, [])
 
     return (
         <Card className="w-full max-w-2xl mx-auto border-none">

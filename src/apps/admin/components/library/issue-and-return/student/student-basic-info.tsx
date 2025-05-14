@@ -35,7 +35,7 @@ export default function Library_StudentBasicInfo({ student, selectedTransactions
                     <h2 className="text-xl font-semibold mt-4 capitalize">{student.name}</h2>
                     <div className='text-sm space-x-6 mt-1'>
                         <span>Roll No.: {student.rollNo}</span>
-                        <span>Student ID: {searchParams.get('studentID')}</span>
+                        <span>Student ID: {searchParams.get('studentId')}</span>
                     </div>
                 </div>
 

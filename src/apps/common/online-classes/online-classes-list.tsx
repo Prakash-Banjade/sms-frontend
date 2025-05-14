@@ -18,11 +18,13 @@ import { ResponsiveDialog } from '@/components/ui/responsive-dialog'
 import { EOnlineClassStatus, TOnlineClass } from '@/apps/teacher/data-access/online-class-data-access'
 import { OnlineClassNewWindowEvents } from './live-online-class/flexible-layout'
 import UpdateOnlineClassForm from './update-online-class-form'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function OnlineClassesList({ onlineClasses }: { onlineClasses: TOnlineClass[] }) {
     const navigate = useNavigate();
     const { payload } = useAuth();
     const client = useStreamVideoClient();
+    const queryClient = useQueryClient();
 
     const handleLeave = (event: CustomEvent<{ id: string }>) => {
         const id = event.detail.id;
@@ -34,10 +36,12 @@ export default function OnlineClassesList({ onlineClasses }: { onlineClasses: TO
         // Listen for custom events triggered from the new window
         window.addEventListener(OnlineClassNewWindowEvents.Call_Leave, e => handleLeave(e as CustomEvent));
         window.addEventListener(OnlineClassNewWindowEvents.Call_End, e => handleCallEnd(e as CustomEvent));
+        window.addEventListener(OnlineClassNewWindowEvents.Update_Classes, handleInvalidate);
 
         return () => {
             window.removeEventListener(OnlineClassNewWindowEvents.Call_Leave, e => handleLeave(e as CustomEvent));
             window.removeEventListener(OnlineClassNewWindowEvents.Call_End, e => handleCallEnd(e as CustomEvent));
+            window.removeEventListener(OnlineClassNewWindowEvents.Update_Classes, handleInvalidate);
         };
     }, []);
 
@@ -65,6 +69,12 @@ export default function OnlineClassesList({ onlineClasses }: { onlineClasses: TO
         await call.endCall();
     }
 
+    const handleInvalidate = () => {
+        console.log('invalidating...')
+        queryClient.invalidateQueries({
+            queryKey: [QueryKey.ONLINE_CLASSES]
+        })
+    }
 
     return (
         <section className='grid @7xl:grid-cols-4 @5xl:grid-cols-3 @2xl:grid-cols-2 gap-2'>

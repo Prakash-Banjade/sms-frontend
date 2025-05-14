@@ -55,7 +55,7 @@ export default function BookIssuesAndReturnPage() {
                 control={form.control}
                 name="memberType"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative z-[2]"> {/* z-index are given to make the focused ring completely visible */}
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="w-[150px] rounded-r-none border-r-0 pl-4">
@@ -73,10 +73,15 @@ export default function BookIssuesAndReturnPage() {
 
               <Input
                 placeholder="Enter Member ID"
-                className="w-80 rounded-none"
+                className="w-80 rounded-none relative z-[1] focus:z-[3]"
                 {...form.register('memberId')}
               />
-              <Button type="submit" className="rounded-l-none">Search</Button>
+              <Button
+                type="submit"
+                className="rounded-l-none relative z-[1] focus:z-[3]"
+              >
+                Search
+              </Button>
             </form>
           </Form>
 

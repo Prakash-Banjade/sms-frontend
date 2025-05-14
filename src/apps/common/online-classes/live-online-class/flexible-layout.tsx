@@ -16,6 +16,7 @@ type CallLayout = "speaker-vert" | "speaker-horiz" | "grid";
 export enum OnlineClassNewWindowEvents {
     Call_Leave = 'call-leave',
     Call_End = 'call-end',
+    Update_Classes = 'update-classes',
 }
 
 export default function FlexibleCallLayout() {
