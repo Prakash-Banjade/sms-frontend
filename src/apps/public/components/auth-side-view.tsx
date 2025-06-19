@@ -1,4 +1,5 @@
 import { ThemeToggleBtn } from '@/components/theme-toggle'
+import { thisSchool } from '@/CONSTANTS'
 import { School } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -10,12 +11,12 @@ export default function AuthSideView() {
             </div>
             <Link
                 to="/auth/login"
-                className="absolute left-4 top-4 md:left-8 md:top-8 z-20 flex items-center text-lg font-medium text-primary"
+                className="absolute left-4 top-4 md:left-8 md:top-8 z-20 flex items-center text-lg font-medium text-primary capitalize"
             >
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground mr-2">
                     <School className="size-5" />
                 </div>
-                ABHYAM SMS
+                {thisSchool.name}
             </Link>
             <div
                 className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex"

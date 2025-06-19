@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { useGetActiveAcademicYear } from '../../../../super_admin/data-access/academic-year-data-access'
+import { thisSchool } from '@/CONSTANTS'
 
 type Props = {
     data: TExamReportByStudent;
@@ -32,10 +33,10 @@ export default function ReportCardPrintBtn({ data }: Props) {
                 <Card className="border-4 border-primary">
                     <CardHeader className="text-center border-b border-primary">
                         <div>
-                            <h1 className="text-3xl font-bold">{'Abhyam SMS'}</h1>
+                            <h1 className="text-3xl font-bold">{thisSchool.name}</h1>
                             <p className="text-muted-foreground flex items-center justify-center">
                                 <MapPin className="w-4 h-4 mr-2" />
-                                Coming Soon...
+                                {thisSchool.address}
                             </p>
                         </div>
                         <CardTitle className="text-xl font-bold">Student Report Card</CardTitle>

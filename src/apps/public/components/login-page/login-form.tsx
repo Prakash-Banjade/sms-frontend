@@ -57,6 +57,8 @@ export function LoginForm({ className, setIsFormSubmitting, ...props }: LoginFor
             });
             const payload: TAuthPayload = jwtDecode(response.data.access_token);
 
+            localStorage.setItem('lastLogin', new Date().toISOString());
+
             navigate(location.state?.from?.pathname || `/${payload.role}/dashboard`, { replace: true });
         }
 

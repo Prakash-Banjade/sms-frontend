@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import TwoFaPasskeyVerification from "./2fa-passkey-verification";
+import { thisSchool } from "@/CONSTANTS";
 
 export default function LoginChallengePage() {
     return (
@@ -17,7 +18,7 @@ export default function LoginChallengePage() {
                     2-Step Verification
                 </h1>
                 <p className="text-sm text-muted-foreground">
-                    To help keep your account safe, Abhyam SMS wants to make sure it&apos;s really you trying to sign in
+                    To help keep your account safe, {thisSchool.name} wants to make sure it&apos;s really you trying to sign in
                 </p>
                 <TwoFAOptions />
             </div>

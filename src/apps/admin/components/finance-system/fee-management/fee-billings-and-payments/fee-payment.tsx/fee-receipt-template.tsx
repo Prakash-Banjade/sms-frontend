@@ -4,6 +4,7 @@ import { School } from "lucide-react";
 import React from "react";
 import { paymentSchemaType } from "./fee-payment-form";
 import { EMonth } from "../fee-invoice/fee-invoice-form";
+import { thisSchool } from "@/CONSTANTS";
 
 type Props = {
     receipt: Omit<paymentSchemaType, "feeInvoiceId"> & {
@@ -42,9 +43,9 @@ export const ReceiptTemplate = React.forwardRef<HTMLDivElement, Props>(
                         <School size={80} />
 
                         <div>
-                            <h1 className="text-2xl font-bold">Abhyam SMS</h1>
-                            <p className="text-gray-600">Comming Soon..</p>
-                            <p className="text-gray-600">Phone: (123) 456-7890</p>
+                            <h1 className="text-2xl font-bold">{thisSchool.name}</h1>
+                            <p className="text-gray-600">{thisSchool.address}</p>
+                            <p className="text-gray-600">Phone: {thisSchool.phone}</p>
                         </div>
                     </div>
                     <div className="text-right">

@@ -4,6 +4,7 @@ import { TFeeStudent } from "@/apps/admin/types/finance-system/fee-management.ty
 import { toWords } from "@/lib/utils";
 import { School } from "lucide-react";
 import React from "react";
+import { thisSchool } from "@/CONSTANTS";
 
 type Props = {
     invoice: Omit<feeInvoiceSchemaType, "studentId" | "invoiceItems"> & {
@@ -33,9 +34,9 @@ export const InvoiceTemplate = React.forwardRef<HTMLDivElement, Props>(
                         <School size={80} />
 
                         <div>
-                            <h1 className="text-2xl font-bold">Abhyam SMS</h1>
-                            <p className="text-gray-600">Comming Soon..</p>
-                            <p className="text-gray-600">Phone: (123) 456-7890</p>
+                            <h1 className="text-2xl font-bold">{thisSchool.name}</h1>
+                            <p className="text-gray-600">{thisSchool.address}</p>
+                            <p className="text-gray-600">Phone: {thisSchool.phone}</p>
                         </div>
                     </div>
                     <div className="text-right">

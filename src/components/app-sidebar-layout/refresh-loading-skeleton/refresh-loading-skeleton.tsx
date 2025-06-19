@@ -1,9 +1,10 @@
+import { thisSchool } from '@/CONSTANTS'
 import './style.css'
 
 export default function RefreshLoadingSkeleton() {
     return (
         <div className="p-4 mt-[10%] space-y-5">
-            <h2 className="text-3xl font-bold text-primary text-center">Abhyam SMS</h2>
+            <h2 className="text-3xl font-bold text-primary text-center">{thisSchool.name}</h2>
             <p className="text-center">Validating user. Please wait...</p>
             <div className="flex items-center justify-center text-center">
                 <div className="h-1 rounded-full w-[200px] bg-secondary relative overflow-hidden">

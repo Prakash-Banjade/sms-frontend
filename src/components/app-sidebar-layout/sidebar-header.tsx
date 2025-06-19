@@ -7,7 +7,7 @@ import { useGetBranchOptions } from "@/apps/super_admin/data-access/branches-dat
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { deleteCookie, getCookie, setCookie } from "@/utils/cookie";
-import { CookieKey } from "@/CONSTANTS";
+import { CookieKey, thisSchool } from "@/CONSTANTS";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { SidebarSearchForm } from "./sidebar-search-form";
@@ -40,14 +40,14 @@ export function AppSidebarHeader() {
                                     <School className="size-5" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
-                                    <span className="truncate font-semibold">Abhyam SMS</span>
+                                    <span className="truncate font-semibold">{thisSchool.name}</span>
                                     <span className="text-xs mt-1">
                                         {
                                             payload?.branchName
                                                 ? payload?.branchName
                                                 : branches?.find(b => b.value === branch)?.label
                                                     ? branches?.find(b => b.value === branch)?.label
-                                                    : "Comming Soon..."
+                                                    : thisSchool.address
                                         }
                                     </span>
                                 </div>
