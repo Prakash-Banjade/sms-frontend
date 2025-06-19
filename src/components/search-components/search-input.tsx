@@ -32,23 +32,26 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
         <div className="space-y-2">
             <Label htmlFor="search">{label ?? "Search"}</Label>
             <section className="relative flex items-center">
-                <Search className="absolute left-3 text-muted-foreground" size={18} />
+                <Search className="absolute left-3 text-muted-foreground" size={16} />
                 <Input
                     type="search"
                     placeholder={placeholder ?? "Search..."}
                     value={searchTerm}
                     onChange={handleInputChange}
-                    className={cn("min-w-[300px] !pl-10", className)}
+                    className={cn("min-w-[300px] !pl-9", className)}
                 />
             </section>
         </div>
     ) : (
-        <Input
-            type="search"
-            placeholder={placeholder ?? "Search..."}
-            value={searchTerm}
-            onChange={handleInputChange}
-            className={cn("min-w-[300px]", className)}
-        />
+        <section className="relative flex items-center">
+            <Search className="absolute left-3 text-muted-foreground" size={16} />
+            <Input
+                type="search"
+                placeholder={placeholder ?? "Search..."}
+                value={searchTerm}
+                onChange={handleInputChange}
+                className={cn("min-w-[300px] !pl-9", className)}
+            />
+        </section>
     )
 }

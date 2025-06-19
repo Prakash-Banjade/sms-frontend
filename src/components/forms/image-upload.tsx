@@ -145,7 +145,7 @@ export default function ImageUpload<T>({
     }
 
     return (
-        <section className='h-full relative'>
+        <section className='size-full relative'>
             <label
                 htmlFor={`file-upload-${name as string}`}
                 onDragOver={handleDragOver}

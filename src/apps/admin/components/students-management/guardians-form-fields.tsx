@@ -9,6 +9,7 @@ import { AppFormText } from '@/components/forms/app-form-text'
 import { AppFormPhone } from '@/components/forms/app-form-phone'
 import { AppFormEmail } from '@/components/forms/app-form-email'
 import { AppCheckbox } from '@/components/forms/app-form-checkbox'
+import ImageUpload from '@/components/forms/image-upload'
 
 export default function GuardiansFields() {
     const form = useFormContext<studentSchemaType>();
@@ -16,7 +17,7 @@ export default function GuardiansFields() {
     const { fields, append, remove } = useFieldArray({
         name: "guardians",
         control: form.control,
-    })
+    });
 
     return (
         <div>
@@ -48,6 +49,17 @@ export default function GuardiansFields() {
                                     options={Object.entries(GuardianRelationMappings).map(([label, value]) => ({ label, value }))}
                                     required
                                 />
+                                <section className='row-span-3'>
+                                    <fieldset className="border border-border rounded-lg p-8 grid place-items-center">
+                                        <legend className="px-2 text-sm">Profile Image</legend>
+                                        <ImageUpload
+                                            name={`guardians.${index}.profileImageId`}
+                                            containerClassName="border-none"
+                                            uploadedImageUrl={form.getValues(`guardians.${index}.profileImageId`) ?? null}
+                                            imageQuery="w=200&q=70"
+                                        />
+                                    </fieldset>
+                                </section>
                                 <AppFormPhone
                                     name={`guardians.${index}.phone`}
                                     label="Phone"

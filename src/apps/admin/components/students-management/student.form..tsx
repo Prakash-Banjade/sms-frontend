@@ -60,6 +60,7 @@ export default function StudentForm(props: Props) {
                 dormitoryRoomId: values.dormitoryRoomId ?? null,
                 profileImageId: values.profileImageId ?? null,
                 routeStopId: values.routeStopId ?? null,
+                guardians: values.guardians,
             },
             invalidateTags: [QueryKey.STUDENTS],
         });
@@ -170,9 +171,9 @@ export default function StudentForm(props: Props) {
                         <legend className="px-2 text-sm">Profile Image</legend>
                         <ImageUpload<studentSchemaType>
                             name="profileImageId"
-                            containerClassName="border-none"
+                            containerClassName="border-none size-full"
                             uploadedImageUrl={form.getValues('profileImageId') ?? null}
-                            imageQuery="w=200&q=70"
+                            imageQuery="w=300&q=70"
                         />
                     </fieldset>
                 </section>

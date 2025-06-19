@@ -12,7 +12,7 @@ export default function EditStudentPage() {
 
     return (
         <ContainerLayout
-            title="Editing the student"
+            title="Updating Student Records"
             description="Have some changes and save changes."
         >
             <StudentEditForm id={params.id!} />
@@ -39,6 +39,10 @@ function StudentEditForm({ id }: { id: string }) {
             profileImageId: data?.account?.profileImage?.url ?? undefined,
             routeStopId: data?.routeStop?.id ?? undefined,
             documentAttachmentIds: data?.documentAttachments?.map(attachment => attachment.id) ?? [],
+            guardians: data?.guardians?.map(guardian => ({
+                ...guardian,
+                profileImageId: guardian?.profileImage?.url ?? undefined,
+            })) ?? [],
         });
     }, [data]);
 
@@ -56,7 +60,7 @@ function StudentEditForm({ id }: { id: string }) {
 
     if (error) console.log(error, filteredValues); // TODO: handle the error and remove log, use schema.partial() to get only the valid fields
 
-    if (isLoading) return <div className="p-5">Loading the student info...</div>
+    if (isLoading) return <div className="p-5">Loading the student info...</div>;
 
     if (!data) navigate(`/${payload?.role}/students`);
 

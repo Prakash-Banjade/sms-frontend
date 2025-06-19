@@ -12,7 +12,7 @@ const guardianSchema = z.object({
     email: z.string().refine(val => (!!val && EMAIL_REGEX.test(val)) || !val, { message: 'Invalid email' }).nullish(), // optional email field should be treated like this
     address: z.string().min(1, { message: 'Address is required' }).max(80, { message: 'Address seems too long. Max 80 characters.' }).optional(),
     occupation: z.string().min(1, { message: 'Occupation is required' }),
-    profileImageId: z.string().uuid({ message: 'Invalid image ID or URL' }).nullish(),
+    profileImageId: z.string().nullish(),
     receiveNotification: z.boolean().optional(),
 });
 
