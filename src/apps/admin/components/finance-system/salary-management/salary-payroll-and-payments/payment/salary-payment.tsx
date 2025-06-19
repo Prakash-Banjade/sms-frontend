@@ -86,6 +86,10 @@ function SalaryPaymentForm({ payroll }: { payroll: TSinglePayroll }) {
                 queryKey: [QueryKey.PAYROLLS, 'employees', payroll?.employee?.employeeId?.toString()],
             });
 
+            queryclient.invalidateQueries({
+                queryKey: [QueryKey.PAYROLLS, 'salary-employee'],
+            });
+
             form.reset(formDefaultValues);
         }
     }

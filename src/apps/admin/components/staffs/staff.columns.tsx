@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DestructiveDropdownMenuButtonItem, DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { TooltipWrapper } from "@/components/ui/tooltip"
 import { formatDate } from "@/utils/format-date"
@@ -10,6 +10,13 @@ import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { differenceInYears } from "date-fns"
+import toast from "react-hot-toast"
+import { useAuth } from "@/contexts/auth-provider"
+import { useState } from "react"
+import { useAppMutation } from "@/hooks/useAppMutation"
+import { QueryKey } from "@/react-query/queryKeys"
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
+import { Role } from "@/types/global.type"
 
 export const staffsColumns: ColumnDef<TStaff>[] = [
     {
@@ -19,12 +26,27 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
     {
         header: "Staff ID",
         accessorKey: "staffId",
+        cell: ({ row }) => {
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.staffId?.toString())
+                toast.success('Staff ID copied to clipboard', {
+                    duration: 2000,
+                    position: 'top-right',
+                });
+            }
+
+            return <TooltipWrapper label={'Click to copy'}>
+                <button type="button" onClick={handleCopy}>
+                    {row.original.staffId}
+                </button>
+            </TooltipWrapper>
+        }
     },
     {
         header: "Name",
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={row.original.id} className="flex gap-4 items-center group">
+                <Link to={row.original.id} className="flex gap-4 items-center group w-fit">
                     <ProfileAvatar
                         name={row.original.firstName + ' ' + row.original.lastName}
                         src={getImageUrl(row.original.account?.profileImage?.url, "w=40")}
@@ -111,9 +133,33 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const navigate = useNavigate();
+            const { payload } = useAuth();
+            const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+            const { mutateAsync, isPending } = useAppMutation();
+
+            const handleDelete = async () => {
+                await mutateAsync({
+                    id: row.original.id,
+                    endpoint: QueryKey.STAFFS,
+                    method: 'delete',
+                    invalidateTags: [QueryKey.STAFFS],
+                });
+            }
 
             return (
                 <>
+                    <ResponsiveAlertDialog
+                        isOpen={isDeleteOpen}
+                        setIsOpen={setIsDeleteOpen}
+                        title="Remove Staff"
+                        description={`Are you sure you want to remove ${row.original.firstName + ' ' + row.original.lastName}? This action cannot be undone. This will also remove all the data related to this staff.`}
+                        action={handleDelete}
+                        actionLabel="Yes, remove"
+                        isLoading={isPending}
+                        loadingText="Removing..."
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -124,8 +170,17 @@ export const staffsColumns: ColumnDef<TStaff>[] = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => navigate(`${row.original.id}/edit`)}>
+                                <Pencil />
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
+                            {
+                                payload?.role === Role.SUPER_ADMIN && (
+                                    <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
+                                        <Trash />
+                                        Remove
+                                    </DestructiveDropdownMenuButtonItem>
+                                )
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

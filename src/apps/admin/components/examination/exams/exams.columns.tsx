@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {
+    DestructiveDropdownMenuButtonItem,
     DropdownMenu,
     DropdownMenuButtonItem,
     DropdownMenuContent,
@@ -132,9 +133,9 @@ export const examsColumns: ColumnDef<TExam>[] = [
                                         </DropdownMenuButtonItem>
                                     )
                             }
-                            <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)} className="text-destructive">
+                            <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
                                 <span>Delete</span>
-                            </DropdownMenuButtonItem>
+                            </DestructiveDropdownMenuButtonItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

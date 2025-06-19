@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {
+    DestructiveDropdownMenuButtonItem,
     DropdownMenu,
     DropdownMenuButtonItem,
     DropdownMenuContent,
@@ -7,7 +8,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { Teacher } from "@/apps/admin/types/teacher.type"
 import { TooltipWrapper } from "@/components/ui/tooltip"
@@ -16,6 +17,13 @@ import { ProfileAvatar } from "@/components/ui/avatar"
 import { getImageUrl } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { differenceInYears } from "date-fns"
+import { useAuth } from "@/contexts/auth-provider"
+import { useState } from "react"
+import { useAppMutation } from "@/hooks/useAppMutation"
+import { QueryKey } from "@/react-query/queryKeys"
+import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
+import { Role } from "@/types/global.type"
+import toast from "react-hot-toast"
 
 export const teachersColumns: ColumnDef<Teacher>[] = [
     {
@@ -25,13 +33,28 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
     {
         header: "Teacher ID",
         accessorKey: "teacherId",
+        cell: ({ row }) => {
+            const handleCopy = () => {
+                navigator.clipboard.writeText(row.original.teacherId?.toString())
+                toast.success('Teacher ID copied to clipboard', {
+                    duration: 2000,
+                    position: 'top-right',
+                });
+            }
+
+            return <TooltipWrapper label={'Click to copy'}>
+                <button type="button" onClick={handleCopy}>
+                    {row.original.teacherId}
+                </button>
+            </TooltipWrapper>
+        }
     },
     {
         header: "Name",
         accessorKey: "teacherFullName",
         cell: ({ row }) => {
             return <TooltipWrapper label={'Click to view'}>
-                <Link to={row.original.id} className="hover:text-blue-500 hover:underline flex gap-4 items-center">
+                <Link to={row.original.id} className="hover:text-blue-500 hover:underline flex gap-4 items-center w-fit">
                     <ProfileAvatar
                         name={row.original.firstName + ' ' + row.original.lastName}
                         src={getImageUrl(row.original.account?.profileImage?.url, "w=40")}
@@ -112,9 +135,33 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const navigate = useNavigate();
+            const { payload } = useAuth();
+            const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+            const { mutateAsync, isPending } = useAppMutation();
+
+            const handleDelete = async () => {
+                await mutateAsync({
+                    id: row.original.id,
+                    endpoint: QueryKey.TEACHERS,
+                    method: 'delete',
+                    invalidateTags: [QueryKey.TEACHERS],
+                });
+            }
 
             return (
                 <>
+                    <ResponsiveAlertDialog
+                        isOpen={isDeleteOpen}
+                        setIsOpen={setIsDeleteOpen}
+                        title="Remove Teacher"
+                        description={`Are you sure you want to remove ${row.original.firstName + ' ' + row.original.lastName}? This action cannot be undone. This will also remove all the data related to this teacher.`}
+                        action={handleDelete}
+                        actionLabel="Yes, remove"
+                        isLoading={isPending}
+                        loadingText="Removing..."
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -125,8 +172,17 @@ export const teachersColumns: ColumnDef<Teacher>[] = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuButtonItem onClick={() => navigate(`${row.original.id}/edit`)}>
+                                <Pencil />
                                 <span>Edit</span>
                             </DropdownMenuButtonItem>
+                            {
+                                payload?.role === Role.SUPER_ADMIN && (
+                                    <DestructiveDropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
+                                        <Trash />
+                                        Remove
+                                    </DestructiveDropdownMenuButtonItem>
+                                )
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>
