@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {
+    DestructiveDropdownMenuButtonItem,
     DropdownMenu,
     DropdownMenuButtonItem,
     DropdownMenuContent,
@@ -18,6 +19,8 @@ import { useNavigate } from "react-router-dom"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
+import { Role } from "@/types/global.type"
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
 
 export const sectionsColumns: ColumnDef<TClass>[] = [
     {
@@ -86,7 +89,9 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
+            const { searchParams, setSearchParams } = useCustomSearchParams();
             const [isEditOpen, setIsEditOpen] = useState(false);
+            const [isDeleteOpen, setIsDeleteOpen] = useState(searchParams.get('delete') === row.original.id);
             const navigate = useNavigate();
             const { payload } = useAuth();
             const [isUpdateRollNumberOpen, setIsUpdateRollNumberOpen] = useState(false);
@@ -99,6 +104,16 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                     endpoint: `class-rooms/${row.original.id}/update-roll-no`,
                     invalidateTags: [QueryKey.CLASSES],
                 });
+            }
+
+            async function handleDelete() {
+                await mutateAsync({
+                    method: "delete",
+                    endpoint: `class-rooms/${row.original.id}`,
+                    invalidateTags: [QueryKey.CLASSES],
+                });
+
+                setSearchParams('delete', undefined);
             }
 
             return (
@@ -136,6 +151,18 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                         loadingText="Updating..."
                     />
 
+
+                    <ResponsiveAlertDialog
+                        action={handleDelete}
+                        isOpen={isDeleteOpen}
+                        setIsOpen={setIsDeleteOpen}
+                        title={`Delete section "${row.original.name}" from class ${row.original.parentClassName}?`}
+                        description="Are you sure you want to delete this section? This will also delete all the data associated with this class including students records."
+                        actionLabel="Yes, Delete"
+                        isLoading={isPending}
+                        loadingText="Deleting..."
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -154,9 +181,14 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
                             <DropdownMenuButtonItem onClick={() => setIsUpdateRollNumberOpen(true)}>
                                 <span>Update Roll Numbers</span>
                             </DropdownMenuButtonItem>
-                            {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
-                                <span>Delete</span>
-                            </DropdownMenuButtonItem> */}
+                            {
+                                payload?.role === Role.SUPER_ADMIN && (
+                                    <DestructiveDropdownMenuButtonItem onClick={() => navigate(`${row.original.id}/delete`)}>
+                                        <span>Delete</span>
+                                    </DestructiveDropdownMenuButtonItem>
+
+                                )
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

@@ -27,7 +27,7 @@ export default function SudoActionConfirmPage({ setIsVerified }: Props) {
     return (
         <div className="h-screen max-h-[1000px] flex items-center justify-center">
             <div className="w-full max-w-md space-y-6 p-4">
-                <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground mx-auto">
+                <div className="flex aspect-square size-12 items-center justify-center rounded-lg bg-primary text-primary-foreground mx-auto">
                     <School className="size-8" />
                 </div>
                 <h1 className="text-3xl text-center font-light">Confirm access</h1>

@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DestructiveDropdownMenuButtonItem, DropdownMenu, DropdownMenuButtonItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
@@ -14,6 +14,8 @@ import { useAuth } from "@/contexts/auth-provider"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import { useAppMutation } from "@/hooks/useAppMutation"
 import { QueryKey } from "@/react-query/queryKeys"
+import { useCustomSearchParams } from "@/hooks/useCustomSearchParams"
+import { Role } from "@/types/global.type"
 
 export const classesColumns: ColumnDef<TClass>[] = [
     {
@@ -102,8 +104,10 @@ export const classesColumns: ColumnDef<TClass>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const navigate = useNavigate();
+            const { searchParams, setSearchParams } = useCustomSearchParams();
             const { payload } = useAuth();
             const [isEditOpen, setIsEditOpen] = useState(false);
+            const [isDeleteOpen, setIsDeleteOpen] = useState(searchParams.get('delete') === row.original.id);
             const [isSectionFormOpen, setIsSectionFormOpen] = useState(false);
             const [isUpdateRollNumberOpen, setIsUpdateRollNumberOpen] = useState(false);
 
@@ -115,6 +119,16 @@ export const classesColumns: ColumnDef<TClass>[] = [
                     endpoint: `class-rooms/${row.original.id}/update-roll-no`,
                     invalidateTags: [QueryKey.CLASSES],
                 });
+            }
+
+            async function handleDelete() {
+                await mutateAsync({
+                    method: "delete",
+                    endpoint: `class-rooms/${row.original.id}`,
+                    invalidateTags: [QueryKey.CLASSES],
+                });
+
+                setSearchParams('delete', undefined);
             }
 
             return (
@@ -164,6 +178,17 @@ export const classesColumns: ColumnDef<TClass>[] = [
                         loadingText="Updating..."
                     />
 
+                    <ResponsiveAlertDialog
+                        action={handleDelete}
+                        isOpen={isDeleteOpen}
+                        setIsOpen={setIsDeleteOpen}
+                        title={`Delete Class "${row.original.name}"?`}
+                        description="Are you sure you want to delete this class? This will also delete all the data associated with this class including students records."
+                        actionLabel="Yes, Delete"
+                        isLoading={isPending}
+                        loadingText="Deleting..."
+                    />
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -188,9 +213,14 @@ export const classesColumns: ColumnDef<TClass>[] = [
                             <DropdownMenuButtonItem onClick={() => setIsUpdateRollNumberOpen(true)}>
                                 <span>Update Roll Numbers</span>
                             </DropdownMenuButtonItem>
-                            {/* <DropdownMenuButtonItem onClick={() => setIsDeleteOpen(true)}>
-                                <span>Delete</span>
-                            </DropdownMenuButtonItem> */}
+                            {
+                                payload?.role === Role.SUPER_ADMIN && (
+                                    <DestructiveDropdownMenuButtonItem onClick={() => navigate(`${row.original.id}/delete`)}>
+                                        <span>Delete</span>
+                                    </DestructiveDropdownMenuButtonItem>
+
+                                )
+                            }
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

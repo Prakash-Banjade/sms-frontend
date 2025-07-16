@@ -83,7 +83,7 @@ export default function ResetPasswordForm({ token }: Props) {
                     description="Enter your new password"
                 />
                 <AppForm.Password<TResetPasswordSchema>
-                    label="Conform Password"
+                    label="Confirm Password"
                     name="confirmPassword"
                     placeholder="********"
                     description="Re-enter your new password"

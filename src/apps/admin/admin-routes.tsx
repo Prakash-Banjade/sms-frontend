@@ -5,6 +5,8 @@ import RequireAuth from '@/components/auth/require-auth';
 import { ETask, Role } from '@/types/global.type';
 import AppRootLayout from '../../components/app-sidebar-layout/root-layout';
 import { CommonRoutes } from '../common/common-routes';
+import RequireSudo from '@/components/auth/require-sudo';
+import DeleteClassRoomPage from './pages/classes/delete-classroom.page';
 const SingleLibraryBookPage = lazy(() => import('./pages/library/single-library-book.page'));
 const SingleStaffPage = lazy(() => import('./pages/staffs/single-staff-page'));
 const SalaryStructuresPage = lazy(() => import('./pages/finance-system/salary-management/salary-structures/salary-structures.page'));
@@ -92,7 +94,12 @@ export const AdminRoutesGroup = () => {
             <Route path="classes">
                 <Route index element={<ClassesListPage />} />
                 <Route path="new" element={<AddClassPage />} />
-                <Route path=":id" element={<SingleClassRoomPage />} />
+                <Route path=":id">
+                    <Route index element={<SingleClassRoomPage />} />
+                    <Route path="delete" element={<RequireSudo />}>
+                        <Route index element={<DeleteClassRoomPage />} />
+                    </Route>
+                </Route>
                 <Route path="sections" element={<SectionsListPage />} />
             </Route>
             <Route path="subjects">
