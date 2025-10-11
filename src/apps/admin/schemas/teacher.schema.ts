@@ -56,6 +56,8 @@ export const teacherSchema = z.object({
     accountName: z.string().max(50, { message: "Account name seems too long" }).min(1, { message: 'Account name is required' }),
 
     accountNumber: z.string().min(1, { message: 'Account number is required' }).max(50, { message: 'Account number seems too long' }),
+
+    documentAttachmentIds: z.array(z.string()).max(5, { message: "Max 5 files" }).optional(), // values can be URLs or UUIDs
 });
 
 export type teacherSchemaType = z.infer<typeof teacherSchema>;
@@ -79,4 +81,5 @@ export const teacherFormDefaultValues: Partial<teacherSchemaType> = {
     bankName: '',
     accountName: '',
     accountNumber: '',
+    documentAttachmentIds: [],
 }

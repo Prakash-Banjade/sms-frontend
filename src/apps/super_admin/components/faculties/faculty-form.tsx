@@ -74,7 +74,6 @@ export default function FacultyForm(props: Props) {
                     name="description"
                     label="Description"
                     description="Describe the room type or leave it blank."
-                    placeholder="eg. This room type is for the students who are in the top tier of the school."
                 />
 
                 <section className="flex gap-4 justify-end">

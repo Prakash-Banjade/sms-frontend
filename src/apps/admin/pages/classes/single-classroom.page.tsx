@@ -107,7 +107,7 @@ export default function SingleClassRoomPage() {
             }
 
             {
-                classRoom?.classType === EClassType.PRIMARY && (<SingleClassSectionsList classRoomId={params.id!} facultyId={classRoom?.facultyId} />)
+                classRoom?.classType === EClassType.PRIMARY && (<SingleClassSectionsList classRoomId={params.id!} />)
             }
 
             <ClassRoomAttendanceChart />

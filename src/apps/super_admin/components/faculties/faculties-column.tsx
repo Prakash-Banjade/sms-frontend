@@ -20,13 +20,6 @@ export const facultiesColumns: ColumnDef<TFaculty>[] = [
         accessorKey: "name",
     },
     {
-        header: "Description",
-        accessorKey: "description",
-        cell: ({ row }) => {
-            return <p className="max-w-lg">{row.original.description || '-'}</p>
-        }
-    },
-    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {

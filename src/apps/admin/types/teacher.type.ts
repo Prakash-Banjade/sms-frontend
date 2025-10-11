@@ -1,5 +1,5 @@
 import { TEntityWithAttendance, TEntityWithAttendanceUpdate } from "./attendence.type";
-import { EBloodGroup, EDayOfWeek, EMaritalStatus, Gender, TMeta } from "../../../types/global.type";
+import { EBloodGroup, EDayOfWeek, EMaritalStatus, Gender, IFileUploadResponse, TMeta } from "../../../types/global.type";
 
 export type Teacher = {
     id: string,
@@ -39,6 +39,7 @@ export type TSingleTeacher = Omit<Teacher, 'teacherFullName'> & {
     bankName: string,
     accountName: string,
     accountNumber: string,
+    documentAttachments: IFileUploadResponse['files']
 }
 
 export type TeacherWithAttendanceResponse = (TEntityWithAttendance & {})[]

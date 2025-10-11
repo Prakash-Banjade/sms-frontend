@@ -9,13 +9,15 @@ import { teacherFormDefaultValues, teacherSchema, teacherSchemaType } from "../.
 import { BloodGroupMappings, GenderMappings, MaritalStatusMappings } from "@/utils/labelToValueMappings";
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
-import { SelectOption } from "@/types/global.type";
+import { IFileUploadResponse, SelectOption } from "@/types/global.type";
 import { format, subYears } from "date-fns";
 import { useServerErrorInField } from "@/hooks/useServerErrorInField";
+import ImageUpload from "@/components/forms/image-upload";
 
 type Props = {
     defaultValues?: Partial<teacherSchemaType>;
     selectedDepartments?: SelectOption[];
+    documentAttachments?: IFileUploadResponse['files'];
 }
 
 export default function TeacherForm(props: Props) {
@@ -48,6 +50,7 @@ export default function TeacherForm(props: Props) {
                 ...getDirtyValues(values, form),
                 profileImageId: values.profileImageId ?? null,
                 facultyIds: values.facultyIds,
+                documentAttachmentIds: values.documentAttachmentIds,
             },
             invalidateTags: [QueryKey.TEACHERS],
         });
@@ -141,9 +144,9 @@ export default function TeacherForm(props: Props) {
 
                     <fieldset className="border border-border rounded-lg p-8 grid place-items-center">
                         <legend className="px-2 text-sm">Profile Image</legend>
-                        <AppForm.ImageUpload<teacherSchemaType>
+                        <ImageUpload<teacherSchemaType>
                             name="profileImageId"
-                            containerClassName="border-none"
+                            containerClassName="border-none size-full"
                             uploadedImageUrl={form.getValues('profileImageId') ?? null}
                             imageQuery="w=200&q=70"
                         />
@@ -200,6 +203,16 @@ export default function TeacherForm(props: Props) {
                             )
                         }
 
+                        <AppForm.FileUpload<teacherSchemaType>
+                            name="documentAttachmentIds"
+                            label="Document Attachments"
+                            placeholder="Select document attachments"
+                            description="Image, PDF | Max 5 files | 5 MB each"
+                            multiple
+                            maxLimit={5}
+                            initialUpload={props.documentAttachments ?? []}
+                            accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
+                        />
                     </section>
                 </fieldset>
 
