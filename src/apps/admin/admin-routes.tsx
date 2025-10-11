@@ -32,7 +32,7 @@ const NewRegistrationPage = lazy(() => import('./pages/students-management/new-r
 const StudentsListPage = lazy(() => import('./pages/students-management/students-list.page'));
 const EnrollmentsPage = lazy(() => import('./pages/students-management/enrollments.page'));
 const EditStudentPage = lazy(() => import('./pages/students-management/student-edit.page'));
-const SingleStudentPage = lazy(() => import('./pages/subjects/single-student.page'));
+const SingleStudentPage = lazy(() => import('./pages/students-management/single-student.page'));
 const SectionsListPage = lazy(() => import('./pages/classes/sections-list.page'));
 const StudentAttendancePage = lazy(() => import('./pages/students-management/attendance/student-attendance.page'));
 const StudentsLeaveRequestsPage = lazy(() => import('./pages/students-management/attendance/leave-request.page'));

@@ -140,7 +140,6 @@ export default function StudentForm(props: Props) {
                                 placeholder="Select blood group"
                                 description="Select blood group of the student"
                                 options={Object.entries(BloodGroupMappings).map(([key, value]) => ({ label: key, value }))}
-                                required
                             />
 
                             <AppForm.Phone<studentSchemaType>
@@ -148,7 +147,6 @@ export default function StudentForm(props: Props) {
                                 label="Phone No."
                                 placeholder="eg. 9xxxxxxxxxx"
                                 description="Phone number assiciated with the student"
-                                required
                             />
 
                             <AppForm.Email<studentSchemaType>

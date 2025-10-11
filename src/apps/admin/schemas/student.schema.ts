@@ -57,10 +57,10 @@ export const studentSchema = z.object({
 
     // CONTACT INFORMATION
     email: z.string().email({ message: 'Invalid email address' }),
-    phone: z.string().regex(PHONE_NUMBER_REGEX, { message: 'Enter a valid phone number' }),
+    phone: z.string().regex(PHONE_NUMBER_REGEX, { message: 'Enter a valid phone number' }).optional(),
 
     // MEDICAL INFORMATION
-    bloodGroup: z.nativeEnum(EBloodGroup).optional(),
+    bloodGroup: z.nativeEnum(EBloodGroup).nullish(),
 
     // ADDRESS INFORMATION
     currentAddress: z.string().min(1, { message: "Address is required" }).max(80, { message: "Address seems too long. Max 80 characters." }),

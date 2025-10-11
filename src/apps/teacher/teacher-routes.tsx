@@ -18,7 +18,7 @@ const AddTaskPage = lazy(() => import('../admin/pages/tasks/add-task.page'));
 const SingleTaskPage = lazy(() => import('../admin/pages/tasks/single-task.page'));
 const EditTaskPage = lazy(() => import('../admin/pages/tasks/edit-task.page'));
 const StudentsListPage = lazy(() => import('../admin/pages/students-management/students-list.page'));
-const SingleStudentPage = lazy(() => import('../admin/pages/subjects/single-student.page'));
+const SingleStudentPage = lazy(() => import('../admin/pages/students-management/single-student.page'));
 const SingleClassRoomPage = lazy(() => import('../admin/pages/classes/single-classroom.page'));
 const ClassRoutinePage = lazy(() => import('../student/pages/class-routine.page'));
 const MySalaryPage = lazy(() => import('./pages/my-salary.page'));
