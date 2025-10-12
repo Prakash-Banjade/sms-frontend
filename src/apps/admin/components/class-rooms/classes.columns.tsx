@@ -27,7 +27,7 @@ export const classesColumns: ColumnDef<TClass>[] = [
         accessorKey: "name",
         cell: ({ row }) => {
             return <p className="whitespace-nowrap">
-                <span>{row.original.name}</span>
+                <span className="font-medium">{row.original.name}</span>
                 <br />
                 <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
             </p>

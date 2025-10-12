@@ -10,12 +10,13 @@ import { staffFormDefaultValues, staffSchema, staffSchemaType } from "../../sche
 import { EmployeeAllowanceFormFields } from "../finance-system/salary-management/salary-structures/salary-structure.form";
 import { useAuth } from "@/contexts/auth-provider";
 import { format, subYears } from "date-fns";
-import { SelectOption } from "@/types/global.type";
+import { IFileUploadResponse, SelectOption } from "@/types/global.type";
 import { useServerErrorInField } from "@/hooks/useServerErrorInField";
 
 type Props = {
     defaultValues?: Partial<staffSchemaType>;
     selectedDepartments?: SelectOption[];
+    documentAttachments?: IFileUploadResponse['files'];
 }
 
 export default function StaffForm(props: Props) {
@@ -143,7 +144,7 @@ export default function StaffForm(props: Props) {
                         <legend className="px-2 text-sm">Profile Image</legend>
                         <AppForm.ImageUpload<staffSchemaType>
                             name="profileImageId"
-                            containerClassName="border-none"
+                            containerClassName="border-none size-full"
                             uploadedImageUrl={form.getValues('profileImageId') ?? null}
                             imageQuery="w=200&q=70"
                         />
@@ -190,6 +191,17 @@ export default function StaffForm(props: Props) {
                             description="Date of joining"
                             required
                             max={new Date().toISOString().split('T')[0]}
+                        />
+
+                        <AppForm.FileUpload<staffSchemaType>
+                            name="documentAttachmentIds"
+                            label="Document Attachments"
+                            placeholder="Select document attachments"
+                            description="Image, PDF | Max 5 files | 5 MB each"
+                            multiple
+                            maxLimit={5}
+                            initialUpload={props.documentAttachments ?? []}
+                            accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
                         />
 
                         {

@@ -24,11 +24,12 @@ export const roomTypesColumns: ColumnDef<TRoomType>[] = [
     {
         header: "Name",
         accessorKey: "name",
+        cell: ({ row }) => <p className="font-medium">{row.original.name}</p>,
     },
     {
         header: "Description",
         accessorKey: "description",
-        cell: ({ row }) => <p className="text-14 font-medium break-words">{row.original.description}</p>,
+        cell: ({ row }) => <p className="max-w-[50ch] break-words">{row.original.description}</p>,
     },
     {
         id: "actions",

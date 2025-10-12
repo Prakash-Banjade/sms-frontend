@@ -56,7 +56,7 @@ export const studentSchema = z.object({
     guardians: z.array(guardianSchema).min(1, { message: 'At least one guardian is required' }).max(3, { message: 'Maximum of 3 guardians allowed' }),
 
     // CONTACT INFORMATION
-    email: z.string().email({ message: 'Invalid email address' }),
+    email: z.string().refine(val => (!!val && z.string().email().safeParse(val).success) || !val, { message: 'Invalid email' }).optional(),
     phone: z.string().regex(PHONE_NUMBER_REGEX, { message: 'Enter a valid phone number' }).optional(),
 
     // MEDICAL INFORMATION

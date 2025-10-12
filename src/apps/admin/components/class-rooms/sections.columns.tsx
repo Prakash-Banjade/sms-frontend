@@ -32,7 +32,7 @@ export const sectionsColumns: ColumnDef<TClass>[] = [
         accessorKey: "parentClassName",
         cell: ({ row }) => {
             return <p className="whitespace-nowrap">
-                <span>{row.original.parentClassName}</span>
+                <span className="font-medium">{row.original.parentClassName}</span>
                 <br />
                 <span className="text-muted-foreground text-xs">({row.original.faculty})</span>
             </p>

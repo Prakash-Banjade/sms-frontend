@@ -51,9 +51,11 @@ function StaffEditForm({ id }: { id: string }) {
             defaultValues={{
                 ...data,
                 profileImageId: data?.account?.profileImage?.url ?? null,
-                facultyIds: data?.faculties.map(faculty => faculty.id) ?? []
+                facultyIds: data?.faculties.map(faculty => faculty.id) ?? [],
+                documentAttachmentIds: data?.documentAttachments.map(d => d.id) ?? [],
             }}
             selectedDepartments={data?.faculties.map(faculty => ({ value: faculty.id, label: faculty.name })) ?? []}
+            documentAttachments={data?.documentAttachments}
         />
     )
 }

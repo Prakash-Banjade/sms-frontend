@@ -145,7 +145,8 @@ export default function RouteStopForm(props: Props) {
                         description="Enter the route distance."
                         placeholder="eg. 15"
                         required
-                        min={1}
+                        min={0.1}
+                        step={0.01}
                     />
                     <AppForm.Number<routeFormType>
                         name="fare"

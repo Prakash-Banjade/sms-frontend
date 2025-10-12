@@ -12,7 +12,7 @@ export const enum AuthMessage {
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const NAME_REGEX = /^[A-Za-z]+$/;
-export const NAME_WITH_SPACE_REGEX = /^[A-Za-z]+( [A-Za-z]+)*$/;
+export const NAME_WITH_SPACE_REGEX = /^[A-Za-z.]+( [A-Za-z.]+)*$/;
 
 export const GRADE_REGEX = /^[A-F](\+|-|\*)*$/;
 

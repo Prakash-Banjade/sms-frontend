@@ -154,7 +154,6 @@ export default function StudentForm(props: Props) {
                                 label="Email"
                                 placeholder="eg. johndoe@gmail.com"
                                 description="Email address of the student"
-                                required
                             />
 
                             <AppForm.Checkbox<studentSchemaType>

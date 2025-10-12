@@ -186,6 +186,17 @@ export default function TeacherForm(props: Props) {
                             max={new Date().toISOString().split('T')[0]}
                         />
 
+                        <AppForm.FileUpload<teacherSchemaType>
+                            name="documentAttachmentIds"
+                            label="Document Attachments"
+                            placeholder="Select document attachments"
+                            description="Image, PDF | Max 5 files | 5 MB each"
+                            multiple
+                            maxLimit={5}
+                            initialUpload={props.documentAttachments ?? []}
+                            accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
+                        />
+
                         {
                             !params.id && (
                                 <>
@@ -202,17 +213,6 @@ export default function TeacherForm(props: Props) {
                                 </>
                             )
                         }
-
-                        <AppForm.FileUpload<teacherSchemaType>
-                            name="documentAttachmentIds"
-                            label="Document Attachments"
-                            placeholder="Select document attachments"
-                            description="Image, PDF | Max 5 files | 5 MB each"
-                            multiple
-                            maxLimit={5}
-                            initialUpload={props.documentAttachments ?? []}
-                            accept="image/png, image/jpeg, image/jpg, image/webp, application/pdf"
-                        />
                     </section>
                 </fieldset>
 

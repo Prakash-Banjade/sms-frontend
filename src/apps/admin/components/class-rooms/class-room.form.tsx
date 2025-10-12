@@ -48,7 +48,7 @@ export default function ClassRoomForm(props: Props) {
             endpoint: QueryKey.CLASSES,
             id,
             data: {
-                ...getDirtyValues(values, form),
+                ...values,
                 classTeacherId: values.classTeacherId ?? null,
                 classType: EClassType.PRIMARY,
             },

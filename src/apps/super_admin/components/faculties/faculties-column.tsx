@@ -18,6 +18,7 @@ export const facultiesColumns: ColumnDef<TFaculty>[] = [
     {
         header: "Name",
         accessorKey: "name",
+        cell: ({ row }) => <p className="font-medium">{row.original.name}</p>,
     },
     {
         id: "actions",

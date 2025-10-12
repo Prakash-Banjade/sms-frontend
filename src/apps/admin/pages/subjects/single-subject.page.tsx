@@ -54,7 +54,7 @@ function SubjectOverview({ subjectId }: { subjectId: string }) {
                             </Badge>
                         }
                     </CardTitle>
-                    <GraduationCap className="h-12 w-12 text-muted-foreground" />
+                    <GraduationCap className="h-12 w-12 text-primary" />
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">

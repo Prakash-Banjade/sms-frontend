@@ -13,7 +13,8 @@ import { format } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useGetStudent } from "../../components/students-management/student-actions";
 import { InfoField } from "../../components/students-management/single-student/info-field";
-import { File } from "lucide-react";
+import { File, Printer } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function SingleStudentPage() {
   const { id } = useParams();
@@ -90,16 +91,21 @@ function StudentHeader({ student }: { student: TSingleStudent }) {
       <div className="flex-1">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-semibold text-foreground mb-1">{fullName}</h1>
+            <header className="flex items-center gap-4">
+              <h1 className="text-3xl font-semibold text-foreground mb-1">{fullName}</h1>
+              <Badge variant="secondary" className="text-sm capitalize">
+                {student.gender}
+              </Badge>
+            </header>
             <div className="flex items-center gap-3 text-muted-foreground">
               <span>Student ID: {student.studentId}</span>
               <span>•</span>
               <span>Roll No: {student.rollNo}</span>
             </div>
           </div>
-          <Badge variant="secondary" className="text-sm capitalize">
-            {student.gender}
-          </Badge>
+          <Button size={"lg"}>
+            <Printer /> Print ID Card
+          </Button>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-4 text-sm">
@@ -133,12 +139,12 @@ function StudentOverview({ student }: { student: TSingleStudent }) {
           <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <InfoField label="First Name" value={student.firstName} />
             <InfoField label="Last Name" value={student.lastName} />
-            <InfoField label="Gender" value={student.gender} />
+            <InfoField label="Gender" value={student.gender} className="capitalize" />
             <InfoField label="Date of Birth" value={format(new Date(student.dob), "MMM dd, yyyy")} />
             <InfoField label="Email" value={student.email} />
             <InfoField label="Phone" value={student.phone} />
-            <InfoField label="Religion" value={student.religion} />
-            <InfoField label="Caste" value={student.caste} />
+            <InfoField label="Religion" value={student.religion} className="capitalize" />
+            <InfoField label="Caste" value={student.caste} className="capitalize" />
             <InfoField label="Blood Group" value={student.bloodGroup} />
             <InfoField label="Physically Challenged" value={student.isPhysicallyChallenged} />
           </dl>

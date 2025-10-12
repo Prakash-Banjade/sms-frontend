@@ -28,10 +28,12 @@ export const libraryBooksColumns: ColumnDef<TLibraryBook>[] = [
     {
         header: "Book code",
         accessorKey: "bookCode",
+        cell: ({ row }) => (<span className="font-medium">{row.original.bookCode || 'N/A'}</span>)
     },
     {
         header: "Book name",
         accessorKey: "bookName",
+        cell: ({ row }) => (<span className="font-medium">{row.original.bookName || 'N/A'}</span>)
     },
     {
         header: "Category",

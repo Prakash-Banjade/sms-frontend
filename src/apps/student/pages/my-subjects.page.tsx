@@ -1,7 +1,7 @@
 import { useGetSubjects } from "@/apps/admin/components/subjects/data-access";
 import ContainerLayout from "@/components/page-layouts/container-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Users } from "lucide-react";
+import { Calendar, Eye, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ESubjectType } from "@/types/global.type";
 import NotAvailable from "@/components/ui/not-available";
@@ -69,7 +69,7 @@ function SubjectsList() {
                                     </div>
                                     <Button variant={'default'} className="w-full" asChild>
                                         <Link to={subject.id}>
-                                            View Subject
+                                            <Eye /> View
                                         </Link>
                                     </Button>
                                 </section>

@@ -9,16 +9,16 @@ import { ResponsiveDialog } from "@/components/ui/responsive-dialog"
 import { TDormitory } from "@/apps/admin/types/dormitory.type"
 import { ResponsiveAlertDialog } from "@/components/ui/responsive-alert-dialog"
 import DormitoryForm from "./dormitory.form"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
 export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
     {
         header: "S.N",
-        cell: ({ row }) => <p className="text-14 font-medium"> {row.index + 1} </p>,
+        cell: ({ row }) => <p className="font-medium"> {row.index + 1} </p>,
     },
     {
         header: "Name",
         accessorKey: "name",
+        cell: ({ row }) => <p className="font-medium"> {row.original.name} </p>,
     },
     {
         header: "Type",
@@ -28,35 +28,9 @@ export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
         },
     },
     {
-        header: "Description",
-        accessorKey: "description",
-        cell: ({ row }) => {
-            if (!row.original.description) return <span>-</span>
-
-            if (row.original.description && row.original.description.length > 100) {
-                return <HoverCard openDelay={100} closeDelay={100}>
-                    <HoverCardTrigger>
-                        <span className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
-                            {row.original.description.slice(0, 100)}...
-                        </span>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-80 break-words">
-                        <p className="text-14 font-medium break-words">
-                            {row.original.description}
-                        </p>
-                    </HoverCardContent>
-                </HoverCard>
-            }
-
-            return <p className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
-                {row.original.description}
-            </p>
-        },
-    },
-    {
         header: "Address",
         accessorKey: "address",
-        cell: ({ row }) => <p className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
+        cell: ({ row }) => <p className="text-14">
             {
                 !!row.original.address
                     ? row.original.address
@@ -67,7 +41,7 @@ export const dormitoriesColumns: ColumnDef<TDormitory>[] = [
     {
         header: "Intake",
         accessorKey: "intake",
-        cell: ({ row }) => <p className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
+        cell: ({ row }) => <p className="text-14">
             {
                 !!row.original.intake
                     ? row.original.intake

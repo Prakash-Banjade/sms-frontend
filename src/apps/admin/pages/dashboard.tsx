@@ -46,6 +46,7 @@ export default function AdminDashboard() {
                     </section>
                 </section>
             </div>
+            <div className='h-10' />
         </div>
     )
 }

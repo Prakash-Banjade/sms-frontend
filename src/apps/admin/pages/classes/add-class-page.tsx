@@ -5,7 +5,7 @@ export default function AddClassPage() {
 
     return (
         <ContainerLayout
-            title="Add a new class"
+            title="Adding new class"
             description="Add a new class to your school management system."
         >
             <ClassRoomForm />

@@ -46,7 +46,11 @@ export function AppSidebar({ menuItems }: { menuItems: TGroupMenuItem[] }) {
     }, [search])
 
     return (
-        <Sidebar variant="floating" collapsible="icon">
+        <Sidebar
+            variant="floating"
+            collapsible="icon"
+            // className="h-[144vh]"
+        >
             <AppSidebarHeader />
             <SidebarContent className="overflow-hidden">
                 <ScrollArea className="max-h-full overflow-auto">
@@ -82,9 +86,11 @@ export function NonCollapsibleMenuItem({ item }: { item: TSidebarMenuItem }) {
     const location = useLocation();
     const { payload } = useAuth();
 
+    const isActive = `/${payload?.role}/${item.url}` === location.pathname;
+
     return (
         <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild isActive={`/${payload?.role}/${item.url}` === location.pathname}>
+            <SidebarMenuButton asChild isActive={isActive}>
                 <Link to={item.url}>
                     <item.icon />
                     <span>{item.title}</span>

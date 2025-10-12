@@ -24,7 +24,7 @@ export const employeesColumns: ColumnDef<TEmployees['data'][0]>[] = [
         accessorKey: "fullName",
         cell: ({ row }) => {
             return (
-                <Link to={`employee?employeeID=${row.original.employeeId}`} className="hover:underline">
+                <Link to={`employee?employeeID=${row.original.employeeId}`} className="hover:underline font-medium">
                     {row.original.fullName}
                 </Link>
             )

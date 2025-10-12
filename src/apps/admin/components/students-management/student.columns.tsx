@@ -98,9 +98,13 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
         header: "Email",
         accessorKey: "email",
         cell: ({ row }) => {
-            return <TooltipWrapper label={'Click to send mail'}>
-                <a href={`mailto:${row.original.email}`} className="hover:text-blue-500 hover:underline">{row.original.email}</a>
-            </TooltipWrapper>
+            const email = row.original.email;
+
+            return email.length > 0 ? (
+                <TooltipWrapper label={'Click to send mail'}>
+                    <a href={`mailto:${row.original.email}`} className="hover:text-blue-500 hover:underline">{row.original.email}</a>
+                </TooltipWrapper>
+            ) : "-"
         },
     },
     {

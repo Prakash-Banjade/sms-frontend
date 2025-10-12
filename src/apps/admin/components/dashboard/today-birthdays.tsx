@@ -51,10 +51,10 @@ export default function TodayBirthDays() {
 
                                     return (
                                         <Link to={link} key={member.id}>
-                                            <Card className="group p-3 px-5 border-none bg-secondary/20 flex flex-col items-center justify-center">
+                                            <Card className="group p-3 px-5 bg-secondary/20 flex flex-col items-center justify-center">
                                                 <ProfileAvatar name={member.name} src={getImageUrl(member.profileImageUrl, 'w=65')} className="size-16 mb-2" />
-                                                <span className="text-sm pb-1 group-hover:underline">{member.name}</span>
-                                                <Badge variant={'outline'} className="capitalize">{member.role}</Badge>
+                                                <span className="text-sm pb-1 group-hover:underline font-medium">{member.name}</span>
+                                                <Badge variant={'outline'} className="capitalize font-normal">{member.role}</Badge>
                                             </Card>
                                         </Link>
                                     )

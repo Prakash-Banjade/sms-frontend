@@ -35,7 +35,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
         cell: ({ row }) => {
             return (
                 <TooltipWrapper label="Click to view">
-                    <Link to={`${row.original.id}`} className="hover:underline hover:text-blue-500">
+                    <Link to={`${row.original.id}`} className="hover:underline hover:text-blue-500 font-medium">
                         <span>{row.original.subjectName}</span>
                     </Link>
                 </TooltipWrapper>
@@ -62,7 +62,7 @@ export const subjectsColumns: ColumnDef<TSubject>[] = [
             return row.original.teachers?.length > 0 ? <ul>
                 {row.original.teachers.map((t) => (
                     <li key={t.id}>
-                        <Badge variant={'outline'} className="whitespace-nowrap">
+                        <Badge variant={'outline'} className="whitespace-nowrap font-normal">
                             <Link to={`/${payload?.role}/teachers/${t.id}`} className="hover:underline">
                                 {t.firstName} {t.lastName}
                             </Link>

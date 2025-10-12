@@ -38,7 +38,7 @@ export default function UpcommingEvents() {
                             return (
                                 <Card className="border-l-4 border-l-primary" key={event.id}>
                                     <CardHeader className="p-2 px-4">
-                                        <CardTitle className="text-lg">{event.title}</CardTitle>
+                                        <CardTitle className="text-lg font-medium">{event.title}</CardTitle>
                                     </CardHeader>
                                     <CardContent className="p-2 pb-3 px-4 pt-0">
                                         <div className="grid gap-2">

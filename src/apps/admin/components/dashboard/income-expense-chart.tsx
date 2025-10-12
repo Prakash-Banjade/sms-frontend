@@ -49,6 +49,7 @@ export default function Dashboard_IncomeExpenseChart() {
                             stroke="hsl(var(--success))"
                             strokeWidth={2}
                             dot={false}
+                            isAnimationActive={false}
                         />
                         <Line
                             dataKey="expense"
@@ -56,6 +57,7 @@ export default function Dashboard_IncomeExpenseChart() {
                             stroke="hsl(var(--destructive))"
                             strokeWidth={2}
                             dot={false}
+                            isAnimationActive={false}
                         />
                     </LineChart>
                 </ChartContainer>

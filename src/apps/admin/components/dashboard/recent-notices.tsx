@@ -43,7 +43,7 @@ export default function RecentNotices() {
                             return (
                                 <Card className="border-l-4 border-l-primary" key={notice.id}>
                                     <CardHeader className="p-2 px-4">
-                                        <CardTitle className="text-lg">
+                                        <CardTitle className="text-lg font-medium">
                                             <Link to={`/${payload?.role}/notices/${notice.id}`} className="hover:underline w-fit">
                                                 {notice.title}
                                             </Link>
