@@ -38,7 +38,7 @@ export const studentsColumns: ColumnDef<TStudent>[] = [
             }
 
             return <TooltipWrapper label={'Click to copy'}>
-                <button type="button" onClick={handleCopy}>
+                <button type="button" onClick={handleCopy} className="text-left">
                     {row.original.studentId}
                 </button>
             </TooltipWrapper>

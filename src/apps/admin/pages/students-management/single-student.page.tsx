@@ -15,6 +15,7 @@ import { useGetStudent } from "../../components/students-management/student-acti
 import { InfoField } from "../../components/students-management/single-student/info-field";
 import { File, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import StudentIdCardContainer from "./id-card/student-id-card-container";
 
 export default function SingleStudentPage() {
   const { id } = useParams();
@@ -46,11 +47,12 @@ export default function SingleStudentPage() {
       <StudentHeader student={student} />
 
       <Tabs defaultValue="overview" className="mt-8">
-        <TabsList className="w-full grid grid-cols-4">
+        <TabsList className="w-full grid grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="guardians">Guardians</TabsTrigger>
           <TabsTrigger value="additional">Additional</TabsTrigger>
           <TabsTrigger value="attendance">Attendance</TabsTrigger>
+          <TabsTrigger value="idCard">ID Card</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6">
@@ -67,6 +69,10 @@ export default function SingleStudentPage() {
 
         <TabsContent value="attendance" className="mt-6">
           <SingleAttendanceView accountId={student.account?.id} />
+        </TabsContent>
+
+        <TabsContent value="idCard" className="mt-6">
+          <StudentIdCardContainer student={student} />
         </TabsContent>
       </Tabs>
     </section>
@@ -89,23 +95,18 @@ function StudentHeader({ student }: { student: TSingleStudent }) {
       />
 
       <div className="flex-1">
-        <div className="flex items-start justify-between">
-          <div>
-            <header className="flex items-center gap-4">
-              <h1 className="text-3xl font-semibold text-foreground mb-1">{fullName}</h1>
-              <Badge variant="secondary" className="text-sm capitalize">
-                {student.gender}
-              </Badge>
-            </header>
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <span>Student ID: {student.studentId}</span>
-              <span>•</span>
-              <span>Roll No: {student.rollNo}</span>
-            </div>
+        <div>
+          <header className="flex items-center gap-4">
+            <h1 className="text-3xl font-semibold text-foreground mb-1">{fullName}</h1>
+            <Badge variant="secondary" className="text-sm capitalize">
+              {student.gender}
+            </Badge>
+          </header>
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <span>Student ID: {student.studentId}</span>
+            <span>•</span>
+            <span>Roll No: {student.rollNo}</span>
           </div>
-          <Button size={"lg"}>
-            <Printer /> Print ID Card
-          </Button>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-4 text-sm">

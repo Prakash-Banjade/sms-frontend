@@ -1,0 +1,44 @@
+@media print {
+  :root {
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+  }
+
+  body {
+    margin: 0;
+    /* avoid browser-default margins interfering */
+  }
+
+  @page {
+    size: 3.375in 2.125in; /* card size (width × height) — though many printers ignore this */
+    margin: 0; /* try to remove page margins */
+  }
+
+  /* If printing to a larger sheet with multiple cards:
+     you could instead set size: A4 (or paper size) and then position cards on that sheet */
+
+  .print-area {
+    display: flex;
+    flex-direction: column; /* maybe front on one page, back on next */
+    /* Or do flex-row if you want both on one sheet side-by-side */
+  }
+
+  .print-area > * {
+    page-break-inside: avoid;
+    break-inside: avoid-page;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure we preserve exact color & background */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

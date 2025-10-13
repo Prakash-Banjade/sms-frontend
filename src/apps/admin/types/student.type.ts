@@ -42,7 +42,7 @@ export type TSingleStudent = {
     createdAt: string,
     updatedAt: string,
     rollNo: number,
-    studentId: number,
+    studentId: string,
     firstName: string,
     lastName: string,
     gender: Gender,

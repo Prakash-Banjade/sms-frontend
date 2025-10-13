@@ -36,10 +36,16 @@ export function AppSidebarHeader() {
                                 size="lg"
                                 className={cn(payload?.role === Role.SUPER_ADMIN ? "data-[state=open]:bg-accent data-[state=open]:text-accent-foreground" : "pointer-events-none")}
                             >
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                <img
+                                    src="/logo.png"
+                                    alt="logo"
+                                    height={50}
+                                    width={50}
+                                />
+                                {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                                     <School className="size-5" />
-                                </div>
-                                <div className="flex flex-col gap-0.5 leading-none">
+                                </div> */}
+                                <div className="flex flex-col leading-none">
                                     <span className="truncate font-semibold">{thisSchool.name}</span>
                                     <span className="text-xs mt-1">
                                         {
