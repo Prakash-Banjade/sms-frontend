@@ -13,8 +13,7 @@ import { format } from "date-fns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useGetStudent } from "../../components/students-management/student-actions";
 import { InfoField } from "../../components/students-management/single-student/info-field";
-import { File, Printer } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { File } from "lucide-react";
 import StudentIdCardContainer from "./id-card/student-id-card-container";
 
 export default function SingleStudentPage() {

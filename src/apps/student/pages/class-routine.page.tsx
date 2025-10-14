@@ -68,7 +68,7 @@ function ClassRoutineView() {
                         {
                             groupedSchedule.map(([day, schedules]) => {
                                 return (
-                                    <Card key={day} className={"border-none px-1"}>
+                                    <Card key={day} className={"border-none shadow-none px-1"}>
                                         <CardHeader className="capitalize font-semibold text-center">{day}</CardHeader>
                                         <CardContent className="space-y-3 px-1">
                                             <RoutineCards classRoutines={schedules} />

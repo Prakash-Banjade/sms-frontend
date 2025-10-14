@@ -18,6 +18,7 @@ import FeeStructureFrom from "@/apps/admin/components/finance-system/fee-managem
 import { QueryKey } from "@/react-query/queryKeys";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { NUMBER_REGEX_STRING } from "@/CONSTANTS";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function FeeStructuresPage() {
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -118,6 +119,7 @@ const FeeStructureRow = ({ feeStructure, ind }: { feeStructure: TFeeStructure, i
 
     const { mutateAsync, isPending } = useAppMutation();
     const { mutateAsync: mutateAsyncDelete, isPending: isPendingDelete } = useAppMutation();
+    const queryClient = useQueryClient();
 
     const handleUpdate = async () => {
         await mutateAsync({
@@ -136,6 +138,8 @@ const FeeStructureRow = ({ feeStructure, ind }: { feeStructure: TFeeStructure, i
             endpoint: QueryKey.FEE_STRUCTURES + `/${feeStructure.id}`,
             invalidateTags: [QueryKey.FEE_STRUCTURES],
         });
+
+        queryClient.invalidateQueries({ queryKey: [QueryKey.FEE_STRUCTURES] });
     }
 
     return (
