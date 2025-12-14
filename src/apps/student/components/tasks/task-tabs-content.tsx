@@ -43,9 +43,9 @@ export function PendingTasks({ type }: { type: ETask }) {
     if (!data || data.data.length === 0) return (
         <div className="flex flex-col items-center justify-center py-12">
             <CheckCircle2 className="h-12 w-12 text-student-success mb-3" />
-            <h3 className="text-lg font-medium">No pending assignments</h3>
+            <h3 className="text-lg font-medium">No pending {type}s</h3>
             <p className="text-sm text-gray-500 mt-1">
-                All caught up! Check back later for new assignments.
+                All caught up! Check back later for new {type}s.
             </p>
         </div>
     )

@@ -113,7 +113,6 @@ export enum ESubjectChapterPriority {
 }
 
 export enum ETask {
-    CLASSWORK = 'classwork',
     HOMEWORK = 'homework',
     ASSIGNMENT = 'assignment',
 }
