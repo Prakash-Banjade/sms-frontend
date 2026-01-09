@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table"
 import { TMeta } from "@/types/global.type";
 import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "@/apps/admin/components/students-management/data-table-toolbat";
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]

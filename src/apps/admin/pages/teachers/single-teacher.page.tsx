@@ -11,6 +11,7 @@ import SingleAttendanceView from "../../components/students-management/single-st
 import TeacherClassSchecule from "../../components/teachers/single-teacher/teacher-class-schedule"
 import { useEffect } from "react"
 import { useSidebar } from "@/components/ui/sidebar"
+import TeacherIdCardContainer from "../../components/teachers/single-teacher/id-card/teacher-id-card-container"
 
 export default function SingleTeacherPage() {
     const params = useParams();
@@ -91,6 +92,8 @@ export default function SingleTeacherPage() {
             </div>
 
             <TeacherClassSchecule />
+
+            <TeacherIdCardContainer teacher={teacher} />
         </div>
     )
 }
