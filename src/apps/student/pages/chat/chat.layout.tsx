@@ -4,12 +4,12 @@ import { QueryKey } from "@/react-query/queryKeys";
 import { useAxios } from "@/services/api";
 import { createQueryString } from "@/utils/create-query-string";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Plus, RefreshCcw } from "lucide-react";
+import { Loader2, RefreshCcw } from "lucide-react";
 import { Link, Outlet, useParams } from "react-router-dom";
-import { TConversation } from "../../types/chat.types";
+import { TConversation, TConversationResponse } from "../../types/chat.types";
 import { useAuth } from "@/contexts/auth-provider";
 import { ProfileAvatar } from "@/components/ui/avatar";
-import { formatDate } from "date-fns";
+import { formatDate, isSameWeek, isToday, isYesterday } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddChatBtn from "../../components/chats/add-chat-btn";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +36,7 @@ export default function ChatLayout() {
                 page: pageParam,
                 take: DEFAULT_TAKE,
             });
-            const response = await axios.get<any>(`/${QueryKey.CONVERSATIONS}?${queryString}`);
+            const response = await axios.get<TConversationResponse>(`/${QueryKey.CONVERSATIONS}?${queryString}`);
             return response.data;
         },
         initialPageParam: 1,
@@ -138,13 +138,14 @@ function RenderChats({ data, isLoading, conversationId }: { data: TConversation[
                                     />
                                     <div className="flex-1">
                                         <header className="flex justify-between items-center gap-2">
-                                            <p className={cn("capitalize font-medium", !currentParticipant?.unreadCount && "text-muted-foreground")}>{otherParticipant?.account.lowerCasedFullName}</p>
+                                            <p className={cn("capitalize font-medium line-clamp-1", !currentParticipant?.unreadCount && "text-muted-foreground")}>{otherParticipant?.account.lowerCasedFullName}</p>
+                                            {
+                                                chat.lastMessageAt && (
+                                                    <RenderLastMessageAt lastMessageAt={chat.lastMessageAt} />
+                                                )
+                                            }
                                         </header>
-                                        {
-                                            chat.lastMessageAt && (
-                                                <time className="text-xs text-muted-foreground">{formatDate(chat.lastMessageAt, 'PPpp')}</time>
-                                            )
-                                        }
+                                        <p className={cn("text-xs line-clamp-1", !currentParticipant?.unreadCount && "text-muted-foreground")}>{chat.lastMessageContent}</p>
                                     </div>
                                     {!!currentParticipant?.unreadCount && (
                                         <Badge>{currentParticipant.unreadCount > 9 ? "9+" : currentParticipant.unreadCount}</Badge>
@@ -156,6 +157,20 @@ function RenderChats({ data, isLoading, conversationId }: { data: TConversation[
                 })
             }
         </ul>
+    )
+}
+
+function RenderLastMessageAt({ lastMessageAt }: { lastMessageAt: string }) {
+    const formattedTime = isToday(lastMessageAt)
+        ? formatDate(lastMessageAt, "HH:mm")
+        : isYesterday(lastMessageAt)
+            ? "Yesterday"
+            : isSameWeek(lastMessageAt, new Date())
+                ? formatDate(lastMessageAt, "EEEE")
+                : formatDate(lastMessageAt, "dd/MM/yyyy");
+
+    return (
+        <time className="text-xs text-muted-foreground">{formattedTime}</time>
     )
 }
 

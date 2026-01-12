@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { startTransition, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send } from 'lucide-react';
 import { formatDate, isSameYear, isToday } from 'date-fns';
 import { ProfileAvatar } from '@/components/ui/avatar';
@@ -30,10 +29,7 @@ export default function SingleChatPage() {
 
     const form = useForm<TChatSchema>({
         resolver: zodResolver(chatSchema),
-        defaultValues: {
-            ...chatDefaultValues,
-            conversationId,
-        },
+        defaultValues: chatDefaultValues,
     });
 
     const { mutateAsync: send, isPending: isSending } = useAppMutation();
@@ -46,6 +42,38 @@ export default function SingleChatPage() {
     function onSubmit(data: TChatSchema) {
         if (!user) return;
 
+        form.reset(chatDefaultValues);
+
+        textareaRef.current?.focus();
+
+        // update to backend
+        send({
+            endpoint: `${QueryKey.CONVERSATION_MESSAGES}`,
+            method: 'post',
+            data: {
+                ...data,
+                conversationId, // conversationId right from the params
+            },
+            toastOnSuccess: false,
+            onError: () => {
+                // rollback optimistic update
+                queryClient.setQueryData<InfiniteData<TChatMessagesResponse>>(
+                    [QueryKey.CONVERSATION_MESSAGES, conversationId],
+                    (oldData) => {
+                        if (!oldData || !oldData.pages.length) return oldData;
+                        const newPages = [...oldData.pages];
+                        // Remove the optimistically added message (first item of first page)
+                        newPages[0] = {
+                            ...newPages[0],
+                            data: newPages[0].data.slice(1)
+                        };
+                        return { ...oldData, pages: newPages };
+                    }
+                );
+            },
+        });
+
+        // Optimistic update to local cache ======>
         const newMessage: TChatMessage = {
             id: crypto.randomUUID(),
             content: data.content,
@@ -57,7 +85,7 @@ export default function SingleChatPage() {
             },
         };
 
-        // Optimistic update
+        // 1. update messages
         queryClient.setQueryData<InfiniteData<TChatMessagesResponse>>(
             [QueryKey.CONVERSATION_MESSAGES, conversationId],
             (oldData) => {
@@ -87,35 +115,67 @@ export default function SingleChatPage() {
             }
         );
 
-        form.reset({
-            ...chatDefaultValues,
-            conversationId: data.conversationId,
-        });
+        // 2. move the conversation to the top in layout
+        queryClient.setQueryData<InfiniteData<TConversationResponse>>(
+            [QueryKey.CONVERSATIONS],
+            (oldData) => {
+                if (!oldData) return oldData;
 
-        textareaRef.current?.focus();
+                let targetConversation: TConversation | undefined = undefined;
 
-        send({
-            endpoint: `${QueryKey.CONVERSATION_MESSAGES}`,
-            method: 'post',
-            data,
-            toastOnSuccess: false,
-            onError: () => {
-                // rollback optimistic update
-                queryClient.setQueryData<InfiniteData<TChatMessagesResponse>>(
-                    [QueryKey.CONVERSATION_MESSAGES, conversationId],
-                    (oldData) => {
-                        if (!oldData || !oldData.pages.length) return oldData;
-                        const newPages = [...oldData.pages];
-                        // Remove the optimistically added message (first item of first page)
-                        newPages[0] = {
-                            ...newPages[0],
-                            data: newPages[0].data.slice(1)
+                // First, try to find the conversation in the existing list and remove it
+                const newPages = oldData.pages.map(page => {
+                    const existingIndex = page.data.findIndex(c => c.id === conversationId);
+                    if (existingIndex !== -1) {
+                        targetConversation = page.data[existingIndex];
+                        // If found, remove it from this page
+                        return {
+                            ...page,
+                            data: page.data.filter(c => c.id !== conversationId)
                         };
-                        return { ...oldData, pages: newPages };
                     }
-                );
-            },
-        });
+                    return page;
+                });
+
+                // If we didn't find it in the list, try to use the current conversation details
+                if (!targetConversation && conversation) {
+                    targetConversation = conversation;
+                }
+
+                // If we still don't have a conversation object, we can't do anything
+                if (!targetConversation) {
+                    return oldData;
+                }
+
+                // Update the conversation with new message details
+                const updatedConversation: TConversation = {
+                    ...targetConversation,
+                    lastMessageContent: newMessage.content,
+                    lastMessageAt: newMessage.createdAt,
+                };
+
+                // Add to the top of the first page
+                if (newPages.length > 0) {
+                    newPages[0] = {
+                        ...newPages[0],
+                        data: [updatedConversation, ...newPages[0].data]
+                    };
+                } else {
+                    // This case might happen if pages array is empty but we want to start a list?
+                    // Usually InfiniteData has at least one page if initialized.
+                    // If empty, we might not want to touch it or create a new page.
+                    // For safety, let's just return if no pages exist, or handle it if appropriate.
+                    // Given the context, if no pages, maybe we shouldn't force it as the query might not have run.
+                    // But if oldData exists, it likely has pages.
+                }
+
+                return {
+                    ...oldData,
+                    pages: newPages,
+                };
+            }
+        );
+
     }
 
     if (!user) return null;
@@ -272,8 +332,6 @@ function RenderMessages({
 
     const messages = data?.pages.flatMap((page) => page.data).slice().reverse() ?? [];
 
-    const lastMarkedSeenIdRef = useRef<string | null>(null);
-
     const { mutateAsync: markSeen } = useAppMutation();
 
     // mark as read
@@ -285,8 +343,7 @@ function RenderMessages({
 
             const currentParticipant = conversation.participants.find(participant => participant.account.id === user.accountId);
 
-            if (lastMessageId && !currentParticipant?.unreadCount && latestMessage.sender.id !== user.accountId && lastMarkedSeenIdRef.current !== lastMessageId) {
-                lastMarkedSeenIdRef.current = lastMessageId;
+            if (lastMessageId && currentParticipant?.unreadCount && latestMessage.sender.id !== user.accountId) {
                 startTransition(() => {
                     markSeen({
                         endpoint: `${QueryKey.CONVERSATIONS}/${conversation.id}/mark-as-read`,
@@ -336,7 +393,7 @@ function RenderMessages({
         if (!viewport) return;
 
         const handleScroll = () => {
-            if (viewport.scrollTop === 0 && hasNextPage && !isFetchingNextPage) {
+            if (viewport.scrollTop <= 100 && hasNextPage && !isFetchingNextPage) {
                 setPrevScrollHeight(viewport.scrollHeight);
                 fetchNextPage();
             }
@@ -384,15 +441,14 @@ function RenderMessages({
     }, [messages]);
 
     return (
-        <div className="flex-1 overflow-y-auto bg-card h-full">
-            <ScrollArea
-                className='p-4'
-                style={{
-                    height: `100%`,
-                    maxHeight: `calc(100vh - 340px)`,
-                }}
-                ref={viewportRef}
-            >
+        <div
+            className="flex-1 overflow-y-auto bg-card h-full"
+            ref={viewportRef}
+            style={{
+                maxHeight: `calc(100vh - 340px)`,
+            }}
+        >
+            <div className='p-4 h-full'>
                 {isLoading ? (
                     <div className="py-20 flex items-center justify-center">
                         <Spinner />
@@ -442,7 +498,7 @@ function RenderMessages({
                         <div ref={messagesEndRef} />
                     </div>
                 )}
-            </ScrollArea>
+            </div>
         </div>
     )
 }
