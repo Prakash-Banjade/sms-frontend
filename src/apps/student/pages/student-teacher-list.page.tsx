@@ -43,7 +43,7 @@ function TeachersView() {
 
           return (
             <Card key={ind} className="flex flex-col h-full">
-              <CardHeader className="flex-grow">
+              <CardHeader className="grow">
                 <div className="flex items-center justify-center space-x-4">
                   <ProfileAvatar name={teacher.teacherFullName} src={getImageUrl(teacher.profileImageUrl, 'w=120')} className="size-32" />
                 </div>
@@ -59,7 +59,7 @@ function TeachersView() {
                   className="hover:underline hover:text-blue-500 flex items-center"
                 >
                   <Mail className="mr-2 h-4 w-4" />
-                  <span className='text-muted-foreground break-words'>{teacher.email}</span>
+                  <span className='text-muted-foreground wrap-break-word'>{teacher.email}</span>
                 </a>
                 <a
                   href={`tel:${teacher.email}`}

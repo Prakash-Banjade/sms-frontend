@@ -16,7 +16,7 @@ export default function TeacherIdCardContainer({ teacher }: { teacher: TSingleTe
     return (
         <div className="space-y-8">
             {/* ID Card Preview */}
-            <Card className="p-8 bg-card/50 backdrop-blur-sm border-2">
+            <Card className="p-8 bg-card/50 backdrop-blur-xs border-2">
                 <div className="space-y-6">
                     <div className="flex items-center justify-between">
                         <CardTitle>ID Card Preview</CardTitle>

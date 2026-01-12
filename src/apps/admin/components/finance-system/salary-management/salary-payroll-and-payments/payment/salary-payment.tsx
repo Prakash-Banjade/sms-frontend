@@ -112,7 +112,7 @@ function SalaryPaymentForm({ payroll }: { payroll: TSinglePayroll }) {
                     </div>
                 </section>
 
-                <section className='max-w-screen-sm mx-auto'>
+                <section className='max-w-(--breakpoint-sm) mx-auto'>
                     <Table>
                         <TableBody>
                             <TableRow>

@@ -71,7 +71,7 @@ export const vehiclesColumns: ColumnDef<TVehicle>[] = [
         accessorKey: "note",
         cell: ({ row }) => {
             return !!row.original.note
-                ? <p className="text-14 font-medium break-words max-w-[40ch]">
+                ? <p className="text-14 font-medium wrap-break-word max-w-[40ch]">
                     {row.original.note}
                 </p> : <span className="text-muted-foreground">-</span>
         },

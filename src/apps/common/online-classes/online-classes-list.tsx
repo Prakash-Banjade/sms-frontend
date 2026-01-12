@@ -117,7 +117,7 @@ export default function OnlineClassesList({ onlineClasses }: { onlineClasses: TO
                                     {oc.subjectName}
                                 </Badge>
                             </CardContent>
-                            <CardFooter className='!mt-auto'>
+                            <CardFooter className='mt-auto!'>
                                 <CardActions onlineClass={oc} />
                             </CardFooter>
                         </Card>

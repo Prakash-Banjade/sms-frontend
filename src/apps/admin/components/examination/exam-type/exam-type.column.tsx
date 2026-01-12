@@ -30,7 +30,7 @@ export const examTypesColumns: ColumnDef<TExamType>[] = [
         accessorKey: "description",
         cell: ({ row }) => {
             return !!row.original.description
-                ? <p className="text-14 font-medium break-words max-w-[40ch]">
+                ? <p className="text-14 font-medium wrap-break-word max-w-[40ch]">
                     {row.original.description}
                 </p> : <span className="text-muted-foreground">-</span>
         }

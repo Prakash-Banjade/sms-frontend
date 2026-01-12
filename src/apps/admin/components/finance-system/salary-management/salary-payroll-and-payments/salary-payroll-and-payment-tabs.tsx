@@ -67,7 +67,7 @@ export default function SalaryPayrollAndPaymentTabs() {
                 defaultValue={searchParams.get('tab') || tabs[0].value}
                 onValueChange={tab => setSearchParams('tab', tab)}
             >
-                <TabsList className={`h-auto grid !grid-cols-3`}>
+                <TabsList className={`h-auto grid grid-cols-3!`}>
                     {tabs.map((tab) => (
                         <TabsTrigger key={tab.value} value={tab.value} className="py-2">
                             <tab.icon size={16} className="mr-2" />

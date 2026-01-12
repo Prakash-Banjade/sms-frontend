@@ -65,7 +65,7 @@ export const SalaryPayslipTemplate = React.forwardRef<HTMLDivElement, Props>(({ 
                             <p className="text-gray-600">Phone:</p>
                             <p className="font-medium text-gray-900">(555) 123-4567</p>
                             <p className="text-gray-600">Website:</p>
-                            <p className="font-medium text-gray-900 break-words">www.aayamglobal.com</p>
+                            <p className="font-medium text-gray-900 wrap-break-word">www.aayamglobal.com</p>
                         </div>
                     </div>
                 </div>

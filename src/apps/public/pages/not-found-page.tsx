@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function NotFoundPage() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-background px-4">
+        <div className="flex flex-col items-center justify-center min-h-dvh bg-background px-4">
             <div className="flex flex-col items-center text-center max-w-md">
                 <div className="flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-6">
                     <AlertCircle className="h-8 w-8 text-muted-foreground" />

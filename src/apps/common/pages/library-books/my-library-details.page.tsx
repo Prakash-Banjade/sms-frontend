@@ -118,7 +118,7 @@ function BookTransactionsList() {
                                     {isOverDue ? 'Overdue' : transaction.returnedAt ? 'Returned' : 'Issued'}
                                 </Badge>
                             </CardHeader>
-                            <CardContent className="flex-grow">
+                            <CardContent className="grow">
                                 <div className="space-y-2">
                                     <div className="flex items-center">
                                         <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />

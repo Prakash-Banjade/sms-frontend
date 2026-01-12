@@ -1,3 +1,5 @@
+@reference "../../../../index.css";
+
 .minimal-tiptap-editor .ProseMirror .heading-node {
   @apply relative font-semibold;
 }

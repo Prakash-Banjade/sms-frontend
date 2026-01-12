@@ -86,7 +86,7 @@ export default function NoticeForm(props: Props) {
                                     output="html"
                                     placeholder="Type notice description here..."
                                     editable={true}
-                                    editorClassName="focus:outline-none"
+                                    editorClassName="focus:outline-hidden"
                                 />
                             </FormControl>
                             <FormMessage />

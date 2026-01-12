@@ -1,3 +1,5 @@
+@reference "../../../../index.css";
+
 .str-video__participant-list-header__close-button {
     @apply hidden;
 }
@@ -99,7 +101,7 @@
 
     &.str-video__composite-button__button-group--active.str-video__composite-button__button-group--active-secondary {
         background-color: hsl(var(--destructive));
-        
+
         &:hover {
             background-color: hsl(var(--destructive)) !important;
             opacity: 0.9;

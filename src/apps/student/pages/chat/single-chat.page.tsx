@@ -162,7 +162,7 @@ export default function Page() {
                             placeholder="Type your message here..."
                             minLength={1}
                             maxLength={500}
-                            className="max-h-40 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            className="max-h-80 field-sizing-content focus-visible:outline-hidden focus-visible:ring-0 focus-visible:ring-offset-0"
                             value={form.watch("content")}
                             onChange={(e) => form.setValue("content", e.target.value)}
                             onKeyDown={e => {
@@ -383,7 +383,8 @@ function RenderMessages({
             <ScrollArea
                 className='p-4'
                 style={{
-                    height: `calc(100vh - 340px)`
+                    height: `100%`,
+                    maxHeight: `calc(100vh - 340px)`,
                 }}
                 ref={viewportRef}
             >

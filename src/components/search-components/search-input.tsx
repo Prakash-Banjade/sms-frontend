@@ -38,7 +38,7 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
                     placeholder={placeholder ?? "Search..."}
                     value={searchTerm}
                     onChange={handleInputChange}
-                    className={cn("min-w-[300px] !pl-9", className)}
+                    className={cn("min-w-[300px] pl-9!", className)}
                 />
             </section>
         </div>
@@ -50,7 +50,7 @@ export default function SearchInput({ label, placeholder, searchKey = "search", 
                 placeholder={placeholder ?? "Search..."}
                 value={searchTerm}
                 onChange={handleInputChange}
-                className={cn("min-w-[300px] !pl-9", className)}
+                className={cn("min-w-[300px] pl-9!", className)}
             />
         </section>
     )

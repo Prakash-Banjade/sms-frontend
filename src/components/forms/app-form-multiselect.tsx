@@ -98,7 +98,7 @@ export function MultiSelect<T extends FieldValues>({
                                                 <span>
                                                     {options.find((option) => option.value === val)?.label}
                                                 </span>
-                                                <X className="!size-3" />
+                                                <X className="size-3!" />
                                             </div>
                                         ))
                                         : placeholder}
@@ -106,7 +106,7 @@ export function MultiSelect<T extends FieldValues>({
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="!min-w-full p-0">
+                        <PopoverContent className="min-w-full! p-0">
                             <Command>
                                 <CommandInput placeholder={placeholder} />
                                 <CommandEmpty>No option found.</CommandEmpty>

@@ -14,10 +14,10 @@ export default function StudentIdCardContainer({ student }: { student: TSingleSt
     });
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+        <main className="min-h-screen bg-linear-to-br from-background via-muted/30 to-background">
             <div className="max-w-6xl mx-auto space-y-8">
                 {/* ID Card Preview */}
-                <Card className="p-8 bg-card/50 backdrop-blur-sm border-2">
+                <Card className="p-8 bg-card/50 backdrop-blur-xs border-2">
                     <div className="space-y-6">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-semibold text-foreground">Preview</h2>

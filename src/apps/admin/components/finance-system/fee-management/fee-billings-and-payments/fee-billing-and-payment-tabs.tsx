@@ -71,7 +71,7 @@ export default function FeeBillingAndPaymentTabs() {
                 defaultValue={searchParams.get('tab') || tabs[0].value}
                 onValueChange={tab => setSearchParams('tab', tab)}
             >
-                <TabsList className={`h-auto grid !grid-cols-4`}>
+                <TabsList className={`h-auto grid grid-cols-4!`}>
                     {tabs.map((tab) => (
                         <TabsTrigger key={tab.value} value={tab.value} className="py-2">
                             <tab.icon size={16} className="mr-2" />

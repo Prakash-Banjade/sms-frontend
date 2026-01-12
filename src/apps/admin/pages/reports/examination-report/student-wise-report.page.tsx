@@ -77,7 +77,7 @@ function ReportSection() {
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-4">
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                             <ProfileAvatar
                                 src={getImageUrl(data.student?.profileImageUrl, 'w=100')}
                                 name={data.student?.firstName + " " + data.student?.lastName}

@@ -62,7 +62,7 @@ export default function SettingsPage() {
         <SettingTabs defaultActive={activeTab} />
       </section>
 
-      <div className="max-w-screen-lg w-full mx-auto">
+      <div className="max-w-(--breakpoint-lg) w-full mx-auto">
         {
           settignsTabs.find(tab => tab.id === activeTab)?.content
         }

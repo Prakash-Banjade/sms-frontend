@@ -131,7 +131,7 @@ export function AcademicYearCalendar() {
           />
         </ResponsiveDialog>
 
-        {/* <div className="rounded-xl p-6 shadow-sm border border-border"> */}
+        {/* <div className="rounded-xl p-6 shadow-xs border border-border"> */}
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -172,8 +172,8 @@ export function AcademicYearCalendar() {
 
 function renderEventContent(eventContent: EventContentArg) {
   return (
-    <div className="space-x-1 !line-clamp-1">
-      <strong className='!text-primary-foreground'>{eventContent.event.title}</strong>
+    <div className="space-x-1 line-clamp-1!">
+      <strong className='text-primary-foreground!'>{eventContent.event.title}</strong>
     </div>
   );
 }

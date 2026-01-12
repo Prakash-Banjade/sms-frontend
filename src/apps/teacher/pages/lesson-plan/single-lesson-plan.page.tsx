@@ -62,7 +62,7 @@ export default function SingleLessonPlanPage() {
                             ? "success"
                             : lessonPlan.status === ELessonPlanStatus.In_Progress
                                 ? "info"
-                                : "outline"
+                                : "outline-solid"
                     }
                 >
                     {lessonPlan.status.replace("_", " ")}

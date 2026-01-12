@@ -40,7 +40,7 @@ export default function FlexibleCallLayout() {
             <CallLayoutView layout={layout} />
             <CallControls onLeave={onCallLeave} />
             <EndCallButton />
-            <section className="@container !mt-10">
+            <section className="@container mt-10!">
                 <section className="@4xl:flex gap-6 hidden">
                     <section className="grow">
                         <OnlineClassDetails />
@@ -161,7 +161,7 @@ function OnlineClassDetails() {
 
 function ClassDetailsLoadingSkeleton() {
     return (
-        <Card className="w-full max-w-4xl mx-auto !mt-10">
+        <Card className="w-full max-w-4xl mx-auto mt-10!">
             <CardHeader>
                 <div className="flex justify-between items-start">
                     <div className="space-y-2">

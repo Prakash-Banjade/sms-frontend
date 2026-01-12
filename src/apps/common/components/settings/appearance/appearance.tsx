@@ -114,7 +114,7 @@ export default function Appearance() {
                             <div key={color.value}>
                                 <button
                                     className={cn(
-                                        "xl:size-28 lg:size-20 size-16 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2",
+                                        "xl:size-28 lg:size-20 size-16 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2",
                                         activeTheme === color.value && "ring-2 ring-offset-2"
                                     )}
                                     style={{ backgroundColor: color.code }}

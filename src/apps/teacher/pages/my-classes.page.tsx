@@ -57,7 +57,7 @@ function Content() {
                             <Card className="overflow-hidden flex flex-col" key={classRoom.id}>
                                 <CardHeader className="bg-secondary/20 pb-4 flex items-baseline flex-wrap gap-1 justify-between flex-row">
                                     <CardTitle className="mt-2">{classRoom.name}</CardTitle>
-                                    <Badge className="w-fit" variant={classRoom.isClassTeacher ? "default" : "outline"}>
+                                    <Badge className="w-fit" variant={classRoom.isClassTeacher ? "default" : "outline-solid"}>
                                         {
                                             classRoom.isClassTeacher ? "Class Teacher" : "Subject Teacher"
                                         }

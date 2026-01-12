@@ -134,10 +134,10 @@ export default function CreateLiveClassForm({ setOpen }: Props) {
                     className="flex transition-transform duration-500"
                     style={{ transform: `translateX(-${currentStep * 100}%)` }}
                 >
-                    <div className="w-full flex-shrink-0 p-3">
+                    <div className="w-full shrink-0 p-3">
                         <ClassSelectionStep setCurrentStep={setCurrentStep} />
                     </div>
-                    <div className="w-full flex-shrink-0 p-3">
+                    <div className="w-full shrink-0 p-3">
                         <FinalDetailsStep />
                     </div>
                 </div>

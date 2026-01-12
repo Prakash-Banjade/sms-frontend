@@ -74,7 +74,7 @@ export function MultiSectionSelect({ required, disabled, options, description, v
                                                 <span>
                                                     {options.find((option) => option.id === val)?.name}
                                                 </span>
-                                                <X className="!size-3" />
+                                                <X className="size-3!" />
                                             </div>
                                         ))
                                         : 'Select sections'}
@@ -82,7 +82,7 @@ export function MultiSectionSelect({ required, disabled, options, description, v
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="!min-w-full p-0">
+                        <PopoverContent className="min-w-full! p-0">
                             <Command>
                                 <CommandInput placeholder="Select sections" />
                                 <CommandEmpty>No section found.</CommandEmpty>

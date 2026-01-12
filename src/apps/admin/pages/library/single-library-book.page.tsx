@@ -25,7 +25,7 @@ export default function SingleLibraryBookPage() {
                 <div className="md:col-span-1">
                     <Card>
                         <CardContent className="pt-6">
-                            <div className="aspect-[3/4] relative rounded-md overflow-hidden border">
+                            <div className="aspect-3/4 relative rounded-md overflow-hidden border">
                                 <ImageWithPlaceholder
                                     alt={book.bookName}
                                     src={book.coverImage?.url || "/lib_book_placeholder.png"}
@@ -68,7 +68,7 @@ export default function SingleLibraryBookPage() {
                                 <Badge>{book.category.name}</Badge>
                             </div>
                         </CardHeader>
-                        <CardContent className="flex-grow">
+                        <CardContent className="grow">
                             <div className="grid grid-cols-2 gap-4 mb-6">
                                 <div className="flex items-center">
                                     <BookOpen className="h-4 w-4 mr-2 text-muted-foreground" />

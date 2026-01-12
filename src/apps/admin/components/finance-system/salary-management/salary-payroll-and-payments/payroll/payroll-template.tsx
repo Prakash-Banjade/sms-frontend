@@ -58,11 +58,11 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                         </section>
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Email:</p>
-                            <p className="font-medium break-words">{employee?.email}</p>
+                            <p className="font-medium wrap-break-word">{employee?.email}</p>
                         </section>
                         <section className='flex items-start gap-2'>
                             <p className="text-gray-600">Phone:</p>
-                            <p className="font-medium break-words">{employee?.phone}</p>
+                            <p className="font-medium wrap-break-word">{employee?.phone}</p>
                         </section>
                     </div>
                 </div>

@@ -53,7 +53,7 @@ function SubjectsList() {
                                     </div>
 
                                     <div>
-                                        <Badge variant={subject.type === ESubjectType.Regular ? "secondary" : "outline"} className="capitalize">{subject.type}</Badge>
+                                        <Badge variant={subject.type === ESubjectType.Regular ? "secondary" : "outline-solid"} className="capitalize">{subject.type}</Badge>
                                     </div>
                                 </div>
                             </CardHeader>

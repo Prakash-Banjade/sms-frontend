@@ -142,7 +142,7 @@ export default function SubjectChapterCard({ chapter, subjectId, forceDragging }
 
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-muted-foreground break-words line-clamp-3">
+                <p className="text-sm text-muted-foreground wrap-break-word line-clamp-3">
                     {chapter.content.slice(0, 1000)}
                 </p>
             </CardContent>

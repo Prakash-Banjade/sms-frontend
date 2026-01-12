@@ -92,14 +92,14 @@ export function DynamicCombobox<T extends FieldValues>({
                                 variant="outline"
                                 role="combobox"
                                 aria-expanded={open}
-                                className="w-full justify-between h-max min-h-10 overflow-hidden disabled:!cursor-not-allowed disabled:pointer-events-auto"
+                                className="w-full justify-between h-max min-h-10 overflow-hidden disabled:cursor-not-allowed! disabled:pointer-events-auto"
                                 disabled={disabled || isLoading || (disableOnNoOption && !options?.length)}
                             >
                                 {currentValue}
                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="!min-w-full p-0">
+                        <PopoverContent className="min-w-full! p-0">
                             <Command shouldFilter={false}>
                                 <CommandInput placeholder={placeholder} onValueChange={val => setSearch(val)} />
                                 <CommandEmpty>{emptyPlaceholder}</CommandEmpty>

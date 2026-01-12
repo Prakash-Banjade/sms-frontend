@@ -71,7 +71,7 @@ function DormitoryDetailsView() {
             </Card>
 
             {/* Roommates Card */}
-            <Card className="border rounded-lg shadow-sm">
+            <Card className="border rounded-lg shadow-xs">
                 <CardHeader>
                     <CardTitle>Your Roommates</CardTitle>
                 </CardHeader>

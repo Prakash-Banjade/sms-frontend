@@ -8,7 +8,7 @@ export default function BookSkeleton() {
     }, [])
 
     return (
-        <div className="flex flex-col overflow-hidden rounded-lg bg-accent/20 shadow">
+        <div className="flex flex-col overflow-hidden rounded-lg bg-accent/20 shadow-sm">
             <Skeleton
                 style={{
                     height: `${randomHeight}px`,

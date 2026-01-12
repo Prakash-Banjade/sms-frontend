@@ -99,7 +99,7 @@ export function LoginForm({ className, setIsFormSubmitting, ...props }: LoginFor
                         <p className="text-sm text-muted-foreground mt-2 text-right">
                             <Link
                                 to="/auth/forgot-password"
-                                className={buttonVariants({ variant: 'link', className: '!p-0 h-fit' })}
+                                className={buttonVariants({ variant: 'link', className: 'p-0! h-fit' })}
                                 state={{
                                     email: EMAIL_REGEX.test(form.getValues('email')) ? form.getValues('email') : ''
                                 }}

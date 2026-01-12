@@ -56,7 +56,7 @@ export function ClassRoutineCard({ classRoutine, className }: { classRoutine: TC
             classRoutine.type === ERoutineType.BREAK && "bg-secondary",
             className
         )}>
-            <CardContent className="p-4 flex flex-col justify-between flex-grow">
+            <CardContent className="p-4 flex flex-col justify-between grow">
                 <div>
                     <header className="flex items-center justify-between gap-5">
                         <h3 className="font-semibold text-lg">

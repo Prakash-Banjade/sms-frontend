@@ -12,7 +12,7 @@ export const TeacherIdCard = React.forwardRef<HTMLDivElement, TeacherIdCardProps
     return (
         <div ref={ref} className="print-area flex gap-6">
             {/* ID Card Front - Portrait */}
-            <Card className="w-[2.125in] h-[3.375in] relative overflow-hidden bg-gradient-to-b from-primary via-primary to-primary/90 shadow-xl">
+            <Card className="w-[2.125in] h-[3.375in] relative overflow-hidden bg-linear-to-b from-primary via-primary to-primary/90 shadow-xl">
                 {/* Decorative background elements */}
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-secondary rounded-full -translate-y-12 translate-x-12" />
@@ -71,7 +71,7 @@ export const TeacherIdCard = React.forwardRef<HTMLDivElement, TeacherIdCardProps
 
                     {/* Valid Until */}
                     <div className="mt-auto pb-2">
-                        <div className="bg-secondary/20 rounded px-2 py-1.5 backdrop-blur-sm text-center">
+                        <div className="bg-secondary/20 rounded px-2 py-1.5 backdrop-blur-xs text-center">
                             <p className="text-[6px] text-primary-foreground/80 uppercase tracking-wide">Valid Until</p>
                             <p className="text-[8px] font-bold text-secondary">2025-12-30</p>
                         </div>
@@ -80,7 +80,7 @@ export const TeacherIdCard = React.forwardRef<HTMLDivElement, TeacherIdCardProps
             </Card>
 
             {/* ID Card Back - Portrait */}
-            <Card className="w-[2.125in] h-[3.375in] relative overflow-hidden bg-gradient-to-b from-primary/5 to-secondary/10 shadow-xl flex flex-col">
+            <Card className="w-[2.125in] h-[3.375in] relative overflow-hidden bg-linear-to-b from-primary/5 to-secondary/10 shadow-xl flex flex-col">
                 {/* Header */}
                 <div className="bg-primary px-3 py-2.5 border-b-2 border-secondary">
                     <h2 className="text-[9px] font-bold text-primary-foreground text-center uppercase tracking-wide">

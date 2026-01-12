@@ -189,7 +189,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                 </section>
 
                 <section className="grid grid-cols-2 gap-6">
-                    <div className="space-y-2 max-w-screen-sm">
+                    <div className="space-y-2 max-w-(--breakpoint-sm)">
                         <h2 className="font-semibold uppercase">Salary Amount</h2>
                         <Table>
                             <TableHeader>
@@ -236,7 +236,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                             </TableBody>
                         </Table>
 
-                        <section className="flex items-center gap-5 !mt-10">
+                        <section className="flex items-center gap-5 mt-10!">
                             <span>Advance amount this month: </span>
                             <AppForm.Number<PayrollFormSchemaType>
                                 name={`advance`}
@@ -350,7 +350,7 @@ export default function PayrollForm({ salaryEmployee, defaultValues, payrollId, 
                 </section >
 
 
-                <section className="text-center text-xl px-4 !mt-10">
+                <section className="text-center text-xl px-4 mt-10!">
                     Net Salary:&nbsp;
                     <strong>Rs. {(totalEarnings + totalAdjustments + +form.watch('advance')).toLocaleString()}</strong>
                 </section>

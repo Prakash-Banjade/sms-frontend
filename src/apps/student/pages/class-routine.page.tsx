@@ -46,7 +46,7 @@ function ClassRoutineView() {
         <>
             <div className="flex items-center w-fit">
                 <Button
-                    variant={view === 'day' ? 'default' : 'outline'}
+                    variant={view === 'day' ? 'default' : 'outline-solid'}
                     size="sm"
                     className="rounded-r-none"
                     onClick={() => setView('day')}
@@ -54,7 +54,7 @@ function ClassRoutineView() {
                     Day
                 </Button>
                 <Button
-                    variant={view === 'week' ? 'default' : 'outline'}
+                    variant={view === 'week' ? 'default' : 'outline-solid'}
                     size="sm"
                     className="rounded-l-none"
                     onClick={() => setView('week')}

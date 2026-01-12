@@ -78,7 +78,7 @@ export default function AttendanceTable({ attendances, setAttendances }: Props) 
                                                 variant={
                                                     student.attendance?.status === status
                                                         ? variant
-                                                        : "outline"
+                                                        : "outline-solid"
                                                 }
                                                 size="sm"
                                                 onClick={() => handleStatusChange(student.account?.id, status)}

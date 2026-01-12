@@ -37,7 +37,7 @@ export default function BookCard({ book }: BookCardProps) {
                             className="object-contain w-full object-center transition-transform duration-300 group-hover:scale-105"
                         />
                     ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-foreground/80 to-foreground">
+                        <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-foreground/80 to-foreground">
                             <BookOpen size={48} className="text-muted-foreground" />
                         </div>
                     )}

@@ -41,7 +41,7 @@ export default function SingleLessonPlanView({ id }: Props) {
                                                 ? "success"
                                                 : lessonPlan.status === ELessonPlanStatus.In_Progress
                                                     ? "info"
-                                                    : "outline"
+                                                    : "outline-solid"
                                         }
                                     >
                                         {lessonPlan.status.replace("_", " ")}

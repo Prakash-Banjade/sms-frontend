@@ -11,7 +11,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
     return (
         <div ref={ref} className="print-area flex gap-6">
             {/* ID Card Front */}
-            <Card className="w-[3.375in] h-[2.125in] relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 shadow-xl">
+            <Card className="w-[3.375in] h-[2.125in] relative overflow-hidden bg-linear-to-br from-primary via-primary to-primary/90 shadow-xl">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-secondary rounded-full -translate-y-16 translate-x-16" />
                     <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary rounded-full translate-y-12 -translate-x-12" />
@@ -29,7 +29,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
                 </div>
 
                 <div className="relative px-3 py-2 flex gap-3">
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                         <div className="w-[0.9in] h-[1.2in] bg-primary-foreground rounded-md overflow-hidden border-2 border-secondary shadow-md">
                             <img
                                 src={student.account.profileImage?.url || "/placeholder.svg"}
@@ -70,7 +70,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
                             </div>
                         </div>
 
-                        <div className="bg-secondary/20 rounded px-2 py-1 backdrop-blur-sm">
+                        <div className="bg-secondary/20 rounded px-2 py-1 backdrop-blur-xs">
                             <p className="text-[6px] text-primary-foreground/80 uppercase tracking-wide">Valid Until</p>
                             <p className="text-[8px] font-bold text-secondary">2025-12-30</p>
                         </div>
@@ -79,7 +79,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
             </Card>
 
             {/* ID Card Back */}
-            <Card className="w-[3.375in] h-[2.125in] relative overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/10 shadow-xl">
+            <Card className="w-[3.375in] h-[2.125in] relative overflow-hidden bg-linear-to-br from-primary/5 to-secondary/10 shadow-xl">
                 {/* Header */}
                 <div className="bg-primary px-3 py-2 border-b-2 border-secondary">
                     <h2 className="text-[9px] font-bold text-primary-foreground text-center uppercase tracking-wide">

@@ -67,19 +67,19 @@ export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
             if (row.original.description && row.original.description.length > 100) {
                 return <HoverCard openDelay={100} closeDelay={100}>
                     <HoverCardTrigger>
-                        <span className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
+                        <span className="text-14 font-medium wrap-break-word max-w-[40ch] line-clamp-3">
                             {row.original.description.slice(0, 100)}...
                         </span>
                     </HoverCardTrigger>
-                    <HoverCardContent className="w-80 break-words">
-                        <p className="text-14 font-medium break-words">
+                    <HoverCardContent className="w-80 wrap-break-word">
+                        <p className="text-14 font-medium wrap-break-word">
                             {row.original.description}
                         </p>
                     </HoverCardContent>
                 </HoverCard>
             }
 
-            return <p className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
+            return <p className="text-14 font-medium wrap-break-word max-w-[40ch] line-clamp-3">
                 {row.original.description}
             </p>
         },
@@ -97,7 +97,7 @@ export const dormitoryRoomsColumns: ColumnDef<TDormitoryRoom>[] = [
                                 <HoverCard openDelay={100} closeDelay={100}>
                                     <HoverCardTrigger>
                                         <Badge variant={'outline'} className="text-sm">
-                                            <span className="text-14 font-medium break-words max-w-[40ch] line-clamp-3">
+                                            <span className="text-14 font-medium wrap-break-word max-w-[40ch] line-clamp-3">
                                                 {studentName}
                                             </span>
                                         </Badge>

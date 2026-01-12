@@ -29,7 +29,7 @@ export const roomTypesColumns: ColumnDef<TRoomType>[] = [
     {
         header: "Description",
         accessorKey: "description",
-        cell: ({ row }) => <p className="max-w-[50ch] break-words">{row.original.description}</p>,
+        cell: ({ row }) => <p className="max-w-[50ch] wrap-break-word">{row.original.description}</p>,
     },
     {
         id: "actions",

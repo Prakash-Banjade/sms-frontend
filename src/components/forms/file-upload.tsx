@@ -120,7 +120,7 @@ export function FileUpload<T>({
                         role="button"
                         className={cn(
                             "text-sm p-3 py-2 border rounded-md w-full inline-block",
-                            (isPending || uploaded.length >= maxLimit) && "!cursor-not-allowed pointer-events-none opacity-80 flex items-center gap-2"
+                            (isPending || uploaded.length >= maxLimit) && "cursor-not-allowed! pointer-events-none opacity-80 flex items-center gap-2"
                         )}
                         aria-disabled={isPending}
                     >
@@ -158,7 +158,7 @@ export function FileUpload<T>({
                                     {
                                         uploaded.map((file) => (
                                             <div className="flex items-center gap-2 justify-between hover:bg-secondary/50 p-2 rounded-md transition-all" key={file.id}>
-                                                <a href={file.url} key={file.id} className="text-blue-500 hover:underline text-sm break-words w-fit">
+                                                <a href={file.url} key={file.id} className="text-blue-500 hover:underline text-sm wrap-break-word w-fit">
                                                     {truncateFilename(file.originalName, 40)}
                                                 </a>
 

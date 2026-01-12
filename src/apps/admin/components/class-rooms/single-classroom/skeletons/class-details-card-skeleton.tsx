@@ -16,13 +16,13 @@ export function ClassDetailsLoadingSkeleton() {
                     {[...Array(4)].map((_, index) => (
                         <div key={index} className="flex items-center space-x-2">
                             <Skeleton className="h-5 w-5 rounded-full" />
-                            <Skeleton className="h-4 flex-grow" />
+                            <Skeleton className="h-4 grow" />
                         </div>
                     ))}
                 </div>
                 <div className="flex items-center space-x-2 mt-4 max-w-96"> 
                     <Skeleton className="h-5 w-5 rounded-full" />
-                    <Skeleton className="h-4 flex-grow" />
+                    <Skeleton className="h-4 grow" />
                 </div>
             </CardContent>
         </Card>
