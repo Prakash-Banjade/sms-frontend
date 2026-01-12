@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { startTransition, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send } from 'lucide-react';
@@ -12,7 +12,7 @@ import { InfiniteData, useInfiniteQuery, useQueryClient } from '@tanstack/react-
 import { useParams } from 'react-router-dom';
 import { TAuthPayload, useAuth } from '@/contexts/auth-provider';
 import { chatDefaultValues, chatSchema, TChatSchema } from '../../schemas/chat.schema';
-import { TChatMessage, TChatMessagesResponse, TConversation } from '../../types/chat.types';
+import { TChatMessage, TChatMessagesResponse, TConversation, TConversationResponse } from '../../types/chat.types';
 import { QueryKey } from '@/react-query/queryKeys';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '@/components/ui/input-group';
 import { useAppMutation } from '@/hooks/useAppMutation';
@@ -22,7 +22,7 @@ import { createQueryString } from '@/utils/create-query-string';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 
-export default function Page() {
+export default function SingleChatPage() {
     const { id: conversationId } = useParams();
     const { payload: user } = useAuth();
     const queryClient = useQueryClient();
@@ -38,27 +38,10 @@ export default function Page() {
 
     const { mutateAsync: send, isPending: isSending } = useAppMutation();
 
-
-    // const { isPending: isSending, mutate: send } = useServerAction({
-    //     action: sendSupportMessage,
-    //     onError: () => {
-    //         // rollback optimistic update
-    //         queryClient.setQueryData<InfiniteData<TSupportChatMessagesResponse>>(
-    //             [QueryKey.SUPPORT_CHAT_MESSAGES, id],
-    //             (oldData) => {
-    //                 if (!oldData || !oldData.pages.length) return oldData;
-    //                 const newPages = [...oldData.pages];
-    //                 // Remove the optimistically added message (first item of first page)
-    //                 newPages[0] = {
-    //                     ...newPages[0],
-    //                     data: newPages[0].data.slice(1)
-    //                 };
-    //                 return { ...oldData, pages: newPages };
-    //             }
-    //         );
-    //     },
-    //     toastOnSuccess: false,
-    // });
+    const { data: conversation, isLoading: isConversationLoading } = useFetchData<TConversation>({
+        endpoint: `${QueryKey.CONVERSATIONS}/${conversationId}`,
+        queryKey: [QueryKey.CONVERSATIONS, conversationId!],
+    });
 
     function onSubmit(data: TChatSchema) {
         if (!user) return;
@@ -72,12 +55,6 @@ export default function Page() {
                 lowerCasedFullName: user.firstName.toLowerCase() + ' ' + user.lastName.toLowerCase(),
                 role: user.role,
             },
-            participant: [
-                {
-                    id: user.accountId,
-                    unreadCount: 0,
-                }
-            ]
         };
 
         // Optimistic update
@@ -145,13 +122,25 @@ export default function Page() {
 
     return (
         <div className='bg-card flex flex-col h-full'>
-            <ChatHeader id={conversationId!} />
+            <ChatHeader
+                data={conversation}
+                isLoading={isConversationLoading}
+                user={user}
+            />
 
             <section className='flex-1'>
-                <RenderMessages
-                    user={user}
-                    conversationId={conversationId!}
-                />
+                {
+                    isConversationLoading ? (
+                        <div className='h-full p-2'>
+                            <Skeleton className='h-full' />
+                        </div>
+                    ) : (
+                        <RenderMessages
+                            user={user}
+                            conversation={conversation}
+                        />
+                    )
+                }
             </section>
 
             <section className='mt-auto mb-2 mx-2'>
@@ -199,21 +188,22 @@ export default function Page() {
     )
 }
 
-function ChatHeader({ id }: { id: string }) {
-    const { payload: user } = useAuth();
-
-    const { data, isLoading } = useFetchData<TConversation>({
-        endpoint: `${QueryKey.CONVERSATIONS}/${id}`,
-        queryKey: [QueryKey.CONVERSATIONS, id],
-    });
-
+function ChatHeader({
+    data,
+    isLoading,
+    user
+}: {
+    isLoading: boolean,
+    data: TConversation | undefined
+    user: TAuthPayload
+}) {
     if (isLoading) return (
         <ChatHeaderSkeleton />
     );
 
-    if (!data || !user) return null;
+    if (!data) return null;
 
-    const otherParticipant = data.participants.find(participant => participant.id !== user?.accountId);
+    const otherParticipant = data.participants.find(participant => participant.account.id !== user?.accountId);
 
     return (
         <header className='bg-secondary/20 p-4 flex items-center gap-6 border-b'>
@@ -246,10 +236,10 @@ const DEFAULT_TAKE = 30;
 
 function RenderMessages({
     user,
-    conversationId,
+    conversation
 }: {
     user: TAuthPayload
-    conversationId: string
+    conversation: TConversation | undefined
 }) {
     const queryClient = useQueryClient();
     const axios = useAxios();
@@ -264,66 +254,81 @@ function RenderMessages({
         hasNextPage,
         isFetchingNextPage
     } = useInfiniteQuery({
-        queryKey: [QueryKey.CONVERSATION_MESSAGES, conversationId],
+        queryKey: [QueryKey.CONVERSATION_MESSAGES, conversation?.id],
         queryFn: async ({ pageParam = 1 }) => {
             const queryString = createQueryString({
                 take: DEFAULT_TAKE,
                 page: pageParam
             });
-            const response = await axios.get<TChatMessagesResponse>(`/${QueryKey.CONVERSATION_MESSAGES}/${conversationId}?${queryString}`);
+            const response = await axios.get<TChatMessagesResponse>(`/${QueryKey.CONVERSATION_MESSAGES}/${conversation?.id}?${queryString}`);
             return response.data;
         },
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {
             return lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined;
         },
+        enabled: !!conversation?.id
     });
 
     const messages = data?.pages.flatMap((page) => page.data).slice().reverse() ?? [];
 
     const lastMarkedSeenIdRef = useRef<string | null>(null);
 
-    // const { mutate: markSeen } = useServerAction({
-    //     action: markAsSeen,
-    //     toastOnSuccess: false,
-    //     toastOnError: false,
-    // });
+    const { mutateAsync: markSeen } = useAppMutation();
 
-    // useEffect(() => {
-    //     if (data?.pages[0]?.data.length) {
-    //         // mark latest message as seen (first item in first page)
-    //         const latestMessage = data.pages[0].data[0];
-    //         const lastMessageId = latestMessage?.id;
+    // mark as read
+    useEffect(() => {
+        if (data?.pages[0]?.data.length && conversation) {
+            // mark latest message as seen (first item in first page)
+            const latestMessage = data.pages[0].data[0];
+            const lastMessageId = latestMessage?.id;
 
-    //         if (lastMessageId && !latestMessage.seenAt && latestMessage.sender.id !== user.accountId && lastMarkedSeenIdRef.current !== lastMessageId) {
-    //             lastMarkedSeenIdRef.current = lastMessageId;
-    //             markSeen(lastMessageId);
+            const currentParticipant = conversation.participants.find(participant => participant.account.id === user.accountId);
 
-    //             // update the corresponding conversation lastMessageSeenAt on the side
-    //             queryClient.setQueryData([QueryKey.SUPPORT_CHAT], (oldData: InfiniteData<TSupportChatResponse, unknown> | undefined) => {
-    //                 if (!oldData) return oldData;
+            if (lastMessageId && !currentParticipant?.unreadCount && latestMessage.sender.id !== user.accountId && lastMarkedSeenIdRef.current !== lastMessageId) {
+                lastMarkedSeenIdRef.current = lastMessageId;
+                startTransition(() => {
+                    markSeen({
+                        endpoint: `${QueryKey.CONVERSATIONS}/${conversation.id}/mark-as-read`,
+                        method: 'post',
+                        toastOnError: false,
+                        toastOnSuccess: false,
+                    });
+                })
 
-    //                 return {
-    //                     ...oldData,
-    //                     pages: oldData.pages.map((page) => {
-    //                         return {
-    //                             ...page,
-    //                             data: page.data.map((item) => {
-    //                                 if (item.id === conversationId && !item.latestMessageSeenAt) {
-    //                                     return {
-    //                                         ...item,
-    //                                         latestMessageSeenAt: new Date().toISOString(),
-    //                                     }
-    //                                 }
-    //                                 return item;
-    //                             })
-    //                         }
-    //                     })
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }, [data, conversationId, queryClient, markSeen, user.accountId]);
+                // update the corresponding conversation participant unreadCount on the side
+                queryClient.setQueryData([QueryKey.CONVERSATIONS], (oldData: InfiniteData<TConversationResponse, unknown> | undefined) => {
+                    if (!oldData) return oldData;
+
+                    return {
+                        ...oldData,
+                        pages: oldData.pages.map((page) => {
+                            return {
+                                ...page,
+                                data: page.data.map((item) => {
+                                    if (item.id === conversation.id && item.participants.find(participant => participant.account.id === user.accountId)?.unreadCount) {
+                                        return {
+                                            ...item,
+                                            participants: item.participants.map((participant) => {
+                                                if (participant.account.id === user.accountId) {
+                                                    return {
+                                                        ...participant,
+                                                        unreadCount: 0,
+                                                    }
+                                                }
+                                                return participant;
+                                            })
+                                        }
+                                    }
+                                    return item;
+                                })
+                            }
+                        })
+                    }
+                });
+            }
+        }
+    }, [data, conversation, queryClient, markSeen, user.accountId]);
 
     // Handle scroll to load more
     useEffect(() => {
@@ -415,8 +420,8 @@ function RenderMessages({
                                             className={cn(
                                                 `px-4 py-2`,
                                                 message.sender.id === user?.accountId
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'bg-secondary'
+                                                    ? 'bg-blue-600 text-white rounded-xl rounded-tr-none'
+                                                    : 'bg-secondary rounded-xl rounded-tl-none'
                                             )}
                                         >
                                             <p className="whitespace-pre-wrap">{message.content}</p>

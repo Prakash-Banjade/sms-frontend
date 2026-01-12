@@ -14,10 +14,6 @@ export type TChatMessage = {
         lowerCasedFullName: string,
         role: Role
     }
-    participant: {
-        id: string;
-        unreadCount: number
-    }[]
 }
 
 export type TChatMessagesResponse = PaginatedResponse<TChatMessage>;

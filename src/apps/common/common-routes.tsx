@@ -1,12 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import RequireSudo from "@/components/auth/require-sudo"
-import NewPassKeyPage from "./components/passkey/new-passkey-page"
 import { Role } from "@/types/global.type"
-import RequireAuth from "@/components/auth/require-auth"
-import SettingsPage from "./pages/settings/settings.page"
-import StreamClientProvider from "../teacher/layout/stream-client-provider"
-import LiveOnlineClassPageWrapper from "./pages/online-classes/live-online-class-page"
-import CallLeftPage from "./pages/online-classes/call-left.page"
+import { lazy } from "react"
+const RequireSudo = lazy(() => import("@/components/auth/require-sudo"))
+const RequireAuth = lazy(() => import("@/components/auth/require-auth"))
+const NewPassKeyPage = lazy(() => import("./components/passkey/new-passkey-page"))
+const SettingsPage = lazy(() => import("./pages/settings/settings.page"))
+const StreamClientProvider = lazy(() => import("../teacher/layout/stream-client-provider"))
+const LiveOnlineClassPageWrapper = lazy(() => import("./pages/online-classes/live-online-class-page"))
+const CallLeftPage = lazy(() => import("./pages/online-classes/call-left.page"))
+const ChatLayout = lazy(() => import("../student/pages/chat/chat.layout"))
+const ChatPage = lazy(() => import("../student/pages/chat/chat.page"))
+const SingleChatPage = lazy(() => import("../student/pages/chat/single-chat.page"))
 
 export const CommonRoutes = () => {
     return (
@@ -42,6 +46,17 @@ export const OnlineClassesRoutes = () => {
                         <Route path='left' element={<CallLeftPage />} />
                     </Route>
                 </Route>
+            </Route>
+        </>
+    )
+}
+
+export const ChatRoutes = () => {
+    return (
+        <>
+            <Route path="chat" element={<ChatLayout />}>
+                <Route index element={<ChatPage />} />
+                <Route path=":id" element={<SingleChatPage />} />
             </Route>
         </>
     )

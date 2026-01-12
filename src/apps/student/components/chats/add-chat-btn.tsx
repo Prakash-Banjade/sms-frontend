@@ -6,7 +6,6 @@ import { Loader2, Plus } from 'lucide-react'
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
@@ -16,15 +15,19 @@ import { getImageUrl } from '@/lib/utils';
 import { useAppMutation } from '@/hooks/useAppMutation';
 import { QueryKey } from '@/react-query/queryKeys';
 import { useState } from 'react';
+import { Role } from '@/types/global.type';
+import { useAuth } from '@/contexts/auth-provider';
 
 export default function AddChatBtn() {
     const [open, setOpen] = useState(false);
     const [pendingTeacherId, setPendingTeacherId] = useState<string | null>(null);
+    const { payload } = useAuth();
 
     const { data, isLoading } = useGetTeachers<St_TeacherResponse>({
         queryString: createQueryString({
             skipPagination: 'true',
         }),
+        options: { enabled: payload?.role === Role.STUDENT }
     });
 
     const { mutateAsync, isPending } = useAppMutation();
@@ -45,7 +48,8 @@ export default function AddChatBtn() {
         });
     }
 
-
+    // only students are allowed to create chat
+    if (!payload || payload.role !== Role.STUDENT) return null;
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>

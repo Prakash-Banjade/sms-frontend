@@ -12,6 +12,7 @@ import { ProfileAvatar } from "@/components/ui/avatar";
 import { formatDate } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddChatBtn from "../../components/chats/add-chat-btn";
+import { Badge } from "@/components/ui/badge";
 
 const DEFAULT_TAKE = 10;
 
@@ -45,8 +46,6 @@ export default function ChatLayout() {
     });
 
     const chats = data?.pages.flatMap((page) => page.data) ?? [];
-
-    console.log(chats)
 
     return (
         <div
@@ -139,7 +138,7 @@ function RenderChats({ data, isLoading, conversationId }: { data: TConversation[
                                     />
                                     <div className="flex-1">
                                         <header className="flex justify-between items-center gap-2">
-                                            <p className={cn("capitalize font-medium", !!currentParticipant?.unreadCount && "text-muted-foreground")}>{otherParticipant?.account.lowerCasedFullName}</p>
+                                            <p className={cn("capitalize font-medium", !currentParticipant?.unreadCount && "text-muted-foreground")}>{otherParticipant?.account.lowerCasedFullName}</p>
                                         </header>
                                         {
                                             chat.lastMessageAt && (
@@ -148,7 +147,7 @@ function RenderChats({ data, isLoading, conversationId }: { data: TConversation[
                                         }
                                     </div>
                                     {!!currentParticipant?.unreadCount && (
-                                        <div className="size-2 bg-green-500 rounded-full" />
+                                        <Badge>{currentParticipant.unreadCount > 9 ? "9+" : currentParticipant.unreadCount}</Badge>
                                     )}
                                 </div>
                             </Link>

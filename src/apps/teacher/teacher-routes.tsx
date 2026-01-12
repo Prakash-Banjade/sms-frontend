@@ -4,7 +4,7 @@ import { ETask, Role } from '@/types/global.type';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { teacherSidebarMenuItems } from './layout/sidebar-items';
 import AppRootLayout from '@/components/app-sidebar-layout/root-layout';
-import { CommonRoutes, OnlineClassesRoutes } from '../common/common-routes';
+import { ChatRoutes, CommonRoutes, OnlineClassesRoutes } from '../common/common-routes';
 import StreamClientProvider from './layout/stream-client-provider';
 const LibraryBooksPage = lazy(() => import("../common/pages/library-books/library-books.page"));
 const SingleLibraryBookPage = lazy(() => import('../admin/pages/library/single-library-book.page'));
@@ -98,6 +98,7 @@ const TeacherRoutes = () => {
           </Route>
           <Route path="salary" element={<MySalaryPage />} />
           {CommonRoutes()}
+          {ChatRoutes()}
         </Route>
       </Route>
       {OnlineClassesRoutes()} {/* This needs to be out of regular layout */}
