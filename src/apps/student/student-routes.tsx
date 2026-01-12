@@ -6,6 +6,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { studentSidebarMenuItems } from "./layout/sidebar-items";
 import { CommonRoutes, OnlineClassesRoutes } from "../common/common-routes";
 import StreamClientProvider from "../teacher/layout/stream-client-provider";
+import ChatLayout from "./pages/chat/chat.layout";
+const ChatPage = lazy(() => import("./pages/chat/chat.page"));
+const SingleChatPage = lazy(() => import("./pages/chat/single-chat.page"));
 const MyLeaveRequestsPage = lazy(() => import("../common/pages/leave-request/my-leave-requests.page"));
 const AddLeaveRequestPage = lazy(() => import("../common/pages/leave-request/add-leave-request.page"));
 const LibraryBooksPage = lazy(() => import("../common/pages/library-books/library-books.page"));
@@ -72,6 +75,10 @@ const StudentRoutes = () => {
           <Route path="leave-requests">
             <Route index element={<MyLeaveRequestsPage />} />
             <Route path="new" element={<AddLeaveRequestPage />} />
+          </Route>
+          <Route path="chat" element={<ChatLayout />}>
+            <Route index element={<ChatPage />} />
+            <Route path=":id" element={<SingleChatPage />} />
           </Route>
           <Route path="attendance" element={<MyAttendancePage />} />
           <Route path="notices">

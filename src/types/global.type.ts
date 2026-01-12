@@ -17,10 +17,7 @@ export type TMeta = {
 };
 
 export interface PaginatedResponse<T> {
-    data: T & {
-        id: string,
-        [key: string]: any
-    }[];
+    data: T[];
     meta: TMeta;
 }
 

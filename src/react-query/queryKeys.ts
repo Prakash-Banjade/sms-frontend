@@ -67,4 +67,6 @@ export enum QueryKey {
     SALARY_PAYMENTS = "salary-payments",
     GENERAL_SETTINGS = "general-settings",
     ONLINE_CLASSES = "online-classes",
+    CONVERSATIONS = "conversations",
+    CONVERSATION_MESSAGES = "messages"
 };

@@ -1,5 +1,5 @@
 import { TGroupMenuItem } from "@/components/app-sidebar-layout/sidebar";
-import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, Library, GitPullRequest, BellRing, Radio, BookA, SquareCheckBig, BookOpenCheck, BookCheck, LibraryBig } from "lucide-react";
+import { Bus, Calendar, FileCheck2, LayoutDashboard, Shapes, Users, Library, GitPullRequest, BellRing, Radio, BookA, SquareCheckBig, BookOpenCheck, BookCheck, LibraryBig, MessageCircle } from "lucide-react";
 
 export const studentSidebarMenuItems: TGroupMenuItem[] = [
     {
@@ -61,6 +61,16 @@ export const studentSidebarMenuItems: TGroupMenuItem[] = [
                 icon: GitPullRequest,
             },
         ],
+    },
+    {
+        groupLabel: "Communication",
+        menuItems: [
+            {
+                title: "Chat",
+                url: "chat",
+                icon: MessageCircle,
+            },
+        ]
     },
     {
         groupLabel: "Remote Learning",

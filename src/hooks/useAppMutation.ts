@@ -3,7 +3,7 @@ import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import toast from 'react-hot-toast';
 
-interface MutationParams<TData> {
+interface MutationParams<TData, TResponse> {
     endpoint: string;
     invalidateTags?: string[] | string[][];
     id?: string;
@@ -12,12 +12,14 @@ interface MutationParams<TData> {
     config?: AxiosRequestConfig;
     toastOnError?: boolean;
     toastOnSuccess?: boolean;
+    onSuccess?: (data: AxiosResponse<TResponse>) => void;
+    onError?: (error: unknown) => void;
 }
 
 export const useAppMutation = <TData, TResponse>(): UseMutationResult<
     AxiosResponse<TResponse>,
     unknown,
-    MutationParams<TData>
+    MutationParams<TData, TResponse>
 > => {
     const axios = useAxios();
 
@@ -47,10 +49,12 @@ export const useAppMutation = <TData, TResponse>(): UseMutationResult<
             } else if (error instanceof Error) {
                 (variables.toastOnError ?? true) && toast.error(`${error.message}`);
             }
+
+            variables.onError?.(error);
             console.log(error)
         },
         onSuccess(data, variables) {
-            if (variables.invalidateTags) {
+            if (variables.invalidateTags?.length) {
                 if (variables.invalidateTags[0] instanceof Array) {
                     for (const tag of variables.invalidateTags) {
                         queryClient.invalidateQueries({
@@ -64,6 +68,7 @@ export const useAppMutation = <TData, TResponse>(): UseMutationResult<
                 }
             }
 
+            variables.onSuccess?.(data);
             (variables.toastOnSuccess ?? true) && toast.success(data.data.message ?? 'Success!');
         },
     })
