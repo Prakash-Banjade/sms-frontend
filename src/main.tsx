@@ -10,7 +10,7 @@ import './themes/rose.css'
 import './themes/violet.css'
 import './themes/yellow.css'
 import './themes/red.css'
-import './themes/abhyam.css'
+import './themes/loomis.css'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './react-query/queryClient.ts'

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![School Management System](https://tscapis.e-aribt.com/uploads/Aayam%20Global%20School%20Logo-01-1cb6f8.png)
+![School Management System](https://tscapis.e-aribt.com/uploads/Loomis%20Global%20School%20Logo-01-1cb6f8.png)
 
 **A comprehensive, modern, and robust school management system built with React and TypeScript**
 

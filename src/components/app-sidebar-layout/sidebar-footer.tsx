@@ -25,7 +25,12 @@ export const AppSidebarFooter = () => {
                                     name={payload?.firstName + " " + payload?.lastName}
                                     className={cn(!open ? "absolute size-8" : "size-10")}
                                 />
-                                {open && <span>{payload?.firstName + " " + payload?.lastName}</span>}
+                                {open && (
+                                    <div className="flex flex-col">
+                                        <span>{payload?.firstName + " " + payload?.lastName}</span>
+                                        <span className="capitalize text-xs text-muted-foreground">{payload?.role?.replace("_", " ")}</span>
+                                    </div>
+                                )}
                                 {open && <ChevronUp className="ml-auto" />}
                             </SidebarMenuButton>
                         </DropdownMenuTrigger>

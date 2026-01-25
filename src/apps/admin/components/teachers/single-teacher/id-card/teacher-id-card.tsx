@@ -22,7 +22,7 @@ export const TeacherIdCard = React.forwardRef<HTMLDivElement, TeacherIdCardProps
 
                 {/* Header with school info */}
                 <div className="relative bg-primary-foreground/95 px-3 py-2.5 flex flex-col items-center gap-1 border-b-2 border-secondary">
-                    <img src="/logo.png" alt="Aayam Global School" width={45} height={45} className="object-contain" />
+                    <img src="/logo.png" alt="Loomis Global School" width={45} height={45} className="object-contain" />
                     <div className="text-center">
                         <h1 className="text-[10px] font-bold text-primary leading-tight tracking-tight uppercase">{thisSchool.name}</h1>
                         <p className="text-[7px] text-primary/80 leading-tight">{thisSchool.address}</p>
@@ -118,7 +118,7 @@ export const TeacherIdCard = React.forwardRef<HTMLDivElement, TeacherIdCardProps
 
                     <div className="pt-2 border-t border-border">
                         <p className="text-[6px] text-muted-foreground italic text-center leading-relaxed">
-                            This card is the property of Aayam Global School.
+                            This card is the property of Loomis Global School.
                             <br />
                             If found, please return to the school office.
                         </p>
@@ -128,7 +128,7 @@ export const TeacherIdCard = React.forwardRef<HTMLDivElement, TeacherIdCardProps
                     <div className="mt-auto bg-primary/5 rounded px-2 py-1.5 border border-primary/20">
                         <p className="text-[6px] text-foreground/60 uppercase tracking-wide mb-0.5 text-center">School Contact</p>
                         <p className="text-[7px] font-medium text-foreground text-center">Phone: +977-XXXX-XXXXXX</p>
-                        <p className="text-[7px] font-medium text-foreground text-center">Email: info@aayamglobal.edu.np</p>
+                        <p className="text-[7px] font-medium text-foreground text-center">Email: info@loomisglobal.edu.np</p>
                     </div>
                 </div>
 

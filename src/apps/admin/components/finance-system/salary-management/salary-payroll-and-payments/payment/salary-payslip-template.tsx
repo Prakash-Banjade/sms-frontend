@@ -57,7 +57,7 @@ export const SalaryPayslipTemplate = React.forwardRef<HTMLDivElement, Props>(({ 
                         <h3 className="font-semibold text-lg text-gray-800">Company Information</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                             <p className="text-gray-600">Company Name:</p>
-                            <p className="font-medium text-gray-900">Aayam Global Academy</p>
+                            <p className="font-medium text-gray-900">Loomis Global Academy</p>
                             <p className="text-gray-600">Address:</p>
                             <p className="font-medium text-gray-900">123 Tech Avenue, Suite 200</p>
                             <p className="text-gray-600">City, State ZIP:</p>
@@ -65,7 +65,7 @@ export const SalaryPayslipTemplate = React.forwardRef<HTMLDivElement, Props>(({ 
                             <p className="text-gray-600">Phone:</p>
                             <p className="font-medium text-gray-900">(555) 123-4567</p>
                             <p className="text-gray-600">Website:</p>
-                            <p className="font-medium text-gray-900 wrap-break-word">www.aayamglobal.com</p>
+                            <p className="font-medium text-gray-900 wrap-break-word">www.loomisglobal.com</p>
                         </div>
                     </div>
                 </div>

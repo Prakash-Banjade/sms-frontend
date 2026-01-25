@@ -31,8 +31,8 @@ export enum CookieKey {
 export const SCHOOL_LEVEL_FACULTY_NAME = "School Level" as const;
 
 export const thisSchool = {
-    name: 'Aayam Global SMS',
+    name: 'Loomis Global SMS',
     address: 'Kalikanagar-11, Butwal',
     phone: '071415272',
-    logo: 'https://tscapis.e-aribt.com/uploads/Aayam%20Global%20School%20Logo-01-1cb6f8.png',
+    logo: 'https://tscapis.e-aribt.com/uploads/Loomis%20Global%20School%20Logo-01-1cb6f8.png',
 } as const;

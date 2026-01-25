@@ -6,7 +6,6 @@ import RadiusSelector from "./radius-selector";
 import { ThemeToggle } from "./theme-toggle";
 
 export enum ThemeColor {
-    Abhyam = "abhyam",
     Zinc = "zinc",
     Orange = "orange",
     Green = "green",
@@ -14,7 +13,8 @@ export enum ThemeColor {
     Red = "red",
     Yellow = "yellow",
     Rose = "rose",
-    Violet = "violet"
+    Violet = "violet",
+    Loomis = "loomis"
 }
 
 const themeColors: {
@@ -23,9 +23,9 @@ const themeColors: {
     code: string;
 }[] = [
         {
-            name: "Abhyam",
-            value: ThemeColor.Abhyam,
-            code: "#04413d",
+            name: "Loomis",
+            value: ThemeColor.Loomis,
+            code: "#1b405e",
         },
         {
             name: "Zinc",
@@ -72,7 +72,7 @@ const themeColors: {
 export const THEME_COLOR_KEY = "theme-color" as const;
 
 export const themeColorSchema = z.nativeEnum(ThemeColor);
-export const defaultThemeColor: ThemeColor = ThemeColor.Zinc;
+export const defaultThemeColor: ThemeColor = ThemeColor.Loomis;
 
 export default function Appearance() {
     const { success, data } = themeColorSchema.safeParse(localStorage.getItem(THEME_COLOR_KEY) ?? defaultThemeColor);

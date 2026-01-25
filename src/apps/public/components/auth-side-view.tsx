@@ -14,8 +14,8 @@ export default function AuthSideView() {
                 <img
                     src="/logo.png"
                     alt="logo"
-                    height={80}
-                    width={80}
+                    height={120}
+                    width={120}
                 />
                 {/* <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground mr-2">
                     <School className="size-5" />
@@ -38,7 +38,7 @@ export default function AuthSideView() {
                         <p className="text-lg">
                             &ldquo;Efficient school management software streamlines operations, empowers educators, and fosters a connected learning environment, allowing schools to focus more on education and less on administration.&rdquo;
                         </p>
-                        <footer className="text-sm">Made by Abhyam Group</footer>
+                        <footer className="text-sm">Made by <a href="https://prakashbanjade.com" target="_blank" className="hover:underline">Prakash Banjade</a></footer>
                     </blockquote>
                 </div>
             </div>

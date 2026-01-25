@@ -18,7 +18,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
                 </div>
 
                 <div className="relative bg-primary-foreground/95 px-3 py-2 flex items-center gap-2 border-b-2 border-secondary">
-                    <img src="/logo.png" alt="Aayam Global School" width={40} height={40} className="object-contain" />
+                    <img src="/logo.png" alt="Loomis Global School" width={40} height={40} className="object-contain" />
                     <div className="flex-1">
                         <h1 className="text-[10px] font-bold text-primary leading-tight tracking-tight">AAYAM GLOBAL SCHOOL</h1>
                         <p className="text-[7px] text-primary/80 leading-tight">Tilottama-2, Janakinagar</p>
@@ -111,7 +111,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
 
                     <div className="pt-2 border-t border-border">
                         <p className="text-[6px] text-muted-foreground italic text-center leading-relaxed">
-                            This card is the property of Aayam Global School.
+                            This card is the property of Loomis Global School.
                             <br />
                             If found, please return to the school office.
                         </p>
@@ -121,7 +121,7 @@ export const StudentIdCard = React.forwardRef<HTMLDivElement, StudentIdCardProps
                     <div className="bg-primary/5 rounded px-2 py-1.5 border border-primary/20">
                         <p className="text-[6px] text-foreground/60 uppercase tracking-wide mb-0.5">School Contact</p>
                         <p className="text-[7px] font-medium text-foreground">Phone: +977-XXXX-XXXXXX</p>
-                        <p className="text-[7px] font-medium text-foreground">Email: info@aayamglobal.edu.np</p>
+                        <p className="text-[7px] font-medium text-foreground">Email: info@loomisglobal.edu.np</p>
                     </div>
                 </div>
 

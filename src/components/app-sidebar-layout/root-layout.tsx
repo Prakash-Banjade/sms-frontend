@@ -10,6 +10,7 @@ import { Skeleton } from "../ui/skeleton";
 import AppBreadCrumb from "./app-bread-crumb";
 import { useAuth } from "@/contexts/auth-provider";
 import { isAdmin } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem[] }) {
     const { payload } = useAuth();
@@ -42,7 +43,14 @@ export default function AppRootLayout({ menuItems }: { menuItems: TGroupMenuItem
                     </div>
                 </header>
                 <main className="p-6 h-full">
-                    <Suspense fallback={<Skeleton className="h-full"></Skeleton>}>
+                    <Suspense
+                        fallback={(
+                            <div className="h-full flex items-center justify-center">
+                                <Loader2 className="animate-spin mr-2" size={20} />
+                                Please Wait...
+                            </div>
+                        )}
+                    >
                         <Outlet />
                     </Suspense>
                 </main>

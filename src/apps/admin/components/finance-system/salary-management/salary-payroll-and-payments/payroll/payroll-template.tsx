@@ -182,7 +182,7 @@ export const PayrollTemplate = React.forwardRef<HTMLDivElement, PayrollTemplateP
                 <div className="text-sm text-gray-500 space-y-2">
                     <p className="flex items-center">
                         <HelpCircleIcon className="w-4 h-4 mr-1" />
-                        For questions about your payroll, please contact HR at hr@abhyam-groups.com or ext. 1234.
+                        For questions about your payroll, please contact HR at hr@prakashbanjade.com or ext. 1234.
                     </p>
                     <p className="flex items-center">
                         <CalendarIcon className="w-4 h-4 mr-1" />
